@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vera Level FX — Live Portfolio</title>
+<meta name="description" content="Live Forex portfolio performance dashboard — Vera Level FX on IC Markets. Real-time balance, gain, drawdown, open positions and trade history.">
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@24,400,0&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:#121212;color:#e5e2e1;font-family:Inter,system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08)}
+  .gold-glow{box-shadow:0 0 24px rgba(212,175,55,0.12)}
+  .ticker-wrap{overflow:hidden;white-space:nowrap;will-change:transform}
+  .ticker-inner{display:inline-flex;align-items:center;animation:ticker 35s linear infinite}
+  @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .hero-card{position:relative;overflow:hidden;padding:28px}
+  .hero-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px}
+  .hc-gold::after{background:linear-gradient(90deg,transparent,#D4AF37 50%,transparent)}
+  .hc-green::after{background:linear-gradient(90deg,transparent,#3ce42f 50%,transparent)}
+  .hc-amber::after{background:linear-gradient(90deg,transparent,#f59e0b 50%,transparent)}
+  .metric-card{padding:20px 22px}
+  .sec-hdr{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#a8b4cc;border-left:2px solid #D4AF37;padding-left:10px;margin-bottom:16px}
+  .shimmer{background:linear-gradient(90deg,rgba(255,255,255,.03) 25%,rgba(255,255,255,.06) 50%,rgba(255,255,255,.03) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  table{width:100%;border-collapse:collapse}
+  thead th{padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#64748b;text-align:left;background:rgba(255,255,255,0.03);white-space:nowrap}
+  tbody tr{border-top:1px solid rgba(255,255,255,0.05);transition:background .1s}
+  tbody tr:hover{background:rgba(212,175,55,0.03)}
+  td{padding:9px 12px}
+  a{color:inherit;text-decoration:none}
+  @media(max-width:768px){.hero-grid{grid-template-columns:1fr!important}.charts-grid{grid-template-columns:1fr!important}.metrics-grid{grid-template-columns:repeat(2,1fr)!important}}
+</style>
+</head>
+<body>
+
+<!-- ── Nav ─────────────────────────────────────────────── -->
+<nav style="position:fixed;top:0;width:100%;z-index:50;background:rgba(18,18,18,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.07)">
+  <div style="max-width:1400px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:18px;font-weight:800;letter-spacing:.04em;color:#D4AF37">
+      VERA LEVEL <span style="color:#e5e2e1;font-weight:400">FX</span>
+    </div>
+    <div style="display:flex;gap:28px">
+      <a href="#performance" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;border-bottom:1px solid #D4AF37;padding-bottom:2px">Performance</a>
+      <a href="#positions"   style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b">Positions</a>
+      <a href="#history"     style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b">History</a>
+    </div>
+    <div id="nav-updated" style="font-size:10px;font-family:monospace;color:#475569">Loading...</div>
+  </div>
+</nav>
+
+<!-- ── Ticker ───────────────────────────────────────────── -->
+<div style="margin-top:64px;background:#0e0e0e;border-bottom:1px solid rgba(255,255,255,0.05);padding:7px 0" class="ticker-wrap">
+  <div id="ticker-content" class="ticker-inner" style="font-size:11px;font-weight:600;letter-spacing:.04em">
+    <!-- Populated after data load -->
+    <span style="margin-right:48px;color:#64748b">Loading market data...</span>
+  </div>
+</div>
+
+<main id="app" style="max-width:1400px;margin:0 auto;padding:40px 32px 60px">
+
+  <!-- ── Loading State ──────────────────────────────────── -->
+  <div id="loading-state">
+    <div style="margin-bottom:32px">
+      <div class="shimmer" style="height:20px;width:280px;margin-bottom:12px"></div>
+      <div class="shimmer" style="height:48px;width:420px;margin-bottom:8px"></div>
+      <div class="shimmer" style="height:20px;width:340px;margin-bottom:32px"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <div class="shimmer glass" style="height:120px"></div>
+        <div class="shimmer glass" style="height:120px"></div>
+        <div class="shimmer glass" style="height:120px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Error State ────────────────────────────────────── -->
+  <div id="error-state" style="display:none;text-align:center;padding:80px 0">
+    <div style="font-size:40px;margin-bottom:16px">⚠️</div>
+    <div style="font-size:18px;font-weight:600;color:#e5e2e1;margin-bottom:8px">Unable to load live data</div>
+    <div style="font-size:13px;color:#64748b;margin-bottom:24px">Check your connection or try again shortly.</div>
+    <button onclick="init()" style="background:#D4AF37;color:#1c1b1b;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 24px;border:none;cursor:pointer">Retry</button>
+  </div>
+
+  <!-- ── Live Content ───────────────────────────────────── -->
+  <div id="live-content" style="display:none">
+
+    <!-- Hero -->
+    <section id="performance" style="margin-bottom:40px">
+      <div style="margin-bottom:14px">
+        <span style="display:inline-block;padding:4px 14px;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.18);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37">
+          LIVE PERFORMANCE · IC MARKETS · MYFXBOOK VERIFIED
+        </span>
+      </div>
+      <h1 style="font-size:42px;font-weight:800;letter-spacing:-.025em;line-height:1.05;margin-bottom:6px">Vera Level FX Portfolio</h1>
+      <p style="font-size:17px;color:#D4AF37;opacity:.75;margin-bottom:32px;font-weight:500">வேரா லெவல் FX — தொழில்முறை அந்நிய செலாவணி போர்ட்ஃபோலியோ</p>
+      <div class="hero-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <div class="glass hero-card hc-gold gold-glow">
+          <span class="material-symbols-outlined" style="position:absolute;top:12px;right:14px;font-size:60px;opacity:.05;color:#D4AF37">account_balance_wallet</span>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Account Balance</div>
+          <div id="h-balance" style="font-size:46px;font-weight:800;letter-spacing:-.03em;color:#D4AF37;line-height:1">—</div>
+          <div id="h-equity"  style="font-size:12px;color:#a8b4cc;margin-top:10px">—</div>
+        </div>
+        <div class="glass hero-card hc-green">
+          <span class="material-symbols-outlined" style="position:absolute;top:12px;right:14px;font-size:60px;opacity:.05;color:#3ce42f">trending_up</span>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Total Gain</div>
+          <div id="h-gain"   style="font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1">—</div>
+          <div id="h-profit" style="font-size:12px;color:#a8b4cc;margin-top:10px">—</div>
+        </div>
+        <div class="glass hero-card hc-amber">
+          <span class="material-symbols-outlined" style="position:absolute;top:12px;right:14px;font-size:60px;opacity:.05;color:#f59e0b">show_chart</span>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Max Drawdown</div>
+          <div id="h-dd"      style="font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1">—</div>
+          <div id="h-dd-sub"  style="font-size:12px;color:#a8b4cc;margin-top:10px">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics Row -->
+    <div class="metrics-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px">
+      <div class="glass metric-card">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Monthly Return</div>
+        <div id="m-monthly" style="font-size:30px;font-weight:800;color:#3ce42f;letter-spacing:-.02em">—</div>
+        <div style="font-size:10px;color:#64748b;margin-top:4px">30-day rolling avg</div>
+      </div>
+      <div class="glass metric-card">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Profit Factor</div>
+        <div id="m-pf" style="font-size:30px;font-weight:800;letter-spacing:-.02em">—</div>
+        <div id="m-pf-sub" style="font-size:10px;color:#64748b;margin-top:4px">—</div>
+      </div>
+      <div class="glass metric-card">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Win Rate</div>
+        <div id="m-wr" style="font-size:30px;font-weight:800;color:#e5e2e1;letter-spacing:-.02em">—</div>
+        <div id="m-wr-sub" style="font-size:10px;color:#64748b;margin-top:4px">—</div>
+      </div>
+      <div class="glass metric-card">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Total Pips</div>
+        <div id="m-pips" style="font-size:30px;font-weight:800;color:#D4AF37;letter-spacing:-.02em">—</div>
+        <div style="font-size:10px;color:#64748b;margin-top:4px">Cumulative pips earned</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid" style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:32px">
+      <div class="glass" style="padding:24px">
+        <div style="margin-bottom:14px">
+          <div style="font-size:14px;font-weight:600;color:#e5e2e1">Cumulative Gain %</div>
+          <div id="equity-sub" style="font-size:11px;color:#64748b;margin-top:2px">Equity trajectory</div>
+        </div>
+        <svg id="equity-svg" viewBox="0 0 800 180" style="width:100%;height:180px;overflow:visible"></svg>
+        <div style="display:flex;justify-content:space-between;font-size:9px;font-family:monospace;color:#475569;margin-top:6px">
+          <span id="chart-from">—</span>
+          <span id="chart-gain" style="color:#D4AF37;font-weight:700">—</span>
+          <span id="chart-to">—</span>
+        </div>
+      </div>
+      <div class="glass" style="padding:24px">
+        <div style="margin-bottom:14px">
+          <div style="font-size:14px;font-weight:600;color:#e5e2e1">Daily P&amp;L</div>
+          <div id="bars-sub" style="font-size:11px;color:#64748b;margin-top:2px">Profit / loss per day</div>
+        </div>
+        <svg id="bars-svg" viewBox="0 0 800 120" style="width:100%;height:120px">
+          <line x1="0" y1="80" x2="800" y2="80" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Open Positions -->
+    <section id="positions" style="margin-bottom:32px">
+      <div class="sec-hdr" id="pos-hdr">Open Positions</div>
+      <div id="pos-grid"></div>
+    </section>
+
+    <!-- Trade History -->
+    <section id="history">
+      <div class="sec-hdr" id="hist-hdr">Trade History</div>
+      <div style="border:1px solid rgba(255,255,255,0.07);overflow:hidden;overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Symbol</th><th>Dir</th><th>Lots</th><th>Open</th><th>Close</th><th>P&amp;L</th><th>Pips</th></tr>
+          </thead>
+          <tbody id="hist-body" style="font-size:12px"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer style="border-top:1px solid rgba(255,255,255,0.07);padding:40px 32px;background:#0e0e0e">
+  <div style="max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px">
+    <div>
+      <div style="font-size:16px;font-weight:800;letter-spacing:.04em;color:#D4AF37;margin-bottom:10px">VERA LEVEL FX</div>
+      <p style="font-size:11px;color:#475569;max-width:320px;line-height:1.7">
+        Live data sourced automatically from Myfxbook via IC Markets. Past performance does not guarantee future results. Forex trading involves substantial risk of loss.
+      </p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:11px;color:#475569;text-align:right">
+      <a href="https://www.myfxbook.com" style="color:#D4AF37">Myfxbook ↗</a>
+      <span>Broker: IC Markets</span>
+      <span id="footer-updated" style="font-family:monospace">—</span>
+    </div>
+  </div>
+  <div style="max-width:1400px;margin:24px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,0.05);font-size:10px;color:#334155;letter-spacing:.06em;text-transform:uppercase;text-align:center">
+    © 2026 Vera Level FX · Auto-updated weekdays 08:00 SGT
+  </div>
+</footer>
+
+<script>
+const DATA_URL = 'https://gkpandian-sudo.github.io/myfxbook-mcp/vera-snapshot.json';
+
+// ── Helpers ───────────────────────────────────────────────
+const n    = v => Number(v || 0);
+const usd  = v => '$' + Math.abs(n(v)).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+const pct  = v => (n(v)>=0?'+':'') + n(v).toFixed(2) + '%';
+const lots = s => (s && typeof s === 'object') ? (s.value || '?') : (s || '?');
+const esc  = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+// ── Equity Curve SVG ──────────────────────────────────────
+function equitySvg(dg) {
+  if (!dg || dg.length < 2) return '<text x="400" y="90" fill="#475569" font-size="13" text-anchor="middle" font-family="Inter">Accumulating performance data...</text>';
+  const W=800, H=180, P=24;
+  const gs = dg.map(d => n(d[1]));
+  const mn = Math.min(...gs) * 0.9, mx = Math.max(...gs) * 1.05, rng = mx - mn || 1;
+  const pts = dg.map(([,g], i) => {
+    const x = P + i * (W - P*2) / (dg.length-1);
+    const y = H - P - ((n(g)-mn)/rng) * (H-P*2);
+    return [x.toFixed(1), y.toFixed(1)];
+  });
+  const line  = 'M'+pts.map(p=>p.join(',')).join(' L');
+  const area  = line+` L${pts[pts.length-1][0]},${H-P} L${pts[0][0]},${H-P} Z`;
+  const lp    = pts[pts.length-1];
+  const lastG = gs[gs.length-1];
+  return `<defs>
+    <linearGradient id="vl-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="vl-glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <line x1="${P}" y1="${H-P}" x2="${W-P}" y2="${H-P}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <path d="${area}" fill="url(#vl-fill)"/>
+  <path d="${line}" fill="none" stroke="#D4AF37" stroke-width="2.5" filter="url(#vl-glow)"/>
+  <circle cx="${lp[0]}" cy="${lp[1]}" r="5" fill="#D4AF37" filter="url(#vl-glow)"/>
+  <rect x="${Math.min(parseFloat(lp[0])-30, W-P-64)}" y="${Math.max(parseFloat(lp[1])-28,2)}" width="64" height="20" fill="#1c1b1b" stroke="#D4AF37" stroke-opacity="0.4" rx="2"/>
+  <text x="${Math.min(parseFloat(lp[0])-30, W-P-64)+32}" y="${Math.max(parseFloat(lp[1])-28,2)+14}" fill="#D4AF37" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">${lastG>=0?'+':''}${lastG.toFixed(2)}%</text>`;
+}
+
+// ── Daily P&L Bars SVG ────────────────────────────────────
+function barsSvg(dg) {
+  if (!dg || !dg.length) return '';
+  const ps  = dg.map(d => n(d[2]));
+  const max = Math.max(...ps.map(Math.abs), 1);
+  const BW  = 800 / dg.length;
+  return dg.map(([date,,p], i) => {
+    const v=n(p), h=Math.max(4,(Math.abs(v)/max)*75);
+    const x=i*BW+BW*.15, y=v>=0?80-h:80;
+    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(BW*.7).toFixed(1)}" height="${h.toFixed(1)}" fill="${v>=0?'#3ce42f':'#ffb4ab'}" opacity="0.85"/>
+            <text x="${(x+BW*.35).toFixed(1)}" y="108" fill="#475569" font-size="8" text-anchor="middle" font-family="Inter">${esc((date||'').slice(5))}</text>`;
+  }).join('');
+}
+
+// ── Ticker ────────────────────────────────────────────────
+function renderTicker(symbols) {
+  const pairs = symbols.length ? symbols : ['XAUUSD','EURUSD','AUDCAD','GBPUSD','USDJPY'];
+  const items = pairs.map((s,i) =>
+    `<span style="display:inline-flex;align-items:center;gap:8px;margin-right:48px"><span style="color:#64748b">${esc(s)}</span><span style="color:${i%2===0?'#3ce42f':'#ffb4ab'}">${i%2===0?'▲':'▼'}</span></span>`
+  );
+  document.getElementById('ticker-content').innerHTML = [...items,...items].join('');
+}
+
+// ── Main Render ───────────────────────────────────────────
+function render(snap) {
+  const { account, openTrades=[], history=[], dailyGain=[], fetchedAt } = snap;
+
+  const bal = n(account.balance), equity = n(account.equity);
+  const gain = n(account.gain), dd = n(account.drawdown);
+  const profit = n(account.profit), pips = n(account.pips);
+  const pf = n(account.profitFactor), monthly = n(account.monthly), daily = n(account.daily);
+
+  const trades = history.filter(t => t.symbol && t.action !== 'Deposit' && t.action !== 'Withdrawal');
+  const wins   = trades.filter(t => n(t.profit) > 0).length;
+  const wr     = trades.length ? Math.round(wins/trades.length*100) : 0;
+
+  const dg = dailyGain.slice(-30);
+
+  const updated = new Date(fetchedAt).toLocaleString('en-GB', {
+    day:'2-digit', month:'short', year:'numeric',
+    hour:'2-digit', minute:'2-digit', timeZone:'Asia/Singapore'
+  }) + ' SGT';
+
+  // Timestamps
+  document.getElementById('nav-updated').textContent    = 'Updated: ' + updated;
+  document.getElementById('footer-updated').textContent = updated;
+
+  // Ticker
+  const syms = [...new Set(trades.map(t=>t.symbol).filter(Boolean))].slice(0,6);
+  renderTicker(syms);
+
+  // Hero
+  document.getElementById('h-balance').textContent = usd(bal);
+  document.getElementById('h-equity').textContent  = `Equity ${usd(equity)} · Float ${equity>=bal?'+':'−'}${usd(Math.abs(equity-bal))}`;
+  document.getElementById('h-gain').textContent    = pct(gain);
+  document.getElementById('h-gain').style.color    = gain>=0 ? '#3ce42f' : '#ffb4ab';
+  document.getElementById('h-profit').textContent  = `${profit>=0?'+':'−'}${usd(Math.abs(profit))} net · ${daily>=0?'+':''}${daily.toFixed(2)}%/day avg`;
+  document.getElementById('h-dd').textContent      = dd.toFixed(2)+'%';
+  document.getElementById('h-dd').style.color      = dd>30 ? '#ffb4ab' : dd>15 ? '#f59e0b' : '#3ce42f';
+  document.getElementById('h-dd-sub').textContent  = dd>30 ? '⚠️ Elevated — monitor closely' : dd>15 ? 'Moderate risk level' : 'Risk controlled';
+
+  // Metrics
+  document.getElementById('m-monthly').textContent = '+'+monthly.toFixed(2)+'%';
+  document.getElementById('m-pf').textContent      = pf.toFixed(2);
+  document.getElementById('m-pf').style.color      = pf>=1.5 ? '#D4AF37' : '#a8b4cc';
+  document.getElementById('m-pf-sub').textContent  = pf>=2 ? 'Excellent edge' : pf>=1.5 ? 'Strong edge' : 'Positive edge';
+  document.getElementById('m-wr').textContent      = wr+'%';
+  document.getElementById('m-wr-sub').textContent  = `${wins}W / ${trades.length-wins}L of ${trades.length} trades`;
+  document.getElementById('m-pips').textContent    = '+'+Math.round(pips).toLocaleString();
+
+  // Charts
+  document.getElementById('equity-svg').innerHTML  = equitySvg(dg);
+  document.getElementById('equity-sub').textContent = `${dg.length}-day equity trajectory`;
+  document.getElementById('bars-sub').textContent   = `Recent ${dg.length} trading days`;
+
+  const barsEl = document.getElementById('bars-svg');
+  barsEl.innerHTML = '<line x1="0" y1="80" x2="800" y2="80" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>' + barsSvg(dg);
+
+  if (dg.length) {
+    document.getElementById('chart-from').textContent = dg[0][0] || '';
+    document.getElementById('chart-gain').textContent = `${gain>=0?'+':''}${gain.toFixed(2)}% total return`;
+    document.getElementById('chart-to').textContent   = dg[dg.length-1][0] || '';
+  }
+
+  // Open Positions
+  document.getElementById('pos-hdr').textContent = `Open Positions (${openTrades.length})`;
+  document.getElementById('pos-grid').innerHTML = openTrades.length
+    ? `<div style="display:flex;flex-wrap:wrap;gap:12px">${openTrades.map(t => {
+        const pl=n(t.profit), dir=(t.action||'').toUpperCase();
+        const bdr = pl>=0 ? 'rgba(60,228,47,0.2)' : 'rgba(255,180,171,0.2)';
+        const clr = pl>=0 ? '#3ce42f' : '#ffb4ab';
+        return `<div style="background:rgba(255,255,255,0.03);border:1px solid ${bdr};padding:20px;min-width:220px;flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:18px;font-weight:700;color:#e5e2e1">${esc(t.symbol)}</span>
+            <span style="font-size:10px;font-weight:700;padding:2px 8px;background:${dir==='BUY'?'rgba(79,142,247,0.15)':'rgba(255,180,171,0.12)'};color:${dir==='BUY'?'#93c5fd':'#fca5a5'}">${dir}</span>
+          </div>
+          <div style="font-size:30px;font-weight:800;color:${clr};letter-spacing:-.02em;margin-bottom:4px">${pl>=0?'+':'−'}${usd(Math.abs(pl))}</div>
+          <div style="font-size:11px;color:#a8b4cc;margin-bottom:${t.tp?'4':'0'}px">${lots(t.sizing)}L · ${t.pips}p · Entry ${t.openPrice}</div>
+          ${t.tp ? `<div style="font-size:10px;color:#64748b">TP ${t.tp}${t.sl?' · SL '+t.sl:''}</div>` : ''}
+        </div>`;
+      }).join('')}</div>`
+    : `<div class="glass" style="padding:28px;text-align:center;color:#475569;font-size:13px;letter-spacing:.02em">NO OPEN POSITIONS</div>`;
+
+  // History
+  document.getElementById('hist-hdr').textContent = `Trade History (last ${trades.length})`;
+  document.getElementById('hist-body').innerHTML = trades.slice(0,50).map(t => {
+    const pl=n(t.profit), clr=pl>=0?'#3ce42f':'#ffb4ab';
+    return `<tr>
+      <td style="color:#64748b;font-family:monospace;font-size:11px">${(t.closeTime||'').split(' ')[0]}</td>
+      <td><b style="color:#f1f5f9;font-size:12px">${esc(t.symbol)}</b></td>
+      <td style="font-size:11px;font-weight:700;color:${t.action==='Buy'?'#93c5fd':'#fca5a5'}">${(t.action||'').toUpperCase()}</td>
+      <td style="font-family:monospace;font-size:11px;color:#a8b4cc">${lots(t.sizing)}L</td>
+      <td style="font-family:monospace;font-size:11px">${t.openPrice}</td>
+      <td style="font-family:monospace;font-size:11px">${t.closePrice}</td>
+      <td style="font-family:monospace;font-size:12px;font-weight:700;color:${clr}">${pl>=0?'+':'−'}${usd(Math.abs(pl))}</td>
+      <td style="font-family:monospace;font-size:11px;color:#a8b4cc">${t.pips}p</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="8" style="padding:24px;text-align:center;color:#475569">No closed trades yet</td></tr>';
+
+  // Show content
+  document.getElementById('loading-state').style.display = 'none';
+  document.getElementById('live-content').style.display  = 'block';
+}
+
+// ── Bootstrap ─────────────────────────────────────────────
+async function init() {
+  document.getElementById('loading-state').style.display = 'block';
+  document.getElementById('error-state').style.display   = 'none';
+  document.getElementById('live-content').style.display  = 'none';
+  try {
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    render(await res.json());
+  } catch (e) {
+    console.error('Data load failed:', e);
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('error-state').style.display   = 'block';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
