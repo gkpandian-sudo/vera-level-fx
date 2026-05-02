@@ -1,0 +1,23 @@
+{
+  "account": {
+    "id": "12027369",
+    "name": "Vera Level",
+    "balance": 0,
+    "equity": 0,
+    "gain": 0,
+    "absGain": 0,
+    "drawdown": 0,
+    "profit": 0,
+    "pips": 0,
+    "profitFactor": 0,
+    "trades": 0,
+    "winRate": 0,
+    "monthly": 0,
+    "daily": 0
+  },
+  "openTrades": [],
+  "openOrders": [],
+  "history": [],
+  "dailyGain": [],
+  "fetchedAt": "2026-05-02T06:00:00.000Z"
+}
