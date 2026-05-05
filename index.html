@@ -434,6 +434,39 @@ td{padding:8px 12px;font-size:12px}
       </div>
     </section>
 
+    <!-- IC Markets Live Prices Widget -->
+    <section style="margin-bottom:40px">
+      <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;margin-bottom:10px;border-left:2px solid #D4AF37;padding-left:10px">LIVE MARKET DATA</div>
+          <h2 style="font-size:24px;font-weight:700;color:#e5e2e1;margin-bottom:10px;line-height:1.2">Real-Time Forex Prices</h2>
+          <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:24px">Live pricing sourced directly from IC Markets — the same broker used for this portfolio. Verified, institutional-grade spreads.</p>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span id="ic-lbl-dark" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D4AF37">DARK</span>
+            <button onclick="toggleICWidget()" id="ic-toggle" style="position:relative;width:48px;height:24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;cursor:pointer;outline:none;transition:background .3s">
+              <span id="ic-knob" style="position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#D4AF37;transition:transform .3s;display:block"></span>
+            </button>
+            <span id="ic-lbl-light" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b">LIGHT</span>
+          </div>
+        </div>
+        <div style="flex-shrink:0;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);padding:4px;box-shadow:0 0 24px rgba(212,175,55,0.08)">
+          <iframe id="ic-dark" src="https://secure.icmarkets.com//Partner/Widget/PriceWidget/91936" width="273" frameborder="0" height="480"></iframe>
+          <iframe id="ic-light" src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" style="display:none"></iframe>
+        </div>
+      </div>
+    </section>
+    <script>
+    var _icDark = true;
+    function toggleICWidget() {
+      _icDark = !_icDark;
+      document.getElementById('ic-dark').style.display  = _icDark ? '' : 'none';
+      document.getElementById('ic-light').style.display = _icDark ? 'none' : '';
+      document.getElementById('ic-knob').style.transform = _icDark ? 'translateX(0)' : 'translateX(24px)';
+      document.getElementById('ic-lbl-dark').style.color  = _icDark ? '#D4AF37' : '#64748b';
+      document.getElementById('ic-lbl-light').style.color = _icDark ? '#64748b' : '#D4AF37';
+    }
+    </script>
+
     <!-- CTA -->
     <section style="margin-bottom:40px">
       <div class="glass-panel" style="padding:48px;text-align:center;position:relative;overflow:hidden">
