@@ -104,6 +104,7 @@ td{padding:8px 12px;font-size:12px}
       <a href="#positions"   style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Positions</a>
       <a href="#history"     style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">History</a>
       <a href="#partners"   style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Partners</a>
+      <a href="https://icmarkets.com/?camp=91936" target="_blank" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#D4AF37;color:#1c1b1b;padding:5px 12px;text-decoration:none;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">Open Account ↗</a>
     </div>
     <div style="display:flex;align-items:center;gap:16px">
       <div id="nav-updated" style="font-size:10px;font-family:monospace;color:#475569">Loading...</div>
@@ -434,24 +435,82 @@ td{padding:8px 12px;font-size:12px}
       </div>
     </section>
 
-    <!-- IC Markets Live Prices Widget -->
-    <section style="margin-bottom:40px">
-      <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center">
-        <div style="flex:1;min-width:240px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;margin-bottom:10px;border-left:2px solid #D4AF37;padding-left:10px">LIVE MARKET DATA</div>
-          <h2 style="font-size:24px;font-weight:700;color:#e5e2e1;margin-bottom:10px;line-height:1.2">Real-Time Forex Prices</h2>
-          <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:24px">Live pricing sourced directly from IC Markets — the same broker used for this portfolio. Verified, institutional-grade spreads.</p>
-          <div style="display:flex;align-items:center;gap:12px">
-            <span id="ic-lbl-dark" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D4AF37">DARK</span>
-            <button onclick="toggleICWidget()" id="ic-toggle" style="position:relative;width:48px;height:24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;cursor:pointer;outline:none;transition:background .3s">
-              <span id="ic-knob" style="position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#D4AF37;transition:transform .3s;display:block"></span>
-            </button>
-            <span id="ic-lbl-light" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b">LIGHT</span>
+    <!-- ── IC Markets IB Section ──────────────────────────────── -->
+    <section id="icmarkets" style="margin-bottom:40px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 55% 90% at 85% 50%,rgba(212,175,55,0.07) 0%,transparent 70%);pointer-events:none"></div>
+      <div style="border:1px solid rgba(212,175,55,0.25);background:rgba(212,175,55,0.02);padding:40px;position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#D4AF37 40%,#3ce42f 70%,transparent)"></div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+
+          <!-- Left: IB Marketing Copy -->
+          <div style="flex:1;min-width:260px">
+            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);padding:5px 14px;margin-bottom:20px">
+              <span class="material-symbols-outlined" style="font-size:14px;color:#D4AF37">verified</span>
+              <span style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#D4AF37">OFFICIAL INTRODUCING BROKER · IC MARKETS</span>
+            </div>
+            <h2 style="font-size:30px;font-weight:800;letter-spacing:-.02em;color:#e5e2e1;margin-bottom:10px;line-height:1.2">Trade with the World's <span style="color:#D4AF37">#1 Forex Broker</span></h2>
+            <p style="font-size:13px;color:#94a3b8;line-height:1.8;margin-bottom:24px">Open your IC Markets account through Vera Level FX and access the same institutional-grade infrastructure powering this live portfolio — raw spreads, ultra-fast execution, and deep liquidity.</p>
+
+            <!-- Stats grid -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px">
+              <div style="border-left:2px solid #D4AF37;padding-left:12px">
+                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Raw Spreads</div>
+                <div style="font-size:18px;font-weight:700;color:#e5e2e1">From 0.0 pips</div>
+              </div>
+              <div style="border-left:2px solid #3ce42f;padding-left:12px">
+                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Avg Execution</div>
+                <div style="font-size:18px;font-weight:700;color:#e5e2e1">~40ms</div>
+              </div>
+              <div style="border-left:2px solid #D4AF37;padding-left:12px">
+                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Regulation</div>
+                <div style="font-size:18px;font-weight:700;color:#e5e2e1">ASIC · CySEC · FSA</div>
+              </div>
+              <div style="border-left:2px solid #3ce42f;padding-left:12px">
+                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Min. Deposit</div>
+                <div style="font-size:18px;font-weight:700;color:#e5e2e1">$200 USD</div>
+              </div>
+            </div>
+
+            <!-- Checklist -->
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">Same broker verified by Myfxbook for this live portfolio</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">25+ liquidity providers — interbank-level depth</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">MT4, MT5 &amp; cTrader — all platforms supported</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">Segregated client funds — fully regulated &amp; insured</span></div>
+            </div>
+
+            <!-- CTAs -->
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:24px">
+              <a href="https://icmarkets.com/?camp=91936" target="_blank" style="background:#D4AF37;color:#1c1b1b;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 28px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 0 24px rgba(212,175,55,0.35);transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
+                <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>Open Account via IB
+              </a>
+              <a href="https://wa.me/919632233776" style="border:1px solid rgba(255,255,255,0.15);color:#e5e2e1;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 22px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                <span class="material-symbols-outlined" style="font-size:16px">chat</span>Ask the Analyst
+              </a>
+            </div>
+
+            <!-- Widget theme toggle -->
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.08em">Widget:</span>
+              <span id="ic-lbl-dark" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D4AF37">DARK</span>
+              <button onclick="toggleICWidget()" style="position:relative;width:40px;height:20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;cursor:pointer;outline:none">
+                <span id="ic-knob" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#D4AF37;transition:transform .3s;display:block"></span>
+              </button>
+              <span id="ic-lbl-light" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b">LIGHT</span>
+            </div>
           </div>
-        </div>
-        <div style="flex-shrink:0;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);padding:4px;box-shadow:0 0 24px rgba(212,175,55,0.08)">
-          <iframe id="ic-dark" src="https://secure.icmarkets.com//Partner/Widget/PriceWidget/91936" width="273" frameborder="0" height="480"></iframe>
-          <iframe id="ic-light" src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" style="display:none"></iframe>
+
+          <!-- Right: Live Price Widget -->
+          <div style="flex-shrink:0">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px;text-align:center">LIVE MARKET PRICES</div>
+            <div style="border:1px solid rgba(212,175,55,0.25);padding:4px;box-shadow:0 0 40px rgba(212,175,55,0.15)">
+              <iframe id="ic-dark" src="https://secure.icmarkets.com//Partner/Widget/PriceWidget/91936" width="273" frameborder="0" height="480"></iframe>
+              <iframe id="ic-light" src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" style="display:none"></iframe>
+            </div>
+            <div style="margin-top:8px;text-align:center;font-size:10px;color:#334155;font-family:monospace">Powered by IC Markets · IB #91936</div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -485,9 +544,43 @@ td{padding:8px 12px;font-size:12px}
     <!-- Investment Partners & Referrals -->
     <section id="partners" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:6px">Investment Partners &amp; Referrals</h2>
-        <p style="font-size:14px;color:#64748b">Trusted platforms recommended by Pandian Gurumurthy K. Use referral links below for exclusive bonuses.</p>
+        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:6px">Broker Partners &amp; Referrals</h2>
+        <p style="font-size:14px;color:#64748b">Open accounts through Vera Level FX for exclusive access. IC Markets is our primary IB partner — the same broker used for this live portfolio.</p>
       </div>
+
+      <!-- IC Markets Featured IB Card -->
+      <div style="margin-bottom:16px;border:1px solid rgba(212,175,55,0.3);background:linear-gradient(135deg,rgba(212,175,55,0.04) 0%,rgba(60,228,47,0.02) 100%);padding:28px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#D4AF37,#3ce42f,#D4AF37)"></div>
+        <div style="position:absolute;top:12px;right:16px">
+          <span style="background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.4);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#D4AF37;padding:4px 10px">★ FEATURED IB PARTNER</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+          <div style="flex:1;min-width:220px">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <div style="width:48px;height:48px;background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#D4AF37">IC</div>
+              <div>
+                <div style="font-size:18px;font-weight:700;color:#e5e2e1">IC Markets</div>
+                <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;letter-spacing:.08em">World's #1 Forex Broker · Vera Level FX IB</div>
+              </div>
+            </div>
+            <p style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:16px">The exact broker used in this live portfolio. Raw ECN spreads from 0.0 pips, 25+ liquidity providers, regulated under ASIC &amp; CySEC. Opening through this IB link connects you to the same infrastructure.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+              <span style="background:rgba(60,228,47,0.1);color:#3ce42f;font-size:10px;font-weight:700;padding:4px 10px">0.0 pip spreads</span>
+              <span style="background:rgba(212,175,55,0.1);color:#D4AF37;font-size:10px;font-weight:700;padding:4px 10px">ASIC regulated</span>
+              <span style="background:rgba(60,228,47,0.1);color:#3ce42f;font-size:10px;font-weight:700;padding:4px 10px">MT4 · MT5 · cTrader</span>
+              <span style="background:rgba(212,175,55,0.1);color:#D4AF37;font-size:10px;font-weight:700;padding:4px 10px">~40ms execution</span>
+            </div>
+            <a href="https://icmarkets.com/?camp=91936" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#D4AF37;color:#1c1b1b;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:12px 24px;text-decoration:none;box-shadow:0 0 20px rgba(212,175,55,0.3);transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
+              <span class="material-symbols-outlined" style="font-size:15px">open_in_new</span>Open IC Markets Account via IB ↗
+            </a>
+          </div>
+          <!-- Mini widget preview -->
+          <div style="flex-shrink:0;border:1px solid rgba(212,175,55,0.2);padding:3px;box-shadow:0 0 24px rgba(212,175,55,0.1)">
+            <iframe src="https://secure.icmarkets.com//Partner/Widget/PriceWidget/91936" width="273" frameborder="0" height="260" style="display:block"></iframe>
+          </div>
+        </div>
+      </div>
+
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
 
         <!-- IG Broker -->
