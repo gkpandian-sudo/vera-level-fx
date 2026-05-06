@@ -30,7 +30,11 @@
     "invitationUrl": "",
     "server": {
       "name": "IC Markets"
-    }
+    },
+    "trades": 370,
+    "winRate": 75,
+    "avgWin": 14.76,
+    "avgLoss": 28.95
   },
   "openTrades": [
     {
@@ -1028,5 +1032,5 @@
       35.33
     ]
   ],
-  "fetchedAt": "2026-05-06T13:56:32.295Z"
+  "fetchedAt": "2026-05-06T14:11:40.740Z"
 }
