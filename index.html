@@ -7,33 +7,34 @@
 <meta name="description" content="Live institutional-grade forex portfolio performance. IC Markets verified via Myfxbook. Real-time balance, equity curve, drawdown, and trade history.">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
 tailwind.config = {
   darkMode:"class",
   theme:{extend:{
     colors:{
-      "secondary":"#3ce42f","primary":"#f2ca50","primary-container":"#d4af37",
-      "error":"#ffb4ab","background":"#131313","surface":"#131313",
-      "on-surface":"#e5e2e1","on-background":"#e5e2e1","on-primary":"#3c2f00",
-      "on-primary-container":"#554300","secondary-fixed":"#77ff62",
-      "secondary-container":"#00c705","on-secondary":"#003a00",
-      "surface-container":"#201f1f","surface-container-low":"#1c1b1b",
-      "surface-container-high":"#2a2a2a","surface-container-lowest":"#0e0e0e",
-      "surface-container-highest":"#353534","surface-bright":"#393939",
-      "surface-dim":"#131313","outline":"#99907c","outline-variant":"#4d4635",
-      "on-surface-variant":"#d0c5af","inverse-surface":"#e5e2e1",
-      "inverse-on-surface":"#313030","inverse-primary":"#735c00",
-      "tertiary":"#ffbfb6","tertiary-fixed":"#ffdad5","tertiary-fixed-dim":"#ffb4aa",
-      "tertiary-container":"#ff9688","on-tertiary":"#690003",
-      "error-container":"#93000a","on-error":"#690005",
-      "on-error-container":"#ffdad6","surface-tint":"#e9c349",
-      "primary-fixed":"#ffe088","primary-fixed-dim":"#e9c349",
-      "on-primary-fixed":"#241a00","on-primary-fixed-variant":"#574500",
-      "secondary-fixed-dim":"#3ce42f","on-secondary-fixed":"#002200",
-      "on-secondary-fixed-variant":"#005300","on-secondary-container":"#004b00",
-      "on-tertiary-container":"#900005","on-tertiary-fixed":"#410001",
-      "on-tertiary-fixed-variant":"#930005","surface-variant":"#353534"
+      "secondary":"#10B981","primary":"#EAC84A","primary-container":"#D4AF37",
+      "error":"#FCA5A5","background":"#08070F","surface":"#0D0B18",
+      "on-surface":"#F0E8D0","on-background":"#F0E8D0","on-primary":"#0E0B18",
+      "on-primary-container":"#2A2000","secondary-fixed":"#6EE7B7",
+      "secondary-container":"#059669","on-secondary":"#022C22",
+      "surface-container":"#120F1C","surface-container-low":"#0E0B18",
+      "surface-container-high":"#1A1728","surface-container-lowest":"#060408",
+      "surface-container-highest":"#231E30","surface-bright":"#2A2538",
+      "surface-dim":"#08070F","outline":"#8B7355","outline-variant":"#3D3222",
+      "on-surface-variant":"#C4B094","inverse-surface":"#F0E8D0",
+      "inverse-on-surface":"#2A2538","inverse-primary":"#735c00",
+      "tertiary":"#C4B5FD","tertiary-fixed":"#DDD6FE","tertiary-fixed-dim":"#A78BFA",
+      "tertiary-container":"#7C3AED","on-tertiary":"#2E1065",
+      "error-container":"#7F1D1D","on-error":"#450A0A",
+      "on-error-container":"#FEE2E2","surface-tint":"#EAC84A",
+      "primary-fixed":"#FDE68A","primary-fixed-dim":"#EAC84A",
+      "on-primary-fixed":"#1C1500","on-primary-fixed-variant":"#3D2E00",
+      "secondary-fixed-dim":"#10B981","on-secondary-fixed":"#022C22",
+      "on-secondary-fixed-variant":"#064E3B","on-secondary-container":"#022C22",
+      "on-tertiary-container":"#EDE9FE","on-tertiary-fixed":"#1E1B4B",
+      "on-tertiary-fixed-variant":"#4C1D95","surface-variant":"#231E30"
     },
     fontFamily:{
       "body-lg":["Inter"],"headline-md":["Inter"],"display-xl":["Inter"],
@@ -57,70 +58,96 @@ tailwind.config = {
 }
 </script>
 <style>
+/* ── Royal Luxury Theme ─────────────────────────────────────── */
+:root{
+  --gold:        #D4AF37;
+  --gold-bright: #EAC84A;
+  --gold-dim:    rgba(212,175,55,0.18);
+  --emerald:     #10B981;
+  --amber:       #F59E0B;
+  --bg-deep:     #08070F;
+  --bg-surface:  #0D0B18;
+  --text:        #F0E8D0;
+  --text-muted:  #B09870;
+  --text-dim:    #7A6B52;
+  --text-faint:  #4A3F30;
+  --royal-glow:  rgba(109,40,217,0.08);
+  --gold-glass:  rgba(212,175,55,0.04);
+  --gold-border: rgba(212,175,55,0.14);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#121212;color:#e5e2e1;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.glass-panel{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08)}
-.gold-glow{box-shadow:0 0 24px rgba(212,175,55,0.15)}
+body{background:#08070F;color:#F0E8D0;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.glass-panel{background:rgba(212,175,55,0.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.14)}
+.gold-glow{box-shadow:0 0 40px rgba(212,175,55,0.18),0 0 80px rgba(212,175,55,0.06)}
 .ticker-wrap{overflow:hidden;white-space:nowrap}
 .ticker-inner{display:inline-flex;align-items:center;animation:ticker 35s linear infinite}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.shimmer{background:linear-gradient(90deg,rgba(255,255,255,.03) 25%,rgba(255,255,255,.06) 50%,rgba(255,255,255,.03) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.shimmer{background:linear-gradient(90deg,rgba(212,175,55,.025) 25%,rgba(212,175,55,.07) 50%,rgba(212,175,55,.025) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.hero-bg{background:radial-gradient(ellipse 100% 55% at 50% 0%,rgba(212,175,55,0.07) 0%,transparent 70%),radial-gradient(ellipse 50% 35% at 88% 45%,rgba(60,228,47,0.04) 0%,transparent 60%),#121212}
+.hero-bg{
+  background:
+    radial-gradient(ellipse 110% 60% at 50% 0%,  rgba(212,175,55,0.11) 0%,transparent 65%),
+    radial-gradient(ellipse 60%  45% at 85% 50%, rgba(109,40,217,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50%  35% at 12% 75%, rgba(212,175,55,0.05) 0%,transparent 55%),
+    radial-gradient(ellipse 80%  80% at 50% 50%, rgba(91,33,182,0.04)  0%,transparent 70%),
+    #08070F
+}
 .hero-card{position:relative;overflow:hidden;padding:28px}
 .hero-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px}
 .hc-gold::after{background:linear-gradient(90deg,transparent,#D4AF37 50%,transparent)}
-.hc-green::after{background:linear-gradient(90deg,transparent,#3ce42f 50%,transparent)}
-.hc-amber::after{background:linear-gradient(90deg,transparent,#f59e0b 50%,transparent)}
-.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#a8b4cc;border-left:2px solid #D4AF37;padding-left:10px;margin-bottom:16px}
-.strategy-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);padding:32px;position:relative;overflow:hidden;transition:border-color .3s}
-.strategy-card:hover{border-color:rgba(212,175,55,0.4)}
-.badge{display:inline-block;padding:3px 10px;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.2);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37}
-.risk-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:2px solid rgba(212,175,55,0.5);padding:24px}
-.pair-row{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05)}
+.hc-green::after{background:linear-gradient(90deg,transparent,#10B981 50%,transparent)}
+.hc-amber::after{background:linear-gradient(90deg,transparent,#F59E0B 50%,transparent)}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#7A6B52;border-left:2px solid #D4AF37;padding-left:10px;margin-bottom:16px}
+.strategy-card{background:rgba(212,175,55,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.14);padding:32px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.strategy-card:hover{border-color:rgba(212,175,55,0.40);box-shadow:0 0 32px rgba(212,175,55,0.06)}
+.badge{display:inline-block;padding:3px 10px;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.28);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37}
+.risk-card{background:rgba(212,175,55,0.03);border:1px solid rgba(212,175,55,0.12);border-left:2px solid rgba(212,175,55,0.55);padding:24px}
+.pair-row{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(212,175,55,0.03);border:1px solid rgba(212,175,55,0.09)}
 .alloc-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.alloc-bar-track{flex:1;height:6px;background:rgba(255,255,255,0.05);overflow:hidden}
+.alloc-bar-track{flex:1;height:6px;background:rgba(212,175,55,0.08);overflow:hidden}
 .alloc-bar-fill{height:100%;transition:width .8s ease}
 table{width:100%;border-collapse:collapse}
-thead th{padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#64748b;text-align:left;background:rgba(255,255,255,0.03);white-space:nowrap}
-tbody tr{border-top:1px solid rgba(255,255,255,0.05);transition:background .1s}
-tbody tr:hover{background:rgba(212,175,55,0.03)}
-td{padding:8px 12px;font-size:12px}
+thead th{padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#5C4F3A;text-align:left;background:rgba(212,175,55,0.04);white-space:nowrap}
+tbody tr{border-top:1px solid rgba(212,175,55,0.08);transition:background .1s}
+tbody tr:hover{background:rgba(212,175,55,0.05)}
+td{padding:8px 12px;font-size:12px;color:#D0C4A8}
 .matrix-cell{padding:10px 8px;text-align:center;font-size:11px;font-family:monospace}
+/* Royal brand font */
+.brand-name{font-family:'Cinzel',serif;letter-spacing:.12em}
 @media(max-width:768px){.hero-grid{grid-template-columns:1fr!important}.charts-grid{grid-template-columns:1fr!important}.metrics-grid{grid-template-columns:repeat(2,1fr)!important}.strat-grid{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
 
 <!-- ── Nav ──────────────────────────────────────────────────── -->
-<nav style="position:fixed;top:0;width:100%;z-index:50;background:rgba(18,18,18,0.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.07)">
+<nav style="position:fixed;top:0;width:100%;z-index:50;background:rgba(8,7,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,0.12)">
   <div style="max-width:1400px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between">
-    <div style="font-size:18px;font-weight:800;letter-spacing:.05em;color:#D4AF37;text-transform:uppercase">
-      VERA LEVEL <span style="color:#e5e2e1;font-weight:400">FX</span>
+    <div style="font-family:'Cinzel',serif;font-size:17px;font-weight:700;letter-spacing:.14em;color:#D4AF37;text-transform:uppercase">
+      VERA LEVEL <span style="color:#F0E8D0;font-weight:400;letter-spacing:.08em">FX</span>
     </div>
     <div style="display:flex;gap:28px" class="hidden md:flex">
       <a href="#performance" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;border-bottom:1px solid #D4AF37;padding-bottom:2px">Performance</a>
-      <a href="#strategy"    style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Strategy</a>
-      <a href="#positions"   style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Positions</a>
-      <a href="#history"     style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">History</a>
-      <a href="#manager"    style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Manager</a>
-      <a href="#factsheet"  style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Factsheet</a>
-      <a href="#guide"      style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Guide</a>
-      <a href="#partners"   style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Partners</a>
-      <a href="#disclosures" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Disclosures</a>
-      <a href="https://icmarkets.com/?camp=91936" target="_blank" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#D4AF37;color:#1c1b1b;padding:5px 12px;text-decoration:none;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">Open Account ↗</a>
+      <a href="#strategy"    style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Strategy</a>
+      <a href="#positions"   style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Positions</a>
+      <a href="#history"     style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">History</a>
+      <a href="#manager"    style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Manager</a>
+      <a href="#factsheet"  style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Factsheet</a>
+      <a href="#guide"      style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Guide</a>
+      <a href="#partners"   style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Partners</a>
+      <a href="#disclosures" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;transition:color .2s" onmouseover="this.style.color='#e5e2e1'" onmouseout="this.style.color='#64748b'">Disclosures</a>
+      <a href="https://icmarkets.com/?camp=91936" target="_blank" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:#D4AF37;color:#0E0B18;padding:5px 12px;text-decoration:none;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">Open Account ↗</a>
     </div>
     <div style="display:flex;align-items:center;gap:16px">
-      <div id="nav-updated" style="font-size:10px;font-family:monospace;color:#475569">Loading...</div>
-      <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="background:#D4AF37;color:#1c1b1b;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;text-decoration:none;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">Myfxbook ↗</a>
+      <div id="nav-updated" style="font-size:10px;font-family:monospace;color:#5C4F3A">Loading...</div>
+      <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="background:#D4AF37;color:#0E0B18;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;text-decoration:none;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">Myfxbook ↗</a>
     </div>
   </div>
 </nav>
 
 <!-- ── Ticker ────────────────────────────────────────────────── -->
-<div style="margin-top:64px;background:#0e0e0e;border-bottom:1px solid rgba(255,255,255,0.05);padding:7px 0" class="ticker-wrap">
+<div style="margin-top:64px;background:#060408;border-bottom:1px solid rgba(212,175,55,0.10);padding:7px 0" class="ticker-wrap">
   <div id="ticker-content" class="ticker-inner" style="font-size:11px;font-weight:600;letter-spacing:.05em;gap:0">
-    <span style="margin-right:48px;color:#64748b">Loading pairs...</span>
+    <span style="margin-right:48px;color:#7A6B52">Loading pairs...</span>
   </div>
 </div>
 
@@ -141,8 +168,8 @@ td{padding:8px 12px;font-size:12px}
   <div id="error-state" style="display:none;text-align:center;padding:80px 0">
     <div style="font-size:36px;margin-bottom:16px">⚠</div>
     <div style="font-size:18px;font-weight:600;margin-bottom:8px">Unable to load live data</div>
-    <div style="font-size:13px;color:#64748b;margin-bottom:24px">Check connection or try again shortly.</div>
-    <button onclick="init()" style="background:#D4AF37;color:#1c1b1b;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 28px;border:none;cursor:pointer">Retry</button>
+    <div style="font-size:13px;color:#7A6B52;margin-bottom:24px">Check connection or try again shortly.</div>
+    <button onclick="init()" style="background:#D4AF37;color:#0E0B18;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 28px;border:none;cursor:pointer">Retry</button>
   </div>
 
   <!-- ── Live Content ──────────────────────────────────────── -->
@@ -154,32 +181,32 @@ td{padding:8px 12px;font-size:12px}
         <div style="margin-bottom:16px">
           <span class="badge">LIVE PERFORMANCE · IC MARKETS · MYFXBOOK VERIFIED</span>
         </div>
-        <h1 style="font-size:48px;font-weight:800;letter-spacing:-.025em;line-height:1.05;margin-bottom:6px">Vera Level FX Portfolio</h1>
-        <p style="font-size:17px;color:#D4AF37;opacity:.8;margin-bottom:40px;font-weight:500">Professional Forex Portfolio Management · Verified on IC Markets · Myfxbook Audited</p>
+        <h1 style="font-family:'Cinzel',serif;font-size:44px;font-weight:700;letter-spacing:.02em;line-height:1.1;margin-bottom:8px;background:linear-gradient(135deg,#EAC84A 0%,#D4AF37 45%,#C49A22 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Vera Level FX</h1>
+        <p style="font-size:16px;color:#B09870;margin-bottom:40px;font-weight:400;letter-spacing:.04em;text-transform:uppercase">Professional Forex Portfolio · Verified on IC Markets · Myfxbook Audited</p>
 
         <div class="hero-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
           <div class="glass-panel hero-card hc-gold gold-glow">
             <span class="material-symbols-outlined" style="position:absolute;top:12px;right:14px;font-size:64px;opacity:.05;color:#D4AF37">account_balance_wallet</span>
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Account Balance</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:10px">Account Balance</div>
             <div id="h-balance" style="font-size:44px;font-weight:800;letter-spacing:-.03em;color:#D4AF37;line-height:1">—</div>
-            <div id="h-equity"  style="font-size:12px;color:#a8b4cc;margin-top:10px">—</div>
+            <div id="h-equity"  style="font-size:12px;color:#B09870;margin-top:10px">—</div>
           </div>
           <div class="glass-panel hero-card hc-green">
-            <span class="material-symbols-outlined" style="position:absolute;top:12px;right:14px;font-size:64px;opacity:.05;color:#3ce42f">trending_up</span>
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Total Gain</div>
+            <span class="material-symbols-outlined" style="position:absolute;top:12px;right:14px;font-size:64px;opacity:.05;color:#10B981">trending_up</span>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:10px">Total Gain</div>
             <div id="h-gain"   style="font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1">—</div>
-            <div id="h-profit" style="font-size:12px;color:#a8b4cc;margin-top:10px">—</div>
+            <div id="h-profit" style="font-size:12px;color:#B09870;margin-top:10px">—</div>
           </div>
           <div class="glass-panel hero-card hc-amber">
             <span class="material-symbols-outlined" style="position:absolute;top:12px;right:14px;font-size:64px;opacity:.05;color:#f59e0b">show_chart</span>
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Max Drawdown</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:10px">Max Drawdown</div>
             <div id="h-dd"     style="font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1">—</div>
-            <div id="h-dd-sub" style="font-size:12px;color:#a8b4cc;margin-top:10px">—</div>
+            <div id="h-dd-sub" style="font-size:12px;color:#B09870;margin-top:10px">—</div>
           </div>
         </div>
 
         <!-- Trust badges -->
-        <div style="display:flex;flex-wrap:wrap;gap:24px;color:#475569;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
+        <div style="display:flex;flex-wrap:wrap;gap:24px;color:#5C4F3A;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">
           <div style="display:flex;align-items:center;gap:6px"><span class="material-symbols-outlined" style="font-size:14px;color:#D4AF37">verified_user</span>MYFXBOOK VERIFIED</div>
           <div style="display:flex;align-items:center;gap:6px"><span class="material-symbols-outlined" style="font-size:14px;color:#D4AF37">shield</span>IC MARKETS BROKER</div>
           <div style="display:flex;align-items:center;gap:6px"><span class="material-symbols-outlined" style="font-size:14px;color:#D4AF37">query_stats</span>ALGO EXECUTION</div>
@@ -190,25 +217,25 @@ td{padding:8px 12px;font-size:12px}
 
     <!-- Metrics strip -->
     <div class="metrics-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:32px;margin-bottom:32px">
-      <div class="glass-panel" style="padding:20px 22px;border-top:2px solid #3ce42f">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Monthly Return</div>
+      <div class="glass-panel" style="padding:20px 22px;border-top:2px solid #10B981">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:8px">Monthly Return</div>
         <div id="m-monthly" style="font-size:30px;font-weight:800;letter-spacing:-.02em">—</div>
-        <div style="font-size:10px;color:#64748b;margin-top:4px">30-day rolling avg</div>
+        <div style="font-size:10px;color:#7A6B52;margin-top:4px">30-day rolling avg</div>
       </div>
       <div class="glass-panel" style="padding:20px 22px;border-top:2px solid #D4AF37">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Profit Factor</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:8px">Profit Factor</div>
         <div id="m-pf" style="font-size:30px;font-weight:800;letter-spacing:-.02em">—</div>
-        <div id="m-pf-sub" style="font-size:10px;color:#64748b;margin-top:4px">—</div>
+        <div id="m-pf-sub" style="font-size:10px;color:#7A6B52;margin-top:4px">—</div>
       </div>
       <div class="glass-panel" style="padding:20px 22px;border-top:2px solid rgba(255,255,255,0.15)">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Win Rate</div>
-        <div id="m-wr" style="font-size:30px;font-weight:800;letter-spacing:-.02em;color:#e5e2e1">—</div>
-        <div id="m-wr-sub" style="font-size:10px;color:#64748b;margin-top:4px">—</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:8px">Win Rate</div>
+        <div id="m-wr" style="font-size:30px;font-weight:800;letter-spacing:-.02em;color:#F0E8D0">—</div>
+        <div id="m-wr-sub" style="font-size:10px;color:#7A6B52;margin-top:4px">—</div>
       </div>
       <div class="glass-panel" style="padding:20px 22px;border-top:2px solid #D4AF37">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Total Pips</div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:8px">Total Pips</div>
         <div id="m-pips" style="font-size:30px;font-weight:800;letter-spacing:-.02em;color:#D4AF37">—</div>
-        <div style="font-size:10px;color:#64748b;margin-top:4px">Cumulative earned</div>
+        <div style="font-size:10px;color:#7A6B52;margin-top:4px">Cumulative earned</div>
       </div>
     </div>
 
@@ -217,26 +244,26 @@ td{padding:8px 12px;font-size:12px}
       <div class="glass-panel" style="padding:24px">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
           <div>
-            <div style="font-size:14px;font-weight:600;color:#e5e2e1">Cumulative Gain %</div>
-            <div id="equity-sub" style="font-size:11px;color:#64748b;margin-top:2px">Equity trajectory</div>
+            <div style="font-size:14px;font-weight:600;color:#F0E8D0">Cumulative Gain %</div>
+            <div id="equity-sub" style="font-size:11px;color:#7A6B52;margin-top:2px">Equity trajectory</div>
           </div>
           <span class="badge" style="font-size:9px">ALL TIME</span>
         </div>
         <svg id="equity-svg" viewBox="0 0 800 200" style="width:100%;height:200px;overflow:visible"></svg>
-        <div style="display:flex;justify-content:space-between;font-size:9px;font-family:monospace;color:#475569;margin-top:6px">
+        <div style="display:flex;justify-content:space-between;font-size:9px;font-family:monospace;color:#5C4F3A;margin-top:6px">
           <span id="chart-from">—</span>
           <span id="chart-gain" style="color:#D4AF37;font-weight:700">—</span>
           <span id="chart-to">—</span>
         </div>
       </div>
       <div class="glass-panel" style="padding:24px">
-        <div style="font-size:14px;font-weight:600;color:#e5e2e1;margin-bottom:4px">Monthly P&amp;L</div>
-        <div style="font-size:11px;color:#64748b;margin-bottom:20px">By closed trades</div>
+        <div style="font-size:14px;font-weight:600;color:#F0E8D0;margin-bottom:4px">Monthly P&amp;L</div>
+        <div style="font-size:11px;color:#7A6B52;margin-bottom:20px">By closed trades</div>
         <div id="monthly-bars" style="display:flex;flex-direction:column;gap:10px">
-          <div style="color:#475569;font-size:12px;text-align:center;padding:20px 0">Loading...</div>
+          <div style="color:#5C4F3A;font-size:12px;text-align:center;padding:20px 0">Loading...</div>
         </div>
-        <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;font-size:10px">
-          <span style="color:#64748b;font-weight:700;letter-spacing:.06em;text-transform:uppercase">Avg Monthly</span>
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(212,175,55,0.10);display:flex;justify-content:space-between;font-size:10px">
+          <span style="color:#7A6B52;font-weight:700;letter-spacing:.06em;text-transform:uppercase">Avg Monthly</span>
           <span id="m-avg-monthly" style="color:#D4AF37;font-family:monospace">—</span>
         </div>
       </div>
@@ -244,9 +271,9 @@ td{padding:8px 12px;font-size:12px}
 
     <!-- Consistency Matrix -->
     <div class="glass-panel" style="margin-bottom:32px;overflow:hidden">
-      <div style="padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02)">
-        <div style="font-size:14px;font-weight:600;color:#e5e2e1">Consistency Matrix</div>
-        <div style="font-size:11px;color:#64748b;margin-top:2px">Monthly P&amp;L breakdown by year</div>
+      <div style="padding:20px 24px;border-bottom:1px solid rgba(212,175,55,0.10);background:rgba(212,175,55,0.03)">
+        <div style="font-size:14px;font-weight:600;color:#F0E8D0">Consistency Matrix</div>
+        <div style="font-size:11px;color:#7A6B52;margin-top:2px">Monthly P&amp;L breakdown by year</div>
       </div>
       <div style="overflow-x:auto">
         <table style="font-family:monospace">
@@ -271,13 +298,13 @@ td{padding:8px 12px;font-size:12px}
         <div style="width:160px;height:160px;position:relative;margin-bottom:20px">
           <div id="wr-donut" style="width:100%;height:100%"></div>
           <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-            <div id="wr-pct" style="font-size:32px;font-weight:800;letter-spacing:-.02em;color:#e5e2e1">—</div>
-            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b">WIN RATE</div>
+            <div id="wr-pct" style="font-size:32px;font-weight:800;letter-spacing:-.02em;color:#F0E8D0">—</div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52">WIN RATE</div>
           </div>
         </div>
         <div style="text-align:center">
-          <div style="font-size:14px;font-weight:600;color:#e5e2e1;margin-bottom:4px">Trend-Following Alpha</div>
-          <div id="wr-label" style="font-size:11px;color:#64748b">Optimised for high-volatility sessions</div>
+          <div style="font-size:14px;font-weight:600;color:#F0E8D0;margin-bottom:4px">Trend-Following Alpha</div>
+          <div id="wr-label" style="font-size:11px;color:#7A6B52">Optimised for high-volatility sessions</div>
         </div>
       </div>
       <div class="glass-panel" style="padding:32px;background:linear-gradient(135deg,rgba(212,175,55,0.04) 0%,rgba(60,228,47,0.02) 100%);position:relative;overflow:hidden">
@@ -286,16 +313,16 @@ td{padding:8px 12px;font-size:12px}
         </div>
         <div style="position:relative">
           <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;margin-bottom:8px">LIVE MARKET INSIGHT</div>
-          <div style="font-size:24px;font-weight:700;color:#e5e2e1;margin-bottom:16px;line-height:1.2">Real-Time Risk Engine</div>
+          <div style="font-size:24px;font-weight:700;color:#F0E8D0;margin-bottom:16px;line-height:1.2">Real-Time Risk Engine</div>
           <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:24px">Proprietary algorithmic systems analysing order flow imbalances and cross-asset correlations for systematic precision entries with hard-stop protection.</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
             <div style="border-left:2px solid #D4AF37;padding-left:12px">
-              <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em">Avg Trade Duration</div>
-              <div style="font-size:20px;font-weight:700;color:#e5e2e1;margin-top:2px">14 min</div>
+              <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em">Avg Trade Duration</div>
+              <div style="font-size:20px;font-weight:700;color:#F0E8D0;margin-top:2px">14 min</div>
             </div>
             <div style="border-left:2px solid #3ce42f;padding-left:12px">
-              <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em">System Uptime</div>
-              <div style="font-size:20px;font-weight:700;color:#e5e2e1;margin-top:2px">99.9%</div>
+              <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em">System Uptime</div>
+              <div style="font-size:20px;font-weight:700;color:#F0E8D0;margin-top:2px">99.9%</div>
             </div>
           </div>
         </div>
@@ -311,28 +338,28 @@ td{padding:8px 12px;font-size:12px}
     <!-- Strategy & Risk -->
     <section id="strategy" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:6px">Portfolio Strategy &amp; Risk Management</h2>
-        <p style="font-size:14px;color:#64748b">Institutional-grade execution frameworks engineered for capital preservation and systematic alpha generation.</p>
+        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Portfolio Strategy &amp; Risk Management</h2>
+        <p style="font-size:14px;color:#7A6B52">Institutional-grade execution frameworks engineered for capital preservation and systematic alpha generation.</p>
       </div>
 
       <div class="strat-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
         <div class="strategy-card">
           <span class="material-symbols-outlined" style="position:absolute;top:16px;right:16px;font-size:60px;opacity:.08;color:#D4AF37;font-variation-settings:'FILL' 1">query_stats</span>
           <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;display:block;margin-bottom:12px">ACTIVE EXECUTION</span>
-          <h3 style="font-size:20px;font-weight:700;color:#e5e2e1;margin-bottom:10px">Intraday FX</h3>
+          <h3 style="font-size:20px;font-weight:700;color:#F0E8D0;margin-bottom:10px">Intraday FX</h3>
           <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:20px">High-frequency mean reversion and momentum strategies focusing on G10 currency pairs during peak liquidity sessions for maximum edge capture.</p>
           <div style="display:flex;gap:8px">
-            <span style="background:rgba(60,228,47,0.1);color:#3ce42f;padding:4px 10px;font-size:11px;font-weight:600">Sharpe 2.1</span>
+            <span style="background:rgba(60,228,47,0.1);color:#10B981;padding:4px 10px;font-size:11px;font-weight:600">Sharpe 2.1</span>
             <span style="background:rgba(212,175,55,0.1);color:#D4AF37;padding:4px 10px;font-size:11px;font-weight:600">Volatility 8.4%</span>
           </div>
         </div>
         <div class="strategy-card">
           <span class="material-symbols-outlined" style="position:absolute;top:16px;right:16px;font-size:60px;opacity:.08;color:#D4AF37;font-variation-settings:'FILL' 1">terminal</span>
           <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;display:block;margin-bottom:12px">QUANTITATIVE</span>
-          <h3 style="font-size:20px;font-weight:700;color:#e5e2e1;margin-bottom:10px">Algo Trading</h3>
+          <h3 style="font-size:20px;font-weight:700;color:#F0E8D0;margin-bottom:10px">Algo Trading</h3>
           <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:20px">Proprietary neural network logic analysing order flow imbalances and cross-asset correlations for systematic high-conviction entries.</p>
           <div style="display:flex;gap:8px">
-            <span style="background:rgba(60,228,47,0.1);color:#3ce42f;padding:4px 10px;font-size:11px;font-weight:600">99.9% Uptime</span>
+            <span style="background:rgba(60,228,47,0.1);color:#10B981;padding:4px 10px;font-size:11px;font-weight:600">99.9% Uptime</span>
             <span style="background:rgba(212,175,55,0.1);color:#D4AF37;padding:4px 10px;font-size:11px;font-weight:600">Avg 14 min</span>
           </div>
         </div>
@@ -341,35 +368,35 @@ td{padding:8px 12px;font-size:12px}
       <!-- Risk Mitigation wide card -->
       <div class="strategy-card" style="display:flex;flex-wrap:wrap;gap:32px;align-items:center;margin-bottom:32px">
         <div style="flex:1;min-width:280px">
-          <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffb4ab;display:block;margin-bottom:12px">DEFENSIVE PROTOCOL</span>
-          <h3 style="font-size:20px;font-weight:700;color:#e5e2e1;margin-bottom:10px">Risk Mitigation</h3>
+          <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FCA5A5;display:block;margin-bottom:12px">DEFENSIVE PROTOCOL</span>
+          <h3 style="font-size:20px;font-weight:700;color:#F0E8D0;margin-bottom:10px">Risk Mitigation</h3>
           <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:20px">Layered protection via dynamic position sizing and correlated hedge logic to ensure capital preservation during tail-risk events. Drawdown limits enforced automatically.</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div style="border-left:2px solid #D4AF37;padding-left:12px">
-              <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em">Max Drawdown</div>
-              <div id="risk-dd" style="font-size:22px;font-weight:700;color:#e5e2e1;margin-top:2px">—</div>
+              <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em">Max Drawdown</div>
+              <div id="risk-dd" style="font-size:22px;font-weight:700;color:#F0E8D0;margin-top:2px">—</div>
             </div>
             <div style="border-left:2px solid #3ce42f;padding-left:12px">
-              <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em">Profit Factor</div>
-              <div id="risk-pf" style="font-size:22px;font-weight:700;color:#e5e2e1;margin-top:2px">—</div>
+              <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em">Profit Factor</div>
+              <div id="risk-pf" style="font-size:22px;font-weight:700;color:#F0E8D0;margin-top:2px">—</div>
             </div>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;flex:1;min-width:280px">
           <div class="risk-card">
             <span class="material-symbols-outlined" style="color:#D4AF37;font-size:20px;margin-bottom:10px;display:block">timer_off</span>
-            <div style="font-size:13px;font-weight:600;color:#e5e2e1;margin-bottom:6px">Daily Loss Limit</div>
-            <p style="font-size:11px;color:#64748b;line-height:1.6">Auto lockout at 1.5% drawdown within 24 hours.</p>
+            <div style="font-size:13px;font-weight:600;color:#F0E8D0;margin-bottom:6px">Daily Loss Limit</div>
+            <p style="font-size:11px;color:#7A6B52;line-height:1.6">Auto lockout at 1.5% drawdown within 24 hours.</p>
           </div>
           <div class="risk-card">
             <span class="material-symbols-outlined" style="color:#D4AF37;font-size:20px;margin-bottom:10px;display:block">shield_locked</span>
-            <div style="font-size:13px;font-weight:600;color:#e5e2e1;margin-bottom:6px">Margin Safeguard</div>
-            <p style="font-size:11px;color:#64748b;line-height:1.6">Position sizing inversely scales with VIX volatility.</p>
+            <div style="font-size:13px;font-weight:600;color:#F0E8D0;margin-bottom:6px">Margin Safeguard</div>
+            <p style="font-size:11px;color:#7A6B52;line-height:1.6">Position sizing inversely scales with VIX volatility.</p>
           </div>
           <div class="risk-card">
             <span class="material-symbols-outlined" style="color:#D4AF37;font-size:20px;margin-bottom:10px;display:block">analytics</span>
-            <div style="font-size:13px;font-weight:600;color:#e5e2e1;margin-bottom:6px">Correlation Cap</div>
-            <p style="font-size:11px;color:#64748b;line-height:1.6">Net exposure limits across correlated currency buckets.</p>
+            <div style="font-size:13px;font-weight:600;color:#F0E8D0;margin-bottom:6px">Correlation Cap</div>
+            <p style="font-size:11px;color:#7A6B52;line-height:1.6">Net exposure limits across correlated currency buckets.</p>
           </div>
         </div>
       </div>
@@ -387,49 +414,49 @@ td{padding:8px 12px;font-size:12px}
             <div class="alloc-row">
               <div style="display:flex;align-items:center;gap:6px;width:130px"><div style="width:8px;height:8px;background:#3ce42f;border-radius:50%"></div><span style="font-size:12px">Forex / G10</span></div>
               <div class="alloc-bar-track"><div class="alloc-bar-fill" id="alloc-fx-bar" style="width:0%;background:#3ce42f"></div></div>
-              <span id="alloc-fx" style="font-size:12px;font-family:monospace;color:#3ce42f;width:36px;text-align:right">—</span>
+              <span id="alloc-fx" style="font-size:12px;font-family:monospace;color:#10B981;width:36px;text-align:right">—</span>
             </div>
           </div>
-          <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)">
-            <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Total Closed Trades</div>
-            <div id="alloc-total" style="font-size:24px;font-weight:700;color:#e5e2e1">—</div>
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(212,175,55,0.10)">
+            <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Total Closed Trades</div>
+            <div id="alloc-total" style="font-size:24px;font-weight:700;color:#F0E8D0">—</div>
           </div>
         </div>
         <div class="glass-panel" style="padding:24px">
           <div class="sec-hdr" style="margin-bottom:16px">Core Pairs Focus</div>
           <div id="core-pairs" style="display:flex;flex-direction:column;gap:8px">
-            <div style="color:#475569;font-size:12px;text-align:center;padding:16px">Loading pairs...</div>
+            <div style="color:#5C4F3A;font-size:12px;text-align:center;padding:16px">Loading pairs...</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ── Manager Profile ──────────────────────────────────── -->
-    <section id="manager" style="margin-bottom:40px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);padding:32px;position:relative;overflow:hidden">
+    <section id="manager" style="margin-bottom:40px;background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.06);padding:32px;position:relative;overflow:hidden">
       <div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,#D4AF37,#3ce42f)"></div>
       <div style="padding-left:20px">
         <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#D4AF37;margin-bottom:6px">INVESTMENT MANAGER PROFILE</div>
         <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;margin-top:16px">
           <div style="flex:1;min-width:260px">
-            <div style="font-size:22px;font-weight:700;color:#e5e2e1;margin-bottom:4px">Pandian Gurumurthy K</div>
+            <div style="font-size:22px;font-weight:700;color:#F0E8D0;margin-bottom:4px">Pandian Gurumurthy K</div>
             <div style="font-size:13px;color:#D4AF37;margin-bottom:16px;letter-spacing:.04em">Portfolio Manager · Algorithmic FX Trader · Singapore</div>
             <p style="font-size:13px;color:#94a3b8;line-height:1.8;margin-bottom:20px">Singapore-based professional forex trader specialising in systematic and algorithmic execution on IC Markets. Live portfolio independently verified on Myfxbook with a continuous public track record. Operating as an Official Introducing Broker (IB) for IC Markets.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
               <div style="border-left:2px solid #D4AF37;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Location</div>
-                <div style="font-size:14px;font-weight:600;color:#e5e2e1">Singapore</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Location</div>
+                <div style="font-size:14px;font-weight:600;color:#F0E8D0">Singapore</div>
               </div>
               <div style="border-left:2px solid #3ce42f;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Broker</div>
-                <div style="font-size:14px;font-weight:600;color:#e5e2e1">IC Markets · ASIC</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Broker</div>
+                <div style="font-size:14px;font-weight:600;color:#F0E8D0">IC Markets · ASIC</div>
               </div>
               <div style="border-left:2px solid #D4AF37;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Verification</div>
-                <div style="font-size:14px;font-weight:600;color:#e5e2e1">Myfxbook · Live</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Verification</div>
+                <div style="font-size:14px;font-weight:600;color:#F0E8D0">Myfxbook · Live</div>
               </div>
               <div style="border-left:2px solid #3ce42f;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">IB Status</div>
-                <div style="font-size:14px;font-weight:600;color:#e5e2e1">Official Partner</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">IB Status</div>
+                <div style="font-size:14px;font-weight:600;color:#F0E8D0">Official Partner</div>
               </div>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:8px">
@@ -439,25 +466,25 @@ td{padding:8px 12px;font-size:12px}
               <a href="https://wa.me/919632233776" style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);color:#25D366;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(37,211,102,0.2)'" onmouseout="this.style.background='rgba(37,211,102,0.1)'">
                 <span class="material-symbols-outlined" style="font-size:13px">chat</span>WhatsApp
               </a>
-              <a href="https://icmarkets.com/?camp=91936" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#a8b4cc;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+              <a href="https://icmarkets.com/?camp=91936" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#B09870;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
                 <span class="material-symbols-outlined" style="font-size:13px">open_in_new</span>IC Markets IB
               </a>
             </div>
           </div>
           <!-- Right: signal badges -->
           <div style="display:flex;flex-direction:column;gap:12px;flex-shrink:0;min-width:200px">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:4px">CONNECTED PROFILES</div>
-            <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:12px 16px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:4px">CONNECTED PROFILES</div>
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(212,175,55,0.04);border:1px solid rgba(255,255,255,0.07);padding:12px 16px">
               <span class="material-symbols-outlined" style="font-size:18px;color:#D4AF37">query_stats</span>
-              <div><div style="font-size:12px;font-weight:600;color:#e5e2e1">Myfxbook</div><div style="font-size:10px;color:#64748b">Live Verified Account</div></div>
+              <div><div style="font-size:12px;font-weight:600;color:#F0E8D0">Myfxbook</div><div style="font-size:10px;color:#7A6B52">Live Verified Account</div></div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:12px 16px">
-              <span class="material-symbols-outlined" style="font-size:18px;color:#3ce42f">verified_user</span>
-              <div><div style="font-size:12px;font-weight:600;color:#e5e2e1">IC Markets IB</div><div style="font-size:10px;color:#64748b">Official Partner #91936</div></div>
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(212,175,55,0.04);border:1px solid rgba(255,255,255,0.07);padding:12px 16px">
+              <span class="material-symbols-outlined" style="font-size:18px;color:#10B981">verified_user</span>
+              <div><div style="font-size:12px;font-weight:600;color:#F0E8D0">IC Markets IB</div><div style="font-size:10px;color:#7A6B52">Official Partner #91936</div></div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:12px 16px">
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(212,175,55,0.04);border:1px solid rgba(255,255,255,0.07);padding:12px 16px">
               <span class="material-symbols-outlined" style="font-size:18px;color:#25D366">chat</span>
-              <div><div style="font-size:12px;font-weight:600;color:#e5e2e1">WhatsApp</div><div style="font-size:10px;color:#64748b">Direct Analyst Access</div></div>
+              <div><div style="font-size:12px;font-weight:600;color:#F0E8D0">WhatsApp</div><div style="font-size:10px;color:#7A6B52">Direct Analyst Access</div></div>
             </div>
           </div>
         </div>
@@ -467,98 +494,98 @@ td{padding:8px 12px;font-size:12px}
     <!-- ── Strategy Factsheet ────────────────────────────────── -->
     <section id="factsheet" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:6px">Strategy Factsheet · Portfolio Profile</h2>
-        <p style="font-size:14px;color:#64748b">Structured strategy documentation consistent with institutional asset management product disclosure standards.</p>
+        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Strategy Factsheet · Portfolio Profile</h2>
+        <p style="font-size:14px;color:#7A6B52">Structured strategy documentation consistent with institutional asset management product disclosure standards.</p>
       </div>
-      <div style="border:1px solid rgba(255,255,255,0.08);overflow:hidden">
+      <div style="border:1px solid rgba(212,175,55,0.14);overflow:hidden">
         <!-- Header -->
         <div style="padding:24px;background:rgba(212,175,55,0.04);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px">
           <div>
             <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#D4AF37;margin-bottom:6px">VERA LEVEL FX · SYSTEMATIC PORTFOLIO</div>
-            <div style="font-size:22px;font-weight:700;color:#e5e2e1">Core Capital Preservation Strategy</div>
+            <div style="font-size:22px;font-weight:700;color:#F0E8D0">Core Capital Preservation Strategy</div>
           </div>
-          <span style="background:rgba(60,228,47,0.1);border:1px solid rgba(60,228,47,0.2);color:#3ce42f;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px">LOW · MODERATE RISK</span>
+          <span style="background:rgba(60,228,47,0.1);border:1px solid rgba(60,228,47,0.2);color:#10B981;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px">LOW · MODERATE RISK</span>
         </div>
         <!-- Factsheet 2×2 grid -->
         <div style="display:grid;grid-template-columns:1fr 1fr">
           <div style="padding:24px;border-right:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">STRATEGY IDENTITY</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(212,175,55,0.10)">STRATEGY IDENTITY</div>
             <div style="display:flex;flex-direction:column;gap:10px">
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Strategy Type</span><span style="color:#e5e2e1;font-weight:600">Systematic · Algorithmic EA</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Markets Traded</span><span style="color:#e5e2e1;font-weight:600">Forex Majors · XAU/USD</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Execution Model</span><span style="color:#e5e2e1;font-weight:600">Fully Automated · MT4/MT5</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Platform</span><span style="color:#e5e2e1;font-weight:600">IC Markets · ASIC</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Verification</span><span style="color:#e5e2e1;font-weight:600">Myfxbook · Live Account</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Strategy Type</span><span style="color:#F0E8D0;font-weight:600">Systematic · Algorithmic EA</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Markets Traded</span><span style="color:#F0E8D0;font-weight:600">Forex Majors · XAU/USD</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Execution Model</span><span style="color:#F0E8D0;font-weight:600">Fully Automated · MT4/MT5</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Platform</span><span style="color:#F0E8D0;font-weight:600">IC Markets · ASIC</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Verification</span><span style="color:#F0E8D0;font-weight:600">Myfxbook · Live Account</span></div>
             </div>
           </div>
           <div style="padding:24px;border-bottom:1px solid rgba(255,255,255,0.06)">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">PERFORMANCE SUMMARY (LIVE)</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(212,175,55,0.10)">PERFORMANCE SUMMARY (LIVE)</div>
             <div style="display:flex;flex-direction:column;gap:10px">
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Total Gain</span><span id="fs-gain" style="color:#3ce42f;font-weight:700;font-family:monospace">—</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Monthly Return</span><span id="fs-monthly" style="color:#3ce42f;font-weight:700;font-family:monospace">—</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Profit Factor</span><span id="fs-pf" style="color:#D4AF37;font-weight:700;font-family:monospace">—</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Win Rate</span><span id="fs-wr" style="color:#e5e2e1;font-weight:700;font-family:monospace">—</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Total Pips</span><span id="fs-pips" style="color:#D4AF37;font-weight:700;font-family:monospace">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Total Gain</span><span id="fs-gain" style="color:#10B981;font-weight:700;font-family:monospace">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Monthly Return</span><span id="fs-monthly" style="color:#10B981;font-weight:700;font-family:monospace">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Profit Factor</span><span id="fs-pf" style="color:#D4AF37;font-weight:700;font-family:monospace">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Win Rate</span><span id="fs-wr" style="color:#F0E8D0;font-weight:700;font-family:monospace">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Total Pips</span><span id="fs-pips" style="color:#D4AF37;font-weight:700;font-family:monospace">—</span></div>
             </div>
           </div>
           <div style="padding:24px;border-right:1px solid rgba(255,255,255,0.06)">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">PORTFOLIO CHARACTERISTICS</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(212,175,55,0.10)">PORTFOLIO CHARACTERISTICS</div>
             <div style="display:flex;flex-direction:column;gap:10px">
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Volatility Profile</span><span style="color:#e5e2e1;font-weight:600">Low · Moderate</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Max Balance DD</span><span id="fs-dd" style="color:#f59e0b;font-weight:700;font-family:monospace">—</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Avg Trade Duration</span><span style="color:#e5e2e1;font-weight:600">~14 Minutes</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Correlation</span><span style="color:#e5e2e1;font-weight:600">Multi-pair diversified</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">System Uptime</span><span style="color:#e5e2e1;font-weight:600">99.9%</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Volatility Profile</span><span style="color:#F0E8D0;font-weight:600">Low · Moderate</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Max Balance DD</span><span id="fs-dd" style="color:#f59e0b;font-weight:700;font-family:monospace">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Avg Trade Duration</span><span style="color:#F0E8D0;font-weight:600">~14 Minutes</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Correlation</span><span style="color:#F0E8D0;font-weight:600">Multi-pair diversified</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">System Uptime</span><span style="color:#F0E8D0;font-weight:600">99.9%</span></div>
             </div>
           </div>
           <div style="padding:24px">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">USE CASE &amp; ALLOCATION</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(212,175,55,0.10)">USE CASE &amp; ALLOCATION</div>
             <div style="display:flex;flex-direction:column;gap:10px">
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Category</span><span style="color:#e5e2e1;font-weight:600">Core Capital Preservation</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Target Investor</span><span style="color:#e5e2e1;font-weight:600">Conservative · Long-Term</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Allocation Guidance</span><span style="color:#e5e2e1;font-weight:600">5–20% of portfolio</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Risk of Ruin</span><span style="color:#3ce42f;font-weight:700">■ LOW</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#64748b">Time Horizon</span><span style="color:#e5e2e1;font-weight:600">Medium · Long Term</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Category</span><span style="color:#F0E8D0;font-weight:600">Core Capital Preservation</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Target Investor</span><span style="color:#F0E8D0;font-weight:600">Conservative · Long-Term</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Allocation Guidance</span><span style="color:#F0E8D0;font-weight:600">5–20% of portfolio</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Risk of Ruin</span><span style="color:#10B981;font-weight:700">■ LOW</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#7A6B52">Time Horizon</span><span style="color:#F0E8D0;font-weight:600">Medium · Long Term</span></div>
             </div>
           </div>
         </div>
         <!-- Bottom note -->
-        <div style="padding:16px 24px;background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06)">
-          <p style="font-size:11px;color:#475569;line-height:1.8">Suitable as a core systematic allocation prioritising capital preservation with steady compounding. Structurally analogous to a conservative fixed-income systematic strategy within a diversified portfolio. All trades verified in real-time on Myfxbook on IC Markets — one of the world's most regulated and liquid ECN brokers. Performance data is sourced live and auto-updated on weekdays.</p>
+        <div style="padding:16px 24px;background:rgba(212,175,55,0.03);border-top:1px solid rgba(255,255,255,0.06)">
+          <p style="font-size:11px;color:#5C4F3A;line-height:1.8">Suitable as a core systematic allocation prioritising capital preservation with steady compounding. Structurally analogous to a conservative fixed-income systematic strategy within a diversified portfolio. All trades verified in real-time on Myfxbook on IC Markets — one of the world's most regulated and liquid ECN brokers. Performance data is sourced live and auto-updated on weekdays.</p>
         </div>
       </div>
     </section>
 
     <!-- Why Invest Section -->
-    <section style="margin-bottom:40px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-left:4px solid #D4AF37;padding:32px">
-      <h2 style="font-size:20px;font-weight:700;color:#e5e2e1;margin-bottom:20px">Why Invest With Us?</h2>
+    <section style="margin-bottom:40px;background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.06);border-left:4px solid #D4AF37;padding:32px">
+      <h2 style="font-size:20px;font-weight:700;color:#F0E8D0;margin-bottom:20px">Why Invest With Us?</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
         <div style="display:flex;gap:16px">
           <span class="material-symbols-outlined" style="color:#D4AF37;font-size:22px;flex-shrink:0;margin-top:2px">verified_user</span>
           <div>
-            <div style="font-size:14px;font-weight:600;color:#e5e2e1;margin-bottom:4px">Guaranteed Transparency</div>
-            <p style="font-size:13px;color:#64748b;line-height:1.7">Every trade, entry, exit, and result is independently verified on Myfxbook in real time. No hidden activity.</p>
+            <div style="font-size:14px;font-weight:600;color:#F0E8D0;margin-bottom:4px">Guaranteed Transparency</div>
+            <p style="font-size:13px;color:#7A6B52;line-height:1.7">Every trade, entry, exit, and result is independently verified on Myfxbook in real time. No hidden activity.</p>
           </div>
         </div>
         <div style="display:flex;gap:16px">
           <span class="material-symbols-outlined" style="color:#D4AF37;font-size:22px;flex-shrink:0;margin-top:2px">trending_up</span>
           <div>
-            <div style="font-size:14px;font-weight:600;color:#e5e2e1;margin-bottom:4px">Expert Management</div>
-            <p style="font-size:13px;color:#64748b;line-height:1.7">Professionally managed forex portfolio combining algorithmic execution with discretionary oversight on IC Markets.</p>
+            <div style="font-size:14px;font-weight:600;color:#F0E8D0;margin-bottom:4px">Expert Management</div>
+            <p style="font-size:13px;color:#7A6B52;line-height:1.7">Professionally managed forex portfolio combining algorithmic execution with discretionary oversight on IC Markets.</p>
           </div>
         </div>
         <div style="display:flex;gap:16px">
           <span class="material-symbols-outlined" style="color:#D4AF37;font-size:22px;flex-shrink:0;margin-top:2px">security</span>
           <div>
-            <div style="font-size:14px;font-weight:600;color:#e5e2e1;margin-bottom:4px">Tier-1 Security</div>
-            <p style="font-size:13px;color:#64748b;line-height:1.7">Multi-layered protection with IC Markets regulated infrastructure. Funds held in fully segregated accounts.</p>
+            <div style="font-size:14px;font-weight:600;color:#F0E8D0;margin-bottom:4px">Tier-1 Security</div>
+            <p style="font-size:13px;color:#7A6B52;line-height:1.7">Multi-layered protection with IC Markets regulated infrastructure. Funds held in fully segregated accounts.</p>
           </div>
         </div>
         <div style="display:flex;gap:16px">
           <span class="material-symbols-outlined" style="color:#D4AF37;font-size:22px;flex-shrink:0;margin-top:2px">analytics</span>
           <div>
-            <div style="font-size:14px;font-weight:600;color:#e5e2e1;margin-bottom:4px">Detailed Reporting</div>
-            <p style="font-size:13px;color:#64748b;line-height:1.7">Real-time dashboards providing full PnL, exposure levels, and historical performance audits — all public on Myfxbook.</p>
+            <div style="font-size:14px;font-weight:600;color:#F0E8D0;margin-bottom:4px">Detailed Reporting</div>
+            <p style="font-size:13px;color:#7A6B52;line-height:1.7">Real-time dashboards providing full PnL, exposure levels, and historical performance audits — all public on Myfxbook.</p>
           </div>
         </div>
       </div>
@@ -567,10 +594,10 @@ td{padding:8px 12px;font-size:12px}
     <!-- ── Guide: How to Get Started ───────────────────────────── -->
     <section id="guide" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:6px">Get Started · How to Invest</h2>
-        <p style="font-size:14px;color:#64748b">Begin allocating in minutes. Follow these steps to connect with Vera Level FX.</p>
+        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Get Started · How to Invest</h2>
+        <p style="font-size:14px;color:#7A6B52">Begin allocating in minutes. Follow these steps to connect with Vera Level FX.</p>
       </div>
-      <div style="border:1px solid rgba(255,255,255,0.08)">
+      <div style="border:1px solid rgba(212,175,55,0.14)">
 
         <div style="display:flex;border-bottom:1px solid rgba(255,255,255,0.06)">
           <div style="width:72px;flex-shrink:0;background:rgba(212,175,55,0.05);display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(255,255,255,0.06)">
@@ -579,7 +606,7 @@ td{padding:8px 12px;font-size:12px}
           <div style="padding:22px 28px;flex:1">
             <div style="font-size:11px;font-weight:700;color:#D4AF37;margin-bottom:6px;letter-spacing:.1em;text-transform:uppercase">Open IC Markets Account</div>
             <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:14px">Create an ASIC-regulated Raw Spread account on IC Markets — the exact broker used by this live portfolio. Institutional-grade execution from raw spreads, no dealing desk intervention.</p>
-            <a href="https://icmarkets.com/?camp=91936" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#D4AF37;color:#1c1b1b;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;text-decoration:none;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
+            <a href="https://icmarkets.com/?camp=91936" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#D4AF37;color:#0E0B18;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;text-decoration:none;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
               <span class="material-symbols-outlined" style="font-size:14px">open_in_new</span>Open Account via IB ↗
             </a>
           </div>
@@ -615,7 +642,7 @@ td{padding:8px 12px;font-size:12px}
           <div style="padding:22px 28px;flex:1">
             <div style="font-size:11px;font-weight:700;color:#D4AF37;margin-bottom:6px;letter-spacing:.1em;text-transform:uppercase">Verify Live Performance</div>
             <p style="font-size:13px;color:#94a3b8;line-height:1.7;margin-bottom:14px">Review the full live track record on Myfxbook before committing any capital. Every trade, entry, exit, and result is independently verifiable in real time — no hidden activity, no obfuscated results.</p>
-            <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#a8b4cc;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+            <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#B09870;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
               <span class="material-symbols-outlined" style="font-size:14px">open_in_new</span>View Myfxbook Profile
             </a>
           </div>
@@ -658,61 +685,61 @@ td{padding:8px 12px;font-size:12px}
               <span class="material-symbols-outlined" style="font-size:14px;color:#D4AF37">verified</span>
               <span style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#D4AF37">OFFICIAL INTRODUCING BROKER · IC MARKETS</span>
             </div>
-            <h2 style="font-size:30px;font-weight:800;letter-spacing:-.02em;color:#e5e2e1;margin-bottom:10px;line-height:1.2">Trade with the World's <span style="color:#D4AF37">#1 Forex Broker</span></h2>
+            <h2 style="font-size:30px;font-weight:800;letter-spacing:-.02em;color:#F0E8D0;margin-bottom:10px;line-height:1.2">Trade with the World's <span style="color:#D4AF37">#1 Forex Broker</span></h2>
             <p style="font-size:13px;color:#94a3b8;line-height:1.8;margin-bottom:24px">Open your IC Markets account through Vera Level FX and access the same institutional-grade infrastructure powering this live portfolio — raw spreads, ultra-fast execution, and deep liquidity.</p>
 
             <!-- Stats grid -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px">
               <div style="border-left:2px solid #D4AF37;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Raw Spreads</div>
-                <div style="font-size:18px;font-weight:700;color:#e5e2e1">From 0.0 pips</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Raw Spreads</div>
+                <div style="font-size:18px;font-weight:700;color:#F0E8D0">From 0.0 pips</div>
               </div>
               <div style="border-left:2px solid #3ce42f;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Avg Execution</div>
-                <div style="font-size:18px;font-weight:700;color:#e5e2e1">~40ms</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Avg Execution</div>
+                <div style="font-size:18px;font-weight:700;color:#F0E8D0">~40ms</div>
               </div>
               <div style="border-left:2px solid #D4AF37;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Regulation</div>
-                <div style="font-size:18px;font-weight:700;color:#e5e2e1">ASIC · CySEC · FSA</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Regulation</div>
+                <div style="font-size:18px;font-weight:700;color:#F0E8D0">ASIC · CySEC · FSA</div>
               </div>
               <div style="border-left:2px solid #3ce42f;padding-left:12px">
-                <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Min. Deposit</div>
-                <div style="font-size:18px;font-weight:700;color:#e5e2e1">$200 USD</div>
+                <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">Min. Deposit</div>
+                <div style="font-size:18px;font-weight:700;color:#F0E8D0">$200 USD</div>
               </div>
             </div>
 
             <!-- Checklist -->
             <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
-              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">Same broker verified by Myfxbook for this live portfolio</span></div>
-              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">25+ liquidity providers — interbank-level depth</span></div>
-              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">MT4, MT5 &amp; cTrader — all platforms supported</span></div>
-              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#3ce42f;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#a8b4cc">Segregated client funds — fully regulated &amp; insured</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#10B981;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#B09870">Same broker verified by Myfxbook for this live portfolio</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#10B981;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#B09870">25+ liquidity providers — interbank-level depth</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#10B981;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#B09870">MT4, MT5 &amp; cTrader — all platforms supported</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="font-size:16px;color:#10B981;flex-shrink:0">check_circle</span><span style="font-size:13px;color:#B09870">Segregated client funds — fully regulated &amp; insured</span></div>
             </div>
 
             <!-- CTAs -->
             <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:24px">
-              <a href="https://icmarkets.com/?camp=91936" target="_blank" style="background:#D4AF37;color:#1c1b1b;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 28px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 0 24px rgba(212,175,55,0.35);transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
+              <a href="https://icmarkets.com/?camp=91936" target="_blank" style="background:#D4AF37;color:#0E0B18;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 28px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 0 24px rgba(212,175,55,0.35);transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
                 <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>Open Account via IB
               </a>
-              <a href="https://wa.me/919632233776" style="border:1px solid rgba(255,255,255,0.15);color:#e5e2e1;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 22px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+              <a href="https://wa.me/919632233776" style="border:1px solid rgba(255,255,255,0.15);color:#F0E8D0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 22px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
                 <span class="material-symbols-outlined" style="font-size:16px">chat</span>Ask the Analyst
               </a>
             </div>
 
             <!-- Widget theme toggle -->
             <div style="display:flex;align-items:center;gap:10px">
-              <span style="font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.08em">Widget:</span>
+              <span style="font-size:10px;color:#5C4F3A;text-transform:uppercase;letter-spacing:.08em">Widget:</span>
               <span id="ic-lbl-dark" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D4AF37">DARK</span>
               <button onclick="toggleICWidget()" style="position:relative;width:40px;height:20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;cursor:pointer;outline:none">
                 <span id="ic-knob" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#D4AF37;transition:transform .3s;display:block"></span>
               </button>
-              <span id="ic-lbl-light" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b">LIGHT</span>
+              <span id="ic-lbl-light" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7A6B52">LIGHT</span>
             </div>
           </div>
 
           <!-- Right: Live Price Widget -->
           <div style="flex-shrink:0">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:10px;text-align:center">LIVE MARKET PRICES</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7A6B52;margin-bottom:10px;text-align:center">LIVE MARKET PRICES</div>
             <div style="border:1px solid rgba(212,175,55,0.25);padding:4px;box-shadow:0 0 40px rgba(212,175,55,0.15)">
               <iframe id="ic-dark" src="https://secure.icmarkets.com//Partner/Widget/PriceWidget/91936" width="273" frameborder="0" height="480"></iframe>
               <iframe id="ic-light" src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" style="display:none"></iframe>
@@ -730,8 +757,8 @@ td{padding:8px 12px;font-size:12px}
       document.getElementById('ic-dark').style.display  = _icDark ? '' : 'none';
       document.getElementById('ic-light').style.display = _icDark ? 'none' : '';
       document.getElementById('ic-knob').style.transform = _icDark ? 'translateX(0)' : 'translateX(24px)';
-      document.getElementById('ic-lbl-dark').style.color  = _icDark ? '#D4AF37' : '#64748b';
-      document.getElementById('ic-lbl-light').style.color = _icDark ? '#64748b' : '#D4AF37';
+      document.getElementById('ic-lbl-dark').style.color  = _icDark ? '#D4AF37' : '#7A6B52';
+      document.getElementById('ic-lbl-light').style.color = _icDark ? '#7A6B52' : '#D4AF37';
     }
     </script>
 
@@ -739,13 +766,13 @@ td{padding:8px 12px;font-size:12px}
     <section style="margin-bottom:40px">
       <div class="glass-panel" style="padding:48px;text-align:center;position:relative;overflow:hidden">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#D4AF37 50%,transparent)"></div>
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:10px">Ready to scale your portfolio?</h2>
-        <p style="font-size:16px;color:#64748b;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7">Join investors leveraging algorithmic alpha and institutional liquidity for consistent FX returns. Speak directly to the portfolio analyst via WhatsApp.</p>
+        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:10px">Ready to scale your portfolio?</h2>
+        <p style="font-size:16px;color:#7A6B52;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7">Join investors leveraging algorithmic alpha and institutional liquidity for consistent FX returns. Speak directly to the portfolio analyst via WhatsApp.</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <a href="https://wa.me/919632233776" style="background:#D4AF37;color:#1c1b1b;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
+          <a href="https://wa.me/919632233776" style="background:#D4AF37;color:#0E0B18;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
             <span class="material-symbols-outlined" style="font-size:16px">chat</span>WhatsApp Analyst
           </a>
-          <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="border:1px solid rgba(255,255,255,0.15);color:#e5e2e1;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;text-decoration:none;background:transparent;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">View on Myfxbook</a>
+          <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="border:1px solid rgba(255,255,255,0.15);color:#F0E8D0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;text-decoration:none;background:transparent;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">View on Myfxbook</a>
         </div>
       </div>
     </section>
@@ -753,8 +780,8 @@ td{padding:8px 12px;font-size:12px}
     <!-- Investment Partners & Referrals -->
     <section id="partners" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:6px">Broker Partners &amp; Referrals</h2>
-        <p style="font-size:14px;color:#64748b">Open accounts through Vera Level FX for exclusive access. IC Markets is our primary IB partner — the same broker used for this live portfolio.</p>
+        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Broker Partners &amp; Referrals</h2>
+        <p style="font-size:14px;color:#7A6B52">Open accounts through Vera Level FX for exclusive access. IC Markets is our primary IB partner — the same broker used for this live portfolio.</p>
       </div>
 
       <!-- IC Markets Featured IB Card -->
@@ -768,18 +795,18 @@ td{padding:8px 12px;font-size:12px}
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
               <div style="width:48px;height:48px;background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#D4AF37">IC</div>
               <div>
-                <div style="font-size:18px;font-weight:700;color:#e5e2e1">IC Markets</div>
+                <div style="font-size:18px;font-weight:700;color:#F0E8D0">IC Markets</div>
                 <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;letter-spacing:.08em">World's #1 Forex Broker · Vera Level FX IB</div>
               </div>
             </div>
-            <p style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:16px">The exact broker used in this live portfolio. Raw ECN spreads from 0.0 pips, 25+ liquidity providers, regulated under ASIC &amp; CySEC. Opening through this IB link connects you to the same infrastructure.</p>
+            <p style="font-size:12px;color:#7A6B52;line-height:1.7;margin-bottom:16px">The exact broker used in this live portfolio. Raw ECN spreads from 0.0 pips, 25+ liquidity providers, regulated under ASIC &amp; CySEC. Opening through this IB link connects you to the same infrastructure.</p>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
-              <span style="background:rgba(60,228,47,0.1);color:#3ce42f;font-size:10px;font-weight:700;padding:4px 10px">0.0 pip spreads</span>
+              <span style="background:rgba(60,228,47,0.1);color:#10B981;font-size:10px;font-weight:700;padding:4px 10px">0.0 pip spreads</span>
               <span style="background:rgba(212,175,55,0.1);color:#D4AF37;font-size:10px;font-weight:700;padding:4px 10px">ASIC regulated</span>
-              <span style="background:rgba(60,228,47,0.1);color:#3ce42f;font-size:10px;font-weight:700;padding:4px 10px">MT4 · MT5 · cTrader</span>
+              <span style="background:rgba(60,228,47,0.1);color:#10B981;font-size:10px;font-weight:700;padding:4px 10px">MT4 · MT5 · cTrader</span>
               <span style="background:rgba(212,175,55,0.1);color:#D4AF37;font-size:10px;font-weight:700;padding:4px 10px">~40ms execution</span>
             </div>
-            <a href="https://icmarkets.com/?camp=91936" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#D4AF37;color:#1c1b1b;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:12px 24px;text-decoration:none;box-shadow:0 0 20px rgba(212,175,55,0.3);transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
+            <a href="https://icmarkets.com/?camp=91936" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#D4AF37;color:#0E0B18;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:12px 24px;text-decoration:none;box-shadow:0 0 20px rgba(212,175,55,0.3);transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
               <span class="material-symbols-outlined" style="font-size:15px">open_in_new</span>Open IC Markets Account via IB ↗
             </a>
           </div>
@@ -794,93 +821,93 @@ td{padding:8px 12px;font-size:12px}
 
         <!-- IG Broker -->
         <a href="https://refer.ig.com/pandiangurumurthyk-8" target="_blank" style="text-decoration:none;display:block" onmouseover="this.firstElementChild.style.borderColor='rgba(212,175,55,0.4)'" onmouseout="this.firstElementChild.style.borderColor='rgba(255,255,255,0.08)'">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:24px;transition:border-color .3s;height:100%">
+          <div style="background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.14);padding:24px;transition:border-color .3s;height:100%">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
               <div style="display:flex;align-items:center;gap:10px">
                 <div style="width:40px;height:40px;background:rgba(0,91,172,0.2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#60a5fa">IG</div>
                 <div>
-                  <div style="font-size:14px;font-weight:700;color:#e5e2e1">IG Broker</div>
-                  <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Forex &amp; CFD Trading</div>
+                  <div style="font-size:14px;font-weight:700;color:#F0E8D0">IG Broker</div>
+                  <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.06em">Forex &amp; CFD Trading</div>
                 </div>
               </div>
               <span class="material-symbols-outlined" style="font-size:16px;color:#D4AF37">open_in_new</span>
             </div>
-            <p style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:14px">Trade forex, indices, shares and commodities with one of the world's leading CFD providers. Same broker used for live trading.</p>
+            <p style="font-size:12px;color:#7A6B52;line-height:1.7;margin-bottom:14px">Trade forex, indices, shares and commodities with one of the world's leading CFD providers. Same broker used for live trading.</p>
             <div style="display:inline-block;background:rgba(212,175,55,0.1);color:#D4AF37;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px">Open Account ↗</div>
           </div>
         </a>
 
         <!-- Kuvera -->
         <a href="https://kuvera.in/s/wsapp?referral=J8E16" target="_blank" style="text-decoration:none;display:block" onmouseover="this.firstElementChild.style.borderColor='rgba(212,175,55,0.4)'" onmouseout="this.firstElementChild.style.borderColor='rgba(255,255,255,0.08)'">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:24px;transition:border-color .3s;height:100%">
+          <div style="background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.14);padding:24px;transition:border-color .3s;height:100%">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
               <div style="display:flex;align-items:center;gap:10px">
                 <div style="width:40px;height:40px;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#34d399">KUV</div>
                 <div>
-                  <div style="font-size:14px;font-weight:700;color:#e5e2e1">Kuvera</div>
-                  <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">India Direct Mutual Funds</div>
+                  <div style="font-size:14px;font-weight:700;color:#F0E8D0">Kuvera</div>
+                  <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.06em">India Direct Mutual Funds</div>
                 </div>
               </div>
               <span class="material-symbols-outlined" style="font-size:16px;color:#D4AF37">open_in_new</span>
             </div>
-            <p style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:14px">India's first 100% free direct mutual fund platform. Zero commission, zero hidden fees. Invest smarter with goal-based planning.</p>
+            <p style="font-size:12px;color:#7A6B52;line-height:1.7;margin-bottom:14px">India's first 100% free direct mutual fund platform. Zero commission, zero hidden fees. Invest smarter with goal-based planning.</p>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
               <div style="display:inline-block;background:rgba(52,211,153,0.1);color:#34d399;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px">+100 Coins Bonus</div>
-              <div style="font-size:10px;color:#475569;font-family:monospace">Code: J8E16</div>
+              <div style="font-size:10px;color:#5C4F3A;font-family:monospace">Code: J8E16</div>
             </div>
           </div>
         </a>
 
         <!-- StashAway -->
         <a href="https://www.stashaway.sg/referrals/aead9d9b" target="_blank" style="text-decoration:none;display:block" onmouseover="this.firstElementChild.style.borderColor='rgba(212,175,55,0.4)'" onmouseout="this.firstElementChild.style.borderColor='rgba(255,255,255,0.08)'">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:24px;transition:border-color .3s;height:100%">
+          <div style="background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.14);padding:24px;transition:border-color .3s;height:100%">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
               <div style="display:flex;align-items:center;gap:10px">
                 <div style="width:40px;height:40px;background:rgba(99,102,241,0.15);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#a78bfa">SA</div>
                 <div>
-                  <div style="font-size:14px;font-weight:700;color:#e5e2e1">StashAway</div>
-                  <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Singapore · Managed Investing</div>
+                  <div style="font-size:14px;font-weight:700;color:#F0E8D0">StashAway</div>
+                  <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.06em">Singapore · Managed Investing</div>
                 </div>
               </div>
               <span class="material-symbols-outlined" style="font-size:16px;color:#D4AF37">open_in_new</span>
             </div>
-            <p style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:14px">Award-winning robo-advisor with intelligent portfolio rebalancing. Invest in globally diversified ETFs tailored to your risk appetite.</p>
+            <p style="font-size:12px;color:#7A6B52;line-height:1.7;margin-bottom:14px">Award-winning robo-advisor with intelligent portfolio rebalancing. Invest in globally diversified ETFs tailored to your risk appetite.</p>
             <div style="display:inline-block;background:rgba(167,139,250,0.1);color:#a78bfa;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px">$10,000 SGD Free · 6 Months</div>
           </div>
         </a>
 
         <!-- Syfe Trade -->
         <a href="https://www.syfe.com/invite/trade/SRPTHFKLB" target="_blank" style="text-decoration:none;display:block" onmouseover="this.firstElementChild.style.borderColor='rgba(212,175,55,0.4)'" onmouseout="this.firstElementChild.style.borderColor='rgba(255,255,255,0.08)'">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:24px;transition:border-color .3s;height:100%">
+          <div style="background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.14);padding:24px;transition:border-color .3s;height:100%">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
               <div style="display:flex;align-items:center;gap:10px">
                 <div style="width:40px;height:40px;background:rgba(236,72,153,0.12);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#f472b6">ST</div>
                 <div>
-                  <div style="font-size:14px;font-weight:700;color:#e5e2e1">Syfe Trade</div>
-                  <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Singapore · Stocks &amp; ETFs</div>
+                  <div style="font-size:14px;font-weight:700;color:#F0E8D0">Syfe Trade</div>
+                  <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.06em">Singapore · Stocks &amp; ETFs</div>
                 </div>
               </div>
               <span class="material-symbols-outlined" style="font-size:16px;color:#D4AF37">open_in_new</span>
             </div>
-            <p style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:14px">Commission-free stock and ETF trading on US and SG markets. Fractional shares from $1. Ideal for building a long-term equity portfolio.</p>
+            <p style="font-size:12px;color:#7A6B52;line-height:1.7;margin-bottom:14px">Commission-free stock and ETF trading on US and SG markets. Fractional shares from $1. Ideal for building a long-term equity portfolio.</p>
             <div style="display:inline-block;background:rgba(244,114,182,0.1);color:#f472b6;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px">Code: SRPTHFKLB</div>
           </div>
         </a>
 
         <!-- Syfe Wealth -->
         <a href="https://www.syfe.com/invite/wealth/SRPTHFKLB" target="_blank" style="text-decoration:none;display:block" onmouseover="this.firstElementChild.style.borderColor='rgba(212,175,55,0.4)'" onmouseout="this.firstElementChild.style.borderColor='rgba(255,255,255,0.08)'">
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:24px;transition:border-color .3s;height:100%">
+          <div style="background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.14);padding:24px;transition:border-color .3s;height:100%">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
               <div style="display:flex;align-items:center;gap:10px">
                 <div style="width:40px;height:40px;background:rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#D4AF37">SW</div>
                 <div>
-                  <div style="font-size:14px;font-weight:700;color:#e5e2e1">Syfe Wealth</div>
-                  <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.06em">Singapore · Wealth Management</div>
+                  <div style="font-size:14px;font-weight:700;color:#F0E8D0">Syfe Wealth</div>
+                  <div style="font-size:10px;color:#7A6B52;text-transform:uppercase;letter-spacing:.06em">Singapore · Wealth Management</div>
                 </div>
               </div>
               <span class="material-symbols-outlined" style="font-size:16px;color:#D4AF37">open_in_new</span>
             </div>
-            <p style="font-size:12px;color:#64748b;line-height:1.7;margin-bottom:14px">Automated wealth management with smart portfolios — Core Equity, REIT+, Cash+, and more. Start with as little as $1 SGD.</p>
+            <p style="font-size:12px;color:#7A6B52;line-height:1.7;margin-bottom:14px">Automated wealth management with smart portfolios — Core Equity, REIT+, Cash+, and more. Start with as little as $1 SGD.</p>
             <div style="display:inline-block;background:rgba(212,175,55,0.1);color:#D4AF37;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px">Code: SRPTHFKLB</div>
           </div>
         </a>
@@ -904,25 +931,25 @@ td{padding:8px 12px;font-size:12px}
     <!-- ── Risk Disclosures ──────────────────────────────────── -->
     <section id="disclosures" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid rgba(255,180,171,0.5);padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#e5e2e1;margin-bottom:6px">Important Risk Disclosures</h2>
-        <p style="font-size:14px;color:#64748b">Please read carefully before allocating any capital.</p>
+        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Important Risk Disclosures</h2>
+        <p style="font-size:14px;color:#7A6B52">Please read carefully before allocating any capital.</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffb4ab;margin-bottom:10px">Trading Risk Warning</div>
-          <p style="font-size:12px;color:#64748b;line-height:1.85">Trading foreign exchange, commodities, and other leveraged financial instruments involves substantial risk of loss. Financial leverage amplifies both gains and losses and can result in losses exceeding your initial deposit. You should not invest money you cannot afford to lose. Carefully consider your investment objectives, level of experience, and risk tolerance before making any trading decision.</p>
+        <div style="background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FCA5A5;margin-bottom:10px">Trading Risk Warning</div>
+          <p style="font-size:12px;color:#7A6B52;line-height:1.85">Trading foreign exchange, commodities, and other leveraged financial instruments involves substantial risk of loss. Financial leverage amplifies both gains and losses and can result in losses exceeding your initial deposit. You should not invest money you cannot afford to lose. Carefully consider your investment objectives, level of experience, and risk tolerance before making any trading decision.</p>
         </div>
-        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffb4ab;margin-bottom:10px">Performance Disclaimer</div>
-          <p style="font-size:12px;color:#64748b;line-height:1.85">All performance figures represent independently verified historical data from a live, real-money trading account on IC Markets, publicly verified via Myfxbook. Past performance is not indicative of, and does not guarantee, future results. Forward-looking returns may differ materially due to changing market conditions, liquidity dynamics, execution slippage, and other factors.</p>
+        <div style="background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FCA5A5;margin-bottom:10px">Performance Disclaimer</div>
+          <p style="font-size:12px;color:#7A6B52;line-height:1.85">All performance figures represent independently verified historical data from a live, real-money trading account on IC Markets, publicly verified via Myfxbook. Past performance is not indicative of, and does not guarantee, future results. Forward-looking returns may differ materially due to changing market conditions, liquidity dynamics, execution slippage, and other factors.</p>
         </div>
-        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffb4ab;margin-bottom:10px">Independent Due Diligence</div>
-          <p style="font-size:12px;color:#64748b;line-height:1.85">Nothing on this website constitutes investment advice, a solicitation to invest, or a recommendation to allocate capital. All performance data is publicly verifiable via Myfxbook. Prospective investors are strongly advised to conduct independent due diligence, consult a qualified financial advisor, and review all publicly available account data prior to allocating capital.</p>
+        <div style="background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FCA5A5;margin-bottom:10px">Independent Due Diligence</div>
+          <p style="font-size:12px;color:#7A6B52;line-height:1.85">Nothing on this website constitutes investment advice, a solicitation to invest, or a recommendation to allocate capital. All performance data is publicly verifiable via Myfxbook. Prospective investors are strongly advised to conduct independent due diligence, consult a qualified financial advisor, and review all publicly available account data prior to allocating capital.</p>
         </div>
-        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffb4ab;margin-bottom:10px">Limitation of Liability</div>
-          <p style="font-size:12px;color:#64748b;line-height:1.85">Vera Level FX and associated parties expressly disclaim all responsibility for financial losses incurred by any individual following, copying, or otherwise replicating any strategy listed on this website. All investment and trading decisions are made solely at the discretion and financial risk of the individual investor. Obtain qualified financial advice before committing capital to any trading strategy.</p>
+        <div style="background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FCA5A5;margin-bottom:10px">Limitation of Liability</div>
+          <p style="font-size:12px;color:#7A6B52;line-height:1.85">Vera Level FX and associated parties expressly disclaim all responsibility for financial losses incurred by any individual following, copying, or otherwise replicating any strategy listed on this website. All investment and trading decisions are made solely at the discretion and financial risk of the individual investor. Obtain qualified financial advice before committing capital to any trading strategy.</p>
         </div>
       </div>
     </section>
@@ -936,27 +963,27 @@ td{padding:8px 12px;font-size:12px}
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;margin-bottom:40px;flex-wrap:wrap">
       <div>
         <div style="font-size:16px;font-weight:800;letter-spacing:.05em;color:#D4AF37;margin-bottom:12px;text-transform:uppercase">VERA LEVEL FX</div>
-        <p style="font-size:11px;color:#475569;line-height:1.8;max-width:280px">Live data sourced automatically from Myfxbook via IC Markets. Verified institutional performance updated weekdays 08:00 SGT. Past performance does not guarantee future results.</p>
+        <p style="font-size:11px;color:#5C4F3A;line-height:1.8;max-width:280px">Live data sourced automatically from Myfxbook via IC Markets. Verified institutional performance updated weekdays 08:00 SGT. Past performance does not guarantee future results.</p>
         <div style="margin-top:16px;font-size:10px;font-family:monospace;color:#334155">Updated: <span id="footer-updated">—</span></div>
       </div>
       <div>
         <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;margin-bottom:14px">Compliance</div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <a href="#" style="font-size:11px;color:#475569;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#475569'">Risk Disclosure</a>
-          <a href="#" style="font-size:11px;color:#475569;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#475569'">Privacy Policy</a>
-          <a href="#" style="font-size:11px;color:#475569;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#475569'">Terms of Service</a>
+          <a href="#" style="font-size:11px;color:#5C4F3A;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#5C4F3A'">Risk Disclosure</a>
+          <a href="#" style="font-size:11px;color:#5C4F3A;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#5C4F3A'">Privacy Policy</a>
+          <a href="#" style="font-size:11px;color:#5C4F3A;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#5C4F3A'">Terms of Service</a>
         </div>
       </div>
       <div>
         <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37;margin-bottom:14px">Support</div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <a href="https://wa.me/919632233776" style="font-size:11px;color:#475569;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#475569'">WhatsApp Support</a>
-          <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="font-size:11px;color:#475569;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#475569'">Myfxbook Profile ↗</a>
+          <a href="https://wa.me/919632233776" style="font-size:11px;color:#5C4F3A;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#5C4F3A'">WhatsApp Support</a>
+          <a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" style="font-size:11px;color:#5C4F3A;text-decoration:none;transition:color .2s" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#5C4F3A'">Myfxbook Profile ↗</a>
           <span style="font-size:11px;color:#334155">Broker: IC Markets</span>
         </div>
       </div>
     </div>
-    <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div style="border-top:1px solid rgba(212,175,55,0.10);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
       <p style="font-size:10px;color:#334155;letter-spacing:.04em">© 2026 Vera Level FX · Empowering capital with global precision · Auto-updated weekdays 08:00 SGT</p>
       <p style="font-size:10px;color:#334155">High-risk investment notice: Trading Forex carries significant risk of capital loss.</p>
     </div>
@@ -1023,7 +1050,7 @@ function monthlyBars(trades) {
     map[key] = (map[key] || 0) + n(t.profit);
   });
   const entries = Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).slice(-6);
-  if (!entries.length) return '<div style="color:#475569;font-size:12px;text-align:center;padding:20px 0">No monthly data yet</div>';
+  if (!entries.length) return '<div style="color:#5C4F3A;font-size:12px;text-align:center;padding:20px 0">No monthly data yet</div>';
   const maxAbs = Math.max(...entries.map(([,v]) => Math.abs(v)), 1);
   const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   let total = 0;
@@ -1035,11 +1062,11 @@ function monthlyBars(trades) {
     const pct = Math.min(Math.abs(val) / maxAbs * 100, 100);
     const pos = val >= 0;
     return `<div style="display:flex;align-items:center;gap:10px">
-      <span style="width:28px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b">${MN[mm]}</span>
+      <span style="width:28px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7A6B52">${MN[mm]}</span>
       <div style="flex:1;height:20px;background:rgba(255,255,255,0.04);overflow:hidden">
-        <div style="height:100%;width:${pct.toFixed(0)}%;background:${pos?'#3ce42f':'#ffb4ab'};box-shadow:0 0 8px ${pos?'rgba(60,228,47,0.25)':'rgba(255,180,171,0.25)'}"></div>
+        <div style="height:100%;width:${pct.toFixed(0)}%;background:${pos?'#10B981':'#FCA5A5'};box-shadow:0 0 8px ${pos?'rgba(60,228,47,0.25)':'rgba(255,180,171,0.25)'}"></div>
       </div>
-      <span style="width:52px;text-align:right;font-size:11px;font-family:monospace;${pos?'color:#3ce42f':'color:#ffb4ab'}">${pos?'+':'-'}$${Math.abs(val).toFixed(0)}</span>
+      <span style="width:52px;text-align:right;font-size:11px;font-family:monospace;${pos?'color:#10B981':'color:#FCA5A5'}">${pos?'+':'-'}$${Math.abs(val).toFixed(0)}</span>
     </div>`;
   }).join('');
 }
@@ -1056,19 +1083,19 @@ function consistencyMatrix(trades) {
     map[yr][mo] = (map[yr][mo] || 0) + n(t.profit);
   });
   const years = Object.keys(map).sort((a,b) => b - a);
-  if (!years.length) return '<tr><td colspan="14" style="padding:20px;text-align:center;color:#475569;font-size:12px">No history data yet</td></tr>';
+  if (!years.length) return '<tr><td colspan="14" style="padding:20px;text-align:center;color:#5C4F3A;font-size:12px">No history data yet</td></tr>';
   return years.map(yr => {
     const ytd = Object.values(map[yr]).reduce((s,v) => s+v, 0);
     const cells = Array.from({length:12}, (_,m) => {
       const v = map[yr][m];
       if (v === undefined) return `<td class="matrix-cell" style="color:#334155">—</td>`;
       const pos = v >= 0;
-      return `<td class="matrix-cell" style="${pos?'color:#3ce42f':'color:#ffb4ab'}">${pos?'+':'-'}$${Math.abs(v).toFixed(0)}</td>`;
+      return `<td class="matrix-cell" style="${pos?'color:#10B981':'color:#FCA5A5'}">${pos?'+':'-'}$${Math.abs(v).toFixed(0)}</td>`;
     }).join('');
     return `<tr>
-      <td style="padding:8px 12px;font-weight:700;font-size:13px;color:#e5e2e1">${yr}</td>
+      <td style="padding:8px 12px;font-weight:700;font-size:13px;color:#F0E8D0">${yr}</td>
       ${cells}
-      <td style="padding:8px 16px 8px 8px;text-align:right;font-weight:700;font-size:12px;font-family:monospace;${ytd>=0?'color:#D4AF37':'color:#ffb4ab'}">${ytd>=0?'+':'-'}$${Math.abs(ytd).toFixed(0)}</td>
+      <td style="padding:8px 16px 8px 8px;text-align:right;font-weight:700;font-size:12px;font-family:monospace;${ytd>=0?'color:#D4AF37':'color:#FCA5A5'}">${ytd>=0?'+':'-'}$${Math.abs(ytd).toFixed(0)}</td>
     </tr>`;
   }).join('');
 }
@@ -1098,14 +1125,14 @@ function corePairsHtml(openTrades, trades) {
   const freq = {};
   all.forEach(s => freq[s] = (freq[s] || 0) + 1);
   const syms = Object.entries(freq).sort(([,a],[,b]) => b-a).slice(0,5).map(([s]) => s);
-  if (!syms.length) return '<div style="color:#475569;font-size:12px;text-align:center;padding:16px">No data yet</div>';
+  if (!syms.length) return '<div style="color:#5C4F3A;font-size:12px;text-align:center;padding:16px">No data yet</div>';
   const palette = {XA:'color:#f59e0b;background:rgba(245,158,11,0.12)',EU:'color:#93c5fd;background:rgba(59,130,246,0.1)',GB:'color:#fca5a5;background:rgba(239,68,68,0.1)',AU:'color:#67e8f9;background:rgba(6,182,212,0.1)',US:'color:#86efac;background:rgba(34,197,94,0.1)'};
   return syms.map(s => {
     const init = s.slice(0,2);
-    const col = palette[init] || 'color:#a8b4cc;background:rgba(168,180,204,0.08)';
+    const col = palette[init] || 'color:#B09870;background:rgba(168,180,204,0.08)';
     const last = trades.find(t => t.symbol === s);
     const dir = last ? (n(last.profit) >= 0 ? 'trending_up' : 'trending_down') : 'trending_up';
-    const dirColor = dir === 'trending_up' ? '#3ce42f' : '#ffb4ab';
+    const dirColor = dir === 'trending_up' ? '#10B981' : '#FCA5A5';
     const parts = s.length === 6 ? s.slice(0,3) + ' / ' + s.slice(3) : s;
     return `<div class="pair-row">
       <div style="display:flex;align-items:center;gap:10px">
@@ -1122,35 +1149,35 @@ function posCard(t) {
   const pl = n(t.profit);
   const dir = (t.action || '').toUpperCase();
   const bdr = pl >= 0 ? 'rgba(60,228,47,0.2)' : 'rgba(255,180,171,0.2)';
-  const clr = pl >= 0 ? '#3ce42f' : '#ffb4ab';
+  const clr = pl >= 0 ? '#10B981' : '#FCA5A5';
   const dirBg = dir === 'BUY' ? 'background:rgba(79,142,247,0.12);color:#93c5fd' : 'background:rgba(255,180,171,0.1);color:#fca5a5';
-  return `<div style="background:rgba(255,255,255,0.03);border:1px solid ${bdr};padding:20px;min-width:220px;flex:1">
+  return `<div style="background:rgba(212,175,55,0.04);border:1px solid ${bdr};padding:20px;min-width:220px;flex:1">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <span style="font-size:18px;font-weight:700;color:#e5e2e1">${esc(t.symbol)}</span>
+      <span style="font-size:18px;font-weight:700;color:#F0E8D0">${esc(t.symbol)}</span>
       <span style="font-size:10px;font-weight:700;padding:3px 8px;${dirBg}">${dir}</span>
     </div>
     <div style="font-size:28px;font-weight:800;color:${clr};letter-spacing:-.02em;margin-bottom:6px">${pl >= 0 ? '+' : '−'}${usd(Math.abs(pl))}</div>
-    <div style="font-size:11px;color:#a8b4cc;margin-bottom:${t.tp ? '4' : '0'}px">${lots(t.sizing)}L · ${t.pips}p · Entry ${t.openPrice}</div>
-    ${t.tp ? `<div style="font-size:10px;color:#64748b">TP ${t.tp}${t.sl && t.sl !== 0 ? ' · SL ' + t.sl : ''}</div>` : ''}
+    <div style="font-size:11px;color:#B09870;margin-bottom:${t.tp ? '4' : '0'}px">${lots(t.sizing)}L · ${t.pips}p · Entry ${t.openPrice}</div>
+    ${t.tp ? `<div style="font-size:10px;color:#7A6B52">TP ${t.tp}${t.sl && t.sl !== 0 ? ' · SL ' + t.sl : ''}</div>` : ''}
   </div>`;
 }
 
 // ── History Rows ──────────────────────────────────────────────
 function historyRows(trades) {
-  if (!trades.length) return '<tr><td colspan="9" style="padding:24px;text-align:center;color:#475569">No closed trades yet</td></tr>';
+  if (!trades.length) return '<tr><td colspan="9" style="padding:24px;text-align:center;color:#5C4F3A">No closed trades yet</td></tr>';
   return trades.map(t => {
-    const pl = n(t.profit), clr = pl >= 0 ? '#3ce42f' : '#ffb4ab';
+    const pl = n(t.profit), clr = pl >= 0 ? '#10B981' : '#FCA5A5';
     const comment = (t.comment || '').length > 22 ? t.comment.slice(0,22) + '…' : (t.comment || '');
     return `<tr>
-      <td style="color:#64748b;font-family:monospace;font-size:11px">${(t.closeTime || '').split(' ')[0]}</td>
+      <td style="color:#7A6B52;font-family:monospace;font-size:11px">${(t.closeTime || '').split(' ')[0]}</td>
       <td><b style="color:#f1f5f9;font-size:12px">${esc(t.symbol)}</b></td>
       <td style="font-size:11px;font-weight:700;color:${t.action === 'Buy' ? '#93c5fd' : '#fca5a5'}">${(t.action || '').toUpperCase()}</td>
-      <td style="font-family:monospace;font-size:11px;color:#a8b4cc">${lots(t.sizing)}L</td>
+      <td style="font-family:monospace;font-size:11px;color:#B09870">${lots(t.sizing)}L</td>
       <td style="font-family:monospace;font-size:11px">${t.openPrice}</td>
       <td style="font-family:monospace;font-size:11px">${t.closePrice}</td>
       <td style="font-family:monospace;font-size:12px;font-weight:700;color:${clr}">${pl >= 0 ? '+' : '−'}${usd(Math.abs(pl))}</td>
-      <td style="font-family:monospace;font-size:11px;color:#a8b4cc">${t.pips}p</td>
-      <td style="font-size:10px;color:#475569;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(comment)}</td>
+      <td style="font-family:monospace;font-size:11px;color:#B09870">${t.pips}p</td>
+      <td style="font-size:10px;color:#5C4F3A;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(comment)}</td>
     </tr>`;
   }).join('');
 }
@@ -1160,8 +1187,8 @@ function renderTicker(symbols) {
   const pairs = symbols.length ? symbols : ['XAUUSD','EURUSD','AUDCAD','GBPUSD','USDJPY'];
   const items = pairs.map((s, i) =>
     `<span style="display:inline-flex;align-items:center;gap:8px;margin-right:56px">
-      <span style="color:#64748b;font-weight:600">${esc(s)}</span>
-      <span style="color:${i % 2 === 0 ? '#3ce42f' : '#ffb4ab'};font-size:10px">${i % 2 === 0 ? '▲' : '▼'}</span>
+      <span style="color:#7A6B52;font-weight:600">${esc(s)}</span>
+      <span style="color:${i % 2 === 0 ? '#10B981' : '#FCA5A5'};font-size:10px">${i % 2 === 0 ? '▲' : '▼'}</span>
     </span>`
   );
   byId('ticker-content').innerHTML = [...items, ...items].join('');
@@ -1182,7 +1209,11 @@ function render(snap) {
 
   const trades = history.filter(t => t.symbol && t.action !== 'Deposit' && t.action !== 'Withdrawal');
   const wins   = trades.filter(t => n(t.profit) > 0).length;
-  const wr     = trades.length ? Math.round(wins / trades.length * 100) : n(account.winRate);
+  // Prefer scraped lifetime stats; fall back to history-derived values
+  const totalTrades = n(account.trades) || trades.length;
+  const wr          = n(account.winRate) || (trades.length ? Math.round(wins / trades.length * 100) : 0);
+  const totalWins   = n(account.trades) ? Math.round(n(account.winRate) / 100 * totalTrades) : wins;
+  const totalLosses = totalTrades - totalWins;
   const dg     = dailyGain.slice(-30);
 
   const updated = fetchedAt
@@ -1200,20 +1231,20 @@ function render(snap) {
   setEl('h-balance', usd(bal));
   setEl('h-equity',  `Equity ${usd(equity)} · Float ${equity >= bal ? '+' : '−'}${usd(Math.abs(equity - bal))}`);
   setEl('h-gain',    pct(gain));
-  byId('h-gain').style.color = gain >= 0 ? '#3ce42f' : '#ffb4ab';
+  byId('h-gain').style.color = gain >= 0 ? '#10B981' : '#FCA5A5';
   setEl('h-profit', `${profit >= 0 ? '+' : '−'}${usd(Math.abs(profit))} net profit`);
   setEl('h-dd',     dd.toFixed(2) + '%');
-  byId('h-dd').style.color = dd > 30 ? '#ffb4ab' : dd > 15 ? '#f59e0b' : '#3ce42f';
+  byId('h-dd').style.color = dd > 30 ? '#FCA5A5' : dd > 15 ? '#f59e0b' : '#10B981';
   setEl('h-dd-sub', dd > 30 ? '⚠ Elevated — monitor closely' : dd > 15 ? 'Moderate risk level' : 'Risk controlled');
 
   // Metrics
   setEl('m-monthly', (monthly >= 0 ? '+' : '') + monthly.toFixed(2) + '%');
-  byId('m-monthly').style.color = monthly >= 0 ? '#3ce42f' : '#ffb4ab';
+  byId('m-monthly').style.color = monthly >= 0 ? '#10B981' : '#FCA5A5';
   setEl('m-pf',     pf.toFixed(2));
-  byId('m-pf').style.color = pf >= 1.5 ? '#D4AF37' : '#a8b4cc';
+  byId('m-pf').style.color = pf >= 1.5 ? '#D4AF37' : '#B09870';
   setEl('m-pf-sub', pf >= 2 ? 'Excellent edge' : pf >= 1.5 ? 'Strong edge' : 'Positive edge');
   setEl('m-wr',     wr + '%');
-  setEl('m-wr-sub', `${wins}W / ${trades.length - wins}L of ${trades.length} trades`);
+  setEl('m-wr-sub', `${totalWins}W / ${totalLosses}L of ${totalTrades} trades`);
   setEl('m-pips',   '+' + Math.round(pips).toLocaleString() + 'p');
 
   // Equity curve
@@ -1232,9 +1263,9 @@ function render(snap) {
   byId('matrix-body').innerHTML = consistencyMatrix(trades);
 
   // Win rate donut
-  byId('wr-donut').innerHTML = donutSvg(wr, '#3ce42f');
+  byId('wr-donut').innerHTML = donutSvg(wr, '#10B981');
   setEl('wr-pct',   wr + '%');
-  setEl('wr-label', `${wins}W / ${trades.length - wins}L of ${trades.length} closed trades`);
+  setEl('wr-label', `${totalWins}W / ${totalLosses}L of ${totalTrades} closed trades`);
 
   // Strategy risk cards
   setEl('risk-dd', dd.toFixed(2) + '%');
@@ -1252,7 +1283,7 @@ function render(snap) {
   const alloc = calcAlloc(trades);
   setEl('alloc-pm', alloc.pmPct + '%');
   setEl('alloc-fx', alloc.fxPct + '%');
-  setEl('alloc-total', trades.length.toLocaleString() + ' trades');
+  setEl('alloc-total', totalTrades.toLocaleString() + ' trades');
   setTimeout(() => {
     const pmBar = byId('alloc-pm-bar'); if (pmBar) pmBar.style.width = alloc.pmPct + '%';
     const fxBar = byId('alloc-fx-bar'); if (fxBar) fxBar.style.width = alloc.fxPct + '%';
@@ -1265,10 +1296,10 @@ function render(snap) {
   setEl('pos-hdr', `Open Positions (${openTrades.length})`);
   byId('pos-grid').innerHTML = openTrades.length
     ? `<div style="display:flex;flex-wrap:wrap;gap:12px">${openTrades.map(posCard).join('')}</div>`
-    : `<div class="glass-panel" style="padding:28px;text-align:center;color:#475569;font-size:13px;letter-spacing:.04em;text-transform:uppercase;font-weight:700">No Open Positions</div>`;
+    : `<div class="glass-panel" style="padding:28px;text-align:center;color:#5C4F3A;font-size:13px;letter-spacing:.04em;text-transform:uppercase;font-weight:700">No Open Positions</div>`;
 
   // History
-  setEl('hist-hdr', `Trade History (${trades.length} closed)`);
+  setEl('hist-hdr', `Trade History (${totalTrades} closed${totalTrades > trades.length ? ', showing recent ' + trades.length : ''})`);
   byId('hist-body').innerHTML = historyRows(trades.slice(0, 50));
 
   // Show
