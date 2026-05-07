@@ -8,6 +8,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
 tailwind.config = {
@@ -15,26 +16,26 @@ tailwind.config = {
   theme:{extend:{
     colors:{
       "secondary":"#10B981","primary":"#EAC84A","primary-container":"#D4AF37",
-      "error":"#FCA5A5","background":"#03061A","surface":"#060D28",
-      "on-surface":"#E8EDF8","on-background":"#E8EDF8","on-primary":"#0A0E1E",
+      "error":"#FCA5A5","background":"#060F24","surface":"#0A1630",
+      "on-surface":"#EDF2FA","on-background":"#EDF2FA","on-primary":"#060F24",
       "on-primary-container":"#1A1500","secondary-fixed":"#6EE7B7",
       "secondary-container":"#059669","on-secondary":"#022C22",
-      "surface-container":"#0A1030","surface-container-low":"#060D28",
-      "surface-container-high":"#101A3E","surface-container-lowest":"#010409",
-      "surface-container-highest":"#172348","surface-bright":"#1C2D55",
-      "surface-dim":"#03061A","outline":"#3B5080","outline-variant":"#1E3060",
-      "on-surface-variant":"#8BAAD8","inverse-surface":"#E8EDF8",
-      "inverse-on-surface":"#1C2D55","inverse-primary":"#735c00",
+      "surface-container":"#0E1E3C","surface-container-low":"#0A1630",
+      "surface-container-high":"#152442","surface-container-lowest":"#03080F",
+      "surface-container-highest":"#1D2E50","surface-bright":"#233660",
+      "surface-dim":"#060F24","outline":"#2E4D7A","outline-variant":"#162840",
+      "on-surface-variant":"#7A9CC4","inverse-surface":"#EDF2FA",
+      "inverse-on-surface":"#233660","inverse-primary":"#735c00",
       "tertiary":"#93C5FD","tertiary-fixed":"#BFDBFE","tertiary-fixed-dim":"#60A5FA",
-      "tertiary-container":"#1D4ED8","on-tertiary":"#0A1E4A",
+      "tertiary-container":"#1D4ED8","on-tertiary":"#060F24",
       "error-container":"#7F1D1D","on-error":"#450A0A",
       "on-error-container":"#FEE2E2","surface-tint":"#EAC84A",
       "primary-fixed":"#FDE68A","primary-fixed-dim":"#EAC84A",
       "on-primary-fixed":"#1C1500","on-primary-fixed-variant":"#3D2E00",
       "secondary-fixed-dim":"#10B981","on-secondary-fixed":"#022C22",
       "on-secondary-fixed-variant":"#064E3B","on-secondary-container":"#022C22",
-      "on-tertiary-container":"#EFF6FF","on-tertiary-fixed":"#0A1E4A",
-      "on-tertiary-fixed-variant":"#1E3A8A","surface-variant":"#172348"
+      "on-tertiary-container":"#EFF6FF","on-tertiary-fixed":"#060F24",
+      "on-tertiary-fixed-variant":"#1E3A8A","surface-variant":"#1D2E50"
     },
     fontFamily:{
       "body-lg":["Inter"],"headline-md":["Inter"],"display-xl":["Inter"],
@@ -58,59 +59,61 @@ tailwind.config = {
 }
 </script>
 <style>
-/* ── Royal Blue Luxury Theme ────────────────────────────────── */
+/* ── Royal Navy Luxury Theme ────────────────────────────────── */
 :root{
   --gold:        #D4AF37;
   --gold-bright: #EAC84A;
   --gold-dim:    rgba(212,175,55,0.18);
   --emerald:     #10B981;
   --amber:       #F59E0B;
-  --bg-deep:     #03061A;
-  --bg-surface:  #060D28;
-  --text:        #E8EDF8;
-  --text-muted:  #8BAAD8;
-  --text-dim:    #4B6A9B;
-  --text-faint:  #253C66;
-  --royal-glow:  rgba(29,78,216,0.12);
+  --bg-deep:     #060F24;
+  --bg-surface:  #0A1630;
+  --text:        #EDF2FA;
+  --text-muted:  #7A9CC4;
+  --text-dim:    #3E5E88;
+  --text-faint:  #213650;
+  --royal-glow:  rgba(20,60,140,0.18);
   --gold-glass:  rgba(212,175,55,0.04);
-  --gold-border: rgba(212,175,55,0.18);
+  --gold-border: rgba(212,175,55,0.22);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#03061A;color:#E8EDF8;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.glass-panel{background:rgba(29,78,216,0.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.18)}
-.gold-glow{box-shadow:0 0 40px rgba(212,175,55,0.18),0 0 80px rgba(29,78,216,0.12)}
+body{background:#060F24;color:#EDF2FA;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2{font-family:'Playfair Display',Georgia,serif}
+.glass-panel{background:rgba(10,22,48,0.80);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.20)}
+.gold-glow{box-shadow:0 0 48px rgba(212,175,55,0.18),0 0 96px rgba(20,60,140,0.16)}
 .ticker-wrap{overflow:hidden;white-space:nowrap}
 .ticker-inner{display:inline-flex;align-items:center;animation:ticker 35s linear infinite}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.shimmer{background:linear-gradient(90deg,rgba(29,78,216,.04) 25%,rgba(212,175,55,.07) 50%,rgba(29,78,216,.04) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
+.shimmer{background:linear-gradient(90deg,rgba(20,60,140,.06) 25%,rgba(212,175,55,.07) 50%,rgba(20,60,140,.06) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .hero-bg{
   background:
-    radial-gradient(ellipse 110% 60% at 50% 0%,  rgba(212,175,55,0.10) 0%,transparent 60%),
-    radial-gradient(ellipse 70%  55% at 85% 45%, rgba(29,78,216,0.18)  0%,transparent 65%),
-    radial-gradient(ellipse 55%  40% at 12% 70%, rgba(29,78,216,0.12)  0%,transparent 55%),
-    radial-gradient(ellipse 90%  90% at 50% 50%, rgba(6,13,40,0.95)    0%,transparent 80%),
-    #03061A
+    radial-gradient(ellipse 120% 65% at 50% 0%,  rgba(212,175,55,0.12) 0%,transparent 58%),
+    radial-gradient(ellipse 70%  55% at 88% 45%, rgba(20,60,180,0.22)  0%,transparent 62%),
+    radial-gradient(ellipse 55%  45% at 10% 70%, rgba(10,40,120,0.16)  0%,transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%,rgba(8,18,48,0.90)   0%,transparent 85%),
+    #060F24
 }
+.gold-sep{height:2px;background:linear-gradient(90deg,transparent 0%,rgba(212,175,55,0.4) 15%,#D4AF37 40%,#EAC84A 50%,#D4AF37 60%,rgba(212,175,55,0.4) 85%,transparent 100%);margin:0 -32px}
 .hero-card{position:relative;overflow:hidden;padding:28px}
 .hero-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px}
 .hc-gold::after{background:linear-gradient(90deg,transparent,#D4AF37 50%,transparent)}
 .hc-green::after{background:linear-gradient(90deg,transparent,#10B981 50%,transparent)}
 .hc-amber::after{background:linear-gradient(90deg,transparent,#F59E0B 50%,transparent)}
-.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4B6A9B;border-left:2px solid #D4AF37;padding-left:10px;margin-bottom:16px}
-.strategy-card{background:rgba(29,78,216,0.06);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.18);padding:32px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
-.strategy-card:hover{border-color:rgba(212,175,55,0.45);box-shadow:0 0 40px rgba(29,78,216,0.15),0 0 20px rgba(212,175,55,0.06)}
-.badge{display:inline-block;padding:3px 10px;background:rgba(212,175,55,0.10);border:1px solid rgba(212,175,55,0.32);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37}
-.risk-card{background:rgba(29,78,216,0.06);border:1px solid rgba(212,175,55,0.14);border-left:2px solid rgba(212,175,55,0.60);padding:24px}
-.pair-row{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(29,78,216,0.05);border:1px solid rgba(212,175,55,0.10)}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#3E5E88;border-left:2px solid #D4AF37;padding-left:10px;margin-bottom:16px}
+.strategy-card{background:rgba(10,22,48,0.80);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.20);padding:32px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.strategy-card:hover{border-color:rgba(212,175,55,0.50);box-shadow:0 0 48px rgba(20,60,140,0.18),0 0 20px rgba(212,175,55,0.08)}
+.badge{display:inline-block;padding:3px 10px;background:rgba(212,175,55,0.10);border:1px solid rgba(212,175,55,0.35);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37}
+.risk-card{background:rgba(10,22,48,0.60);border:1px solid rgba(212,175,55,0.16);border-left:2px solid rgba(212,175,55,0.65);padding:24px}
+.pair-row{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(10,22,48,0.50);border:1px solid rgba(212,175,55,0.12)}
 .alloc-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.alloc-bar-track{flex:1;height:6px;background:rgba(29,78,216,0.15);overflow:hidden}
+.alloc-bar-track{flex:1;height:6px;background:rgba(20,60,140,0.18);overflow:hidden}
 .alloc-bar-fill{height:100%;transition:width .8s ease}
 table{width:100%;border-collapse:collapse}
-thead th{padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4B6A9B;text-align:left;background:rgba(29,78,216,0.08);white-space:nowrap}
-tbody tr{border-top:1px solid rgba(29,78,216,0.18);transition:background .1s}
-tbody tr:hover{background:rgba(29,78,216,0.10)}
-td{padding:8px 12px;font-size:12px;color:#8BAAD8}
+thead th{padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#3E5E88;text-align:left;background:rgba(10,22,48,0.60);white-space:nowrap}
+tbody tr{border-top:1px solid rgba(20,60,140,0.20);transition:background .1s}
+tbody tr:hover{background:rgba(20,60,140,0.12)}
+td{padding:8px 12px;font-size:12px;color:#7A9CC4}
 .matrix-cell{padding:10px 8px;text-align:center;font-size:11px;font-family:monospace}
 /* Royal brand font */
 .brand-name{font-family:'Cinzel',serif;letter-spacing:.12em}
@@ -120,7 +123,7 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
 <body>
 
 <!-- ── Nav ──────────────────────────────────────────────────── -->
-<nav style="position:fixed;top:0;width:100%;z-index:50;background:rgba(8,7,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,0.12)">
+<nav style="position:fixed;top:0;width:100%;z-index:50;background:rgba(5,12,30,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,0.18)">
   <div style="max-width:1400px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between">
     <div style="font-family:'Cinzel',serif;font-size:17px;font-weight:700;letter-spacing:.14em;color:#D4AF37;text-transform:uppercase">
       VERA LEVEL <span style="color:#F0E8D0;font-weight:400;letter-spacing:.08em">FX</span>
@@ -145,7 +148,7 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
 </nav>
 
 <!-- ── Ticker ────────────────────────────────────────────────── -->
-<div style="margin-top:64px;background:#060408;border-bottom:1px solid rgba(212,175,55,0.10);padding:7px 0" class="ticker-wrap">
+<div style="margin-top:64px;background:#040C20;border-bottom:1px solid rgba(212,175,55,0.14);padding:7px 0" class="ticker-wrap">
   <div id="ticker-content" class="ticker-inner" style="font-size:11px;font-weight:600;letter-spacing:.05em;gap:0">
     <span style="margin-right:48px;color:#7A6B52">Loading pairs...</span>
   </div>
@@ -214,6 +217,9 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
         </div>
       </div>
     </section>
+
+    <!-- Gold separator -->
+    <div class="gold-sep" style="margin-top:0;margin-bottom:0"></div>
 
     <!-- Metrics strip -->
     <div class="metrics-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:32px;margin-bottom:32px">
@@ -338,8 +344,8 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
     <!-- Strategy & Risk -->
     <section id="strategy" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Portfolio Strategy &amp; Risk Management</h2>
-        <p style="font-size:14px;color:#7A6B52">Institutional-grade execution frameworks engineered for capital preservation and systematic alpha generation.</p>
+        <h2 style="font-size:32px;font-weight:800;letter-spacing:-.01em;color:#EDF2FA;margin-bottom:6px;font-family:'Playfair Display',Georgia,serif">Portfolio Strategy &amp; Risk Management</h2>
+        <p style="font-size:14px;color:#7A9CC4">Institutional-grade execution frameworks engineered for capital preservation and systematic alpha generation.</p>
       </div>
 
       <div class="strat-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
@@ -494,8 +500,8 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
     <!-- ── Strategy Factsheet ────────────────────────────────── -->
     <section id="factsheet" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Strategy Factsheet · Portfolio Profile</h2>
-        <p style="font-size:14px;color:#7A6B52">Structured strategy documentation consistent with institutional asset management product disclosure standards.</p>
+        <h2 style="font-size:32px;font-weight:800;letter-spacing:-.01em;color:#EDF2FA;margin-bottom:6px;font-family:'Playfair Display',Georgia,serif">Strategy Factsheet · Portfolio Profile</h2>
+        <p style="font-size:14px;color:#7A9CC4">Structured strategy documentation consistent with institutional asset management product disclosure standards.</p>
       </div>
       <div style="border:1px solid rgba(212,175,55,0.14);overflow:hidden">
         <!-- Header -->
@@ -558,7 +564,7 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
 
     <!-- Why Invest Section -->
     <section style="margin-bottom:40px;background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.06);border-left:4px solid #D4AF37;padding:32px">
-      <h2 style="font-size:20px;font-weight:700;color:#F0E8D0;margin-bottom:20px">Why Invest With Us?</h2>
+      <h2 style="font-size:20px;font-weight:800;color:#EDF2FA;margin-bottom:20px;font-family:'Playfair Display',Georgia,serif">Why Invest With Us?</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
         <div style="display:flex;gap:16px">
           <span class="material-symbols-outlined" style="color:#D4AF37;font-size:22px;flex-shrink:0;margin-top:2px">verified_user</span>
@@ -594,8 +600,8 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
     <!-- ── Guide: How to Get Started ───────────────────────────── -->
     <section id="guide" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Get Started · How to Invest</h2>
-        <p style="font-size:14px;color:#7A6B52">Begin allocating in minutes. Follow these steps to connect with Vera Level FX.</p>
+        <h2 style="font-size:32px;font-weight:800;letter-spacing:-.01em;color:#EDF2FA;margin-bottom:6px;font-family:'Playfair Display',Georgia,serif">Get Started · How to Invest</h2>
+        <p style="font-size:14px;color:#7A9CC4">Begin allocating in minutes. Follow these steps to connect with Vera Level FX.</p>
       </div>
       <div style="border:1px solid rgba(212,175,55,0.14)">
 
@@ -766,7 +772,7 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
     <section style="margin-bottom:40px">
       <div class="glass-panel" style="padding:48px;text-align:center;position:relative;overflow:hidden">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#D4AF37 50%,transparent)"></div>
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:10px">Ready to scale your portfolio?</h2>
+        <h2 style="font-size:32px;font-weight:800;letter-spacing:-.01em;color:#EDF2FA;margin-bottom:10px;font-family:'Playfair Display',Georgia,serif">Ready to scale your portfolio?</h2>
         <p style="font-size:16px;color:#7A6B52;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7">Join investors leveraging algorithmic alpha and institutional liquidity for consistent FX returns. Speak directly to the portfolio analyst via WhatsApp.</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
           <a href="https://wa.me/919632233776" style="background:#D4AF37;color:#0E0B18;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:filter .2s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
@@ -780,8 +786,8 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
     <!-- Investment Partners & Referrals -->
     <section id="partners" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid #D4AF37;padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Broker Partners &amp; Referrals</h2>
-        <p style="font-size:14px;color:#7A6B52">Open accounts through Vera Level FX for exclusive access. IC Markets is our primary IB partner — the same broker used for this live portfolio.</p>
+        <h2 style="font-size:32px;font-weight:800;letter-spacing:-.01em;color:#EDF2FA;margin-bottom:6px;font-family:'Playfair Display',Georgia,serif">Broker Partners &amp; Referrals</h2>
+        <p style="font-size:14px;color:#7A9CC4">Open accounts through Vera Level FX for exclusive access. IC Markets is our primary IB partner — the same broker used for this live portfolio.</p>
       </div>
 
       <!-- IC Markets Featured IB Card -->
@@ -931,8 +937,8 @@ td{padding:8px 12px;font-size:12px;color:#8BAAD8}
     <!-- ── Risk Disclosures ──────────────────────────────────── -->
     <section id="disclosures" style="margin-bottom:40px">
       <div style="margin-bottom:24px;border-left:4px solid rgba(255,180,171,0.5);padding-left:16px">
-        <h2 style="font-size:32px;font-weight:700;letter-spacing:-.01em;color:#F0E8D0;margin-bottom:6px">Important Risk Disclosures</h2>
-        <p style="font-size:14px;color:#7A6B52">Please read carefully before allocating any capital.</p>
+        <h2 style="font-size:32px;font-weight:800;letter-spacing:-.01em;color:#EDF2FA;margin-bottom:6px;font-family:'Playfair Display',Georgia,serif">Important Risk Disclosures</h2>
+        <p style="font-size:14px;color:#7A9CC4">Please read carefully before allocating any capital.</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div style="background:rgba(212,175,55,0.03);border:1px solid rgba(255,255,255,0.07);border-left:2px solid rgba(255,180,171,0.35);padding:24px">
