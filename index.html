@@ -15,26 +15,26 @@ tailwind.config = {
   theme:{extend:{
     colors:{
       "secondary":"#10B981","primary":"#EAC84A","primary-container":"#D4AF37",
-      "error":"#FCA5A5","background":"#08070F","surface":"#0D0B18",
-      "on-surface":"#F0E8D0","on-background":"#F0E8D0","on-primary":"#0E0B18",
-      "on-primary-container":"#2A2000","secondary-fixed":"#6EE7B7",
+      "error":"#FCA5A5","background":"#03061A","surface":"#060D28",
+      "on-surface":"#E8EDF8","on-background":"#E8EDF8","on-primary":"#0A0E1E",
+      "on-primary-container":"#1A1500","secondary-fixed":"#6EE7B7",
       "secondary-container":"#059669","on-secondary":"#022C22",
-      "surface-container":"#120F1C","surface-container-low":"#0E0B18",
-      "surface-container-high":"#1A1728","surface-container-lowest":"#060408",
-      "surface-container-highest":"#231E30","surface-bright":"#2A2538",
-      "surface-dim":"#08070F","outline":"#8B7355","outline-variant":"#3D3222",
-      "on-surface-variant":"#C4B094","inverse-surface":"#F0E8D0",
-      "inverse-on-surface":"#2A2538","inverse-primary":"#735c00",
-      "tertiary":"#C4B5FD","tertiary-fixed":"#DDD6FE","tertiary-fixed-dim":"#A78BFA",
-      "tertiary-container":"#7C3AED","on-tertiary":"#2E1065",
+      "surface-container":"#0A1030","surface-container-low":"#060D28",
+      "surface-container-high":"#101A3E","surface-container-lowest":"#010409",
+      "surface-container-highest":"#172348","surface-bright":"#1C2D55",
+      "surface-dim":"#03061A","outline":"#3B5080","outline-variant":"#1E3060",
+      "on-surface-variant":"#8BAAD8","inverse-surface":"#E8EDF8",
+      "inverse-on-surface":"#1C2D55","inverse-primary":"#735c00",
+      "tertiary":"#93C5FD","tertiary-fixed":"#BFDBFE","tertiary-fixed-dim":"#60A5FA",
+      "tertiary-container":"#1D4ED8","on-tertiary":"#0A1E4A",
       "error-container":"#7F1D1D","on-error":"#450A0A",
       "on-error-container":"#FEE2E2","surface-tint":"#EAC84A",
       "primary-fixed":"#FDE68A","primary-fixed-dim":"#EAC84A",
       "on-primary-fixed":"#1C1500","on-primary-fixed-variant":"#3D2E00",
       "secondary-fixed-dim":"#10B981","on-secondary-fixed":"#022C22",
       "on-secondary-fixed-variant":"#064E3B","on-secondary-container":"#022C22",
-      "on-tertiary-container":"#EDE9FE","on-tertiary-fixed":"#1E1B4B",
-      "on-tertiary-fixed-variant":"#4C1D95","surface-variant":"#231E30"
+      "on-tertiary-container":"#EFF6FF","on-tertiary-fixed":"#0A1E4A",
+      "on-tertiary-fixed-variant":"#1E3A8A","surface-variant":"#172348"
     },
     fontFamily:{
       "body-lg":["Inter"],"headline-md":["Inter"],"display-xl":["Inter"],
@@ -58,59 +58,59 @@ tailwind.config = {
 }
 </script>
 <style>
-/* ── Royal Luxury Theme ─────────────────────────────────────── */
+/* ── Royal Blue Luxury Theme ────────────────────────────────── */
 :root{
   --gold:        #D4AF37;
   --gold-bright: #EAC84A;
   --gold-dim:    rgba(212,175,55,0.18);
   --emerald:     #10B981;
   --amber:       #F59E0B;
-  --bg-deep:     #08070F;
-  --bg-surface:  #0D0B18;
-  --text:        #F0E8D0;
-  --text-muted:  #B09870;
-  --text-dim:    #7A6B52;
-  --text-faint:  #4A3F30;
-  --royal-glow:  rgba(109,40,217,0.08);
+  --bg-deep:     #03061A;
+  --bg-surface:  #060D28;
+  --text:        #E8EDF8;
+  --text-muted:  #8BAAD8;
+  --text-dim:    #4B6A9B;
+  --text-faint:  #253C66;
+  --royal-glow:  rgba(29,78,216,0.12);
   --gold-glass:  rgba(212,175,55,0.04);
-  --gold-border: rgba(212,175,55,0.14);
+  --gold-border: rgba(212,175,55,0.18);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:#08070F;color:#F0E8D0;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.glass-panel{background:rgba(212,175,55,0.03);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.14)}
-.gold-glow{box-shadow:0 0 40px rgba(212,175,55,0.18),0 0 80px rgba(212,175,55,0.06)}
+body{background:#03061A;color:#E8EDF8;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.glass-panel{background:rgba(29,78,216,0.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.18)}
+.gold-glow{box-shadow:0 0 40px rgba(212,175,55,0.18),0 0 80px rgba(29,78,216,0.12)}
 .ticker-wrap{overflow:hidden;white-space:nowrap}
 .ticker-inner{display:inline-flex;align-items:center;animation:ticker 35s linear infinite}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.shimmer{background:linear-gradient(90deg,rgba(212,175,55,.025) 25%,rgba(212,175,55,.07) 50%,rgba(212,175,55,.025) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
+.shimmer{background:linear-gradient(90deg,rgba(29,78,216,.04) 25%,rgba(212,175,55,.07) 50%,rgba(29,78,216,.04) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .hero-bg{
   background:
-    radial-gradient(ellipse 110% 60% at 50% 0%,  rgba(212,175,55,0.11) 0%,transparent 65%),
-    radial-gradient(ellipse 60%  45% at 85% 50%, rgba(109,40,217,0.07) 0%,transparent 60%),
-    radial-gradient(ellipse 50%  35% at 12% 75%, rgba(212,175,55,0.05) 0%,transparent 55%),
-    radial-gradient(ellipse 80%  80% at 50% 50%, rgba(91,33,182,0.04)  0%,transparent 70%),
-    #08070F
+    radial-gradient(ellipse 110% 60% at 50% 0%,  rgba(212,175,55,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 70%  55% at 85% 45%, rgba(29,78,216,0.18)  0%,transparent 65%),
+    radial-gradient(ellipse 55%  40% at 12% 70%, rgba(29,78,216,0.12)  0%,transparent 55%),
+    radial-gradient(ellipse 90%  90% at 50% 50%, rgba(6,13,40,0.95)    0%,transparent 80%),
+    #03061A
 }
 .hero-card{position:relative;overflow:hidden;padding:28px}
 .hero-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px}
 .hc-gold::after{background:linear-gradient(90deg,transparent,#D4AF37 50%,transparent)}
 .hc-green::after{background:linear-gradient(90deg,transparent,#10B981 50%,transparent)}
 .hc-amber::after{background:linear-gradient(90deg,transparent,#F59E0B 50%,transparent)}
-.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#7A6B52;border-left:2px solid #D4AF37;padding-left:10px;margin-bottom:16px}
-.strategy-card{background:rgba(212,175,55,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.14);padding:32px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
-.strategy-card:hover{border-color:rgba(212,175,55,0.40);box-shadow:0 0 32px rgba(212,175,55,0.06)}
-.badge{display:inline-block;padding:3px 10px;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.28);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37}
-.risk-card{background:rgba(212,175,55,0.03);border:1px solid rgba(212,175,55,0.12);border-left:2px solid rgba(212,175,55,0.55);padding:24px}
-.pair-row{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(212,175,55,0.03);border:1px solid rgba(212,175,55,0.09)}
+.sec-hdr{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4B6A9B;border-left:2px solid #D4AF37;padding-left:10px;margin-bottom:16px}
+.strategy-card{background:rgba(29,78,216,0.06);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.18);padding:32px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.strategy-card:hover{border-color:rgba(212,175,55,0.45);box-shadow:0 0 40px rgba(29,78,216,0.15),0 0 20px rgba(212,175,55,0.06)}
+.badge{display:inline-block;padding:3px 10px;background:rgba(212,175,55,0.10);border:1px solid rgba(212,175,55,0.32);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4AF37}
+.risk-card{background:rgba(29,78,216,0.06);border:1px solid rgba(212,175,55,0.14);border-left:2px solid rgba(212,175,55,0.60);padding:24px}
+.pair-row{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(29,78,216,0.05);border:1px solid rgba(212,175,55,0.10)}
 .alloc-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.alloc-bar-track{flex:1;height:6px;background:rgba(212,175,55,0.08);overflow:hidden}
+.alloc-bar-track{flex:1;height:6px;background:rgba(29,78,216,0.15);overflow:hidden}
 .alloc-bar-fill{height:100%;transition:width .8s ease}
 table{width:100%;border-collapse:collapse}
-thead th{padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#5C4F3A;text-align:left;background:rgba(212,175,55,0.04);white-space:nowrap}
-tbody tr{border-top:1px solid rgba(212,175,55,0.08);transition:background .1s}
-tbody tr:hover{background:rgba(212,175,55,0.05)}
-td{padding:8px 12px;font-size:12px;color:#D0C4A8}
+thead th{padding:10px 12px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4B6A9B;text-align:left;background:rgba(29,78,216,0.08);white-space:nowrap}
+tbody tr{border-top:1px solid rgba(29,78,216,0.18);transition:background .1s}
+tbody tr:hover{background:rgba(29,78,216,0.10)}
+td{padding:8px 12px;font-size:12px;color:#8BAAD8}
 .matrix-cell{padding:10px 8px;text-align:center;font-size:11px;font-family:monospace}
 /* Royal brand font */
 .brand-name{font-family:'Cinzel',serif;letter-spacing:.12em}
