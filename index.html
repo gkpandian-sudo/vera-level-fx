@@ -34,11 +34,149 @@
             100% { transform: translateX(-50%); }
         }
         .font-editorial { font-family: 'Newsreader', serif; }
-        /* Mobile overrides */
+
+        /* ── Mobile layout overrides ─────────────────────── */
         @media (max-width: 767px) {
           .py-stack-xl { padding-top: 48px; padding-bottom: 48px; }
           .px-margin-desktop { padding-left: 20px; padding-right: 20px; }
         }
+
+        /* ── Scroll progress bar ─────────────────────────── */
+        html { scroll-behavior: smooth; }
+        #scroll-bar {
+          position: fixed; top: 0; left: 0; width: 0%; height: 2px;
+          background: #002366; z-index: 9999; transition: width 0.08s linear;
+          pointer-events: none;
+        }
+
+        /* ── Hero grid background + grain ───────────────── */
+        .hero-grid-bg {
+          background-image:
+            linear-gradient(rgba(0,35,102,0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,35,102,0.035) 1px, transparent 1px);
+          background-size: 48px 48px;
+          position: relative;
+        }
+        .hero-grid-bg::before {
+          content: '';
+          position: absolute; inset: 0;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+          pointer-events: none; z-index: 0;
+        }
+        .hero-grid-bg > * { position: relative; z-index: 1; }
+
+        /* ── Hero stat accent lines ──────────────────────── */
+        .hero-stat { position: relative; padding-top: 20px; }
+        .hero-stat::before {
+          content: ''; position: absolute; top: 0; left: 50%;
+          transform: translateX(-50%); width: 28px; height: 2px;
+          background: rgba(0,35,102,0.18);
+        }
+
+        /* ── Scroll reveal ───────────────────────────────── */
+        .reveal {
+          opacity: 0; transform: translateY(22px);
+          transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+        }
+        .reveal.in { opacity: 1; transform: none; }
+        .reveal-d1 { transition-delay: 0.10s; }
+        .reveal-d2 { transition-delay: 0.20s; }
+        .reveal-d3 { transition-delay: 0.30s; }
+
+        /* ── Card hover lift ─────────────────────────────── */
+        .card-lift { transition: box-shadow 0.28s ease, transform 0.28s ease; }
+        .card-lift:hover {
+          box-shadow: 0 20px 52px -10px rgba(0,35,102,0.11);
+          transform: translateY(-3px);
+        }
+
+        /* ── Profile bracket frame ───────────────────────── */
+        .bracket-frame { position: relative; display: inline-flex; }
+        .bracket-frame::before, .bracket-frame::after {
+          content: ''; position: absolute;
+          width: 22px; height: 22px;
+          border: 2px solid rgba(0,35,102,0.22);
+          pointer-events: none; z-index: 2;
+        }
+        .bracket-frame::before { top: -9px; left: -9px; border-right: none; border-bottom: none; }
+        .bracket-frame::after  { bottom: -9px; right: -9px; border-left: none; border-top: none; }
+
+        /* ── Step number outline ─────────────────────────── */
+        .step-outline {
+          font-size: 76px; font-weight: 900; line-height: 1;
+          color: transparent; letter-spacing: -0.04em;
+          -webkit-text-stroke: 1.5px rgba(0,35,102,0.1);
+          transition: -webkit-text-stroke-color 0.4s ease;
+          font-feature-settings: "tnum";
+        }
+        .group:hover .step-outline { -webkit-text-stroke-color: rgba(0,35,102,0.28); }
+
+        /* ── Strategy image overlay ──────────────────────── */
+        .strategy-img-wrap { position: relative; overflow: hidden; }
+        .strategy-img-wrap::after {
+          content: 'VERA LEVEL PROTOCOL';
+          position: absolute; bottom: 0; left: 0; right: 0;
+          padding: 28px 20px 16px;
+          font-size: 9px; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase;
+          color: rgba(255,255,255,0.85);
+          background: linear-gradient(transparent, rgba(0,0,0,0.55));
+        }
+
+        /* ── Equity line draw animation ──────────────────── */
+        @keyframes drawLine { from { stroke-dashoffset: 6000; } to { stroke-dashoffset: 0; } }
+        .equity-line-anim {
+          stroke-dasharray: 6000; stroke-dashoffset: 6000;
+          animation: drawLine 2s cubic-bezier(.4,0,.2,1) forwards;
+        }
+
+        /* ── Mobile bottom nav ───────────────────────────── */
+        @media (max-width: 767px) {
+          .mobile-bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 45;
+            background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(197,198,210,0.3);
+            display: flex; justify-content: space-around;
+            padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+          }
+          .mobile-bottom-nav a {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 2px; color: #757682; font-size: 7.5px; font-weight: 700;
+            letter-spacing: 0.07em; text-transform: uppercase; text-decoration: none;
+            padding: 4px 10px; transition: color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+          }
+          .mobile-bottom-nav a:active, .mobile-bottom-nav a.active { color: #002366; }
+          /* Push FABs above bottom nav */
+          a[aria-label="Telegram @padiangk"] { bottom: calc(64px + 28px) !important; }
+          a[aria-label="WhatsApp Analyst"]    { bottom: calc(64px + 10px) !important; }
+          main { padding-bottom: 64px; }
+        }
+        @media (min-width: 768px) { .mobile-bottom-nav { display: none !important; } }
+
+        /* ── Section marker decoration ───────────────────── */
+        .section-mark {
+          display: inline-flex; align-items: center; gap: 10px;
+          font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
+          text-transform: uppercase; color: #757682;
+        }
+        .section-mark::before {
+          content: ''; display: inline-block; width: 20px; height: 1.5px;
+          background: currentColor; opacity: 0.5;
+        }
+
+        /* ── Metric card icons ───────────────────────────── */
+        .metric-icon {
+          width: 26px; height: 26px; display: flex; align-items: center;
+          justify-content: center; margin-bottom: 10px; border-radius: 2px;
+        }
+
+        /* ── Enhanced ticker items ───────────────────────── */
+        .ticker-item {
+          display: inline-flex; align-items: center; gap: 8px;
+          padding: 0 24px; border-right: 1px solid rgba(197,198,210,0.25);
+          white-space: nowrap;
+        }
+        .ticker-item .change { font-variant-numeric: tabular-nums; }
     </style>
 <script id="tailwind-config">
         tailwind.config = {
@@ -100,6 +238,7 @@
     </script>
 </head>
 <body class="bg-background text-on-surface font-body-md selection:bg-primary/10 selection:text-primary">
+<div id="scroll-bar"></div>
 
 <!-- Command Rail (SideNavBar) -->
 <nav class="hidden md:flex md:flex-col fixed left-0 top-0 h-full z-50 bg-surface border-r border-outline-variant/30 transition-all duration-300 w-[80px] hover:w-[240px] group overflow-hidden">
@@ -187,30 +326,30 @@ Open Account
 </div>
 
 <!-- Hero -->
-<section class="py-stack-xl px-margin-desktop bg-surface" id="hero">
+<section class="py-stack-xl px-margin-desktop bg-surface hero-grid-bg" id="hero">
 <div class="max-w-container-max mx-auto text-center">
-<span class="font-label-caps text-secondary text-[10px] tracking-[0.4em] mb-8 block uppercase">Institutional Portfolio Management · IC Markets Verified</span>
-<h1 class="font-display-lg text-[40px] sm:text-[60px] md:text-[80px] text-primary mb-6 leading-[0.9] uppercase">Vera Level FX</h1>
-<p class="font-editorial text-lg md:text-2xl text-secondary max-w-2xl mx-auto mb-12 italic">Professional Forex Portfolio Management &amp; Technical Risk Architecture. Verified live on IC Markets.</p>
+<span class="section-mark justify-center mb-10 block">Institutional Portfolio Management · IC Markets Verified</span>
+<h1 class="font-display-lg text-[40px] sm:text-[60px] md:text-[80px] text-primary mb-6 leading-[0.9] uppercase tracking-tighter">Vera Level FX</h1>
+<p class="font-editorial text-lg md:text-2xl text-secondary max-w-2xl mx-auto mb-12 italic leading-relaxed">"Professional Forex Portfolio Management &amp; Technical Risk Architecture — Verified live on IC Markets."</p>
 <div class="flex flex-wrap justify-center gap-4 mb-16">
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors">Open Account ↗</a>
-<a href="https://t.me/padiangk" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-colors" style="border-color:#0088cc;color:#0088cc;">Telegram @padiangk</a>
-<a href="https://wa.me/919632233776" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-colors" style="border-color:#25D366;color:#25D366;">WhatsApp Analyst</a>
+<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all duration-200 hover:shadow-lg hover:shadow-primary/20">Open Account ↗</a>
+<a href="https://t.me/padiangk" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-all duration-200 hover:opacity-80" style="border-color:#0088cc;color:#0088cc;">Telegram @padiangk</a>
+<a href="https://wa.me/919632233776" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-all duration-200 hover:opacity-80" style="border-color:#25D366;color:#25D366;">WhatsApp Analyst</a>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-8">
-<div class="text-center">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-0 mt-8 border border-outline-variant/20 divide-y md:divide-y-0 md:divide-x divide-outline-variant/20 bg-background/60">
+<div class="hero-stat text-center p-10">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Total Gain</div>
-<div id="h-gain" class="text-4xl md:text-6xl font-black text-primary tracking-tighter">—</div>
+<div id="h-gain" class="text-4xl md:text-6xl font-black text-primary tracking-tighter tabular-nums">—</div>
 <p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Live Performance</p>
 </div>
-<div class="text-center">
+<div class="hero-stat text-center p-10">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Max Drawdown</div>
-<div id="h-dd" class="text-4xl md:text-6xl font-black text-primary tracking-tighter">—</div>
+<div id="h-dd" class="text-4xl md:text-6xl font-black text-primary tracking-tighter tabular-nums">—</div>
 <p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Strict Guardrails</p>
 </div>
-<div class="text-center">
+<div class="hero-stat text-center p-10">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Account Balance</div>
-<div id="h-balance" class="text-4xl md:text-6xl font-black text-primary tracking-tighter">—</div>
+<div id="h-balance" class="text-4xl md:text-6xl font-black text-primary tracking-tighter tabular-nums">—</div>
 <p class="text-[10px] text-outline mt-4 uppercase tracking-widest">IC Markets Live</p>
 </div>
 </div>
@@ -220,24 +359,36 @@ Open Account
 <!-- Metrics Strip -->
 <div class="px-margin-desktop py-8 bg-surface border-b border-outline-variant/20">
 <div class="max-w-container-max mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-<div class="bg-background p-6 soft-shadow border-t-2" style="border-color:#059669">
+<div class="bg-background p-6 soft-shadow border-t-2 card-lift reveal" style="border-color:#059669">
+<div class="metric-icon" style="background:rgba(5,150,105,0.08)">
+  <span class="material-symbols-outlined" style="font-size:15px;color:#059669;font-variation-settings:'FILL' 1;">trending_up</span>
+</div>
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Monthly Return</div>
-<div id="m-monthly" class="text-3xl font-black text-on-surface tracking-tighter">—</div>
+<div id="m-monthly" class="text-3xl font-black text-on-surface tracking-tighter tabular-nums">—</div>
 <div class="text-[10px] text-secondary mt-1">30-day rolling avg</div>
 </div>
-<div class="bg-background p-6 soft-shadow border-t-2 border-primary">
+<div class="bg-background p-6 soft-shadow border-t-2 border-primary card-lift reveal reveal-d1">
+<div class="metric-icon" style="background:rgba(0,35,102,0.07)">
+  <span class="material-symbols-outlined" style="font-size:15px;color:#002366;font-variation-settings:'FILL' 1;">balance</span>
+</div>
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Profit Factor</div>
-<div id="m-pf" class="text-3xl font-black text-on-surface tracking-tighter">—</div>
+<div id="m-pf" class="text-3xl font-black text-on-surface tracking-tighter tabular-nums">—</div>
 <div id="m-pf-sub" class="text-[10px] text-secondary mt-1">—</div>
 </div>
-<div class="bg-background p-6 soft-shadow border-t-2 border-outline-variant">
+<div class="bg-background p-6 soft-shadow border-t-2 border-outline-variant card-lift reveal reveal-d2">
+<div class="metric-icon" style="background:rgba(117,118,130,0.08)">
+  <span class="material-symbols-outlined" style="font-size:15px;color:#757682;font-variation-settings:'FILL' 1;">percent</span>
+</div>
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Win Rate</div>
-<div id="m-wr" class="text-3xl font-black text-on-surface tracking-tighter">—</div>
+<div id="m-wr" class="text-3xl font-black text-on-surface tracking-tighter tabular-nums">—</div>
 <div id="m-wr-sub" class="text-[10px] text-secondary mt-1">—</div>
 </div>
-<div class="bg-background p-6 soft-shadow border-t-2 border-primary">
+<div class="bg-background p-6 soft-shadow border-t-2 border-primary card-lift reveal reveal-d3">
+<div class="metric-icon" style="background:rgba(0,35,102,0.07)">
+  <span class="material-symbols-outlined" style="font-size:15px;color:#002366;font-variation-settings:'FILL' 1;">stacked_line_chart</span>
+</div>
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Total Pips</div>
-<div id="m-pips" class="text-3xl font-black text-primary tracking-tighter">—</div>
+<div id="m-pips" class="text-3xl font-black text-primary tracking-tighter tabular-nums">—</div>
 <div class="text-[10px] text-secondary mt-1">Cumulative earned</div>
 </div>
 </div>
@@ -248,7 +399,7 @@ Open Account
 <div class="max-w-container-max mx-auto">
 <div class="flex flex-col md:flex-row justify-between items-end gap-12 mb-20">
 <div class="max-w-2xl">
-<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-6 tracking-tight">Performance Analytics</h2>
+<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-6 tracking-tight reveal">Performance Analytics</h2>
 <p class="font-editorial text-xl text-secondary">A transparent look at our historical equity curve and volatility metrics, derived directly from institutional liquidity feeds on IC Markets.</p>
 </div>
 <div class="hidden md:flex gap-4">
@@ -258,7 +409,7 @@ Open Account
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 <!-- Chart -->
-<div class="lg:col-span-8 bg-surface p-5 md:p-12 soft-shadow">
+<div class="lg:col-span-8 bg-surface p-5 md:p-12 soft-shadow card-lift reveal">
 <div class="flex items-center justify-between mb-6">
 <div>
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary">Equity Growth Curve</h3>
@@ -281,7 +432,7 @@ Open Account
 </div>
 </div>
 <!-- Monthly Returns -->
-<div class="lg:col-span-4 bg-surface p-5 md:p-12 soft-shadow flex flex-col justify-between">
+<div class="lg:col-span-4 bg-surface p-5 md:p-12 soft-shadow flex flex-col justify-between card-lift reveal reveal-d1">
 <div>
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-8">Monthly P&amp;L</h3>
 <div id="monthly-bars" style="display:flex;flex-direction:column;gap:8px">
@@ -290,7 +441,7 @@ Open Account
 </div>
 </div>
 <!-- Consistency Matrix -->
-<div class="lg:col-span-12 bg-surface p-5 md:p-12 soft-shadow overflow-x-auto">
+<div class="lg:col-span-12 bg-surface p-5 md:p-12 soft-shadow overflow-x-auto reveal reveal-d2">
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-10">Consistency Matrix</h3>
 <table class="w-full text-left text-[11px] tracking-tighter">
 <thead>
@@ -369,7 +520,7 @@ Open Account
 <section class="py-stack-xl px-margin-desktop bg-surface" id="strategy">
 <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-stack-xl items-center">
 <div>
-<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-8 tracking-tight">The Vera Level Protocol</h2>
+<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-8 tracking-tight reveal">The Vera Level Protocol</h2>
 <p class="font-editorial text-lg md:text-2xl text-secondary mb-12">Our proprietary neural network logic combines tick-level data analysis with institutional liquidity modeling to identify market exhaustion points with 89% historical precision.</p>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
 <div class="space-y-4">
@@ -394,8 +545,10 @@ Open Account
 </div>
 </div>
 </div>
-<div class="bg-background p-4 soft-shadow">
-<img alt="Strategy" class="w-full grayscale contrast-125" loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCprOIIPV4PSKv2h1oz6nQWpt8kqOZZuj7wDKSz0j7nhzHbUMFhiWdqp-sWoXyeKL_FFXfv2oIEfHJvwD2Otn1hldB1GRaM_B4Cf9XuGH81lBSW0ExTYcSlX-yUQnM0DgXzflhXfMF6-O33JTLfJdmymVl2D9j32QY_P3ZwLJBnJCLoHq5r1-wpxYJfyZ7T7cmCtKcd9iOEruhCVgS2taada0CoPMywobs4mkhWgdTkRvp1VWVSD5y98aa1au6uN0KEbsBExN-IBSg"/>
+<div class="bg-background p-4 soft-shadow card-lift reveal reveal-d1">
+<div class="strategy-img-wrap">
+<img alt="Strategy" class="w-full grayscale contrast-125 block" loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCprOIIPV4PSKv2h1oz6nQWpt8kqOZZuj7wDKSz0j7nhzHbUMFhiWdqp-sWoXyeKL_FFXfv2oIEfHJvwD2Otn1hldB1GRaM_B4Cf9XuGH81lBSW0ExTYcSlX-yUQnM0DgXzflhXfMF6-O33JTLfJdmymVl2D9j32QY_P3ZwLJBnJCLoHq5r1-wpxYJfyZ7T7cmCtKcd9iOEruhCVgS2taada0CoPMywobs4mkhWgdTkRvp1VWVSD5y98aa1au6uN0KEbsBExN-IBSg"/>
+</div>
 </div>
 </div>
 </section>
@@ -403,8 +556,10 @@ Open Account
 <!-- Profile Section -->
 <section class="py-stack-xl px-margin-desktop bg-background" id="manager">
 <div class="max-w-container-max mx-auto bg-surface p-8 md:p-16 soft-shadow flex flex-col lg:flex-row items-center gap-10 md:gap-20">
-<div class="w-40 h-40 md:w-72 md:h-72 flex-shrink-0 bg-background border border-outline-variant/30 overflow-hidden">
+<div class="bracket-frame flex-shrink-0">
+<div class="w-40 h-40 md:w-72 md:h-72 bg-background border border-outline-variant/30 overflow-hidden">
 <img alt="Pandian" class="w-full h-full object-cover object-top" loading="lazy" decoding="async" src="myphoto.jpg"/>
+</div>
 </div>
 <div class="flex-grow">
 <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-secondary mb-4">Senior Analyst &amp; Introducing Broker · Singapore</div>
@@ -429,19 +584,19 @@ Open Account
 <h2 class="text-xs font-black text-primary uppercase text-center tracking-[0.5em] mb-20">Deployment Protocol</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
 <div class="space-y-6 group">
-<div class="text-5xl font-black text-outline/10 group-hover:text-primary transition-colors">01</div>
+<div class="step-outline">01</div>
 <h4 class="text-sm font-black uppercase tracking-widest text-primary">Open Account</h4>
 <p class="font-editorial text-secondary mb-6">Register a Pro-Raw spread account with IC Markets Global for minimum execution latency and true ECN conditions.</p>
 <a href="https://icmarkets.com/?camp=91936" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Open Now ↗</a>
 </div>
 <div class="space-y-6 group">
-<div class="text-5xl font-black text-outline/10 group-hover:text-primary transition-colors">02</div>
+<div class="step-outline">02</div>
 <h4 class="text-sm font-black uppercase tracking-widest text-primary">Link IB</h4>
 <p class="font-editorial text-secondary mb-6">Connect your account under our Introducing Broker ID to unlock the Vera Level license and IB rebates.</p>
 <a href="https://wa.me/919632233776" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Contact Analyst</a>
 </div>
 <div class="space-y-6 group">
-<div class="text-5xl font-black text-outline/10 group-hover:text-primary transition-colors">03</div>
+<div class="step-outline">03</div>
 <h4 class="text-sm font-black uppercase tracking-widest text-primary">Verification</h4>
 <p class="font-editorial text-secondary mb-6">Review your account and complete identity protocols to ensure fully compliant institutional participation on IC Markets.</p>
 <a href="https://wa.me/919632233776" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Contact Analyst</a>
@@ -528,6 +683,30 @@ Trading foreign exchange on margin carries a high level of risk and may not be s
 
 </main>
 
+<!-- Mobile Bottom Navigation -->
+<nav class="mobile-bottom-nav">
+<a href="#hero">
+  <span class="material-symbols-outlined" style="font-size:20px">dashboard</span>
+  Dashboard
+</a>
+<a href="#analytics">
+  <span class="material-symbols-outlined" style="font-size:20px">analytics</span>
+  Analytics
+</a>
+<a href="#history">
+  <span class="material-symbols-outlined" style="font-size:20px">history</span>
+  History
+</a>
+<a href="#strategy">
+  <span class="material-symbols-outlined" style="font-size:20px">security</span>
+  Strategy
+</a>
+<a href="https://t.me/padiangk" target="_blank" style="color:#0088cc">
+  <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1">send</span>
+  Contact
+</a>
+</nav>
+
 <!-- Floating Action Buttons -->
 <a href="https://t.me/padiangk" target="_blank" class="fixed bottom-28 right-10 z-50 text-white w-14 h-14 shadow-2xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95" style="background:#0088cc;" aria-label="Telegram @padiangk">
 <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">send</span>
@@ -537,6 +716,52 @@ Trading foreign exchange on margin carries a high level of risk and may not be s
 </a>
 
 <script>
+// ── Scroll progress bar ───────────────────────────────────────
+(function(){
+  var bar = document.getElementById('scroll-bar');
+  if (!bar) return;
+  window.addEventListener('scroll', function(){
+    var s = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? s / h * 100 : 0) + '%';
+  }, { passive: true });
+})();
+
+// ── Scroll reveal (IntersectionObserver) ─────────────────────
+(function(){
+  if (!window.IntersectionObserver) {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+
+// ── Count-up animation ────────────────────────────────────────
+function runCountUp(id, finalText, color) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (color) el.style.color = color;
+  var m = finalText.match(/([-+]?[\d,]+\.?\d*)/);
+  if (!m) { el.textContent = finalText; return; }
+  var raw = m[0].replace(/,/g,''), num = parseFloat(raw);
+  var pre = finalText.slice(0, finalText.search(/([-+]?[\d,])/));
+  var suf = finalText.slice(finalText.indexOf(m[0]) + m[0].length);
+  var decs = raw.indexOf('.') >= 0 ? raw.split('.')[1].length : 0;
+  var dur = 1500, t0 = null;
+  function tick(ts){
+    if (!t0) t0 = ts;
+    var p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3), v = num * e;
+    var s = decs > 0 ? v.toFixed(decs) : Math.round(v).toLocaleString('en-US');
+    el.textContent = pre + s + suf;
+    if (p < 1) requestAnimationFrame(tick); else el.textContent = finalText;
+  }
+  requestAnimationFrame(tick);
+}
+
 // ── Helpers ───────────────────────────────────────────────────
 const n    = v => Number(v || 0);
 const usd  = v => '$' + Math.abs(n(v)).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -724,23 +949,27 @@ async function init() {
     const pips    = n(account.pips);
     const dg      = dailyGain.slice(-60);
 
-    // Hero stats
-    setEl('h-gain',    pct(gain));
-    if (byId('h-gain')) byId('h-gain').style.color = gain >= 0 ? '#059669' : '#ba1a1a';
-    setEl('h-dd',      dd.toFixed(2) + '%');
-    setEl('h-balance', usd(bal));
+    // Hero stats — animated count-up
+    runCountUp('h-gain',    pct(gain),    gain >= 0 ? '#059669' : '#ba1a1a');
+    runCountUp('h-dd',      dd.toFixed(2) + '%', '#002366');
+    runCountUp('h-balance', usd(bal),     '#002366');
 
-    // Metrics strip
-    setEl('m-monthly', (monthly >= 0 ? '+' : '') + monthly.toFixed(2) + '%');
-    if (byId('m-monthly')) byId('m-monthly').style.color = monthly >= 0 ? '#059669' : '#ba1a1a';
-    setEl('m-pf',      pf.toFixed(2));
-    setEl('m-pf-sub',  pf >= 2 ? 'Excellent edge' : pf >= 1.5 ? 'Strong edge' : 'Positive edge');
-    setEl('m-wr',      wr + '%');
-    setEl('m-wr-sub',  `${totalWins}W / ${totalLosses}L of ${totalTrades} trades`);
-    setEl('m-pips',    '+' + Math.round(pips).toLocaleString() + 'p');
+    // Metrics strip — animated count-up
+    runCountUp('m-monthly', (monthly >= 0 ? '+' : '') + monthly.toFixed(2) + '%',
+               monthly >= 0 ? '#059669' : '#ba1a1a');
+    runCountUp('m-pf',  pf.toFixed(2),  '#191c1d');
+    setEl('m-pf-sub',   pf >= 2 ? 'Excellent edge' : pf >= 1.5 ? 'Strong edge' : 'Positive edge');
+    runCountUp('m-wr',  wr + '%',       '#191c1d');
+    setEl('m-wr-sub',   `${totalWins}W / ${totalLosses}L of ${totalTrades} trades`);
+    setEl('m-pips',     '+' + Math.round(pips).toLocaleString() + 'p');
 
-    // Equity curve
-    if (byId('equity-svg')) byId('equity-svg').innerHTML = equitySvg(dg);
+    // Equity curve + line-draw animation
+    if (byId('equity-svg')) {
+      byId('equity-svg').innerHTML = equitySvg(dg);
+      // Apply draw animation to the main equity path
+      var paths = byId('equity-svg').querySelectorAll('path');
+      paths.forEach(function(p){ if (p.getAttribute('stroke') === '#002366' && !p.getAttribute('fill').includes('url')) p.classList.add('equity-line-anim'); });
+    }
     setEl('equity-sub', `${dg.length}-day equity trajectory`);
     if (dg.length) {
       setEl('chart-from', dg[0][0] || '');
