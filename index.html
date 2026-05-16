@@ -111,32 +111,74 @@
         }
         .group:hover .step-outline { -webkit-text-stroke-color: rgba(0,35,102,0.28); }
 
-        /* ── Strategy video blend (light institutional theme) ── */
-        .strategy-img-wrap { position: relative; overflow: hidden; background: #ffffff; }
-
-        /* Vignette: fades video edges into page white */
+        /* ── iMac mockup ─────────────────────────────────── */
+        .imac-wrap {
+          display: flex; flex-direction: column; align-items: center;
+          padding-top: 12px; user-select: none;
+        }
+        .imac-bezel {
+          width: 100%;
+          background: linear-gradient(165deg, #0e2040 0%, #001428 100%);
+          border-radius: 14px 14px 5px 5px;
+          padding: 9px 9px 0;
+          box-shadow:
+            0 0 0 1px rgba(255,255,255,0.07),
+            0 0 0 2.5px rgba(0,0,0,0.5),
+            0 36px 72px -14px rgba(0,14,35,0.55),
+            inset 0 1px 0 rgba(255,255,255,0.07);
+        }
+        .imac-cam {
+          width: 6px; height: 6px; border-radius: 50%;
+          margin: 0 auto 7px;
+          background: radial-gradient(circle at 35% 35%, #3a4a60, #111a2a);
+          box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 2px rgba(0,0,0,0.6);
+        }
+        /* Screen area — video lives here */
+        .strategy-img-wrap {
+          position: relative; overflow: hidden; background: #000;
+          border-radius: 3px; aspect-ratio: 16/10;
+        }
+        /* Screen dark vignette — natural for a display */
         .strategy-img-wrap::before {
           content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
           background:
-            linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, transparent 25%, transparent 55%, rgba(255,255,255,0.95) 100%),
-            linear-gradient(to right,  rgba(255,255,255,0.4) 0%, transparent 14%, transparent 86%, rgba(255,255,255,0.4) 100%);
+            linear-gradient(to bottom, rgba(0,10,28,0.45) 0%, transparent 22%, transparent 62%, rgba(0,10,28,0.6) 100%),
+            linear-gradient(to right,  rgba(0,10,28,0.25) 0%, transparent 12%, transparent 88%, rgba(0,10,28,0.25) 100%);
         }
-
-        /* Caption: navy text on light fade, matching primary palette */
+        /* Caption — white on dark gradient, matching screen context */
         .strategy-img-wrap::after {
           content: 'VERA LEVEL PROTOCOL';
           position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
-          padding: 24px 20px 14px;
-          font-size: 9px; font-weight: 800; letter-spacing: 0.32em; text-transform: uppercase;
-          color: rgba(0,35,102,0.45);
-          background: transparent;
+          padding: 28px 16px 13px;
+          font-size: 8px; font-weight: 800; letter-spacing: 0.35em; text-transform: uppercase;
+          color: rgba(180,200,255,0.55);
+          background: linear-gradient(transparent, rgba(0,10,28,0.65));
         }
-
-        /* Desaturate + lighten video to sit on a white surface */
+        /* Video: desaturate + slight brightness lift; screen bg is black so less lift needed */
         .strategy-img-wrap video {
-          filter: grayscale(100%) brightness(1.18) contrast(0.86);
-          opacity: 0.78;
+          filter: grayscale(100%) brightness(1.05) contrast(0.92);
+          opacity: 0.88;
           display: block; width: 100%; vertical-align: bottom;
+        }
+        /* Chin strip below screen */
+        .imac-chin {
+          height: 26px;
+          display: flex; align-items: center; justify-content: center;
+          background: linear-gradient(165deg, #0e2040 0%, #001428 100%);
+          border-radius: 0 0 3px 3px;
+        }
+        /* Stand neck — silver taper */
+        .imac-neck {
+          width: 13%; min-width: 36px; height: 54px;
+          background: linear-gradient(to bottom right, #c2c2c8 0%, #8e8e96 60%, #767680 100%);
+          clip-path: polygon(26% 0%, 74% 0%, 84% 100%, 16% 100%);
+        }
+        /* Stand base — oval disk */
+        .imac-base {
+          width: 40%; max-width: 190px; height: 8px;
+          background: linear-gradient(to bottom, #c6c6cc 0%, #8a8a92 100%);
+          border-radius: 6px;
+          box-shadow: 0 3px 8px -3px rgba(0,0,0,0.28);
         }
 
         /* ── Equity line draw animation ──────────────────── */
@@ -558,12 +600,22 @@ Open Account
 </div>
 </div>
 </div>
-<div class="soft-shadow card-lift reveal reveal-d1 overflow-hidden">
-<div class="strategy-img-wrap">
-<video autoplay loop muted playsinline>
-<source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_155101_f2540600-6fe9-433e-8e48-b3f4b72f0727.mp4" type="video/mp4"/>
-</video>
-</div>
+<div class="imac-wrap card-lift reveal reveal-d1">
+  <div class="imac-bezel">
+    <div class="imac-cam"></div>
+    <div class="strategy-img-wrap">
+      <video autoplay loop muted playsinline>
+        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_155101_f2540600-6fe9-433e-8e48-b3f4b72f0727.mp4" type="video/mp4"/>
+      </video>
+    </div>
+    <div class="imac-chin">
+      <svg width="10" height="12" viewBox="0 0 256 315" aria-hidden="true">
+        <path fill="rgba(255,255,255,0.18)" d="M213.8 167c.4 47.6 41.7 63.4 42.2 63.6-.4 1.1-6.6 22.6-21.8 44.7-13.1 19.2-26.7 38.2-48.1 38.6-21.1.4-27.8-12.5-51.9-12.5-24.1 0-31.6 12.1-51.5 12.9-20.7.8-36.4-20.5-49.6-39.6C6 235.7-14.6 164.4 13.1 116.3c13.8-23.9 38.4-39 65.1-39.4 20.3-.4 39.5 13.7 51.9 13.7 12.4 0 35.7-16.9 60.2-14.4 10.2.4 39 4.1 57.5 31.2-1.5.9-34.3 20-34 59.6M174.2 50.2c11-13.3 18.4-31.8 16.4-50.2-15.8.6-35 10.5-46.3 23.8-10.2 11.8-19.1 30.6-16.7 48.6 17.6 1.4 35.7-9 46.6-22.2"/>
+      </svg>
+    </div>
+  </div>
+  <div class="imac-neck"></div>
+  <div class="imac-base"></div>
 </div>
 </div>
 </section>
