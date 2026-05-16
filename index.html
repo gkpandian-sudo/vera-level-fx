@@ -242,14 +242,14 @@
 
 <!-- Command Rail (SideNavBar) -->
 <nav class="hidden md:flex md:flex-col fixed left-0 top-0 h-full z-50 bg-surface border-r border-outline-variant/30 transition-all duration-300 w-[80px] hover:w-[240px] group overflow-hidden">
-<div class="p-6 flex items-center gap-4">
+<a href="#hero" class="p-6 flex items-center gap-4 no-underline hover:opacity-80 transition-opacity">
 <div class="w-10 h-10 flex-shrink-0 overflow-hidden flex items-center justify-center" style="background:#111;">
 <img src="logo.png" alt="Vera Level FX" class="w-full h-full object-contain p-0.5"/>
 </div>
 <div class="opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="font-bold text-primary tracking-tight whitespace-nowrap">Vera Level FX</span>
 </div>
-</div>
+</a>
 <div class="mt-10 flex flex-col">
 <a class="flex items-center px-6 py-4 text-primary bg-primary-container/5 border-r-2 border-primary" href="#hero">
 <span class="material-symbols-outlined">dashboard</span>
@@ -266,12 +266,6 @@
 <a class="flex items-center px-6 py-4 text-secondary hover:text-primary transition-colors" href="#history">
 <span class="material-symbols-outlined">history</span>
 <span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps uppercase">History</span>
-</a>
-</div>
-<div class="mt-auto mb-8 flex flex-col">
-<a class="flex items-center px-6 py-4 text-secondary hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps uppercase">Settings</span>
 </a>
 </div>
 </nav>
@@ -434,8 +428,11 @@ Open Account
 <div class="lg:col-span-4 bg-surface p-5 md:p-12 soft-shadow flex flex-col justify-between card-lift reveal reveal-d1">
 <div>
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-8">Monthly P&amp;L</h3>
-<div id="monthly-bars" style="display:flex;flex-direction:column;gap:8px">
+<div style="position:relative">
+<div id="pnl-tip" style="display:none;position:absolute;flex-direction:column;gap:2px;background:#fff;border:1px solid rgba(0,35,102,0.12);padding:8px 12px;pointer-events:none;z-index:10;box-shadow:0 8px 24px -4px rgba(0,35,102,0.1);border-radius:3px;white-space:nowrap;"></div>
+<div id="monthly-bars" style="display:flex;flex-direction:column;gap:2px">
 <div style="color:#585f66;font-size:11px;text-align:center;padding:20px 0;font-weight:600;letter-spacing:.06em;text-transform:uppercase">Loading...</div>
+</div>
 </div>
 </div>
 </div>
@@ -771,6 +768,9 @@ const esc  = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 const byId = id => document.getElementById(id);
 const setEl = (id, t) => { const el = byId(id); if (el) el.textContent = t; };
 
+// ── Equity Curve — shared state for interaction ───────────────
+var _eqPts = null, _eqDg = null, _eqDim = null;
+
 // ── Equity Curve SVG (light institutional theme) ──────────────
 function equitySvg(dg) {
   if (!dg || dg.length < 2) return '<text x="400" y="140" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Accumulating performance data...</text>';
@@ -778,7 +778,6 @@ function equitySvg(dg) {
   const gs = dg.map(d => n(d[1]));
   const rawMin = Math.min(...gs), rawMax = Math.max(...gs);
   const span = rawMax - Math.min(0, rawMin) || 1;
-  // Always include 0 in visible range
   const mn = Math.min(0, rawMin) - span * 0.04;
   const mx = rawMax + span * 0.08;
   const rng = mx - mn || 1;
@@ -791,7 +790,6 @@ function equitySvg(dg) {
   const lp = pts[pts.length-1];
   const lastG = gs[gs.length-1];
 
-  // Y-axis gridlines at nice intervals
   const approxStep = (mx - mn) / 4;
   const mag = Math.pow(10, Math.floor(Math.log10(Math.abs(approxStep) || 1)));
   const step = Math.ceil(approxStep / (mag * 0.5)) * (mag * 0.5) || 1;
@@ -809,6 +807,10 @@ function equitySvg(dg) {
 
   const labelCx = Math.min(parseFloat(lp[0]), W - PR - 44);
   const labelY  = Math.max(parseFloat(lp[1]) - 30, PT + 2);
+
+  // Store for interaction handler
+  _eqPts = pts; _eqDg = dg; _eqDim = { W, H, PL, PR, PT, PB };
+
   return `<defs>
     <linearGradient id="vl-fill" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#002366" stop-opacity="0.14"/>
@@ -821,13 +823,65 @@ function equitySvg(dg) {
   <path d="${line}" fill="none" stroke="#002366" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
   <circle cx="${lp[0]}" cy="${lp[1]}" r="4.5" fill="#002366"/>
   <rect x="${labelCx-40}" y="${labelY}" width="80" height="20" fill="#eef1ff" stroke="#002366" stroke-opacity="0.35" rx="2"/>
-  <text x="${labelCx}" y="${labelY+14}" fill="#002366" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">${lastG >= 0 ? '+' : ''}${lastG.toFixed(2)}%</text>`;
+  <text x="${labelCx}" y="${labelY+14}" fill="#002366" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">${lastG >= 0 ? '+' : ''}${lastG.toFixed(2)}%</text>
+  <rect id="eq-hit" x="${PL}" y="${PT}" width="${W-PL-PR}" height="${H-PT-PB}" fill="transparent" style="cursor:crosshair"/>
+  <g id="eq-tip" style="display:none" pointer-events="none">
+    <line id="eq-vline" x1="0" y1="${PT}" x2="0" y2="${H-PB}" stroke="rgba(0,35,102,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <circle id="eq-dot" r="5" fill="#002366" stroke="#ffffff" stroke-width="2.5"/>
+    <rect id="eq-bg" rx="3" fill="#002366"/>
+    <text id="eq-t1" fill="rgba(255,255,255,0.72)" font-size="9" font-family="Inter" font-weight="600" letter-spacing=".06em" text-anchor="middle"/>
+    <text id="eq-t2" fill="#ffffff" font-size="11" font-family="Inter" font-weight="800" text-anchor="middle"/>
+  </g>`;
 }
 
-// ── Monthly P&L Bars (light theme) ────────────────────────────
+// ── Equity curve hover interaction ────────────────────────────
+function wireEquityInteraction() {
+  var svg = byId('equity-svg');
+  if (!svg || !_eqPts || _eqPts.length < 2) return;
+  var hit = svg.querySelector('#eq-hit');
+  var tip = svg.querySelector('#eq-tip');
+  var vline = svg.querySelector('#eq-vline');
+  var dot   = svg.querySelector('#eq-dot');
+  var bg    = svg.querySelector('#eq-bg');
+  var t1    = svg.querySelector('#eq-t1');
+  var t2    = svg.querySelector('#eq-t2');
+  if (!hit || !tip) return;
+  var dim = _eqDim;
+
+  hit.addEventListener('mousemove', function(e) {
+    var rect = svg.getBoundingClientRect();
+    var mx = (e.clientX - rect.left) * (dim.W / rect.width);
+    var best = 0, bestDist = Infinity;
+    _eqPts.forEach(function(p, i) {
+      var d = Math.abs(parseFloat(p[0]) - mx);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    var px = parseFloat(_eqPts[best][0]);
+    var py = parseFloat(_eqPts[best][1]);
+    var date = _eqDg[best][0] || '';
+    var val  = n(_eqDg[best][1]);
+    tip.style.display = '';
+    vline.setAttribute('x1', px); vline.setAttribute('x2', px);
+    dot.setAttribute('cx', px);   dot.setAttribute('cy', py);
+    var TW = 96, TH = 38;
+    var tx = Math.max(dim.PL, Math.min(px - TW / 2, dim.W - dim.PR - TW));
+    var ty = py - TH - 12 < dim.PT ? py + 14 : py - TH - 12;
+    bg.setAttribute('x', tx);  bg.setAttribute('y', ty);
+    bg.setAttribute('width', TW); bg.setAttribute('height', TH);
+    t1.setAttribute('x', tx + TW / 2); t1.setAttribute('y', ty + 14); t1.textContent = date;
+    t2.setAttribute('x', tx + TW / 2); t2.setAttribute('y', ty + 30);
+    t2.textContent = (val >= 0 ? '+' : '') + val.toFixed(2) + '%';
+  });
+
+  hit.addEventListener('mouseleave', function() { tip.style.display = 'none'; });
+}
+
+// ── Monthly P&L Bars (light theme, interactive) ───────────────
+const MN_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MN_FULL  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
 function monthlyBars(trades, dailyGain) {
   const map = {};
-  // Prefer dailyGain (covers full account history, API caps trade history at 40)
   if (dailyGain && dailyGain.length >= 2) {
     dailyGain.forEach(entry => {
       const dateStr = Array.isArray(entry) ? entry[0] : (entry.date || '');
@@ -848,22 +902,60 @@ function monthlyBars(trades, dailyGain) {
   const entries = Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).slice(-6);
   if (!entries.length) return '<div style="color:#585f66;font-size:11px;text-align:center;padding:20px 0;font-weight:600;letter-spacing:.06em;text-transform:uppercase">No monthly data yet</div>';
   const maxAbs = Math.max(...entries.map(([,v]) => Math.abs(v)), 1);
-  const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return entries.map(([key, val]) => {
-    const mm = parseInt(key.split('-')[1]) - 1;
-    const barPct = Math.min(Math.abs(val) / maxAbs * 100, 100);
-    const pos = val >= 0;
+    const parts = key.split('-');
+    const yr  = parts[0];
+    const mm  = parseInt(parts[1]) - 1;
+    const barPct  = Math.min(Math.abs(val) / maxAbs * 100, 100);
+    const pos     = val >= 0;
     const textColor = pos ? '#059669' : '#ba1a1a';
     const barColor  = pos ? '#002366' : '#ba1a1a';
     const amount = '$' + Math.abs(val).toLocaleString('en-US', {maximumFractionDigits: 0});
-    return `<div style="display:flex;align-items:center;gap:8px">
-      <span style="width:26px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#757682;flex-shrink:0">${MN[mm]}</span>
+    return `<div class="pnl-row" data-label="${MN_FULL[mm]} ${yr}" data-val="${val.toFixed(2)}" data-pos="${pos ? '1' : '0'}"
+      style="display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:4px;cursor:default;transition:background 0.15s;">
+      <span style="width:26px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#757682;flex-shrink:0">${MN_SHORT[mm]}</span>
       <div style="flex:1;height:10px;background:#f3f4f5;border-radius:1px;overflow:hidden">
-        <div style="height:100%;width:${barPct.toFixed(0)}%;background:${barColor};border-radius:1px"></div>
+        <div class="pnl-fill" style="height:100%;width:${barPct.toFixed(0)}%;background:${barColor};border-radius:1px;transition:opacity 0.15s;"></div>
       </div>
       <span style="width:64px;text-align:right;font-size:10px;font-family:monospace;font-weight:700;color:${textColor};flex-shrink:0">${pos ? '+' : '−'}${amount}</span>
     </div>`;
   }).join('');
+}
+
+// ── Monthly bar hover interaction ─────────────────────────────
+function wireMonthlyInteraction() {
+  var container = byId('monthly-bars');
+  var tip = byId('pnl-tip');
+  if (!container || !tip) return;
+
+  container.addEventListener('mouseover', function(e) {
+    var row = e.target.closest('.pnl-row');
+    if (!row) return;
+    row.style.background = 'rgba(0,35,102,0.04)';
+    var fill = row.querySelector('.pnl-fill');
+    if (fill) fill.style.opacity = '0.65';
+    var label = row.dataset.label || '';
+    var val   = parseFloat(row.dataset.val || '0');
+    var pos   = row.dataset.pos === '1';
+    var sign  = pos ? '+' : '−';
+    var color = pos ? '#059669' : '#ba1a1a';
+    tip.innerHTML = '<span style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#585f66">' + label + '</span>'
+      + '<span style="font-size:13px;font-weight:800;color:' + color + ';margin-top:2px">' + sign + '$' + Math.abs(val).toLocaleString('en-US',{maximumFractionDigits:0}) + '</span>';
+    tip.style.display = 'flex';
+    var rowRect = row.getBoundingClientRect();
+    var containerRect = container.getBoundingClientRect();
+    tip.style.top  = (rowRect.top - containerRect.top - tip.offsetHeight - 6) + 'px';
+    tip.style.left = ((rowRect.left - containerRect.left) + 36) + 'px';
+  });
+
+  container.addEventListener('mouseout', function(e) {
+    var row = e.target.closest('.pnl-row');
+    if (!row) return;
+    row.style.background = '';
+    var fill = row.querySelector('.pnl-fill');
+    if (fill) fill.style.opacity = '';
+    tip.style.display = 'none';
+  });
 }
 
 // ── Consistency Matrix (light theme) ─────────────────────────
@@ -1003,7 +1095,7 @@ async function init() {
     setEl('m-wr-sub',   `${totalWins}W / ${totalLosses}L of ${totalTrades} trades`);
     setEl('m-pips',     '+' + Math.round(pips).toLocaleString() + 'p');
 
-    // Equity curve + line-draw animation
+    // Equity curve + line-draw animation + hover interaction
     if (byId('equity-svg')) {
       byId('equity-svg').innerHTML = equitySvg(dg);
       var paths = byId('equity-svg').querySelectorAll('path');
@@ -1011,6 +1103,7 @@ async function init() {
         if (p.getAttribute('stroke') === '#002366' && p.getAttribute('fill') && !p.getAttribute('fill').includes('url'))
           p.classList.add('equity-line-anim');
       });
+      wireEquityInteraction();
     }
     const source = dailyGain.length >= 2 ? 'Daily equity trajectory' : 'Equity trajectory (from trade history)';
     setEl('equity-sub', source);
@@ -1021,7 +1114,10 @@ async function init() {
     }
 
     // Monthly bars — prefer dailyGain (full history), fall back to trade list
-    if (byId('monthly-bars')) byId('monthly-bars').innerHTML = monthlyBars(trades, dailyGain);
+    if (byId('monthly-bars')) {
+      byId('monthly-bars').innerHTML = monthlyBars(trades, dailyGain);
+      wireMonthlyInteraction();
+    }
 
     // Consistency matrix
     if (byId('matrix-body')) byId('matrix-body').innerHTML = consistencyMatrix(trades, dailyGain);
