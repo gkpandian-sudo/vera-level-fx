@@ -5,6 +5,10 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Vera Level FX | Institutional Grade Forex Portfolio</title>
 <meta name="description" content="Live institutional-grade forex portfolio performance. IC Markets verified. Real-time balance, equity curve, drawdown, and trade history."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="dns-prefetch" href="https://cdn.tailwindcss.com"/>
+<link rel="dns-prefetch" href="https://secure.icmarkets.com"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -30,6 +34,11 @@
             100% { transform: translateX(-50%); }
         }
         .font-editorial { font-family: 'Newsreader', serif; }
+        /* Mobile overrides */
+        @media (max-width: 767px) {
+          .py-stack-xl { padding-top: 48px; padding-bottom: 48px; }
+          .px-margin-desktop { padding-left: 20px; padding-right: 20px; }
+        }
     </style>
 <script id="tailwind-config">
         tailwind.config = {
@@ -93,7 +102,7 @@
 <body class="bg-background text-on-surface font-body-md selection:bg-primary/10 selection:text-primary">
 
 <!-- Command Rail (SideNavBar) -->
-<nav class="fixed left-0 top-0 h-full z-50 flex flex-col bg-surface border-r border-outline-variant/30 transition-all duration-300 w-[80px] hover:w-[240px] group overflow-hidden">
+<nav class="hidden md:flex md:flex-col fixed left-0 top-0 h-full z-50 bg-surface border-r border-outline-variant/30 transition-all duration-300 w-[80px] hover:w-[240px] group overflow-hidden">
 <div class="p-6 flex items-center gap-4">
 <div class="w-10 h-10 flex-shrink-0 overflow-hidden flex items-center justify-center" style="background:#111;">
 <img src="logo.png" alt="Vera Level FX" class="w-full h-full object-contain p-0.5"/>
@@ -129,7 +138,7 @@
 </nav>
 
 <!-- Top Navigation -->
-<header class="fixed top-0 right-0 left-[80px] z-40 flex justify-between items-center px-margin-desktop h-20 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
+<header class="fixed top-0 right-0 left-0 md:left-[80px] z-40 flex justify-between items-center px-margin-desktop h-20 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
 <div class="flex items-center gap-12">
 <span class="text-xl font-extrabold text-primary tracking-tighter uppercase">Vera Level</span>
 <nav class="hidden lg:flex items-center gap-8">
@@ -145,20 +154,20 @@
 <span class="material-symbols-outlined text-sm">verified</span>
 <span class="font-label-caps text-[10px] uppercase">IC Markets Active</span>
 </div>
-<a href="https://t.me/padiangk" target="_blank" class="flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style="background:#0088cc;color:#fff;">
+<a href="https://t.me/padiangk" target="_blank" class="hidden sm:flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style="background:#0088cc;color:#fff;">
 <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">send</span>Telegram
 </a>
-<a href="https://wa.me/919632233776" target="_blank" class="flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style="background:#25D366;color:#fff;">
+<a href="https://wa.me/919632233776" target="_blank" class="hidden sm:flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style="background:#25D366;color:#fff;">
 <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">chat</span>WhatsApp
 </a>
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary/90 transition-colors">
+<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-4 sm:px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary/90 transition-colors">
 Open Account
 </a>
 </div>
 </header>
 
 <!-- Main Content -->
-<main class="ml-[80px] pt-20">
+<main class="ml-0 md:ml-[80px] pt-20">
 
 <!-- Ticker -->
 <div class="ticker-wrap h-12 border-b border-outline-variant/20 flex items-center">
@@ -181,8 +190,8 @@ Open Account
 <section class="py-stack-xl px-margin-desktop bg-surface" id="hero">
 <div class="max-w-container-max mx-auto text-center">
 <span class="font-label-caps text-secondary text-[10px] tracking-[0.4em] mb-8 block uppercase">Institutional Portfolio Management · IC Markets Verified</span>
-<h1 class="font-display-lg text-[80px] text-primary mb-6 leading-[0.9] uppercase">Vera Level FX</h1>
-<p class="font-editorial text-2xl text-secondary max-w-2xl mx-auto mb-12 italic">Professional Forex Portfolio Management &amp; Technical Risk Architecture. Verified live on IC Markets.</p>
+<h1 class="font-display-lg text-[40px] sm:text-[60px] md:text-[80px] text-primary mb-6 leading-[0.9] uppercase">Vera Level FX</h1>
+<p class="font-editorial text-lg md:text-2xl text-secondary max-w-2xl mx-auto mb-12 italic">Professional Forex Portfolio Management &amp; Technical Risk Architecture. Verified live on IC Markets.</p>
 <div class="flex flex-wrap justify-center gap-4 mb-16">
 <a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors">Open Account ↗</a>
 <a href="https://t.me/padiangk" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-colors" style="border-color:#0088cc;color:#0088cc;">Telegram @padiangk</a>
@@ -191,17 +200,17 @@ Open Account
 <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-8">
 <div class="text-center">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Total Gain</div>
-<div id="h-gain" class="text-6xl font-black text-primary tracking-tighter">—</div>
+<div id="h-gain" class="text-4xl md:text-6xl font-black text-primary tracking-tighter">—</div>
 <p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Live Performance</p>
 </div>
 <div class="text-center">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Max Drawdown</div>
-<div id="h-dd" class="text-6xl font-black text-primary tracking-tighter">—</div>
+<div id="h-dd" class="text-4xl md:text-6xl font-black text-primary tracking-tighter">—</div>
 <p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Strict Guardrails</p>
 </div>
 <div class="text-center">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Account Balance</div>
-<div id="h-balance" class="text-6xl font-black text-primary tracking-tighter">—</div>
+<div id="h-balance" class="text-4xl md:text-6xl font-black text-primary tracking-tighter">—</div>
 <p class="text-[10px] text-outline mt-4 uppercase tracking-widest">IC Markets Live</p>
 </div>
 </div>
@@ -239,17 +248,17 @@ Open Account
 <div class="max-w-container-max mx-auto">
 <div class="flex flex-col md:flex-row justify-between items-end gap-12 mb-20">
 <div class="max-w-2xl">
-<h2 class="text-4xl font-black text-primary uppercase mb-6 tracking-tight">Performance Analytics</h2>
+<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-6 tracking-tight">Performance Analytics</h2>
 <p class="font-editorial text-xl text-secondary">A transparent look at our historical equity curve and volatility metrics, derived directly from institutional liquidity feeds on IC Markets.</p>
 </div>
-<div class="flex gap-4">
+<div class="hidden md:flex gap-4">
 <a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors">Open Account ↗</a>
 <a href="https://wa.me/919632233776" target="_blank" class="bg-white text-secondary border border-outline-variant px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">WhatsApp Analyst</a>
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 <!-- Chart -->
-<div class="lg:col-span-8 bg-surface p-12 soft-shadow">
+<div class="lg:col-span-8 bg-surface p-5 md:p-12 soft-shadow">
 <div class="flex items-center justify-between mb-6">
 <div>
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary">Equity Growth Curve</h3>
@@ -260,7 +269,7 @@ Open Account
 <span class="text-[9px] font-bold uppercase tracking-widest bg-primary/5 text-primary px-2 py-1">ALL TIME</span>
 </div>
 </div>
-<div class="h-[340px]">
+<div class="h-[200px] md:h-[340px]">
 <svg id="equity-svg" class="w-full h-full" viewBox="0 0 800 300" style="overflow:visible">
 <text x="400" y="150" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Loading equity curve...</text>
 </svg>
@@ -272,7 +281,7 @@ Open Account
 </div>
 </div>
 <!-- Monthly Returns -->
-<div class="lg:col-span-4 bg-surface p-12 soft-shadow flex flex-col justify-between">
+<div class="lg:col-span-4 bg-surface p-5 md:p-12 soft-shadow flex flex-col justify-between">
 <div>
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-8">Monthly P&amp;L</h3>
 <div id="monthly-bars" style="display:flex;flex-direction:column;gap:8px">
@@ -281,7 +290,7 @@ Open Account
 </div>
 </div>
 <!-- Consistency Matrix -->
-<div class="lg:col-span-12 bg-surface p-12 soft-shadow overflow-x-auto">
+<div class="lg:col-span-12 bg-surface p-5 md:p-12 soft-shadow overflow-x-auto">
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-10">Consistency Matrix</h3>
 <table class="w-full text-left text-[11px] tracking-tighter">
 <thead>
@@ -360,8 +369,8 @@ Open Account
 <section class="py-stack-xl px-margin-desktop bg-surface" id="strategy">
 <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-stack-xl items-center">
 <div>
-<h2 class="text-4xl font-black text-primary uppercase mb-8 tracking-tight">The TOL LANGIT Protocol</h2>
-<p class="font-editorial text-2xl text-secondary mb-12">Our proprietary neural network logic combines tick-level data analysis with institutional liquidity modeling to identify market exhaustion points with 89% historical precision.</p>
+<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-8 tracking-tight">The TOL LANGIT Protocol</h2>
+<p class="font-editorial text-lg md:text-2xl text-secondary mb-12">Our proprietary neural network logic combines tick-level data analysis with institutional liquidity modeling to identify market exhaustion points with 89% historical precision.</p>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
 <div class="space-y-4">
 <span class="material-symbols-outlined text-primary text-3xl">psychology</span>
@@ -386,29 +395,29 @@ Open Account
 </div>
 </div>
 <div class="bg-background p-4 soft-shadow">
-<img alt="Strategy" class="w-full grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCprOIIPV4PSKv2h1oz6nQWpt8kqOZZuj7wDKSz0j7nhzHbUMFhiWdqp-sWoXyeKL_FFXfv2oIEfHJvwD2Otn1hldB1GRaM_B4Cf9XuGH81lBSW0ExTYcSlX-yUQnM0DgXzflhXfMF6-O33JTLfJdmymVl2D9j32QY_P3ZwLJBnJCLoHq5r1-wpxYJfyZ7T7cmCtKcd9iOEruhCVgS2taada0CoPMywobs4mkhWgdTkRvp1VWVSD5y98aa1au6uN0KEbsBExN-IBSg"/>
+<img alt="Strategy" class="w-full grayscale contrast-125" loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCprOIIPV4PSKv2h1oz6nQWpt8kqOZZuj7wDKSz0j7nhzHbUMFhiWdqp-sWoXyeKL_FFXfv2oIEfHJvwD2Otn1hldB1GRaM_B4Cf9XuGH81lBSW0ExTYcSlX-yUQnM0DgXzflhXfMF6-O33JTLfJdmymVl2D9j32QY_P3ZwLJBnJCLoHq5r1-wpxYJfyZ7T7cmCtKcd9iOEruhCVgS2taada0CoPMywobs4mkhWgdTkRvp1VWVSD5y98aa1au6uN0KEbsBExN-IBSg"/>
 </div>
 </div>
 </section>
 
 <!-- Profile Section -->
 <section class="py-stack-xl px-margin-desktop bg-background" id="manager">
-<div class="max-w-container-max mx-auto bg-surface p-16 soft-shadow flex flex-col lg:flex-row items-center gap-20">
-<div class="w-72 h-72 flex-shrink-0 bg-background border border-outline-variant/30 overflow-hidden">
-<img alt="Pandian" class="w-full h-full object-cover object-top" src="myphoto.jpg"/>
+<div class="max-w-container-max mx-auto bg-surface p-8 md:p-16 soft-shadow flex flex-col lg:flex-row items-center gap-10 md:gap-20">
+<div class="w-40 h-40 md:w-72 md:h-72 flex-shrink-0 bg-background border border-outline-variant/30 overflow-hidden">
+<img alt="Pandian" class="w-full h-full object-cover object-top" loading="lazy" decoding="async" src="myphoto.jpg"/>
 </div>
 <div class="flex-grow">
 <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-secondary mb-4">Senior Analyst &amp; Introducing Broker · Singapore</div>
-<h2 class="text-4xl font-black text-primary uppercase mb-8 tracking-tighter">Pandian</h2>
-<p class="font-editorial text-xl text-secondary mb-12">Singapore-based professional forex trader specialising in systematic and algorithmic execution on IC Markets. Live portfolio with a continuous public track record. Operating as an Official Introducing Broker (IB) for IC Markets, ensuring prime institutional conditions and deep liquidity for all managed capital.</p>
+<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-8 tracking-tighter">Pandian</h2>
+<p class="font-editorial text-base md:text-xl text-secondary mb-12">Singapore-based professional forex trader specialising in systematic and algorithmic execution on IC Markets. Live portfolio with a continuous public track record. Operating as an Official Introducing Broker (IB) for IC Markets, ensuring prime institutional conditions and deep liquidity for all managed capital.</p>
 <div class="flex flex-wrap gap-6">
-<a href="https://t.me/padiangk" target="_blank" class="flex items-center gap-2 px-10 py-4 text-[10px] font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity" style="background:#0088cc;">
+<a href="https://t.me/padiangk" target="_blank" class="flex items-center gap-2 px-6 md:px-10 py-4 text-[10px] font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity" style="background:#0088cc;">
 <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">send</span>Telegram @padiangk
 </a>
-<a href="https://wa.me/919632233776" target="_blank" class="flex items-center gap-2 px-10 py-4 text-[10px] font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity" style="background:#25D366;">
+<a href="https://wa.me/919632233776" target="_blank" class="flex items-center gap-2 px-6 md:px-10 py-4 text-[10px] font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity" style="background:#25D366;">
 <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">chat</span>WhatsApp Analyst
 </a>
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="border border-outline text-secondary px-10 py-4 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">Open IC Markets Account ↗</a>
+<a href="https://icmarkets.com/?camp=91936" target="_blank" class="border border-outline text-secondary px-6 md:px-10 py-4 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">Open IC Markets Account ↗</a>
 </div>
 </div>
 </div>
@@ -445,7 +454,7 @@ Open Account
 <section class="py-stack-xl px-margin-desktop bg-background" id="partners">
 <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 <div class="bg-surface p-16 soft-shadow">
-<h3 class="text-3xl font-black text-primary uppercase mb-8 tracking-tight">Trade with the World's #1 Broker</h3>
+<h3 class="text-xl md:text-3xl font-black text-primary uppercase mb-8 tracking-tight">Trade with the World's #1 Broker</h3>
 <p class="font-editorial text-xl text-secondary mb-12">IC Markets is the globally recognized leader in RAW spreads, providing retail traders with true institutional-grade liquidity and execution. The broker used for this live portfolio.</p>
 <ul class="space-y-6 mb-12 text-sm font-bold uppercase tracking-widest text-primary">
 <li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> Spreads from 0.0 Pips</li>
@@ -464,8 +473,8 @@ Open Account
 </a>
 </div>
 <!-- IC Markets Live Price Widget -->
-<div class="bg-white soft-shadow flex flex-col items-center justify-center min-h-[480px] overflow-hidden">
-<iframe src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" title="IC Markets Live Price Terminal"></iframe>
+<div class="bg-white soft-shadow flex flex-col items-center justify-center min-h-[320px] md:min-h-[480px] overflow-hidden">
+<iframe src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" loading="lazy" title="IC Markets Live Price Terminal"></iframe>
 </div>
 </div>
 </section>
