@@ -9,11 +9,12 @@ Usage:
 import json, os, sys, requests
 from datetime import date, datetime
 from pathlib import Path
+from urllib.parse import unquote
 
 EMAIL    = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('MYFX_EMAIL', '')
 PASSWORD = sys.argv[2] if len(sys.argv) > 2 else os.environ.get('MYFX_PASSWORD', '')
 
-MYFX_ID  = 12027369           # Myfxbook account ID (from existing snapshot)
+MYFX_ID  = 12044019           # Vera Level account ID
 START    = '2026-01-01'       # fetch daily gain from this date
 OUT      = Path(__file__).parent / 'data' / 'vera-snapshot.json'
 BASE     = 'https://www.myfxbook.com/api'
@@ -33,13 +34,13 @@ def main():
         sys.exit("Usage: python fetch_snapshot.py EMAIL PASSWORD\n"
                  "  or set MYFX_EMAIL and MYFX_PASSWORD environment variables")
 
-    print("Logging in to Myfxbook …")
+    print("Logging in to Myfxbook ...")
     login   = api('login.json', {'email': EMAIL, 'password': PASSWORD})
-    session = login['session']
+    session = unquote(login['session'])   # decode %2B → + etc. so params aren't double-encoded
     print(f"  session: {session[:10]}…")
 
     # ── Account info ──────────────────────────────────────────────
-    print("Fetching account info …")
+    print("Fetching account info ...")
     accts = api('get-my-accounts.json', {'session': session}).get('accounts', [])
     acct  = next((a for a in accts if a['id'] == MYFX_ID), accts[0] if accts else {})
     if not acct:
@@ -48,28 +49,30 @@ def main():
 
     # ── Daily gain curve ─────────────────────────────────────────
     end = date.today().strftime('%Y-%m-%d')
-    print(f"Fetching daily gain ({START} → {end}) …")
-    raw_daily = api('get-data-daily.json', {
+    print(f"Fetching daily gain ({START} to {end}) ...")
+    raw_daily = api('get-daily-gain.json', {
         'session': session, 'id': MYFX_ID,
         'start': START, 'end': end,
-    }).get('dataDaily', [])
-    # Myfxbook returns {date, value, profit} per day; value = cumulative % gain
-    if raw_daily and isinstance(raw_daily[0], dict):
-        daily_gain = [[d['date'], d['value']] for d in raw_daily]
-    else:
-        # Already [[date, value], ...] format
-        daily_gain = raw_daily
+    }).get('dailyGain', [])
+    # Each entry is [{date, value, profit}] — value = cumulative % gain, profit = daily $ profit
+    daily_gain = []
+    for entry in raw_daily:
+        e = entry[0] if isinstance(entry, list) else entry
+        if isinstance(e, dict):
+            daily_gain.append([e['date'], e.get('value', 0), e.get('profit', 0)])
+        else:
+            daily_gain.append(e)
     print(f"  {len(daily_gain)} daily data points")
 
     # ── Open trades ───────────────────────────────────────────────
-    print("Fetching open trades …")
+    print("Fetching open trades ...")
     open_trades = api('get-open-trades.json', {
         'session': session, 'id': MYFX_ID
     }).get('openTrades', [])
     print(f"  {len(open_trades)} open positions")
 
     # ── Full trade history ────────────────────────────────────────
-    print("Fetching full trade history …")
+    print("Fetching full trade history ...")
     history = api('get-history.json', {
         'session': session, 'id': MYFX_ID
     }).get('history', [])
@@ -91,8 +94,12 @@ def main():
         'dailyGain':  daily_gain,
     }
     OUT.write_text(json.dumps(snapshot, indent=2))
-    print(f"\nSaved → {OUT}")
+    print(f"\nSaved: {OUT}")
     print(f"  Gain       : {acct.get('gain')}%")
     print(f"  History    : {len(history)} trades")
     print(f"  Daily pts  : {len(daily_gain)}")
     print(f"  Open trades: {len(open_trades)}")
+
+
+if __name__ == '__main__':
+    main()

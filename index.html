@@ -825,14 +825,26 @@ function equitySvg(dg) {
 }
 
 // ── Monthly P&L Bars (light theme) ────────────────────────────
-function monthlyBars(trades) {
+function monthlyBars(trades, dailyGain) {
   const map = {};
-  trades.forEach(t => {
-    const p = (t.closeTime || '').split('/');
-    if (p.length < 3) return;
-    const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
-    map[key] = (map[key] || 0) + n(t.profit);
-  });
+  // Prefer dailyGain (covers full account history, API caps trade history at 40)
+  if (dailyGain && dailyGain.length >= 2) {
+    dailyGain.forEach(entry => {
+      const dateStr = Array.isArray(entry) ? entry[0] : (entry.date || '');
+      const profit  = Array.isArray(entry) ? n(entry[2] || 0) : n(entry.profit || 0);
+      const p = dateStr.split('/');
+      if (p.length < 3) return;
+      const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
+      map[key] = (map[key] || 0) + profit;
+    });
+  } else {
+    trades.forEach(t => {
+      const p = (t.closeTime || '').split('/');
+      if (p.length < 3) return;
+      const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
+      map[key] = (map[key] || 0) + n(t.profit);
+    });
+  }
   const entries = Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).slice(-6);
   if (!entries.length) return '<div style="color:#585f66;font-size:11px;text-align:center;padding:20px 0;font-weight:600;letter-spacing:.06em;text-transform:uppercase">No monthly data yet</div>';
   const maxAbs = Math.max(...entries.map(([,v]) => Math.abs(v)), 1);
@@ -855,16 +867,31 @@ function monthlyBars(trades) {
 }
 
 // ── Consistency Matrix (light theme) ─────────────────────────
-function consistencyMatrix(trades) {
+function consistencyMatrix(trades, dailyGain) {
   const map = {};
-  trades.forEach(t => {
-    const p = (t.closeTime || '').split('/');
-    if (p.length < 3) return;
-    const yr = parseInt(p[2]);
-    const mo = parseInt(p[0]) - 1;
-    if (!map[yr]) map[yr] = {};
-    map[yr][mo] = (map[yr][mo] || 0) + n(t.profit);
-  });
+  // Prefer dailyGain for accuracy (API caps trade history at 40 records)
+  const src = (dailyGain && dailyGain.length >= 2) ? dailyGain : null;
+  if (src) {
+    src.forEach(entry => {
+      const dateStr = Array.isArray(entry) ? entry[0] : (entry.date || '');
+      const profit  = Array.isArray(entry) ? n(entry[2] || 0) : n(entry.profit || 0);
+      const p = dateStr.split('/');
+      if (p.length < 3) return;
+      const yr = parseInt(p[2]);
+      const mo = parseInt(p[0]) - 1;
+      if (!map[yr]) map[yr] = {};
+      map[yr][mo] = (map[yr][mo] || 0) + profit;
+    });
+  } else {
+    trades.forEach(t => {
+      const p = (t.closeTime || '').split('/');
+      if (p.length < 3) return;
+      const yr = parseInt(p[2]);
+      const mo = parseInt(p[0]) - 1;
+      if (!map[yr]) map[yr] = {};
+      map[yr][mo] = (map[yr][mo] || 0) + n(t.profit);
+    });
+  }
   const years = Object.keys(map).sort((a,b) => b - a);
   if (!years.length) return '<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">No history data yet</td></tr>';
   const fmt = v => '$' + Math.abs(v).toLocaleString('en-US', {maximumFractionDigits: 0});
@@ -985,7 +1012,7 @@ async function init() {
           p.classList.add('equity-line-anim');
       });
     }
-    const source = dailyGain.length >= 2 ? dg.length + '-day equity trajectory' : 'Equity trajectory (from trade history)';
+    const source = dailyGain.length >= 2 ? 'Daily equity trajectory' : 'Equity trajectory (from trade history)';
     setEl('equity-sub', source);
     if (dg.length) {
       setEl('chart-from', dg[0][0] || '');
@@ -993,11 +1020,11 @@ async function init() {
       setEl('chart-to',   dg[dg.length-1][0] || '');
     }
 
-    // Monthly bars — use all history if available, else fallback
-    if (byId('monthly-bars')) byId('monthly-bars').innerHTML = monthlyBars(trades);
+    // Monthly bars — prefer dailyGain (full history), fall back to trade list
+    if (byId('monthly-bars')) byId('monthly-bars').innerHTML = monthlyBars(trades, dailyGain);
 
     // Consistency matrix
-    if (byId('matrix-body')) byId('matrix-body').innerHTML = consistencyMatrix(trades);
+    if (byId('matrix-body')) byId('matrix-body').innerHTML = consistencyMatrix(trades, dailyGain);
 
     // Open positions
     setEl('pos-hdr', `Open Positions (${openTrades.length})`);
