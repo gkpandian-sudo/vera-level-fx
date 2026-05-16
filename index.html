@@ -111,15 +111,32 @@
         }
         .group:hover .step-outline { -webkit-text-stroke-color: rgba(0,35,102,0.28); }
 
-        /* ── Strategy image overlay ──────────────────────── */
-        .strategy-img-wrap { position: relative; overflow: hidden; }
+        /* ── Strategy video blend (light institutional theme) ── */
+        .strategy-img-wrap { position: relative; overflow: hidden; background: #ffffff; }
+
+        /* Vignette: fades video edges into page white */
+        .strategy-img-wrap::before {
+          content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+          background:
+            linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, transparent 25%, transparent 55%, rgba(255,255,255,0.95) 100%),
+            linear-gradient(to right,  rgba(255,255,255,0.4) 0%, transparent 14%, transparent 86%, rgba(255,255,255,0.4) 100%);
+        }
+
+        /* Caption: navy text on light fade, matching primary palette */
         .strategy-img-wrap::after {
           content: 'VERA LEVEL PROTOCOL';
-          position: absolute; bottom: 0; left: 0; right: 0;
-          padding: 28px 20px 16px;
-          font-size: 9px; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase;
-          color: rgba(255,255,255,0.85);
-          background: linear-gradient(transparent, rgba(0,0,0,0.55));
+          position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+          padding: 24px 20px 14px;
+          font-size: 9px; font-weight: 800; letter-spacing: 0.32em; text-transform: uppercase;
+          color: rgba(0,35,102,0.45);
+          background: transparent;
+        }
+
+        /* Desaturate + lighten video to sit on a white surface */
+        .strategy-img-wrap video {
+          filter: grayscale(100%) brightness(1.18) contrast(0.86);
+          opacity: 0.78;
+          display: block; width: 100%; vertical-align: bottom;
         }
 
         /* ── Equity line draw animation ──────────────────── */
@@ -543,7 +560,7 @@ Open Account
 </div>
 <div class="soft-shadow card-lift reveal reveal-d1 overflow-hidden">
 <div class="strategy-img-wrap">
-<video class="w-full block" autoplay loop muted playsinline style="display:block;vertical-align:bottom;">
+<video autoplay loop muted playsinline>
 <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_155101_f2540600-6fe9-433e-8e48-b3f4b72f0727.mp4" type="video/mp4"/>
 </video>
 </div>
