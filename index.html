@@ -947,7 +947,20 @@ async function init() {
     const pf      = n(account.profitFactor);
     const monthly = n(account.monthly);
     const pips    = n(account.pips);
-    const dg      = dailyGain.slice(-60);
+    // ── Build equity curve: prefer dailyGain, fall back to history ──
+    let dg = dailyGain.slice(-90);
+    if (dg.length < 2 && trades.length >= 2) {
+      // Reconstruct cumulative % gain from closed trade history
+      const initBal = bal - n(account.profit);
+      const base    = initBal > 0 ? initBal : 1;
+      const sorted  = trades.slice().sort((a, b) => {
+        const td = s => { const p = s.split('/'); return p.length >= 3 ? `${p[2].split(' ')[0]}-${p[0].padStart(2,'0')}-${p[1].padStart(2,'0')}` : s; };
+        return td(a.closeTime || '').localeCompare(td(b.closeTime || ''));
+      });
+      let cum = 0;
+      dg = sorted.map(t => { cum += n(t.profit); return [(t.closeTime || '').split(' ')[0], parseFloat((cum / base * 100).toFixed(2))]; });
+      console.info('Equity curve built from trade history (' + dg.length + ' points)');
+    }
 
     // Hero stats — animated count-up
     runCountUp('h-gain',    pct(gain),    gain >= 0 ? '#059669' : '#ba1a1a');
@@ -966,18 +979,21 @@ async function init() {
     // Equity curve + line-draw animation
     if (byId('equity-svg')) {
       byId('equity-svg').innerHTML = equitySvg(dg);
-      // Apply draw animation to the main equity path
       var paths = byId('equity-svg').querySelectorAll('path');
-      paths.forEach(function(p){ if (p.getAttribute('stroke') === '#002366' && !p.getAttribute('fill').includes('url')) p.classList.add('equity-line-anim'); });
+      paths.forEach(function(p){
+        if (p.getAttribute('stroke') === '#002366' && p.getAttribute('fill') && !p.getAttribute('fill').includes('url'))
+          p.classList.add('equity-line-anim');
+      });
     }
-    setEl('equity-sub', `${dg.length}-day equity trajectory`);
+    const source = dailyGain.length >= 2 ? dg.length + '-day equity trajectory' : 'Equity trajectory (from trade history)';
+    setEl('equity-sub', source);
     if (dg.length) {
       setEl('chart-from', dg[0][0] || '');
       setEl('chart-gain', `${gain >= 0 ? '+' : ''}${gain.toFixed(2)}% total return`);
       setEl('chart-to',   dg[dg.length-1][0] || '');
     }
 
-    // Monthly bars
+    // Monthly bars — use all history if available, else fallback
     if (byId('monthly-bars')) byId('monthly-bars').innerHTML = monthlyBars(trades);
 
     // Consistency matrix
