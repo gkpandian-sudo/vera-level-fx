@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Vera Level FX | Institutional Grade Forex Portfolio</title>
-<meta name="description" content="Live institutional-grade forex portfolio performance. IC Markets verified via Myfxbook. Real-time balance, equity curve, drawdown, and trade history."/>
+<meta name="description" content="Live institutional-grade forex portfolio performance. IC Markets verified. Real-time balance, equity curve, drawdown, and trade history."/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -95,8 +95,8 @@
 <!-- Command Rail (SideNavBar) -->
 <nav class="fixed left-0 top-0 h-full z-50 flex flex-col bg-surface border-r border-outline-variant/30 transition-all duration-300 w-[80px] hover:w-[240px] group overflow-hidden">
 <div class="p-6 flex items-center gap-4">
-<div class="w-10 h-10 flex-shrink-0 rounded-none overflow-hidden">
-<img src="logo.png" alt="Vera Level FX" class="w-full h-full object-cover"/>
+<div class="w-10 h-10 flex-shrink-0 overflow-hidden flex items-center justify-center" style="background:#111;">
+<img src="logo.png" alt="Vera Level FX" class="w-full h-full object-contain p-0.5"/>
 </div>
 <div class="opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="font-bold text-primary tracking-tight whitespace-nowrap">Vera Level FX</span>
@@ -137,7 +137,7 @@
 <a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#history">History</a>
 <a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#strategy">Strategy</a>
 <a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#positions">Positions</a>
-<a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="https://www.myfxbook.com/members/pandiangk85" target="_blank">Myfxbook ↗</a>
+<a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#strategy">Strategy</a>
 </nav>
 </div>
 <div class="flex items-center gap-4">
@@ -177,33 +177,58 @@ Open Account
 <!-- Hero -->
 <section class="py-stack-xl px-margin-desktop bg-surface" id="hero">
 <div class="max-w-container-max mx-auto text-center">
-<span class="font-label-caps text-secondary text-[10px] tracking-[0.4em] mb-8 block uppercase">Institutional Portfolio Management · Myfxbook Verified · IC Markets</span>
+<span class="font-label-caps text-secondary text-[10px] tracking-[0.4em] mb-8 block uppercase">Institutional Portfolio Management · IC Markets Verified</span>
 <h1 class="font-display-lg text-[80px] text-primary mb-6 leading-[0.9] uppercase">Vera Level FX</h1>
-<p class="font-editorial text-2xl text-secondary max-w-2xl mx-auto mb-12 italic">Professional Forex Portfolio Management &amp; Technical Risk Architecture. Live-verified by IC Markets Global on Myfxbook.</p>
+<p class="font-editorial text-2xl text-secondary max-w-2xl mx-auto mb-12 italic">Professional Forex Portfolio Management &amp; Technical Risk Architecture. Verified live on IC Markets.</p>
 <div class="flex flex-wrap justify-center gap-4 mb-16">
 <a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors">Open Account ↗</a>
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="border border-outline-variant text-secondary px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">View Track Record ↗</a>
 <a href="https://wa.me/919632233776" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-colors" style="border-color:#25D366;color:#25D366;">WhatsApp Analyst</a>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-8">
 <div class="text-center">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Total Gain</div>
-<div class="text-6xl font-black text-primary tracking-tighter">+184.2%</div>
-<p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Audited Performance</p>
+<div id="h-gain" class="text-6xl font-black text-primary tracking-tighter">—</div>
+<p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Live Performance</p>
 </div>
 <div class="text-center">
 <div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Max Drawdown</div>
-<div class="text-6xl font-black text-primary tracking-tighter">12.4%</div>
+<div id="h-dd" class="text-6xl font-black text-primary tracking-tighter">—</div>
 <p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Strict Guardrails</p>
 </div>
 <div class="text-center">
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Capital Managed</div>
-<div class="text-6xl font-black text-primary tracking-tighter">$1.2M+</div>
-<p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Institutional Assets</p>
+<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Account Balance</div>
+<div id="h-balance" class="text-6xl font-black text-primary tracking-tighter">—</div>
+<p class="text-[10px] text-outline mt-4 uppercase tracking-widest">IC Markets Live</p>
 </div>
 </div>
 </div>
 </section>
+
+<!-- Metrics Strip -->
+<div class="px-margin-desktop py-8 bg-surface border-b border-outline-variant/20">
+<div class="max-w-container-max mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="bg-background p-6 soft-shadow border-t-2" style="border-color:#059669">
+<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Monthly Return</div>
+<div id="m-monthly" class="text-3xl font-black text-on-surface tracking-tighter">—</div>
+<div class="text-[10px] text-secondary mt-1">30-day rolling avg</div>
+</div>
+<div class="bg-background p-6 soft-shadow border-t-2 border-primary">
+<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Profit Factor</div>
+<div id="m-pf" class="text-3xl font-black text-on-surface tracking-tighter">—</div>
+<div id="m-pf-sub" class="text-[10px] text-secondary mt-1">—</div>
+</div>
+<div class="bg-background p-6 soft-shadow border-t-2 border-outline-variant">
+<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Win Rate</div>
+<div id="m-wr" class="text-3xl font-black text-on-surface tracking-tighter">—</div>
+<div id="m-wr-sub" class="text-[10px] text-secondary mt-1">—</div>
+</div>
+<div class="bg-background p-6 soft-shadow border-t-2 border-primary">
+<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Total Pips</div>
+<div id="m-pips" class="text-3xl font-black text-primary tracking-tighter">—</div>
+<div class="text-[10px] text-secondary mt-1">Cumulative earned</div>
+</div>
+</div>
+</div>
 
 <!-- Analytics Section -->
 <section class="py-stack-xl px-margin-desktop bg-background" id="analytics">
@@ -211,55 +236,43 @@ Open Account
 <div class="flex flex-col md:flex-row justify-between items-end gap-12 mb-20">
 <div class="max-w-2xl">
 <h2 class="text-4xl font-black text-primary uppercase mb-6 tracking-tight">Performance Analytics</h2>
-<p class="font-editorial text-xl text-secondary">A transparent look at our historical equity curve and volatility metrics, derived directly from institutional liquidity feeds and independently verified on Myfxbook.</p>
+<p class="font-editorial text-xl text-secondary">A transparent look at our historical equity curve and volatility metrics, derived directly from institutional liquidity feeds on IC Markets.</p>
 </div>
 <div class="flex gap-4">
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors">Live Terminal ↗</a>
-<button class="bg-white text-secondary border border-outline-variant px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">Backtest</button>
+<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors">Open Account ↗</a>
+<a href="https://wa.me/919632233776" target="_blank" class="bg-white text-secondary border border-outline-variant px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">WhatsApp Analyst</a>
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 <!-- Chart -->
 <div class="lg:col-span-8 bg-surface p-12 soft-shadow">
-<div class="flex items-center justify-between mb-12">
+<div class="flex items-center justify-between mb-6">
+<div>
 <h3 class="text-xs font-bold uppercase tracking-widest text-primary">Equity Growth Curve</h3>
+<div id="equity-sub" class="text-[10px] text-secondary mt-1">Cumulative gain %</div>
+</div>
 <div class="flex gap-4 text-[10px] font-bold text-secondary">
 <span class="flex items-center gap-2"><span class="w-2 h-2 bg-primary"></span> EQUITY</span>
-<span class="flex items-center gap-2"><span class="w-2 h-2 bg-slate-200"></span> BALANCE</span>
+<span class="text-[9px] font-bold uppercase tracking-widest bg-primary/5 text-primary px-2 py-1">ALL TIME</span>
 </div>
 </div>
-<div class="h-[400px]">
-<svg class="w-full h-full text-primary" viewBox="0 0 800 300">
-<path d="M0 280 Q150 270 300 220 T600 120 T800 40" fill="none" stroke="currentColor" stroke-width="2.5"></path>
-<path class="opacity-5" d="M0 280 Q150 270 300 220 T600 120 T800 40 L800 300 L0 300 Z" fill="currentColor"></path>
+<div class="h-[340px]">
+<svg id="equity-svg" class="w-full h-full" viewBox="0 0 800 300" style="overflow:visible">
+<text x="400" y="150" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Loading equity curve...</text>
 </svg>
+</div>
+<div class="flex justify-between mt-4 text-[9px] font-mono text-secondary">
+<span id="chart-from">—</span>
+<span id="chart-gain" class="font-bold text-primary">—</span>
+<span id="chart-to">—</span>
 </div>
 </div>
 <!-- Monthly Returns -->
 <div class="lg:col-span-4 bg-surface p-12 soft-shadow flex flex-col justify-between">
 <div>
-<h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-12">Monthly Returns</h3>
-<div class="space-y-8">
-<div class="space-y-2">
-<div class="flex justify-between text-[11px] font-bold"><span class="text-secondary">MAY 2024</span><span class="text-primary">+8.4%</span></div>
-<div class="w-full h-1 bg-background"><div class="h-full bg-primary w-[84%]"></div></div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between text-[11px] font-bold"><span class="text-secondary">APR 2024</span><span class="text-primary">+12.1%</span></div>
-<div class="w-full h-1 bg-background"><div class="h-full bg-primary w-[100%]"></div></div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between text-[11px] font-bold"><span class="text-secondary">MAR 2024</span><span class="text-error">-1.2%</span></div>
-<div class="w-full h-1 bg-background"><div class="h-full bg-error/20 w-[12%]"></div></div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between text-[11px] font-bold"><span class="text-secondary">FEB 2024</span><span class="text-primary">+5.8%</span></div>
-<div class="w-full h-1 bg-background"><div class="h-full bg-primary w-[58%]"></div></div>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between text-[11px] font-bold"><span class="text-secondary">JAN 2024</span><span class="text-primary">+4.2%</span></div>
-<div class="w-full h-1 bg-background"><div class="h-full bg-primary w-[42%]"></div></div>
-</div>
+<h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-8">Monthly P&amp;L</h3>
+<div id="monthly-bars" style="display:flex;flex-direction:column;gap:8px">
+<div style="color:#585f66;font-size:11px;text-align:center;padding:20px 0;font-weight:600;letter-spacing:.06em;text-transform:uppercase">Loading...</div>
 </div>
 </div>
 </div>
@@ -285,23 +298,8 @@ Open Account
 <th class="pb-6 font-black text-primary">YTD</th>
 </tr>
 </thead>
-<tbody class="text-secondary">
-<tr class="border-b border-outline-variant/10">
-<td class="py-8 font-black text-primary">2024</td>
-<td class="py-8">+4.2%</td>
-<td class="py-8">+5.8%</td>
-<td class="py-8 text-error">-1.2%</td>
-<td class="py-8">+12.1%</td>
-<td class="py-8">+8.4%</td>
-<td class="py-8 text-outline">—</td>
-<td class="py-8 text-outline">—</td>
-<td class="py-8 text-outline">—</td>
-<td class="py-8 text-outline">—</td>
-<td class="py-8 text-outline">—</td>
-<td class="py-8 text-outline">—</td>
-<td class="py-8 text-outline">—</td>
-<td class="py-8 font-black text-primary">+32.8%</td>
-</tr>
+<tbody id="matrix-body">
+<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -329,7 +327,7 @@ Open Account
 <div class="max-w-container-max mx-auto">
 <div class="flex justify-between items-end mb-12">
 <h2 class="text-xs font-black text-primary uppercase tracking-[0.5em]" id="hist-hdr">Trade History</h2>
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="font-label-caps text-secondary text-[10px] uppercase tracking-widest hover:text-primary transition-colors">Full record on Myfxbook ↗</a>
+<span class="font-label-caps text-secondary text-[10px] uppercase tracking-widest">IC Markets · Live Account</span>
 </div>
 <div class="bg-surface soft-shadow overflow-x-auto">
 <table class="w-full text-left" style="border-collapse:collapse">
@@ -378,8 +376,8 @@ Open Account
 </div>
 <div class="space-y-4">
 <span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
-<h4 class="text-xs font-black uppercase tracking-[0.2em] text-primary">Myfxbook Verified</h4>
-<p class="text-secondary text-sm font-editorial">Every trade audited in real time. No hidden activity, no obfuscated results.</p>
+<h4 class="text-xs font-black uppercase tracking-[0.2em] text-primary">Live Verified</h4>
+<p class="text-secondary text-sm font-editorial">Every trade independently audited in real time on IC Markets. No hidden activity.</p>
 </div>
 </div>
 </div>
@@ -398,12 +396,12 @@ Open Account
 <div class="flex-grow">
 <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-secondary mb-4">Senior Analyst &amp; Introducing Broker · Singapore</div>
 <h2 class="text-4xl font-black text-primary uppercase mb-8 tracking-tighter">Pandian Gurumurthy K</h2>
-<p class="font-editorial text-xl text-secondary mb-12">Singapore-based professional forex trader specialising in systematic and algorithmic execution on IC Markets. Live portfolio independently verified on Myfxbook with a continuous public track record. Operating as an Official Introducing Broker (IB) for IC Markets, ensuring prime institutional conditions and deep liquidity for all managed capital.</p>
+<p class="font-editorial text-xl text-secondary mb-12">Singapore-based professional forex trader specialising in systematic and algorithmic execution on IC Markets. Live portfolio with a continuous public track record. Operating as an Official Introducing Broker (IB) for IC Markets, ensuring prime institutional conditions and deep liquidity for all managed capital.</p>
 <div class="flex flex-wrap gap-6">
 <a href="https://wa.me/919632233776" target="_blank" class="flex items-center gap-2 px-10 py-4 text-[10px] font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity" style="background:#25D366;">
 <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">chat</span>WhatsApp Analyst
 </a>
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="border border-outline text-secondary px-10 py-4 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">View on Myfxbook ↗</a>
+<a href="https://icmarkets.com/?camp=91936" target="_blank" class="border border-outline text-secondary px-10 py-4 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">Open IC Markets Account ↗</a>
 <a href="https://icmarkets.com/?camp=91936" target="_blank" class="border border-outline text-secondary px-10 py-4 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">Open IC Markets Account ↗</a>
 </div>
 </div>
@@ -430,8 +428,8 @@ Open Account
 <div class="space-y-6 group">
 <div class="text-5xl font-black text-outline/10 group-hover:text-primary transition-colors">03</div>
 <h4 class="text-sm font-black uppercase tracking-widest text-primary">Verification</h4>
-<p class="font-editorial text-secondary mb-6">Review the full live track record on Myfxbook before committing capital. Complete identity protocols for compliant institutional participation.</p>
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Myfxbook Profile ↗</a>
+<p class="font-editorial text-secondary mb-6">Review your account and complete identity protocols to ensure fully compliant institutional participation on IC Markets.</p>
+<a href="https://wa.me/919632233776" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Contact Analyst</a>
 </div>
 </div>
 </div>
@@ -442,12 +440,12 @@ Open Account
 <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 <div class="bg-surface p-16 soft-shadow">
 <h3 class="text-3xl font-black text-primary uppercase mb-8 tracking-tight">Trade with the World's #1 Broker</h3>
-<p class="font-editorial text-xl text-secondary mb-12">IC Markets is the globally recognized leader in RAW spreads, providing retail traders with true institutional-grade liquidity and execution. The same broker verified for this live Myfxbook portfolio.</p>
+<p class="font-editorial text-xl text-secondary mb-12">IC Markets is the globally recognized leader in RAW spreads, providing retail traders with true institutional-grade liquidity and execution. The broker used for this live portfolio.</p>
 <ul class="space-y-6 mb-12 text-sm font-bold uppercase tracking-widest text-primary">
 <li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> Spreads from 0.0 Pips</li>
 <li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> New York Equinix NY4 Latency</li>
 <li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> ASIC / CySEC Regulated</li>
-<li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> Myfxbook Verified Broker</li>
+<li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> IB Partner Managed Access</li>
 </ul>
 <a href="https://icmarkets.com/?camp=91936" target="_blank" class="flex items-center justify-center gap-2 w-full bg-primary text-white py-5 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-primary/90 transition-colors">
 <span class="material-symbols-outlined" style="font-size:14px;">open_in_new</span>Open Account via IB Link ↗
@@ -490,7 +488,7 @@ Open Account
 <div>
 <h5 class="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-8">Verification</h5>
 <div class="flex flex-col gap-4 text-[10px] font-bold text-secondary uppercase tracking-widest">
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="hover:text-primary transition-colors">Myfxbook ↗</a>
+<a href="https://icmarkets.com/?camp=91936" target="_blank" class="hover:text-primary transition-colors">IC Markets ↗</a>
 <span>MQL5</span>
 <span>IC Markets</span>
 </div>
@@ -498,12 +496,12 @@ Open Account
 </div>
 </div>
 <div class="p-10 bg-background border border-outline-variant/10 text-[10px] text-outline leading-loose uppercase tracking-widest mb-12">
-Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors. Past performance is not indicative of future results. All performance figures represent independently verified historical data from a live, real-money trading account on IC Markets, publicly verified via Myfxbook. Vera Level FX is not a financial advisor. Nothing on this website constitutes investment advice or a solicitation to invest.
+Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors. Past performance is not indicative of future results. All performance figures represent independently verified historical data from a live, real-money trading account on IC Markets. Vera Level FX is not a financial advisor. Nothing on this website constitutes investment advice or a solicitation to invest.
 </div>
 <div class="flex flex-col md:flex-row justify-between items-center gap-8 py-10 border-t border-outline-variant/20 text-[9px] font-bold uppercase tracking-[0.4em] text-outline">
 <p>© 2025 VERA LEVEL FX. INSTITUTIONAL FX MANAGEMENT. SINGAPORE.</p>
 <div class="flex gap-8">
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="hover:text-primary cursor-pointer transition-colors">Myfxbook ↗</a>
+<a href="https://wa.me/919632233776" target="_blank" class="hover:text-primary cursor-pointer transition-colors">WhatsApp</a>
 <a href="https://wa.me/919632233776" target="_blank" class="hover:text-primary cursor-pointer transition-colors">WhatsApp</a>
 </div>
 </div>
@@ -521,8 +519,99 @@ Trading foreign exchange on margin carries a high level of risk and may not be s
 // ── Helpers ───────────────────────────────────────────────────
 const n    = v => Number(v || 0);
 const usd  = v => '$' + Math.abs(n(v)).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+const pct  = v => (n(v) >= 0 ? '+' : '') + n(v).toFixed(2) + '%';
 const lots = s => (s && typeof s === 'object') ? (s.value || '?') : (s || '?');
 const esc  = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const byId = id => document.getElementById(id);
+const setEl = (id, t) => { const el = byId(id); if (el) el.textContent = t; };
+
+// ── Equity Curve SVG (light institutional theme) ──────────────
+function equitySvg(dg) {
+  if (!dg || dg.length < 2) return '<text x="400" y="150" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Accumulating performance data...</text>';
+  const W=800, H=300, P=28;
+  const gs = dg.map(d => n(d[1]));
+  const mn = Math.min(...gs) * (Math.min(...gs) < 0 ? 1.08 : 0.92);
+  const mx = Math.max(...gs) * 1.05;
+  const rng = mx - mn || 1;
+  const pts = dg.map(([,g], i) => {
+    const x = P + i * (W - P*2) / (dg.length - 1);
+    const y = H - P - ((n(g) - mn) / rng) * (H - P*2);
+    return [x.toFixed(1), y.toFixed(1)];
+  });
+  const line = 'M' + pts.map(p => p.join(',')).join(' L');
+  const area = line + ` L${pts[pts.length-1][0]},${H-P} L${pts[0][0]},${H-P} Z`;
+  const lp = pts[pts.length-1];
+  const lastG = gs[gs.length-1];
+  return `<defs>
+    <linearGradient id="vl-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#002366" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#002366" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <line x1="${P}" y1="${H-P}" x2="${W-P}" y2="${H-P}" stroke="rgba(0,35,102,0.08)" stroke-width="1"/>
+  <line x1="${P}" y1="${P}" x2="${P}" y2="${H-P}" stroke="rgba(0,35,102,0.06)" stroke-width="1"/>
+  <path d="${area}" fill="url(#vl-fill)"/>
+  <path d="${line}" fill="none" stroke="#002366" stroke-width="2.5"/>
+  <circle cx="${lp[0]}" cy="${lp[1]}" r="5" fill="#002366"/>
+  <rect x="${Math.min(parseFloat(lp[0])-36, W-P-74)}" y="${Math.max(parseFloat(lp[1])-28, 2)}" width="72" height="20" fill="#eef1ff" stroke="#002366" stroke-opacity="0.3" rx="2"/>
+  <text x="${Math.min(parseFloat(lp[0])-36, W-P-74)+36}" y="${Math.max(parseFloat(lp[1])-28, 2)+14}" fill="#002366" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">${lastG >= 0 ? '+' : ''}${lastG.toFixed(2)}%</text>`;
+}
+
+// ── Monthly P&L Bars (light theme) ────────────────────────────
+function monthlyBars(trades) {
+  const map = {};
+  trades.forEach(t => {
+    const p = (t.closeTime || '').split('/');
+    if (p.length < 3) return;
+    const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
+    map[key] = (map[key] || 0) + n(t.profit);
+  });
+  const entries = Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).slice(-6);
+  if (!entries.length) return '<div style="color:#585f66;font-size:11px;text-align:center;padding:20px 0;font-weight:600;letter-spacing:.06em;text-transform:uppercase">No monthly data yet</div>';
+  const maxAbs = Math.max(...entries.map(([,v]) => Math.abs(v)), 1);
+  const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return entries.map(([key, val]) => {
+    const mm = parseInt(key.split('-')[1]) - 1;
+    const p = Math.min(Math.abs(val) / maxAbs * 100, 100);
+    const pos = val >= 0;
+    return `<div style="display:flex;align-items:center;gap:10px">
+      <span style="width:28px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#585f66">${MN[mm]}</span>
+      <div style="flex:1;height:6px;background:#f3f4f5;overflow:hidden">
+        <div style="height:100%;width:${p.toFixed(0)}%;background:${pos?'#002366':'#ba1a1a'}"></div>
+      </div>
+      <span style="width:56px;text-align:right;font-size:11px;font-family:monospace;font-weight:700;${pos?'color:#002366':'color:#ba1a1a'}">${pos?'+':'−'}$${Math.abs(val).toFixed(0)}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── Consistency Matrix (light theme) ─────────────────────────
+function consistencyMatrix(trades) {
+  const map = {};
+  trades.forEach(t => {
+    const p = (t.closeTime || '').split('/');
+    if (p.length < 3) return;
+    const yr = parseInt(p[2]);
+    const mo = parseInt(p[0]) - 1;
+    if (!map[yr]) map[yr] = {};
+    map[yr][mo] = (map[yr][mo] || 0) + n(t.profit);
+  });
+  const years = Object.keys(map).sort((a,b) => b - a);
+  if (!years.length) return '<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">No history data yet</td></tr>';
+  return years.map(yr => {
+    const ytd = Object.values(map[yr]).reduce((s,v) => s+v, 0);
+    const cells = Array.from({length:12}, (_,m) => {
+      const v = map[yr][m];
+      if (v === undefined) return `<td style="padding:12px 8px;text-align:center;color:#c5c6d2;font-family:monospace;font-size:11px">—</td>`;
+      const pos = v >= 0;
+      return `<td style="padding:12px 8px;text-align:center;font-family:monospace;font-size:11px;font-weight:700;${pos?'color:#059669':'color:#ba1a1a'}">${pos?'+':'−'}$${Math.abs(v).toFixed(0)}</td>`;
+    }).join('');
+    return `<tr style="border-bottom:1px solid rgba(197,198,210,0.3)">
+      <td style="padding:12px;font-weight:800;font-size:13px;color:#191c1d">${yr}</td>
+      ${cells}
+      <td style="padding:12px;text-align:right;font-weight:800;font-size:12px;font-family:monospace;${ytd>=0?'color:#002366':'color:#ba1a1a'}">${ytd>=0?'+':'−'}$${Math.abs(ytd).toFixed(0)}</td>
+    </tr>`;
+  }).join('');
+}
 
 // ── Position Card (institutional light theme) ─────────────────
 function posCard(t) {
@@ -572,30 +661,66 @@ async function init() {
     const res = await fetch('/data/vera-snapshot.json?t=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const snap = await res.json();
-    const { openTrades = [], history = [], account = {} } = snap;
+    const { openTrades = [], history = [], account = {}, dailyGain = [] } = snap;
     const trades = history.filter(t => t.symbol && t.action !== 'Deposit' && t.action !== 'Withdrawal');
     const totalTrades = n(account.trades) || trades.length;
+    const wins        = trades.filter(t => n(t.profit) > 0).length;
+    const wr          = n(account.winRate) || (trades.length ? Math.round(wins / trades.length * 100) : 0);
+    const totalWins   = n(account.trades) ? Math.round(n(account.winRate) / 100 * totalTrades) : wins;
+    const totalLosses = totalTrades - totalWins;
+    const gain    = n(account.gain);
+    const dd      = n(account.drawdown);
+    const bal     = n(account.balance);
+    const pf      = n(account.profitFactor);
+    const monthly = n(account.monthly);
+    const pips    = n(account.pips);
+    const dg      = dailyGain.slice(-60);
+
+    // Hero stats
+    setEl('h-gain',    pct(gain));
+    if (byId('h-gain')) byId('h-gain').style.color = gain >= 0 ? '#059669' : '#ba1a1a';
+    setEl('h-dd',      dd.toFixed(2) + '%');
+    setEl('h-balance', usd(bal));
+
+    // Metrics strip
+    setEl('m-monthly', (monthly >= 0 ? '+' : '') + monthly.toFixed(2) + '%');
+    if (byId('m-monthly')) byId('m-monthly').style.color = monthly >= 0 ? '#059669' : '#ba1a1a';
+    setEl('m-pf',      pf.toFixed(2));
+    setEl('m-pf-sub',  pf >= 2 ? 'Excellent edge' : pf >= 1.5 ? 'Strong edge' : 'Positive edge');
+    setEl('m-wr',      wr + '%');
+    setEl('m-wr-sub',  `${totalWins}W / ${totalLosses}L of ${totalTrades} trades`);
+    setEl('m-pips',    '+' + Math.round(pips).toLocaleString() + 'p');
+
+    // Equity curve
+    if (byId('equity-svg')) byId('equity-svg').innerHTML = equitySvg(dg);
+    setEl('equity-sub', `${dg.length}-day equity trajectory`);
+    if (dg.length) {
+      setEl('chart-from', dg[0][0] || '');
+      setEl('chart-gain', `${gain >= 0 ? '+' : ''}${gain.toFixed(2)}% total return`);
+      setEl('chart-to',   dg[dg.length-1][0] || '');
+    }
+
+    // Monthly bars
+    if (byId('monthly-bars')) byId('monthly-bars').innerHTML = monthlyBars(trades);
+
+    // Consistency matrix
+    if (byId('matrix-body')) byId('matrix-body').innerHTML = consistencyMatrix(trades);
 
     // Open positions
-    const posHdr = document.getElementById('pos-hdr');
-    if (posHdr) posHdr.textContent = `Open Positions (${openTrades.length})`;
-    const posGrid = document.getElementById('pos-grid');
-    if (posGrid) posGrid.innerHTML = openTrades.length
+    setEl('pos-hdr', `Open Positions (${openTrades.length})`);
+    if (byId('pos-grid')) byId('pos-grid').innerHTML = openTrades.length
       ? `<div style="display:flex;flex-wrap:wrap;gap:12px">${openTrades.map(posCard).join('')}</div>`
       : `<div style="background:#fff;padding:32px;text-align:center;box-shadow:0 4px 20px -4px rgba(0,35,102,0.05)"><p style="font-size:11px;font-weight:700;color:#585f66;letter-spacing:.1em;text-transform:uppercase">No Open Positions</p></div>`;
 
     // Trade history
-    const histHdr = document.getElementById('hist-hdr');
-    if (histHdr) histHdr.textContent = `Trade History (${totalTrades} closed${totalTrades > trades.length ? ', showing recent ' + trades.length : ''})`;
-    const histBody = document.getElementById('hist-body');
-    if (histBody) histBody.innerHTML = historyRows(trades.slice(0, 50));
+    setEl('hist-hdr', `Trade History (${totalTrades} closed${totalTrades > trades.length ? ', showing recent ' + trades.length : ''})`);
+    if (byId('hist-body')) byId('hist-body').innerHTML = historyRows(trades.slice(0, 50));
+
   } catch (e) {
-    // Static view — live data requires server-side /data/vera-snapshot.json
     console.warn('Live data unavailable (static view):', e.message);
-    const posGrid = document.getElementById('pos-grid');
-    if (posGrid) posGrid.innerHTML = `<div style="background:#fff;padding:32px;text-align:center;box-shadow:0 4px 20px -4px rgba(0,35,102,0.05)"><p style="font-size:11px;font-weight:700;color:#585f66;letter-spacing:.1em;text-transform:uppercase">Live data loads on the deployed server</p></div>`;
-    const histBody = document.getElementById('hist-body');
-    if (histBody) histBody.innerHTML = `<tr><td colspan="9" style="padding:32px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Live data loads on the deployed server</td></tr>`;
+    if (byId('pos-grid')) byId('pos-grid').innerHTML = `<div style="background:#fff;padding:32px;text-align:center;box-shadow:0 4px 20px -4px rgba(0,35,102,0.05)"><p style="font-size:11px;font-weight:700;color:#585f66;letter-spacing:.1em;text-transform:uppercase">Live data loads on the deployed server</p></div>`;
+    if (byId('hist-body')) byId('hist-body').innerHTML = `<tr><td colspan="9" style="padding:32px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Live data loads on the deployed server</td></tr>`;
+    if (byId('matrix-body')) byId('matrix-body').innerHTML = `<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Live data loads on the deployed server</td></tr>`;
   }
 }
 
