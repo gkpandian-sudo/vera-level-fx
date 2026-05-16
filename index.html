@@ -269,9 +269,9 @@ Open Account
 <span class="text-[9px] font-bold uppercase tracking-widest bg-primary/5 text-primary px-2 py-1">ALL TIME</span>
 </div>
 </div>
-<div class="h-[200px] md:h-[340px]">
-<svg id="equity-svg" class="w-full h-full" viewBox="0 0 800 300" style="overflow:visible">
-<text x="400" y="150" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Loading equity curve...</text>
+<div class="w-full">
+<svg id="equity-svg" viewBox="0 0 800 280" style="width:100%;height:auto;display:block;overflow:visible">
+<text x="400" y="140" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Loading equity curve...</text>
 </svg>
 </div>
 <div class="flex justify-between mt-4 text-[9px] font-mono text-secondary">
@@ -548,34 +548,55 @@ const setEl = (id, t) => { const el = byId(id); if (el) el.textContent = t; };
 
 // ── Equity Curve SVG (light institutional theme) ──────────────
 function equitySvg(dg) {
-  if (!dg || dg.length < 2) return '<text x="400" y="150" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Accumulating performance data...</text>';
-  const W=800, H=300, P=28;
+  if (!dg || dg.length < 2) return '<text x="400" y="140" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Accumulating performance data...</text>';
+  const W=800, H=280, PL=56, PR=28, PT=18, PB=28;
   const gs = dg.map(d => n(d[1]));
-  const mn = Math.min(...gs) * (Math.min(...gs) < 0 ? 1.08 : 0.92);
-  const mx = Math.max(...gs) * 1.05;
+  const rawMin = Math.min(...gs), rawMax = Math.max(...gs);
+  const span = rawMax - Math.min(0, rawMin) || 1;
+  // Always include 0 in visible range
+  const mn = Math.min(0, rawMin) - span * 0.04;
+  const mx = rawMax + span * 0.08;
   const rng = mx - mn || 1;
-  const pts = dg.map(([,g], i) => {
-    const x = P + i * (W - P*2) / (dg.length - 1);
-    const y = H - P - ((n(g) - mn) / rng) * (H - P*2);
-    return [x.toFixed(1), y.toFixed(1)];
-  });
+  const toX = i => PL + i * (W - PL - PR) / (dg.length - 1);
+  const toY = v => PT + ((mx - v) / rng) * (H - PT - PB);
+  const pts = dg.map(([,g], i) => [toX(i).toFixed(1), toY(n(g)).toFixed(1)]);
   const line = 'M' + pts.map(p => p.join(',')).join(' L');
-  const area = line + ` L${pts[pts.length-1][0]},${H-P} L${pts[0][0]},${H-P} Z`;
+  const zeroY = toY(0).toFixed(1);
+  const area = line + ` L${pts[pts.length-1][0]},${zeroY} L${pts[0][0]},${zeroY} Z`;
   const lp = pts[pts.length-1];
   const lastG = gs[gs.length-1];
+
+  // Y-axis gridlines at nice intervals
+  const approxStep = (mx - mn) / 4;
+  const mag = Math.pow(10, Math.floor(Math.log10(Math.abs(approxStep) || 1)));
+  const step = Math.ceil(approxStep / (mag * 0.5)) * (mag * 0.5) || 1;
+  const gridLines = [];
+  for (let v = Math.ceil(mn / step) * step; v <= mx + step * 0.01; v = Math.round((v + step) * 1e6) / 1e6) {
+    const gy = parseFloat(toY(v).toFixed(1));
+    if (gy < PT - 2 || gy > H - PB + 2) continue;
+    const isZero = Math.abs(v) < step * 0.01;
+    const lbl = isZero ? '0%' : (v > 0 ? '+' : '') + v.toFixed(v === Math.round(v) ? 0 : 1) + '%';
+    gridLines.push(
+      `<line x1="${PL}" y1="${gy}" x2="${W-PR}" y2="${gy}" stroke="${isZero ? 'rgba(0,35,102,0.18)' : 'rgba(0,35,102,0.06)'}" stroke-width="${isZero ? 1.5 : 1}"${isZero ? ' stroke-dasharray="4,3"' : ''}/>` +
+      `<text x="${PL-5}" y="${gy}" fill="#b8b9c8" font-size="9" font-family="Inter" text-anchor="end" dominant-baseline="middle">${lbl}</text>`
+    );
+  }
+
+  const labelCx = Math.min(parseFloat(lp[0]), W - PR - 44);
+  const labelY  = Math.max(parseFloat(lp[1]) - 30, PT + 2);
   return `<defs>
     <linearGradient id="vl-fill" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#002366" stop-opacity="0.12"/>
+      <stop offset="0%" stop-color="#002366" stop-opacity="0.14"/>
       <stop offset="100%" stop-color="#002366" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <line x1="${P}" y1="${H-P}" x2="${W-P}" y2="${H-P}" stroke="rgba(0,35,102,0.08)" stroke-width="1"/>
-  <line x1="${P}" y1="${P}" x2="${P}" y2="${H-P}" stroke="rgba(0,35,102,0.06)" stroke-width="1"/>
+  <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="rgba(0,35,102,0.1)" stroke-width="1"/>
+  ${gridLines.join('\n  ')}
   <path d="${area}" fill="url(#vl-fill)"/>
-  <path d="${line}" fill="none" stroke="#002366" stroke-width="2.5"/>
-  <circle cx="${lp[0]}" cy="${lp[1]}" r="5" fill="#002366"/>
-  <rect x="${Math.min(parseFloat(lp[0])-36, W-P-74)}" y="${Math.max(parseFloat(lp[1])-28, 2)}" width="72" height="20" fill="#eef1ff" stroke="#002366" stroke-opacity="0.3" rx="2"/>
-  <text x="${Math.min(parseFloat(lp[0])-36, W-P-74)+36}" y="${Math.max(parseFloat(lp[1])-28, 2)+14}" fill="#002366" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">${lastG >= 0 ? '+' : ''}${lastG.toFixed(2)}%</text>`;
+  <path d="${line}" fill="none" stroke="#002366" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="${lp[0]}" cy="${lp[1]}" r="4.5" fill="#002366"/>
+  <rect x="${labelCx-40}" y="${labelY}" width="80" height="20" fill="#eef1ff" stroke="#002366" stroke-opacity="0.35" rx="2"/>
+  <text x="${labelCx}" y="${labelY+14}" fill="#002366" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">${lastG >= 0 ? '+' : ''}${lastG.toFixed(2)}%</text>`;
 }
 
 // ── Monthly P&L Bars (light theme) ────────────────────────────
@@ -593,14 +614,17 @@ function monthlyBars(trades) {
   const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return entries.map(([key, val]) => {
     const mm = parseInt(key.split('-')[1]) - 1;
-    const p = Math.min(Math.abs(val) / maxAbs * 100, 100);
+    const barPct = Math.min(Math.abs(val) / maxAbs * 100, 100);
     const pos = val >= 0;
-    return `<div style="display:flex;align-items:center;gap:10px">
-      <span style="width:28px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#585f66">${MN[mm]}</span>
-      <div style="flex:1;height:6px;background:#f3f4f5;overflow:hidden">
-        <div style="height:100%;width:${p.toFixed(0)}%;background:${pos?'#002366':'#ba1a1a'}"></div>
+    const textColor = pos ? '#059669' : '#ba1a1a';
+    const barColor  = pos ? '#002366' : '#ba1a1a';
+    const amount = '$' + Math.abs(val).toLocaleString('en-US', {maximumFractionDigits: 0});
+    return `<div style="display:flex;align-items:center;gap:8px">
+      <span style="width:26px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#757682;flex-shrink:0">${MN[mm]}</span>
+      <div style="flex:1;height:10px;background:#f3f4f5;border-radius:1px;overflow:hidden">
+        <div style="height:100%;width:${barPct.toFixed(0)}%;background:${barColor};border-radius:1px"></div>
       </div>
-      <span style="width:56px;text-align:right;font-size:11px;font-family:monospace;font-weight:700;${pos?'color:#002366':'color:#ba1a1a'}">${pos?'+':'−'}$${Math.abs(val).toFixed(0)}</span>
+      <span style="width:64px;text-align:right;font-size:10px;font-family:monospace;font-weight:700;color:${textColor};flex-shrink:0">${pos ? '+' : '−'}${amount}</span>
     </div>`;
   }).join('');
 }
@@ -618,18 +642,21 @@ function consistencyMatrix(trades) {
   });
   const years = Object.keys(map).sort((a,b) => b - a);
   if (!years.length) return '<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">No history data yet</td></tr>';
+  const fmt = v => '$' + Math.abs(v).toLocaleString('en-US', {maximumFractionDigits: 0});
   return years.map(yr => {
     const ytd = Object.values(map[yr]).reduce((s,v) => s+v, 0);
     const cells = Array.from({length:12}, (_,m) => {
       const v = map[yr][m];
-      if (v === undefined) return `<td style="padding:12px 8px;text-align:center;color:#c5c6d2;font-family:monospace;font-size:11px">—</td>`;
+      if (v === undefined) return `<td style="padding:10px 6px;text-align:center;color:#c5c6d2;font-family:monospace;font-size:10px">—</td>`;
+      if (Math.abs(v) < 0.005) return `<td style="padding:10px 6px;text-align:center;color:#c5c6d2;font-family:monospace;font-size:10px">$0</td>`;
       const pos = v >= 0;
-      return `<td style="padding:12px 8px;text-align:center;font-family:monospace;font-size:11px;font-weight:700;${pos?'color:#059669':'color:#ba1a1a'}">${pos?'+':'−'}$${Math.abs(v).toFixed(0)}</td>`;
+      return `<td style="padding:10px 6px;text-align:center;font-family:monospace;font-size:10px;font-weight:700;color:${pos ? '#059669' : '#ba1a1a'}">${pos ? '+' : '−'}${fmt(v)}</td>`;
     }).join('');
+    const ytdPos = ytd >= 0;
     return `<tr style="border-bottom:1px solid rgba(197,198,210,0.3)">
-      <td style="padding:12px;font-weight:800;font-size:13px;color:#191c1d">${yr}</td>
+      <td style="padding:10px 12px;font-weight:800;font-size:13px;color:#191c1d">${yr}</td>
       ${cells}
-      <td style="padding:12px;text-align:right;font-weight:800;font-size:12px;font-family:monospace;${ytd>=0?'color:#002366':'color:#ba1a1a'}">${ytd>=0?'+':'−'}$${Math.abs(ytd).toFixed(0)}</td>
+      <td style="padding:10px 12px;text-align:right;font-weight:800;font-size:11px;font-family:monospace;color:${ytdPos ? '#002366' : '#ba1a1a'}">${ytdPos ? '+' : '−'}${fmt(ytd)}</td>
     </tr>`;
   }).join('');
 }
