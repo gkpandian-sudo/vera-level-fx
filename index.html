@@ -531,7 +531,10 @@ Open Account
 <div class="max-w-container-max mx-auto">
 <div class="flex justify-between items-end mb-12">
 <h2 class="text-xs font-black text-primary uppercase tracking-[0.5em]" id="pos-hdr">Open Positions</h2>
-<span class="font-label-caps text-secondary text-[10px] uppercase tracking-widest">Live · IC Markets</span>
+<div class="text-right">
+  <span class="font-label-caps text-secondary text-[10px] uppercase tracking-widest">Live · IC Markets</span>
+  <div id="data-freshness" class="text-[9px] text-outline mt-1 tracking-wide"></div>
+</div>
 </div>
 <div id="pos-grid">
 <div class="bg-background p-8 text-center soft-shadow">
@@ -1191,6 +1194,15 @@ async function init() {
     // Consistency matrix
     if (byId('matrix-body')) byId('matrix-body').innerHTML = consistencyMatrix(trades, dailyGain);
 
+    // Last fetched timestamp
+    if (snap.fetchedAt) {
+      const fetched = new Date(snap.fetchedAt);
+      const ago = Math.round((Date.now() - fetched.getTime()) / 60000);
+      const agoStr = ago < 1 ? 'just now' : ago === 1 ? '1 min ago' : ago + ' min ago';
+      const timeStr = fetched.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+      setEl('data-freshness', `Data as of ${timeStr} · refreshed ${agoStr}`);
+    }
+
     // Open positions
     setEl('pos-hdr', `Open Positions (${openTrades.length})`);
     if (byId('pos-grid')) byId('pos-grid').innerHTML = openTrades.length
@@ -1210,6 +1222,8 @@ async function init() {
 }
 
 init();
+// Re-fetch snapshot every 5 minutes so open tab always shows current data
+setInterval(init, 5 * 60 * 1000);
 </script>
 
 </body></html>
