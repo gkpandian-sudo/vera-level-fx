@@ -544,38 +544,8 @@ Open Account
 </div>
 </section>
 
-<!-- Trade History Section -->
-<section class="py-stack-xl px-margin-desktop bg-background" id="history">
-<div class="max-w-container-max mx-auto">
-<div class="flex justify-between items-end mb-12">
-<h2 class="text-xs font-black text-primary uppercase tracking-[0.5em]" id="hist-hdr">Trade History</h2>
-<span class="font-label-caps text-secondary text-[10px] uppercase tracking-widest">IC Markets · Live Account</span>
-</div>
-<div class="bg-surface soft-shadow overflow-x-auto">
-<table class="w-full text-left" style="border-collapse:collapse">
-<thead>
-<tr class="border-b border-outline-variant/30">
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Date</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Symbol</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Dir</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Lots</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Open</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Close</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">P&amp;L</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Pips</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Comment</th>
-</tr>
-</thead>
-<tbody id="hist-body">
-<tr><td colspan="9" style="padding:32px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Loading trade history...</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-
 <!-- Strategy Section -->
-<section class="py-stack-xl px-margin-desktop bg-surface" id="strategy">
+<section class="py-stack-xl px-margin-desktop bg-background" id="strategy">
 <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-stack-xl items-center">
 <div>
 <h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-8 tracking-tight reveal">The Vera Level Protocol</h2>
@@ -624,7 +594,7 @@ Open Account
 </section>
 
 <!-- Profile Section -->
-<section class="py-stack-xl px-margin-desktop bg-background" id="manager">
+<section class="py-stack-xl px-margin-desktop bg-surface" id="manager">
 <div class="max-w-container-max mx-auto bg-surface p-8 md:p-16 soft-shadow flex flex-col lg:flex-row items-center gap-10 md:gap-20">
 <div class="bracket-frame flex-shrink-0">
 <div class="w-40 h-40 md:w-72 md:h-72 bg-background border border-outline-variant/30 overflow-hidden">
@@ -649,7 +619,7 @@ Open Account
 </section>
 
 <!-- Deployment Protocol Steps -->
-<section class="py-stack-xl px-margin-desktop bg-surface" id="guide">
+<section class="py-stack-xl px-margin-desktop bg-background" id="guide">
 <div class="max-w-container-max mx-auto">
 <h2 class="text-xs font-black text-primary uppercase text-center tracking-[0.5em] mb-20">How to Get Started</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
@@ -676,7 +646,7 @@ Open Account
 </section>
 
 <!-- IC Markets Section -->
-<section class="py-stack-xl px-margin-desktop bg-background" id="partners">
+<section class="py-stack-xl px-margin-desktop bg-surface" id="partners">
 <div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 <div class="bg-surface p-16 soft-shadow">
 <h3 class="text-xl md:text-3xl font-black text-primary uppercase mb-8 tracking-tight">Trade with IC Markets</h3>
@@ -700,6 +670,36 @@ Open Account
 <!-- IC Markets Live Price Widget -->
 <div class="bg-white soft-shadow flex flex-col items-center justify-center min-h-[320px] md:min-h-[480px] overflow-hidden">
 <iframe src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" loading="lazy" title="IC Markets Live Price Terminal"></iframe>
+</div>
+</div>
+</section>
+
+<!-- Trade History Section -->
+<section class="py-stack-xl px-margin-desktop bg-background" id="history">
+<div class="max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-12">
+<h2 class="text-xs font-black text-primary uppercase tracking-[0.5em]" id="hist-hdr">Trade History</h2>
+<span class="font-label-caps text-secondary text-[10px] uppercase tracking-widest">IC Markets · Live Account</span>
+</div>
+<div class="bg-surface soft-shadow overflow-x-auto">
+<table class="w-full text-left" style="border-collapse:collapse">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Date</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Symbol</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Dir</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Lots</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Open</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Close</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">P&amp;L</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Pips</th>
+<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Comment</th>
+</tr>
+</thead>
+<tbody id="hist-body">
+<tr><td colspan="9" style="padding:32px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Loading trade history...</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
