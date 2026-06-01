@@ -3,37 +3,33 @@
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
-    "gain": 42.32,
-    "absGain": 20.72,
-    "daily": 0.36,
-    "monthly": 11.53,
+    "gain": 40.45,
+    "absGain": 19.58,
+    "daily": 0.34,
+    "monthly": 10.87,
     "withdrawals": 1765,
     "deposits": 5201.08,
-    "interest": -120.79,
-    "profit": 1077.84,
-    "balance": 4513.81,
+    "interest": -127.17,
+    "profit": 1018.3,
+    "balance": 4454.05,
     "drawdown": 36.15,
-    "equity": 4482.28,
-    "equityPercent": 99.3,
+    "equity": 4427.23,
+    "equityPercent": 99.4,
     "demo": false,
-    "lastUpdateDate": "05/28/2026 00:32",
+    "lastUpdateDate": "05/31/2026 08:23",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -193.24,
+    "commission": -209.9,
     "currency": "USD",
-    "profitFactor": 1.21,
-    "pips": 39311.2,
+    "profitFactor": 1.18,
+    "pips": 43313.2,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
       "name": "IC Markets"
-    },
-    "trades": 538,
-    "winRate": 75,
-    "avgWin": 15.32,
-    "avgLoss": 37.35
+    }
   },
   "openTrades": [
     {
@@ -48,9 +44,9 @@
       "tp": 1.19,
       "sl": 0,
       "comment": "",
-      "profit": -20.8,
-      "pips": -208,
-      "swap": -7.95,
+      "profit": -17,
+      "pips": -170,
+      "swap": -8.11,
       "magic": "0"
     },
     {
@@ -65,41 +61,580 @@
       "tp": 0,
       "sl": 0,
       "comment": "",
-      "profit": -0.62,
-      "pips": -3.1,
-      "swap": -2.16,
+      "profit": 6.98,
+      "pips": 34.9,
+      "swap": -2.5,
       "magic": "0"
+    },
+    {
+      "openTime": "05/29/2026 15:10",
+      "symbol": "AUDCAD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 0.98986,
+      "tp": 0,
+      "sl": 0,
+      "comment": "TOL LANGIT ETF - I",
+      "profit": -5.15,
+      "pips": -23.7,
+      "swap": -0.17,
+      "magic": "74638"
+    },
+    {
+      "openTime": "05/29/2026 15:50",
+      "symbol": "AUDCAD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 0.99191,
+      "tp": 0,
+      "sl": 0,
+      "comment": "TOL LANGIT ETF - I",
+      "profit": -0.7,
+      "pips": -3.2,
+      "swap": -0.17,
+      "magic": "74638"
     }
   ],
-  "openOrders": [
+  "openOrders": [],
+  "history": [
     {
-      "openTime": "05/27/2026 15:59",
+      "openTime": "05/29/2026 18:30",
+      "closeTime": "05/29/2026 18:34",
       "symbol": "XAUUSD",
-      "action": "Buy Stop",
+      "action": "Buy",
       "sizing": {
         "type": "lots",
         "value": "0.11"
       },
-      "openPrice": 4579.07,
-      "tp": 4645.65,
-      "sl": 4565.75,
-      "comment": "TOL LANGIT ETF - VII_PendingC"
+      "openPrice": 4579.05,
+      "closePrice": 4581.55,
+      "tp": 0,
+      "sl": 4581.3,
+      "pips": 250,
+      "profit": 26.72,
+      "comment": "TOL LANGIT ETF - VII_PendingC[sl 4581.30]",
+      "interest": 0,
+      "commission": -0.78
     },
     {
-      "openTime": "05/27/2026 22:15",
+      "openTime": "05/29/2026 18:05",
+      "closeTime": "05/29/2026 18:08",
       "symbol": "XAUUSD",
-      "action": "Sell Stop",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.10"
+      },
+      "openPrice": 4580.49,
+      "closePrice": 4587.23,
+      "tp": 0,
+      "sl": 4587.34,
+      "pips": 674,
+      "profit": 66.7,
+      "comment": "TOL LANGIT ETF - VII_PendingC",
+      "interest": 0,
+      "commission": -0.7
+    },
+    {
+      "openTime": "05/29/2026 13:16",
+      "closeTime": "05/29/2026 13:31",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.04"
+      },
+      "openPrice": 4529.88,
+      "closePrice": 4531.66,
+      "tp": 0,
+      "sl": 0,
+      "pips": 178,
+      "profit": 6.84,
+      "comment": "#4071006432|TOL LANGIT ETF - IV",
+      "interest": 0,
+      "commission": -0.28
+    },
+    {
+      "openTime": "05/29/2026 11:51",
+      "closeTime": "05/29/2026 12:01",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4510.6,
+      "closePrice": 4516.25,
+      "tp": 0,
+      "sl": 0,
+      "pips": 565,
+      "profit": 39.05,
+      "comment": "TOLLANGITETF-I[T4/S08]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/29/2026 11:50",
+      "closeTime": "05/29/2026 12:01",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4511.89,
+      "closePrice": 4516.43,
+      "tp": 0,
+      "sl": 0,
+      "pips": 454,
+      "profit": 31.28,
+      "comment": "TOLLANGITETF-I[T4/S08]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/29/2026 11:49",
+      "closeTime": "05/29/2026 12:01",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4513.17,
+      "closePrice": 4515.67,
+      "tp": 0,
+      "sl": 0,
+      "pips": 250,
+      "profit": 17,
+      "comment": "TOLLANGITETF-I[T4/S08]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/29/2026 11:48",
+      "closeTime": "05/29/2026 12:01",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4514.5,
+      "closePrice": 4515.87,
+      "tp": 0,
+      "sl": 0,
+      "pips": 137,
+      "profit": 9.09,
+      "comment": "TOLLANGITETF-I[T4/S08]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/29/2026 11:35",
+      "closeTime": "05/29/2026 12:01",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4515.58,
+      "closePrice": 4516.21,
+      "tp": 0,
+      "sl": 0,
+      "pips": 63,
+      "profit": 3.91,
+      "comment": "TOLLANGITETF-I[T4/S08]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/29/2026 11:30",
+      "closeTime": "05/29/2026 12:01",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4517.43,
+      "closePrice": 4517.23,
+      "tp": 0,
+      "sl": 0,
+      "pips": -20,
+      "profit": -1.9,
+      "comment": "TOLLANGITETF-I[T4/S08]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/29/2026 11:25",
+      "closeTime": "05/29/2026 11:29",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4516.02,
+      "closePrice": 4517.71,
+      "tp": 0,
+      "sl": 0,
+      "pips": 169,
+      "profit": 11.33,
+      "comment": "TOLLANGITETF-I[T4/S08]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 23:37",
+      "closeTime": "05/29/2026 04:00",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.12"
+      },
+      "openPrice": 4498.24,
+      "closePrice": 4501.06,
+      "tp": 4501.14,
+      "sl": 0,
+      "pips": 282,
+      "profit": 26.62,
+      "comment": "TOL LANGIT ETF - VI[tp 4501.14]",
+      "interest": -6.38,
+      "commission": -0.84
+    },
+    {
+      "openTime": "05/28/2026 23:20",
+      "closeTime": "05/28/2026 23:34",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.12"
+      },
+      "openPrice": 4497.99,
+      "closePrice": 4500.67,
+      "tp": 4500.64,
+      "sl": 0,
+      "pips": 268,
+      "profit": 31.32,
+      "comment": "TOL LANGIT ETF - VI[tp 4500.64]",
+      "interest": 0,
+      "commission": -0.84
+    },
+    {
+      "openTime": "05/28/2026 23:01",
+      "closeTime": "05/28/2026 23:17",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.12"
+      },
+      "openPrice": 4497.71,
+      "closePrice": 4500.58,
+      "tp": 4500.45,
+      "sl": 0,
+      "pips": 287,
+      "profit": 33.6,
+      "comment": "TOL LANGIT ETF - VI[tp 4500.45]",
+      "interest": 0,
+      "commission": -0.84
+    },
+    {
+      "openTime": "05/28/2026 22:52",
+      "closeTime": "05/28/2026 22:54",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4498.34,
+      "closePrice": 4499.27,
+      "tp": 0,
+      "sl": 0,
+      "pips": 93,
+      "profit": 6.01,
+      "comment": "TOLLANGITETF-I[T2/S03]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 22:45",
+      "closeTime": "05/28/2026 22:54",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4499.92,
+      "closePrice": 4499.4,
+      "tp": 0,
+      "sl": 0,
+      "pips": -52,
+      "profit": -4.14,
+      "comment": "TOLLANGITETF-I[T2/S03]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 22:30",
+      "closeTime": "05/28/2026 22:32",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4500.36,
+      "closePrice": 4501.38,
+      "tp": 0,
+      "sl": 0,
+      "pips": 102,
+      "profit": 6.64,
+      "comment": "TOLLANGITETF-I[T2/S03]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 22:15",
+      "closeTime": "05/28/2026 22:16",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4499.77,
+      "closePrice": 4500.06,
+      "tp": 0,
+      "sl": 0,
+      "pips": 29,
+      "profit": 1.53,
+      "comment": "TOLLANGITETF-I[T2/S03]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 22:00",
+      "closeTime": "05/28/2026 22:01",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4501.37,
+      "closePrice": 4502.1,
+      "tp": 0,
+      "sl": 0,
+      "pips": 73,
+      "profit": 4.61,
+      "comment": "TOLLANGITETF-I[T2/S03]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 19:45",
+      "closeTime": "05/28/2026 19:46",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4504.69,
+      "closePrice": 4507.54,
+      "tp": 0,
+      "sl": 0,
+      "pips": 285,
+      "profit": 19.45,
+      "comment": "TOLLANGITETF-I[T2/S04]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 19:30",
+      "closeTime": "05/28/2026 19:31",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4500.85,
+      "closePrice": 4501.62,
+      "tp": 0,
+      "sl": 0,
+      "pips": 77,
+      "profit": 4.89,
+      "comment": "TOLLANGITETF-I[T2/S04]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 19:15",
+      "closeTime": "05/28/2026 19:17",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4484.79,
+      "closePrice": 4490.29,
+      "tp": 0,
+      "sl": 0,
+      "pips": 550,
+      "profit": 38,
+      "comment": "TOLLANGITETF-I[T2/S04]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 19:02",
+      "closeTime": "05/28/2026 19:06",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4479.9,
+      "closePrice": 4482.8,
+      "tp": 0,
+      "sl": 0,
+      "pips": 290,
+      "profit": 19.8,
+      "comment": "TOLLANGITETF-I[T2/S04]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 19:00",
+      "closeTime": "05/28/2026 19:06",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.07"
+      },
+      "openPrice": 4482.82,
+      "closePrice": 4485.19,
+      "tp": 0,
+      "sl": 0,
+      "pips": 237,
+      "profit": 16.09,
+      "comment": "TOLLANGITETF-I[T2/S04]",
+      "interest": 0,
+      "commission": -0.5
+    },
+    {
+      "openTime": "05/28/2026 17:15",
+      "closeTime": "05/28/2026 17:33",
+      "symbol": "AUDCAD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 0.98898,
+      "closePrice": 0.98795,
+      "tp": 0,
+      "sl": 0,
+      "pips": 10.3,
+      "profit": 2.02,
+      "comment": "TOL LANGIT ETF - I",
+      "interest": 0,
+      "commission": -0.22
+    },
+    {
+      "openTime": "05/28/2026 13:40",
+      "closeTime": "05/28/2026 13:41",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.02"
+      },
+      "openPrice": 4397.96,
+      "closePrice": 4396.47,
+      "tp": 0,
+      "sl": 4396.76,
+      "pips": 149,
+      "profit": 2.84,
+      "comment": "TOL LANGIT ETF - IX [S04][sl 4396.76]",
+      "interest": 0,
+      "commission": -0.14
+    },
+    {
+      "openTime": "05/28/2026 06:40",
+      "closeTime": "05/28/2026 08:33",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 0.98526,
+      "closePrice": 0.98623,
+      "tp": 0,
+      "sl": 0,
+      "pips": 9.7,
+      "profit": 1.88,
+      "comment": "TOL LANGIT ETF - I",
+      "interest": 0,
+      "commission": -0.22
+    },
+    {
+      "openTime": "05/28/2026 05:12",
+      "closeTime": "05/28/2026 05:13",
+      "symbol": "XAUUSD",
+      "action": "Sell",
       "sizing": {
         "type": "lots",
         "value": "0.15"
       },
-      "openPrice": 4401.5,
-      "tp": 4369.86,
+      "openPrice": 4399.42,
+      "closePrice": 4397.84,
+      "tp": 0,
+      "sl": 4397.23,
+      "pips": 158,
+      "profit": 22.64,
+      "comment": "TOL LANGIT - V",
+      "interest": 0,
+      "commission": -1.06
+    },
+    {
+      "openTime": "05/28/2026 04:35",
+      "closeTime": "05/28/2026 04:53",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.32"
+      },
+      "openPrice": 4424.99,
+      "closePrice": 4409.33,
+      "tp": 0,
       "sl": 4410,
-      "comment": "TOL LANGIT - V"
-    }
-  ],
-  "history": [
+      "pips": -1566,
+      "profit": -503.36,
+      "comment": "TOL LANGIT ETF - VIII[sl 4410.00]",
+      "interest": 0,
+      "commission": -2.24
+    },
     {
       "openTime": "05/27/2026 23:23",
       "closeTime": "05/28/2026 01:02",
@@ -327,538 +862,6 @@
       "comment": "TOL LANGIT ETF - VII_PendingC",
       "interest": 0,
       "commission": -0.14
-    },
-    {
-      "openTime": "05/26/2026 02:10",
-      "closeTime": "05/26/2026 02:30",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4579.23,
-      "closePrice": 4566.11,
-      "tp": 0,
-      "sl": 4566.37,
-      "pips": -1312,
-      "profit": -26.38,
-      "comment": "TOL LANGIT ETF - VII_PendingE",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/26/2026 02:18",
-      "closeTime": "05/26/2026 02:27",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.14"
-      },
-      "openPrice": 4581.89,
-      "closePrice": 4569.63,
-      "tp": 0,
-      "sl": 4570.13,
-      "pips": -1226,
-      "profit": -172.62,
-      "comment": "TOL LANGIT ETF - III[sl 4570.13]",
-      "interest": 0,
-      "commission": -0.98
-    },
-    {
-      "openTime": "05/26/2026 02:18",
-      "closeTime": "05/26/2026 02:26",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.16"
-      },
-      "openPrice": 4581.89,
-      "closePrice": 4570.42,
-      "tp": 0,
-      "sl": 4571.63,
-      "pips": -1147,
-      "profit": -184.64,
-      "comment": "TOL LANGIT - V",
-      "interest": 0,
-      "commission": -1.12
-    },
-    {
-      "openTime": "05/25/2026 15:25",
-      "closeTime": "05/25/2026 15:30",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.32"
-      },
-      "openPrice": 4556.44,
-      "closePrice": 4560.84,
-      "tp": 4561,
-      "sl": 0,
-      "pips": 440,
-      "profit": 138.56,
-      "comment": "TOL LANGIT ETF - VIII[tp 4561.00]",
-      "interest": 0,
-      "commission": -2.24
-    },
-    {
-      "openTime": "05/25/2026 15:25",
-      "closeTime": "05/25/2026 15:27",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.12"
-      },
-      "openPrice": 4556.6,
-      "closePrice": 4559.95,
-      "tp": 0,
-      "sl": 0,
-      "pips": 335,
-      "profit": 39.36,
-      "comment": "#4069691766|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.84
-    },
-    {
-      "openTime": "05/25/2026 12:02",
-      "closeTime": "05/25/2026 12:04",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.12"
-      },
-      "openPrice": 4557.19,
-      "closePrice": 4557.46,
-      "tp": 0,
-      "sl": 0,
-      "pips": 27,
-      "profit": 2.4,
-      "comment": "#4069640200|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.84
-    },
-    {
-      "openTime": "05/25/2026 03:57",
-      "closeTime": "05/25/2026 04:00",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.58,
-      "closePrice": 4574.07,
-      "tp": 0,
-      "sl": 4574.22,
-      "pips": 449,
-      "profit": 8.84,
-      "comment": "TOL LANGIT ETF - VII_PendingE[sl 4574.22]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 03:57",
-      "closeTime": "05/25/2026 04:00",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.6,
-      "closePrice": 4574.07,
-      "tp": 0,
-      "sl": 4574.22,
-      "pips": 447,
-      "profit": 8.8,
-      "comment": "TOL LANGIT ETF - VII_PendingD[sl 4574.22]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 03:57",
-      "closeTime": "05/25/2026 04:00",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.58,
-      "closePrice": 4574.1,
-      "tp": 0,
-      "sl": 4574.22,
-      "pips": 452,
-      "profit": 8.9,
-      "comment": "TOL LANGIT ETF - VII_PendingC[sl 4574.22]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 02:58",
-      "closeTime": "05/25/2026 03:04",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.41,
-      "closePrice": 4569.87,
-      "tp": 0,
-      "sl": 4569.55,
-      "pips": 46,
-      "profit": 0.78,
-      "comment": "TOL LANGIT ETF - VII_PendingE[sl 4569.55]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 02:58",
-      "closeTime": "05/25/2026 03:04",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.41,
-      "closePrice": 4569.87,
-      "tp": 0,
-      "sl": 4569.55,
-      "pips": 46,
-      "profit": 0.78,
-      "comment": "TOL LANGIT ETF - VII_PendingD[sl 4569.55]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 02:58",
-      "closeTime": "05/25/2026 03:04",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.41,
-      "closePrice": 4569.87,
-      "tp": 0,
-      "sl": 4569.55,
-      "pips": 46,
-      "profit": 0.78,
-      "comment": "TOL LANGIT ETF - VII_PendingC[sl 4569.55]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 02:07",
-      "closeTime": "05/25/2026 02:11",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.85,
-      "closePrice": 4573.67,
-      "tp": 0,
-      "sl": 4573.61,
-      "pips": 382,
-      "profit": 7.5,
-      "comment": "TOL LANGIT ETF - VII_PendingE[sl 4573.61]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 02:07",
-      "closeTime": "05/25/2026 02:11",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.85,
-      "closePrice": 4573.61,
-      "tp": 0,
-      "sl": 4573.61,
-      "pips": 376,
-      "profit": 7.38,
-      "comment": "TOL LANGIT ETF - VII_PendingD[sl 4573.61]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 02:07",
-      "closeTime": "05/25/2026 02:11",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.03,
-      "closePrice": 4573.67,
-      "tp": 0,
-      "sl": 4573.62,
-      "pips": 464,
-      "profit": 9.14,
-      "comment": "TOL LANGIT ETF - VII_PendingC[sl 4573.62]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 02:07",
-      "closeTime": "05/25/2026 02:11",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4569.03,
-      "closePrice": 4573.61,
-      "tp": 0,
-      "sl": 4573.62,
-      "pips": 458,
-      "profit": 9.02,
-      "comment": "TOL LANGIT ETF - VII_PendingA[sl 4573.62]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 01:20",
-      "closeTime": "05/25/2026 02:00",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.16"
-      },
-      "openPrice": 4552.44,
-      "closePrice": 4568.18,
-      "tp": 0,
-      "sl": 4567.44,
-      "pips": -1574,
-      "profit": -252.96,
-      "comment": "TOL LANGIT ETF - VIII[sl 4567.44]",
-      "interest": 0,
-      "commission": -1.12
-    },
-    {
-      "openTime": "05/25/2026 01:36",
-      "closeTime": "05/25/2026 01:49",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4557.45,
-      "closePrice": 4563.82,
-      "tp": 0,
-      "sl": 4563.66,
-      "pips": 637,
-      "profit": 12.6,
-      "comment": "TOL LANGIT ETF - VII_PendingE[sl 4563.66]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 01:36",
-      "closeTime": "05/25/2026 01:49",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4557.44,
-      "closePrice": 4563.62,
-      "tp": 0,
-      "sl": 4563.66,
-      "pips": 618,
-      "profit": 12.22,
-      "comment": "TOL LANGIT ETF - VII_PendingD[sl 4563.66]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 01:31",
-      "closeTime": "05/25/2026 01:34",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4558.03,
-      "closePrice": 4559.11,
-      "tp": 0,
-      "sl": 4559.25,
-      "pips": 108,
-      "profit": 2.02,
-      "comment": "TOL LANGIT ETF - VII_PendingE[sl 4559.25]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/25/2026 01:31",
-      "closeTime": "05/25/2026 01:34",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4558.03,
-      "closePrice": 4559.11,
-      "tp": 0,
-      "sl": 4559.25,
-      "pips": 108,
-      "profit": 2.02,
-      "comment": "TOL LANGIT ETF - VII_PendingD[sl 4559.25]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "05/22/2026 17:14",
-      "closeTime": "05/22/2026 17:35",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.10"
-      },
-      "openPrice": 4489.49,
-      "closePrice": 4503.08,
-      "tp": 0,
-      "sl": 4503.03,
-      "pips": -1359,
-      "profit": -136.6,
-      "comment": "TOL LANGIT ETF - VI_PendingA[sl 4503.03]",
-      "interest": 0,
-      "commission": -0.7
-    },
-    {
-      "openTime": "05/22/2026 17:14",
-      "closeTime": "05/22/2026 17:35",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.10"
-      },
-      "openPrice": 4489.49,
-      "closePrice": 4503.08,
-      "tp": 0,
-      "sl": 4503.03,
-      "pips": -1359,
-      "profit": -136.6,
-      "comment": "TOL LANGIT ETF - VI_PendingD[sl 4503.03]",
-      "interest": 0,
-      "commission": -0.7
-    },
-    {
-      "openTime": "05/22/2026 17:14",
-      "closeTime": "05/22/2026 17:33",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.10"
-      },
-      "openPrice": 4489.42,
-      "closePrice": 4502.27,
-      "tp": 0,
-      "sl": 4502.07,
-      "pips": -1285,
-      "profit": -129.2,
-      "comment": "TOL LANGIT ETF - VI_PendingE[sl 4502.07]",
-      "interest": 0,
-      "commission": -0.7
-    },
-    {
-      "openTime": "05/21/2026 20:30",
-      "closeTime": "05/22/2026 04:02",
-      "symbol": "AUDCAD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.04"
-      },
-      "openPrice": 0.98618,
-      "closePrice": 0.98412,
-      "tp": 0,
-      "sl": 0,
-      "pips": 20.6,
-      "profit": 5.48,
-      "comment": "TOL LANGIT ETF - I",
-      "interest": -0.22,
-      "commission": -0.28
-    },
-    {
-      "openTime": "05/21/2026 19:10",
-      "closeTime": "05/22/2026 04:02",
-      "symbol": "AUDCAD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.04"
-      },
-      "openPrice": 0.984,
-      "closePrice": 0.98412,
-      "tp": 0,
-      "sl": 0,
-      "pips": -1.2,
-      "profit": -0.85,
-      "comment": "TOL LANGIT ETF - I",
-      "interest": -0.22,
-      "commission": -0.28
-    },
-    {
-      "openTime": "05/21/2026 23:08",
-      "closeTime": "05/22/2026 01:02",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.15"
-      },
-      "openPrice": 4542.01,
-      "closePrice": 4545.82,
-      "tp": 4544.61,
-      "sl": 0,
-      "pips": 381,
-      "profit": 47.95,
-      "comment": "TOL LANGIT ETF - VI[tp 4544.61]",
-      "interest": -8.14,
-      "commission": -1.06
-    },
-    {
-      "openTime": "05/21/2026 17:40",
-      "closeTime": "05/21/2026 18:08",
-      "symbol": "AUDCAD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.04"
-      },
-      "openPrice": 0.98344,
-      "closePrice": 0.98244,
-      "tp": 0,
-      "sl": 0,
-      "pips": 10,
-      "profit": 2.62,
-      "comment": "TOL LANGIT ETF - I",
-      "interest": 0,
-      "commission": -0.28
     }
   ],
   "dailyGain": [
@@ -1149,9 +1152,14 @@
     ],
     [
       "05/28/2026",
-      42.32,
-      52.37
+      32.98,
+      -243.81
+    ],
+    [
+      "05/29/2026",
+      40.45,
+      236.64
     ]
   ],
-  "fetchedAt": "2026-05-29T13:11:28.342Z"
+  "fetchedAt": "2026-06-01T14:05:09.224Z"
 }
