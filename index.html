@@ -903,131 +903,177 @@ window.addEventListener('scroll', () => {
 (function () {
   const DATA_URL = 'data/vera-snapshot.json';
 
-  function fmt(n, d=2)       { return n != null ? n.toFixed(d) : '—'; }
-  function fmtPct(n)         { return n != null ? (n >= 0 ? '+' : '') + fmt(n) + '%' : '—'; }
-  function fmtUsd(n)         { return n != null ? '$' + n.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—'; }
-  function colorPnl(n)       { return n >= 0 ? 'text-success' : 'text-red-500'; }
+  const n   = v => Number(v || 0);
+  const lots = s => (s && typeof s === 'object') ? (s.value || '?') : (s || '?');
+  const esc  = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-  function buildEquitySvg(pts) {
-    if (!pts || pts.length < 2) return;
-    const W = 800, H = 200, PAD = 10;
-    const vals = pts.map(p => p.equity);
-    const mn = Math.min(...vals), mx = Math.max(...vals);
-    const range = mx - mn || 1;
-    const scaleX = i => PAD + (i / (pts.length - 1)) * (W - PAD * 2);
-    const scaleY = v => H - PAD - ((v - mn) / range) * (H - PAD * 2);
-    let d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${scaleX(i).toFixed(1)},${scaleY(p.equity).toFixed(1)}`).join(' ');
-    const areaD = d + ` L${scaleX(pts.length-1).toFixed(1)},${H} L${scaleX(0).toFixed(1)},${H} Z`;
+  function fmt(v, d=2)  { return v != null ? Number(v).toFixed(d) : '—'; }
+  function fmtPct(v)    { return v != null ? (Number(v) >= 0 ? '+' : '') + fmt(v) + '%' : '—'; }
+  function fmtUsd(v)    { return v != null ? '$' + Math.abs(Number(v)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—'; }
+  function colorPnl(v)  { return Number(v) >= 0 ? 'text-success' : 'text-red-500'; }
+
+  function buildEquitySvg(dailyGain, currentGain) {
+    if (!dailyGain || dailyGain.length < 2) return;
+    const W = 800, H = 200, PAD = 28;
+    const gs = dailyGain.map(d => n(d[1]));
+    const mn = Math.min(...gs) * (Math.min(...gs) < 0 ? 1.08 : 0.92);
+    const mx = Math.max(...gs) * 1.05;
+    const rng = mx - mn || 1;
+    const pts = dailyGain.map(([,g], i) => {
+      const x = (PAD + i * (W - PAD*2) / (dailyGain.length - 1)).toFixed(1);
+      const y = (H - PAD - ((n(g) - mn) / rng) * (H - PAD*2)).toFixed(1);
+      return [x, y];
+    });
+    const lineD = 'M' + pts.map(p => p.join(',')).join(' L');
+    const areaD = lineD + ` L${pts[pts.length-1][0]},${H-PAD} L${pts[0][0]},${H-PAD} Z`;
     const line = document.getElementById('eq-line');
     const area = document.getElementById('eq-area');
     if (line) {
-      line.setAttribute('d', d);
+      line.setAttribute('d', lineD);
       const len = line.getTotalLength ? line.getTotalLength() : 2000;
       line.style.strokeDasharray = len;
       line.style.strokeDashoffset = len;
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        line.style.strokeDashoffset = 0;
-      }));
+      requestAnimationFrame(() => requestAnimationFrame(() => { line.style.strokeDashoffset = 0; }));
     }
     if (area) area.setAttribute('d', areaD);
   }
 
-  function buildMonthlyBars(months) {
+  function buildMonthlyBars(history) {
     const el = document.getElementById('monthly-bars');
-    if (!el || !months || !months.length) return;
-    const maxAbs = Math.max(...months.map(m => Math.abs(m.pnl)), 1);
-    el.innerHTML = months.slice(-12).reverse().map(m => {
+    if (!el || !history || !history.length) return;
+    const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const map = {};
+    history.forEach(t => {
+      const p = (t.closeTime || '').split('/');
+      if (p.length < 3) return;
+      const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
+      const label = MN[parseInt(p[0])-1] + ' ' + p[2].split(' ')[0].slice(2);
+      if (!map[key]) map[key] = { label, pnl: 0 };
+      map[key].pnl += n(t.profit);
+    });
+    const months = Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).slice(-12);
+    if (!months.length) { el.innerHTML = '<p class="text-text-faint text-sm">No monthly data yet</p>'; return; }
+    const maxAbs = Math.max(...months.map(([,m]) => Math.abs(m.pnl)), 1);
+    el.innerHTML = [...months].reverse().map(([, m]) => {
       const pct = (Math.abs(m.pnl) / maxAbs * 100).toFixed(1);
       const pos = m.pnl >= 0;
       return `<div class="pnl-row flex items-center gap-3">
         <span class="font-mono-data text-[11px] text-text-faint w-14 flex-shrink-0">${m.label}</span>
         <div class="flex-1 h-5 rounded-full bg-surface overflow-hidden">
-          <div class="pnl-fill h-full rounded-full ${pos ? 'bg-primary' : 'bg-red-400'}"
-               style="width:${pct}%"></div>
+          <div class="pnl-fill h-full rounded-full ${pos ? 'bg-primary' : 'bg-red-400'}" style="width:${pct}%"></div>
         </div>
-        <span class="font-mono-data text-[11px] ${pos ? 'text-success' : 'text-red-500'} w-16 text-right flex-shrink-0">
-          ${fmtPct(m.pnl)}
+        <span class="font-mono-data text-[11px] ${pos ? 'text-success' : 'text-red-500'} w-20 text-right flex-shrink-0">
+          ${pos ? '+' : '-'}${fmtUsd(Math.abs(m.pnl))}
         </span>
       </div>`;
     }).join('');
   }
 
-  function buildConsistencyMatrix(matrix) {
+  function buildConsistencyMatrix(history) {
     const el = document.getElementById('matrix-body');
-    if (!el || !matrix || !matrix.length) return;
-    const days = ['Mon','Tue','Wed','Thu','Fri'];
+    if (!el || !history || !history.length) return;
+    const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const map = {};
+    history.forEach(t => {
+      const p = (t.closeTime || '').split('/');
+      if (p.length < 3) return;
+      const yr = parseInt(p[2]);
+      const mo = parseInt(p[0]) - 1;
+      if (!map[yr]) map[yr] = {};
+      map[yr][mo] = (map[yr][mo] || 0) + n(t.profit);
+    });
+    const years = Object.keys(map).sort((a,b) => b - a);
+    if (!years.length) { el.innerHTML = '<tr><td colspan="14" class="p-4 text-text-faint text-sm">No history yet</td></tr>'; return; }
     el.innerHTML = `<thead><tr>
-      <th class="text-left text-text-faint font-semibold pb-2 text-[10px] tracking-widest">Week</th>
-      ${days.map(d => `<th class="text-center text-text-faint font-semibold pb-2 text-[10px] tracking-widest">${d}</th>`).join('')}
+      <th class="text-left text-text-faint text-[10px] tracking-widest pb-2 pr-3">Year</th>
+      ${MN.map(m => `<th class="text-center text-text-faint text-[10px] tracking-widest pb-2 px-1">${m}</th>`).join('')}
+      <th class="text-right text-text-faint text-[10px] tracking-widest pb-2 pl-2">YTD</th>
     </tr></thead><tbody>${
-      matrix.map(row => `<tr>${[row.week, ...row.days.map(d =>
-        d == null  ? `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-surface"></span></td>` :
-        d === 0    ? `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-surface-2 border border-border-solid"></span></td>` :
-        d > 0      ? `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-primary opacity-${Math.min(Math.round(d/3)*10+50,90)}"></span></td>` :
-                     `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-red-200"></span></td>`
-      )].join('')}</tr>`
-    ).join('')}</tbody>`;
+      years.map(yr => {
+        const ytd = Object.values(map[yr]).reduce((s,v) => s+v, 0);
+        const cells = Array.from({length:12}, (_,m) => {
+          const v = map[yr][m];
+          if (v === undefined) return `<td class="py-1 px-1 text-center text-text-faint text-[10px]">—</td>`;
+          const pos = v >= 0;
+          return `<td class="py-1 px-1 text-center font-mono-data text-[10px] ${pos ? 'text-success' : 'text-red-500'}">${pos?'+':'-'}$${Math.abs(v).toFixed(0)}</td>`;
+        }).join('');
+        return `<tr>
+          <td class="py-1 pr-3 font-outfit font-bold text-[12px] text-primary">${yr}</td>
+          ${cells}
+          <td class="py-1 pl-2 text-right font-mono-data font-bold text-[11px] ${ytd>=0?'text-success':'text-red-500'}">${ytd>=0?'+':'-'}$${Math.abs(ytd).toFixed(0)}</td>
+        </tr>`;
+      }).join('')
+    }</tbody>`;
   }
 
-  function buildPositions(positions) {
+  function buildPositions(openTrades) {
     const hdr  = document.getElementById('pos-hdr');
     const grid = document.getElementById('pos-grid');
     if (!hdr || !grid) return;
-    if (!positions || !positions.length) {
+    if (!openTrades || !openTrades.length) {
       grid.innerHTML = `<p class="text-text-faint font-editorial italic px-4 py-6">No open positions at this time.</p>`;
       return;
     }
     hdr.classList.remove('hidden');
-    hdr.innerHTML = ['Symbol','Type','Volume','Open Price','Current','P&L'].map(h =>
+    hdr.style.gridTemplateColumns = 'repeat(5, 1fr)';
+    hdr.innerHTML = ['Symbol','Direction','Lots','Open Price','P&L'].map(h =>
       `<span class="text-[10px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint">${h}</span>`).join('');
-    grid.innerHTML = positions.map(p => `
-      <div class="grid grid-cols-6 gap-2 px-4 py-3.5 rounded-xl bg-surface-2 border border-border-solid text-sm font-mono-data">
-        <span class="font-bold text-primary">${p.symbol}</span>
-        <span class="${p.type === 'buy' ? 'text-success' : 'text-red-500'} font-semibold uppercase text-xs">${p.type}</span>
-        <span class="text-text-muted">${p.volume}</span>
-        <span class="text-text-muted">${fmt(p.open,5)}</span>
-        <span class="text-text">${fmt(p.current,5)}</span>
-        <span class="${colorPnl(p.pnl)} font-semibold">${fmtUsd(p.pnl)}</span>
-      </div>`).join('');
+    grid.innerHTML = openTrades.map(t => {
+      const dir = (t.action || '').toLowerCase();
+      const pl  = n(t.profit);
+      return `<div class="grid gap-2 px-4 py-3.5 rounded-xl bg-surface-2 border border-border-solid font-mono-data"
+                   style="grid-template-columns: repeat(5, 1fr);">
+        <span class="font-bold text-primary text-[13px]">${esc(t.symbol)}</span>
+        <span class="${dir === 'buy' ? 'text-success' : 'text-red-500'} font-semibold uppercase text-[11px]">${dir}</span>
+        <span class="text-text-muted text-[12px]">${lots(t.sizing)}</span>
+        <span class="text-text-muted text-[12px]">${t.openPrice}</span>
+        <span class="${colorPnl(pl)} font-semibold text-[13px]">${pl >= 0 ? '+' : ''}${fmtUsd(pl)}</span>
+      </div>`;
+    }).join('');
   }
 
-  function buildHistory(trades) {
+  function buildHistory(history) {
     const hdr  = document.getElementById('hist-hdr');
     const body = document.getElementById('hist-body');
     if (!hdr || !body) return;
-    if (!trades || !trades.length) {
+    if (!history || !history.length) {
       body.innerHTML = `<p class="text-text-faint font-editorial italic px-5 py-6">No trade history available.</p>`;
       return;
     }
     hdr.classList.remove('hidden');
-    hdr.innerHTML = ['Date','Symbol','Type','Lots','Entry','Exit','Pips','P&L'].map(h =>
-      `<span>${h}</span>`).join('');
     hdr.style.gridTemplateColumns = 'repeat(8, 1fr)';
-    body.innerHTML = trades.slice(0, 50).map(t => `
-      <div class="grid gap-2 px-5 py-3 hover:bg-surface transition-colors"
-           style="grid-template-columns: repeat(8, 1fr);">
-        <span class="text-text-muted text-[11px]">${t.date || '—'}</span>
-        <span class="font-semibold text-primary text-[12px]">${t.symbol || '—'}</span>
-        <span class="${t.type === 'buy' ? 'text-success' : 'text-red-500'} font-semibold uppercase text-[11px]">${t.type || '—'}</span>
-        <span class="text-text-muted text-[11px]">${t.lots || '—'}</span>
-        <span class="text-text-muted text-[11px]">${t.entry != null ? fmt(t.entry, 5) : '—'}</span>
-        <span class="text-text-muted text-[11px]">${t.exit  != null ? fmt(t.exit,  5) : '—'}</span>
-        <span class="${colorPnl(t.pips)} text-[11px]">${t.pips != null ? (t.pips >= 0 ? '+' : '') + fmt(t.pips,1) : '—'}</span>
-        <span class="${colorPnl(t.pnl)} font-semibold text-[12px]">${t.pnl != null ? fmtUsd(t.pnl) : '—'}</span>
-      </div>`).join('');
+    hdr.innerHTML = ['Date','Symbol','Dir','Lots','Entry','Exit','Pips','P&L'].map(h =>
+      `<span class="text-[10px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint">${h}</span>`).join('');
+    body.innerHTML = history.slice(0, 50).map(t => {
+      const pl  = n(t.profit);
+      const dir = (t.action || '').toLowerCase();
+      return `<div class="grid gap-2 px-5 py-3 hover:bg-surface transition-colors font-mono-data"
+                   style="grid-template-columns: repeat(8, 1fr);">
+        <span class="text-text-muted text-[11px]">${(t.closeTime || '').split(' ')[0]}</span>
+        <span class="font-semibold text-primary text-[12px]">${esc(t.symbol)}</span>
+        <span class="${dir === 'buy' ? 'text-success' : 'text-red-500'} font-semibold uppercase text-[11px]">${dir}</span>
+        <span class="text-text-muted text-[11px]">${lots(t.sizing)}</span>
+        <span class="text-text-muted text-[11px]">${t.openPrice != null ? t.openPrice : '—'}</span>
+        <span class="text-text-muted text-[11px]">${t.closePrice != null ? t.closePrice : '—'}</span>
+        <span class="${colorPnl(t.pips)} text-[11px]">${t.pips != null ? (t.pips >= 0 ? '+' : '') + t.pips : '—'}</span>
+        <span class="${colorPnl(pl)} font-semibold text-[12px]">${pl >= 0 ? '+' : ''}${fmtUsd(pl)}</span>
+      </div>`;
+    }).join('');
   }
 
   // Fetch & render
   fetch(DATA_URL)
     .then(r => r.json())
     .then(data => {
+      const acct = data.account || {};
+
       // Hero stats band
       const hGain = document.getElementById('h-gain');
       const hDd   = document.getElementById('h-dd');
       const hBal  = document.getElementById('h-balance');
-      if (hGain) hGain.textContent = fmtPct(data.gain);
-      if (hDd)   hDd.textContent   = fmtPct(data.maxDrawdown);
-      if (hBal)  hBal.textContent  = fmtUsd(data.balance);
+      if (hGain) hGain.textContent = fmtPct(acct.gain);
+      if (hDd)   hDd.textContent   = fmtPct(acct.drawdown);
+      if (hBal)  hBal.textContent  = fmtUsd(acct.balance);
 
       // Key metrics
       const mMonthly = document.getElementById('m-monthly');
@@ -1036,37 +1082,41 @@ window.addEventListener('scroll', () => {
       const mWr      = document.getElementById('m-wr');
       const mWrSub   = document.getElementById('m-wr-sub');
       const mPips    = document.getElementById('m-pips');
-      if (mMonthly) mMonthly.textContent = fmtPct(data.monthlyReturn);
-      if (mPf)      mPf.textContent      = data.profitFactor != null ? fmt(data.profitFactor) : '—';
+      if (mMonthly) mMonthly.textContent = fmtPct(acct.monthly);
+      if (mPf)      mPf.textContent      = acct.profitFactor != null ? fmt(acct.profitFactor) : '—';
       if (mPfSub)   mPfSub.textContent   = 'profit factor';
-      if (mWr)      mWr.textContent      = data.winRate != null ? fmt(data.winRate, 1) + '%' : '—';
-      if (mWrSub)   mWrSub.textContent   = 'win rate';
-      if (mPips)    mPips.textContent    = data.totalPips != null ? '+' + data.totalPips.toLocaleString() : '—';
+      // Win rate: calculated from history
+      if (data.history && data.history.length) {
+        const wins = data.history.filter(t => n(t.profit) > 0).length;
+        const wr   = (wins / data.history.length) * 100;
+        if (mWr) mWr.textContent = fmt(wr, 1) + '%';
+      }
+      if (mWrSub) mWrSub.textContent = 'win rate';
+      if (mPips)  mPips.textContent  = acct.pips != null ? '+' + Math.round(acct.pips).toLocaleString() : '—';
 
       // Equity chart labels
-      const eSub    = document.getElementById('equity-sub');
-      const cFrom   = document.getElementById('chart-from');
-      const cTo     = document.getElementById('chart-to');
-      const cGain   = document.getElementById('chart-gain');
-      if (eSub)  eSub.textContent  = data.accountId ? `Account #${data.accountId}` : '';
-      if (cFrom) cFrom.textContent = data.startDate  || '—';
-      if (cTo)   cTo.textContent   = data.asOf       || '—';
-      if (cGain) { cGain.textContent = fmtPct(data.gain); cGain.className = `font-semibold ${data.gain >= 0 ? 'text-success' : 'text-red-500'}`; }
+      const eSub  = document.getElementById('equity-sub');
+      const cFrom = document.getElementById('chart-from');
+      const cTo   = document.getElementById('chart-to');
+      const cGain = document.getElementById('chart-gain');
+      if (eSub)  eSub.textContent  = acct.accountId ? `Account #${acct.accountId}` : '';
+      if (cFrom) cFrom.textContent = acct.firstTradeDate || '—';
+      if (cTo)   cTo.textContent   = acct.lastUpdateDate || '—';
+      if (cGain) { cGain.textContent = fmtPct(acct.gain); cGain.className = `font-semibold ${n(acct.gain) >= 0 ? 'text-success' : 'text-red-500'}`; }
 
       // Charts & tables
-      buildEquitySvg(data.equityCurve);
-      buildMonthlyBars(data.monthlyReturns);
-      buildConsistencyMatrix(data.consistencyMatrix);
-      buildPositions(data.openPositions);
-      buildHistory(data.tradeHistory);
+      buildEquitySvg(data.dailyGain, acct.gain);
+      buildMonthlyBars(data.history);
+      buildConsistencyMatrix(data.history);
+      buildPositions(data.openTrades);
+      buildHistory(data.history);
 
       // Data freshness
       const fresh = document.getElementById('data-freshness');
-      if (fresh && data.asOf) fresh.textContent = `Last updated: ${data.asOf}`;
+      if (fresh) fresh.textContent = `Last updated: ${acct.lastUpdateDate || data.fetchedAt || ''}`;
     })
     .catch(err => {
       console.warn('Snapshot data unavailable:', err);
-      // Graceful degradation — elements already show '—'
     });
 })();
 </script>
