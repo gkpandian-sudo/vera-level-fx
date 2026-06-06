@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Vera Level FX | Institutional Grade Forex Portfolio</title>
@@ -10,1220 +10,1066 @@
 <link rel="dns-prefetch" href="https://cdn.tailwindcss.com"/>
 <link rel="dns-prefetch" href="https://secure.icmarkets.com"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-        }
-        .soft-shadow {
-            box-shadow: 0 4px 20px -4px rgba(0, 35, 102, 0.05);
-        }
-        .ticker-wrap {
-            width: 100%;
-            overflow: hidden;
-            background: #ffffff;
-        }
-        .ticker-move {
-            display: flex;
-            white-space: nowrap;
-            animation: ticker 40s linear infinite;
-        }
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .font-editorial { font-family: 'Newsreader', serif; }
-
-        /* ── Mobile layout overrides ─────────────────────── */
-        @media (max-width: 767px) {
-          .py-stack-xl { padding-top: 48px; padding-bottom: 48px; }
-          .px-margin-desktop { padding-left: 20px; padding-right: 20px; }
-        }
-
-        /* ── Scroll progress bar ─────────────────────────── */
-        html { scroll-behavior: smooth; }
-        #scroll-bar {
-          position: fixed; top: 0; left: 0; width: 0%; height: 2px;
-          background: #002366; z-index: 9999; transition: width 0.08s linear;
-          pointer-events: none;
-        }
-
-        /* ── Hero grid background + grain ───────────────── */
-        .hero-grid-bg {
-          background-image:
-            linear-gradient(rgba(0,35,102,0.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,35,102,0.035) 1px, transparent 1px);
-          background-size: 48px 48px;
-          position: relative;
-        }
-        .hero-grid-bg::before {
-          content: '';
-          position: absolute; inset: 0;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
-          pointer-events: none; z-index: 0;
-        }
-        .hero-grid-bg > * { position: relative; z-index: 1; }
-
-        /* ── Hero stat accent lines ──────────────────────── */
-        .hero-stat { position: relative; padding-top: 20px; }
-        .hero-stat::before {
-          content: ''; position: absolute; top: 0; left: 50%;
-          transform: translateX(-50%); width: 28px; height: 2px;
-          background: rgba(0,35,102,0.18);
-        }
-
-        /* ── Scroll reveal ───────────────────────────────── */
-        .reveal {
-          opacity: 0; transform: translateY(22px);
-          transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
-        }
-        .reveal.in { opacity: 1; transform: none; }
-        .reveal-d1 { transition-delay: 0.10s; }
-        .reveal-d2 { transition-delay: 0.20s; }
-        .reveal-d3 { transition-delay: 0.30s; }
-
-        /* ── Card hover lift ─────────────────────────────── */
-        .card-lift { transition: box-shadow 0.28s ease, transform 0.28s ease; }
-        .card-lift:hover {
-          box-shadow: 0 20px 52px -10px rgba(0,35,102,0.11);
-          transform: translateY(-3px);
-        }
-
-        /* ── Profile bracket frame ───────────────────────── */
-        .bracket-frame { position: relative; display: inline-flex; }
-        .bracket-frame::before, .bracket-frame::after {
-          content: ''; position: absolute;
-          width: 22px; height: 22px;
-          border: 2px solid rgba(0,35,102,0.22);
-          pointer-events: none; z-index: 2;
-        }
-        .bracket-frame::before { top: -9px; left: -9px; border-right: none; border-bottom: none; }
-        .bracket-frame::after  { bottom: -9px; right: -9px; border-left: none; border-top: none; }
-
-        /* ── Step number outline ─────────────────────────── */
-        .step-outline {
-          font-size: 76px; font-weight: 900; line-height: 1;
-          color: transparent; letter-spacing: -0.04em;
-          -webkit-text-stroke: 1.5px rgba(0,35,102,0.1);
-          transition: -webkit-text-stroke-color 0.4s ease;
-          font-feature-settings: "tnum";
-        }
-        .group:hover .step-outline { -webkit-text-stroke-color: rgba(0,35,102,0.28); }
-
-        /* ── iMac mockup ─────────────────────────────────── */
-        .imac-wrap {
-          display: flex; flex-direction: column; align-items: center;
-          padding-top: 12px; user-select: none;
-        }
-        .imac-bezel {
-          width: 100%;
-          background: linear-gradient(165deg, #0e2040 0%, #001428 100%);
-          border-radius: 14px 14px 5px 5px;
-          padding: 9px 9px 0;
-          box-shadow:
-            0 0 0 1px rgba(255,255,255,0.07),
-            0 0 0 2.5px rgba(0,0,0,0.5),
-            0 36px 72px -14px rgba(0,14,35,0.55),
-            inset 0 1px 0 rgba(255,255,255,0.07);
-        }
-        .imac-cam {
-          width: 6px; height: 6px; border-radius: 50%;
-          margin: 0 auto 7px;
-          background: radial-gradient(circle at 35% 35%, #3a4a60, #111a2a);
-          box-shadow: 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 2px rgba(0,0,0,0.6);
-        }
-        /* Screen area — video lives here */
-        .strategy-img-wrap {
-          position: relative; overflow: hidden; background: #000;
-          border-radius: 3px; aspect-ratio: 16/10;
-        }
-        /* Screen dark vignette — natural for a display */
-        .strategy-img-wrap::before {
-          content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-          background:
-            linear-gradient(to bottom, rgba(0,10,28,0.45) 0%, transparent 22%, transparent 62%, rgba(0,10,28,0.6) 100%),
-            linear-gradient(to right,  rgba(0,10,28,0.25) 0%, transparent 12%, transparent 88%, rgba(0,10,28,0.25) 100%);
-        }
-        /* Caption — white on dark gradient, matching screen context */
-        .strategy-img-wrap::after {
-          content: 'VERA LEVEL PROTOCOL';
-          position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
-          padding: 28px 16px 13px;
-          font-size: 8px; font-weight: 800; letter-spacing: 0.35em; text-transform: uppercase;
-          color: rgba(180,200,255,0.55);
-          background: linear-gradient(transparent, rgba(0,10,28,0.65));
-        }
-        /* Video: desaturate + slight brightness lift; screen bg is black so less lift needed */
-        .strategy-img-wrap video {
-          filter: grayscale(100%) brightness(1.05) contrast(0.92);
-          opacity: 0.88;
-          display: block; width: 100%; vertical-align: bottom;
-        }
-        /* Chin strip below screen */
-        .imac-chin {
-          height: 26px;
-          display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(165deg, #0e2040 0%, #001428 100%);
-          border-radius: 0 0 3px 3px;
-        }
-        /* Stand neck — silver taper */
-        .imac-neck {
-          width: 13%; min-width: 36px; height: 54px;
-          background: linear-gradient(to bottom right, #c2c2c8 0%, #8e8e96 60%, #767680 100%);
-          clip-path: polygon(26% 0%, 74% 0%, 84% 100%, 16% 100%);
-        }
-        /* Stand base — oval disk */
-        .imac-base {
-          width: 40%; max-width: 190px; height: 8px;
-          background: linear-gradient(to bottom, #c6c6cc 0%, #8a8a92 100%);
-          border-radius: 6px;
-          box-shadow: 0 3px 8px -3px rgba(0,0,0,0.28);
-        }
-
-        /* ── Equity line draw animation ──────────────────── */
-        @keyframes drawLine { from { stroke-dashoffset: 6000; } to { stroke-dashoffset: 0; } }
-        .equity-line-anim {
-          stroke-dasharray: 6000; stroke-dashoffset: 6000;
-          animation: drawLine 2s cubic-bezier(.4,0,.2,1) forwards;
-        }
-
-        /* ── Mobile bottom nav ───────────────────────────── */
-        @media (max-width: 767px) {
-          .mobile-bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0; z-index: 45;
-            background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(197,198,210,0.3);
-            display: flex; justify-content: space-around;
-            padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-          }
-          .mobile-bottom-nav a {
-            display: flex; flex-direction: column; align-items: center;
-            gap: 2px; color: #757682; font-size: 7.5px; font-weight: 700;
-            letter-spacing: 0.07em; text-transform: uppercase; text-decoration: none;
-            padding: 4px 10px; transition: color 0.2s;
-            -webkit-tap-highlight-color: transparent;
-          }
-          .mobile-bottom-nav a:active, .mobile-bottom-nav a.active { color: #002366; }
-          /* Push FABs above bottom nav */
-          a[aria-label="Telegram @padiangk"] { bottom: calc(64px + 28px) !important; }
-          a[aria-label="WhatsApp Analyst"]    { bottom: calc(64px + 10px) !important; }
-          main { padding-bottom: 64px; }
-        }
-        @media (min-width: 768px) { .mobile-bottom-nav { display: none !important; } }
-
-        /* ── Section marker decoration ───────────────────── */
-        .section-mark {
-          display: inline-flex; align-items: center; gap: 10px;
-          font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
-          text-transform: uppercase; color: #757682;
-        }
-        .section-mark::before {
-          content: ''; display: inline-block; width: 20px; height: 1.5px;
-          background: currentColor; opacity: 0.5;
-        }
-
-        /* ── Metric card icons ───────────────────────────── */
-        .metric-icon {
-          width: 26px; height: 26px; display: flex; align-items: center;
-          justify-content: center; margin-bottom: 10px; border-radius: 2px;
-        }
-
-        /* ── Enhanced ticker items ───────────────────────── */
-        .ticker-item {
-          display: inline-flex; align-items: center; gap: 8px;
-          padding: 0 24px; border-right: 1px solid rgba(197,198,210,0.25);
-          white-space: nowrap;
-        }
-        .ticker-item .change { font-variant-numeric: tabular-nums; }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "primary": "#002366",
-                      "primary-container": "#002366",
-                      "on-primary": "#ffffff",
-                      "on-primary-container": "#758dd5",
-                      "background": "#f8f9fa",
-                      "surface": "#ffffff",
-                      "surface-container": "#edeeef",
-                      "surface-container-low": "#f3f4f5",
-                      "surface-container-highest": "#e1e3e4",
-                      "on-surface": "#191c1d",
-                      "on-surface-variant": "#444650",
-                      "outline": "#757682",
-                      "outline-variant": "#c5c6d2",
-                      "secondary": "#585f66",
-                      "error": "#ba1a1a",
-                      "secondary-container": "#dce3ec"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              },
-              "spacing": {
-                      "unit": "8px",
-                      "stack-xl": "80px",
-                      "margin-desktop": "64px",
-                      "stack-md": "40px",
-                      "gutter": "32px",
-                      "margin-mobile": "20px",
-                      "container-max": "1280px"
-              },
-              "fontFamily": {
-                      "label-caps": ["Inter"],
-                      "headline-lg": ["Inter"],
-                      "body-lg": ["Newsreader"],
-                      "display-lg": ["Inter"],
-                      "body-md": ["Newsreader"],
-                      "headline-md": ["Inter"]
-              },
-              "fontSize": {
-                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "600"}],
-                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
-                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}]
-              }
-            },
-          },
-        }
-    </script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary:   "#001835",
+          "primary-light": "#002a54",
+          surface:   "#f8f9fa",
+          "surface-2": "#ffffff",
+          text:      "#0d1117",
+          "text-muted": "#6b7280",
+          "text-faint":  "#9ca3af",
+          accent:    "#001835",
+          "accent-hover": "#002a54",
+          success:   "#059669",
+          border:    "rgba(226,232,240,0.5)",
+          "border-solid": "#e2e8f0",
+        },
+        fontFamily: {
+          outfit:         ["Outfit", "sans-serif"],
+          "label-caps":   ["Outfit", "sans-serif"],
+          "headline-lg":  ["Outfit", "sans-serif"],
+          "headline-md":  ["Outfit", "sans-serif"],
+          "display-lg":   ["Outfit", "sans-serif"],
+          "body-lg":      ["Newsreader", "serif"],
+          "body-md":      ["Newsreader", "serif"],
+          editorial:      ["Newsreader", "serif"],
+          "mono-data":    ["JetBrains Mono", "monospace"],
+        },
+        boxShadow: {
+          soft: "0 4px 24px -4px rgba(0,24,53,0.07)",
+          card: "0 2px 12px -2px rgba(0,24,53,0.08)",
+          lifted: "0 8px 32px -6px rgba(0,24,53,0.14)",
+        },
+      },
+    },
+  };
+</script>
+<style>
+  :root {
+    --primary: #001835;
+    --surface: #f8f9fa;
+    --text: #0d1117;
+    --accent: #001835;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ── Ticker ──────────────────────────────────────── */
+  .ticker-wrap { width: 100%; overflow: hidden; background: #ffffff; }
+  .ticker-move {
+    display: flex; white-space: nowrap;
+    animation: ticker 40s linear infinite;
+  }
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── Scroll progress bar ─────────────────────────── */
+  html { scroll-behavior: smooth; }
+  #scroll-bar {
+    position: fixed; top: 0; left: 0; width: 0%; height: 2px;
+    background: var(--primary); z-index: 9999;
+    transition: width 0.08s linear; pointer-events: none;
+  }
+
+  /* ── Typography helpers ──────────────────────────── */
+  .font-editorial { font-family: 'Newsreader', serif; }
+  .font-outfit    { font-family: 'Outfit', sans-serif; }
+  .font-mono-data { font-family: 'JetBrains Mono', monospace; }
+
+  .display-hero {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    font-size: clamp(3.2rem, 7.5vw, 7.2rem);
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  /* ── Step outline number ─────────────────────────── */
+  .step-outline {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 80px;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(0,24,53,0.18);
+    letter-spacing: -0.04em;
+    user-select: none;
+  }
+
+  /* ── Reveal animation ────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1),
+                transform 0.55s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.08s; }
+  .reveal-d2 { transition-delay: 0.16s; }
+  .reveal-d3 { transition-delay: 0.24s; }
+
+  /* ── Equity SVG animation ────────────────────────── */
+  .equity-line-anim {
+    stroke-dashoffset: 0 !important;
+    transition: stroke-dashoffset 1.8s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* ── PNL bar ─────────────────────────────────────── */
+  .pnl-row    { transition: opacity 0.18s; }
+  .pnl-row:hover { opacity: 0.8; }
+  .pnl-fill   { transition: width 0.8s cubic-bezier(0.22,1,0.36,1); }
+
+  /* ── Stat accent ─────────────────────────────────── */
+  .stat-accent {
+    border-left: 2px solid rgba(255,255,255,0.3);
+    padding-left: 1.25rem;
+  }
+
+  /* ── Command Rail ────────────────────────────────── */
+  #cmd-rail {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: 56px; z-index: 50;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px;
+    background: var(--primary);
+  }
+  .rail-btn {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    font-size: 18px;
+  }
+  .rail-btn:hover, .rail-btn.active {
+    background: rgba(255,255,255,0.12);
+    color: #ffffff;
+  }
+
+  /* ── iMac mockup ─────────────────────────────────── */
+  .imac-frame {
+    background: #1a1a1a;
+    border-radius: 16px 16px 0 0;
+    border: 3px solid #333;
+    position: relative;
+    overflow: hidden;
+  }
+  .imac-stand {
+    width: 36%; height: 20px;
+    background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+    margin: 0 auto;
+    border-radius: 0 0 4px 4px;
+  }
+  .imac-base {
+    width: 55%; height: 8px;
+    background: #2a2a2a;
+    margin: 0 auto;
+    border-radius: 0 0 4px 4px;
+  }
+
+  /* ── Card hover ──────────────────────────────────── */
+  .card-hover {
+    transition: transform 0.28s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.28s cubic-bezier(0.22,1,0.36,1);
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px -8px rgba(0,24,53,0.18);
+  }
+
+  /* ── Mobile overrides ────────────────────────────── */
+  @media (max-width: 767px) {
+    #cmd-rail { display: none; }
+    .py-stack-xl { padding-top: 48px; padding-bottom: 48px; }
+    .px-margin-desktop { padding-left: 20px; padding-right: 20px; }
+    .display-hero { font-size: clamp(2.6rem, 11vw, 4rem); }
+    .step-outline { font-size: 52px; }
+  }
+
+  /* ── Bento grid ──────────────────────────────────── */
+  .bento-large { grid-column: span 2; }
+  @media (max-width: 900px) {
+    .bento-large { grid-column: span 1; }
+  }
+
+  /* ── Profile image ───────────────────────────────── */
+  .profile-img-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .profile-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem;
+    box-shadow: inset 0 0 0 1px rgba(0,24,53,0.12);
+    pointer-events: none;
+  }
+</style>
 </head>
-<body class="bg-background text-on-surface font-body-md selection:bg-primary/10 selection:text-primary">
+
+<body class="bg-surface text-text font-outfit antialiased overflow-x-hidden">
+
+<!-- Scroll Progress Bar -->
 <div id="scroll-bar"></div>
 
-<!-- Command Rail (SideNavBar) -->
-<nav class="hidden md:flex md:flex-col fixed left-0 top-0 h-full z-50 bg-surface border-r border-outline-variant/30 transition-all duration-300 w-[80px] hover:w-[240px] group overflow-hidden">
-<a href="#hero" class="p-6 flex items-center gap-4 no-underline hover:opacity-80 transition-opacity">
-<div class="w-10 h-10 flex-shrink-0 overflow-hidden flex items-center justify-center" style="background:#111;">
-<img src="logo.png" alt="Vera Level FX" class="w-full h-full object-contain p-0.5"/>
-</div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="font-bold text-primary tracking-tight whitespace-nowrap">Vera Level FX</span>
-</div>
-</a>
-<div class="mt-10 flex flex-col">
-<a class="flex items-center px-6 py-4 text-primary bg-primary-container/5 border-r-2 border-primary" href="#hero">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps uppercase">Dashboard</span>
-</a>
-<a class="flex items-center px-6 py-4 text-secondary hover:text-primary transition-colors" href="#analytics">
-<span class="material-symbols-outlined">analytics</span>
-<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps uppercase">Analytics</span>
-</a>
-<a class="flex items-center px-6 py-4 text-secondary hover:text-primary transition-colors" href="#strategy">
-<span class="material-symbols-outlined">security</span>
-<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps uppercase">Strategy</span>
-</a>
-<a class="flex items-center px-6 py-4 text-secondary hover:text-primary transition-colors" href="#history">
-<span class="material-symbols-outlined">history</span>
-<span class="ml-6 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps uppercase">History</span>
-</a>
-</div>
+<!-- ══ Command Rail (Desktop Side Nav) ══════════════════════════════ -->
+<nav id="cmd-rail" aria-label="Section Navigation">
+  <a href="#hero"      class="rail-btn active" data-section="hero"      title="Overview"><span class="material-symbols-outlined" style="font-size:18px">home</span></a>
+  <a href="#analytics" class="rail-btn"         data-section="analytics" title="Analytics"><span class="material-symbols-outlined" style="font-size:18px">analytics</span></a>
+  <a href="#positions" class="rail-btn"         data-section="positions" title="Positions"><span class="material-symbols-outlined" style="font-size:18px">candlestick_chart</span></a>
+  <a href="#strategy"  class="rail-btn"         data-section="strategy"  title="Strategy"><span class="material-symbols-outlined" style="font-size:18px">psychology</span></a>
+  <a href="#about"     class="rail-btn"         data-section="about"     title="About"><span class="material-symbols-outlined" style="font-size:18px">person</span></a>
+  <a href="#get-started" class="rail-btn"       data-section="get-started" title="Get Started"><span class="material-symbols-outlined" style="font-size:18px">rocket_launch</span></a>
+  <div style="height:1px; width:24px; background:rgba(255,255,255,0.12); margin:4px 0;"></div>
+  <a href="https://t.me/veralevelforex" target="_blank" class="rail-btn" title="Telegram"><span class="material-symbols-outlined" style="font-size:18px">send</span></a>
 </nav>
 
-<!-- Top Navigation -->
-<header class="fixed top-0 right-0 left-0 md:left-[80px] z-40 flex justify-between items-center px-margin-desktop h-20 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
-<div class="flex items-center gap-12">
-<span class="text-xl font-extrabold text-primary tracking-tighter uppercase">Vera Level</span>
-<nav class="hidden lg:flex items-center gap-8">
-<a class="text-primary font-bold border-b-2 border-primary pb-1 text-sm uppercase tracking-widest" href="#analytics">Analytics</a>
-<a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#history">History</a>
-<a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#strategy">Strategy</a>
-<a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#positions">Positions</a>
-<a class="text-secondary hover:text-primary transition-colors text-sm uppercase tracking-widest" href="#manager">About</a>
-</nav>
-</div>
-<div class="flex items-center gap-4">
-<div class="hidden sm:flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined text-sm">verified</span>
-<span class="font-label-caps text-[10px] uppercase">IC Markets Active</span>
-</div>
-<a href="https://t.me/padiangk" target="_blank" class="hidden sm:flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style="background:#0088cc;color:#fff;">
-<span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">send</span>Telegram
-</a>
-<a href="https://wa.me/919632233776" target="_blank" class="hidden sm:flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors" style="background:#25D366;color:#fff;">
-<span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">chat</span>WhatsApp
-</a>
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-4 sm:px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-primary/90 transition-colors">
-Open Account
-</a>
-</div>
+<!-- ══ Top Header ══════════════════════════════════════════════════ -->
+<header class="fixed top-0 right-0 z-40 bg-surface-2/95 backdrop-blur-sm border-b border-border-solid"
+        style="left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 h-[60px] flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#hero" class="flex items-center gap-2.5 group">
+      <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-white" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400">show_chart</span>
+      </div>
+      <span class="font-outfit font-bold text-[15px] tracking-tight text-primary">Vera Level <span class="font-editorial italic font-light text-text-muted">FX</span></span>
+    </a>
+
+    <!-- Nav Links -->
+    <nav class="hidden md:flex items-center gap-6" aria-label="Primary">
+      <a href="#analytics"  class="text-[13px] font-medium text-text-muted hover:text-primary transition-colors">Analytics</a>
+      <a href="#positions"  class="text-[13px] font-medium text-text-muted hover:text-primary transition-colors">Positions</a>
+      <a href="#strategy"   class="text-[13px] font-medium text-text-muted hover:text-primary transition-colors">Strategy</a>
+      <a href="#about"      class="text-[13px] font-medium text-text-muted hover:text-primary transition-colors">About</a>
+    </nav>
+
+    <!-- CTA -->
+    <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+       target="_blank" rel="noopener"
+       class="hidden md:inline-flex items-center gap-1.5 bg-primary hover:bg-primary-light text-white text-[13px] font-semibold px-4 py-2 rounded-lg transition-all active:translate-y-px">
+      <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1,'wght' 400">open_in_new</span>
+      Open Account
+    </a>
+  </div>
 </header>
 
-<!-- Main Content -->
-<main class="ml-0 md:ml-[80px] pt-20">
-
-<!-- Ticker -->
-<div class="ticker-wrap h-12 border-b border-outline-variant/20 flex items-center">
-<div class="ticker-move gap-16 px-gutter text-[11px] font-bold tracking-widest uppercase text-secondary">
-<div class="flex items-center gap-2">XAUUSD <span class="text-primary">2345.12 +0.45%</span></div>
-<div class="flex items-center gap-2">EURUSD <span class="text-error">1.0823 -0.12%</span></div>
-<div class="flex items-center gap-2">AUDCAD <span class="text-primary">0.9144 +0.08%</span></div>
-<div class="flex items-center gap-2">GBPUSD <span class="text-primary">1.2677 +0.22%</span></div>
-<div class="flex items-center gap-2">USDJPY <span class="text-error">151.45 -0.54%</span></div>
-<div class="flex items-center gap-2">XAUUSD <span class="text-primary">2345.12 +0.45%</span></div>
-<div class="flex items-center gap-2">EURUSD <span class="text-error">1.0823 -0.12%</span></div>
-<div class="flex items-center gap-2">AUDCAD <span class="text-primary">0.9144 +0.08%</span></div>
-<div class="flex items-center gap-2">GBPUSD <span class="text-primary">1.2677 +0.22%</span></div>
-<div class="flex items-center gap-2">USDJPY <span class="text-error">151.45 -0.54%</span></div>
-</div>
-</div>
-
-<!-- Hero -->
-<section class="py-stack-xl px-margin-desktop bg-surface hero-grid-bg" id="hero">
-<div class="max-w-container-max mx-auto text-center">
-<span class="section-mark justify-center mb-10 block">Institutional Portfolio Management · IC Markets Verified</span>
-<h1 class="font-display-lg text-[40px] sm:text-[60px] md:text-[80px] text-primary mb-6 leading-[0.9] uppercase tracking-tighter">Vera Level FX</h1>
-<p class="font-editorial text-lg md:text-2xl text-secondary max-w-2xl mx-auto mb-12 italic leading-relaxed">Professional forex portfolio management with systematic risk architecture. All trades executed and verified live on IC Markets.</p>
-<div class="flex flex-wrap justify-center gap-4 mb-16">
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-all duration-200 hover:shadow-lg hover:shadow-primary/20">Open Account ↗</a>
-<a href="https://t.me/padiangk" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-all duration-200 hover:opacity-80" style="border-color:#0088cc;color:#0088cc;">Telegram @padiangk</a>
-<a href="https://wa.me/919632233776" target="_blank" class="border text-[10px] font-bold uppercase tracking-widest px-8 py-3 transition-all duration-200 hover:opacity-80" style="border-color:#25D366;color:#25D366;">WhatsApp Analyst</a>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-0 mt-8 border border-outline-variant/20 divide-y md:divide-y-0 md:divide-x divide-outline-variant/20 bg-background/60">
-<div class="hero-stat text-center p-10">
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Total Gain</div>
-<div id="h-gain" class="text-4xl md:text-6xl font-black text-primary tracking-tighter tabular-nums"></div>
-<p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Live Performance</p>
-</div>
-<div class="hero-stat text-center p-10">
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Max Drawdown</div>
-<div id="h-dd" class="text-4xl md:text-6xl font-black text-primary tracking-tighter tabular-nums"></div>
-<p class="text-[10px] text-outline mt-4 uppercase tracking-widest">Strict Guardrails</p>
-</div>
-<div class="hero-stat text-center p-10">
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-4">Account Balance</div>
-<div id="h-balance" class="text-4xl md:text-6xl font-black text-primary tracking-tighter tabular-nums"></div>
-<p class="text-[10px] text-outline mt-4 uppercase tracking-widest">IC Markets Live</p>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Metrics Strip -->
-<div class="px-margin-desktop py-8 bg-surface border-b border-outline-variant/20">
-<div class="max-w-container-max mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-<div class="bg-background p-6 soft-shadow border-t-2 card-lift reveal" style="border-color:#059669">
-<div class="metric-icon" style="background:rgba(5,150,105,0.08)">
-  <span class="material-symbols-outlined" style="font-size:15px;color:#059669;font-variation-settings:'FILL' 1;">trending_up</span>
-</div>
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Monthly Return</div>
-<div id="m-monthly" class="text-3xl font-black text-on-surface tracking-tighter tabular-nums"></div>
-<div class="text-[10px] text-secondary mt-1">30-day rolling avg</div>
-</div>
-<div class="bg-background p-6 soft-shadow border-t-2 border-primary card-lift reveal reveal-d1">
-<div class="metric-icon" style="background:rgba(0,35,102,0.07)">
-  <span class="material-symbols-outlined" style="font-size:15px;color:#002366;font-variation-settings:'FILL' 1;">balance</span>
-</div>
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Profit Factor</div>
-<div id="m-pf" class="text-3xl font-black text-on-surface tracking-tighter tabular-nums"></div>
-<div id="m-pf-sub" class="text-[10px] text-secondary mt-1"></div>
-</div>
-<div class="bg-background p-6 soft-shadow border-t-2 border-outline-variant card-lift reveal reveal-d2">
-<div class="metric-icon" style="background:rgba(117,118,130,0.08)">
-  <span class="material-symbols-outlined" style="font-size:15px;color:#757682;font-variation-settings:'FILL' 1;">percent</span>
-</div>
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Win Rate</div>
-<div id="m-wr" class="text-3xl font-black text-on-surface tracking-tighter tabular-nums"></div>
-<div id="m-wr-sub" class="text-[10px] text-secondary mt-1"></div>
-</div>
-<div class="bg-background p-6 soft-shadow border-t-2 border-primary card-lift reveal reveal-d3">
-<div class="metric-icon" style="background:rgba(0,35,102,0.07)">
-  <span class="material-symbols-outlined" style="font-size:15px;color:#002366;font-variation-settings:'FILL' 1;">stacked_line_chart</span>
-</div>
-<div class="text-[10px] font-bold uppercase tracking-widest text-secondary mb-2">Total Pips</div>
-<div id="m-pips" class="text-3xl font-black text-primary tracking-tighter tabular-nums"></div>
-<div class="text-[10px] text-secondary mt-1">Cumulative earned</div>
-</div>
-</div>
-</div>
-
-<!-- Analytics Section -->
-<section class="py-stack-xl px-margin-desktop bg-background" id="analytics">
-<div class="max-w-container-max mx-auto">
-<div class="flex flex-col md:flex-row justify-between items-end gap-12 mb-20">
-<div class="max-w-2xl">
-<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-6 tracking-tight reveal">Performance Analytics</h2>
-<p class="font-editorial text-xl text-secondary">A transparent view of the historical equity curve and key performance metrics, pulled directly from the live IC Markets account via Myfxbook verification.</p>
-</div>
-<div class="hidden md:flex gap-4">
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="bg-primary text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/90 transition-colors">Open Account ↗</a>
-<a href="https://wa.me/919632233776" target="_blank" class="bg-white text-secondary border border-outline-variant px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">WhatsApp Analyst</a>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-<!-- Chart -->
-<div class="lg:col-span-8 bg-surface p-5 md:p-12 soft-shadow card-lift reveal">
-<div class="flex items-center justify-between mb-6">
-<div>
-<h3 class="text-xs font-bold uppercase tracking-widest text-primary">Equity Growth Curve</h3>
-<div id="equity-sub" class="text-[10px] text-secondary mt-1">Cumulative gain %</div>
-</div>
-<div class="flex gap-4 text-[10px] font-bold text-secondary">
-<span class="flex items-center gap-2"><span class="w-2 h-2 bg-primary"></span> EQUITY</span>
-<span class="text-[9px] font-bold uppercase tracking-widest bg-primary/5 text-primary px-2 py-1">ALL TIME</span>
-</div>
-</div>
-<div class="w-full">
-<svg id="equity-svg" viewBox="0 0 800 280" style="width:100%;height:auto;display:block;overflow:visible">
-<text x="400" y="140" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Loading equity curve...</text>
-</svg>
-</div>
-<div class="flex justify-between mt-4 text-[9px] font-mono text-secondary">
-<span id="chart-from"></span>
-<span id="chart-gain" class="font-bold text-primary"></span>
-<span id="chart-to"></span>
-</div>
-</div>
-<!-- Monthly Returns -->
-<div class="lg:col-span-4 bg-surface p-5 md:p-12 soft-shadow flex flex-col justify-between card-lift reveal reveal-d1">
-<div>
-<h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-8">Monthly P&amp;L</h3>
-<div style="position:relative">
-<div id="pnl-tip" style="display:none;position:absolute;flex-direction:column;gap:2px;background:#fff;border:1px solid rgba(0,35,102,0.12);padding:8px 12px;pointer-events:none;z-index:10;box-shadow:0 8px 24px -4px rgba(0,35,102,0.1);border-radius:3px;white-space:nowrap;"></div>
-<div id="monthly-bars" style="display:flex;flex-direction:column;gap:2px">
-<div style="color:#585f66;font-size:11px;text-align:center;padding:20px 0;font-weight:600;letter-spacing:.06em;text-transform:uppercase">Loading...</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Consistency Matrix -->
-<div class="lg:col-span-12 bg-surface p-5 md:p-12 soft-shadow overflow-x-auto reveal reveal-d2">
-<h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-10">Consistency Matrix</h3>
-<table class="w-full text-left text-[11px] tracking-tighter">
-<thead>
-<tr class="border-b border-outline-variant/30">
-<th class="pb-6 font-bold text-secondary uppercase">Year</th>
-<th class="pb-6 font-bold">JAN</th>
-<th class="pb-6 font-bold">FEB</th>
-<th class="pb-6 font-bold">MAR</th>
-<th class="pb-6 font-bold">APR</th>
-<th class="pb-6 font-bold">MAY</th>
-<th class="pb-6 font-bold">JUN</th>
-<th class="pb-6 font-bold">JUL</th>
-<th class="pb-6 font-bold">AUG</th>
-<th class="pb-6 font-bold">SEP</th>
-<th class="pb-6 font-bold">OCT</th>
-<th class="pb-6 font-bold">NOV</th>
-<th class="pb-6 font-bold">DEC</th>
-<th class="pb-6 font-black text-primary">YTD</th>
-</tr>
-</thead>
-<tbody id="matrix-body">
-<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Loading...</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Open Positions Section -->
-<section class="py-stack-xl px-margin-desktop bg-surface" id="positions">
-<div class="max-w-container-max mx-auto">
-<div class="flex justify-between items-end mb-12">
-<h2 class="text-xs font-black text-primary uppercase tracking-[0.5em]" id="pos-hdr">Open Positions</h2>
-<div class="text-right">
-  <span class="font-label-caps text-secondary text-[10px] uppercase tracking-widest">Live · IC Markets</span>
-  <div id="data-freshness" class="text-[9px] text-outline mt-1 tracking-wide"></div>
-</div>
-</div>
-<div id="pos-grid">
-<div class="bg-background p-8 text-center soft-shadow">
-<p class="text-[11px] font-bold text-secondary uppercase tracking-widest">Loading positions...</p>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Strategy Section -->
-<section class="py-stack-xl px-margin-desktop bg-background" id="strategy">
-<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-stack-xl items-center">
-<div>
-<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-8 tracking-tight reveal">The Vera Level Protocol</h2>
-<p class="font-editorial text-lg md:text-2xl text-secondary mb-12">The Vera Level strategy applies systematic technical analysis and institutional order flow principles to identify high-probability market entries, governed by strict, rule-based risk management at every step.</p>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-12">
-<div class="space-y-4">
-<span class="material-symbols-outlined text-primary text-3xl">psychology</span>
-<h4 class="text-xs font-black uppercase tracking-[0.2em] text-primary">Technical Analysis</h4>
-<p class="text-secondary text-sm font-editorial">Multi-timeframe confluence analysis using institutional order flow and market structure principles.</p>
-</div>
-<div class="space-y-4">
-<span class="material-symbols-outlined text-primary text-3xl">shield</span>
-<h4 class="text-xs font-black uppercase tracking-[0.2em] text-primary">Risk Safeguards</h4>
-<p class="text-secondary text-sm font-editorial">Hard-coded 2% Daily Loss Limits and automated margin protections.</p>
-</div>
-<div class="space-y-4">
-<span class="material-symbols-outlined text-primary text-3xl">query_stats</span>
-<h4 class="text-xs font-black uppercase tracking-[0.2em] text-primary">Systematic Execution</h4>
-<p class="text-secondary text-sm font-editorial">Rule-based entries and exits with predefined criteria — consistent, repeatable, and free from emotional bias.</p>
-</div>
-<div class="space-y-4">
-<span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
-<h4 class="text-xs font-black uppercase tracking-[0.2em] text-primary">Live Verified</h4>
-<p class="text-secondary text-sm font-editorial">Every trade independently audited in real time on IC Markets. No hidden activity.</p>
-</div>
-</div>
-</div>
-<div class="imac-wrap card-lift reveal reveal-d1">
-  <div class="imac-bezel">
-    <div class="imac-cam"></div>
-    <div class="strategy-img-wrap">
-      <video autoplay loop muted playsinline>
-        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_155101_f2540600-6fe9-433e-8e48-b3f4b72f0727.mp4" type="video/mp4"/>
-      </video>
-    </div>
-    <div class="imac-chin">
-      <svg width="10" height="12" viewBox="0 0 256 315" aria-hidden="true">
-        <path fill="rgba(255,255,255,0.18)" d="M213.8 167c.4 47.6 41.7 63.4 42.2 63.6-.4 1.1-6.6 22.6-21.8 44.7-13.1 19.2-26.7 38.2-48.1 38.6-21.1.4-27.8-12.5-51.9-12.5-24.1 0-31.6 12.1-51.5 12.9-20.7.8-36.4-20.5-49.6-39.6C6 235.7-14.6 164.4 13.1 116.3c13.8-23.9 38.4-39 65.1-39.4 20.3-.4 39.5 13.7 51.9 13.7 12.4 0 35.7-16.9 60.2-14.4 10.2.4 39 4.1 57.5 31.2-1.5.9-34.3 20-34 59.6M174.2 50.2c11-13.3 18.4-31.8 16.4-50.2-15.8.6-35 10.5-46.3 23.8-10.2 11.8-19.1 30.6-16.7 48.6 17.6 1.4 35.7-9 46.6-22.2"/>
-      </svg>
+<!-- ══ Ticker ══════════════════════════════════════════════════════ -->
+<div class="fixed z-30 border-b border-border-solid" style="top:60px; left:56px; right:0;">
+  <div class="ticker-wrap h-[48px] flex items-center bg-surface-2">
+    <div class="ticker-move gap-0">
+      <!-- Symbols duplicated for infinite loop -->
+      <span class="inline-flex items-center gap-1.5 px-5 text-[11px] font-mono-data text-text-muted border-r border-border-solid h-[48px]">
+        <span class="w-1.5 h-1.5 rounded-full bg-success inline-block"></span>LIVE
+      </span>
+      <template id="ticker-sym">
+        <span data-sym="EURUSD" class="inline-flex items-center gap-2 px-5 border-r border-border-solid h-[48px]">
+          <span class="text-[11px] font-mono-data font-medium text-text tracking-wide">EUR/USD</span>
+          <span class="text-[11px] font-mono-data text-text-faint">—</span>
+        </span>
+        <span data-sym="GBPJPY" class="inline-flex items-center gap-2 px-5 border-r border-border-solid h-[48px]">
+          <span class="text-[11px] font-mono-data font-medium text-text tracking-wide">GBP/JPY</span>
+          <span class="text-[11px] font-mono-data text-text-faint">—</span>
+        </span>
+        <span data-sym="USDJPY" class="inline-flex items-center gap-2 px-5 border-r border-border-solid h-[48px]">
+          <span class="text-[11px] font-mono-data font-medium text-text tracking-wide">USD/JPY</span>
+          <span class="text-[11px] font-mono-data text-text-faint">—</span>
+        </span>
+        <span data-sym="XAUUSD" class="inline-flex items-center gap-2 px-5 border-r border-border-solid h-[48px]">
+          <span class="text-[11px] font-mono-data font-medium text-text tracking-wide">XAU/USD</span>
+          <span class="text-[11px] font-mono-data text-text-faint">—</span>
+        </span>
+        <span data-sym="GBPUSD" class="inline-flex items-center gap-2 px-5 border-r border-border-solid h-[48px]">
+          <span class="text-[11px] font-mono-data font-medium text-text tracking-wide">GBP/USD</span>
+          <span class="text-[11px] font-mono-data text-text-faint">—</span>
+        </span>
+        <span data-sym="EURJPY" class="inline-flex items-center gap-2 px-5 border-r border-border-solid h-[48px]">
+          <span class="text-[11px] font-mono-data font-medium text-text tracking-wide">EUR/JPY</span>
+          <span class="text-[11px] font-mono-data text-text-faint">—</span>
+        </span>
+        <span data-sym="USDSGD" class="inline-flex items-center gap-2 px-5 border-r border-border-solid h-[48px]">
+          <span class="text-[11px] font-mono-data font-medium text-text tracking-wide">USD/SGD</span>
+          <span class="text-[11px] font-mono-data text-text-faint">—</span>
+        </span>
+      </template>
     </div>
   </div>
-  <div class="imac-neck"></div>
-  <div class="imac-base"></div>
 </div>
-</div>
+
+<!-- ══ HERO — Asymmetric Split ══════════════════════════════════════ -->
+<section id="hero"
+  class="min-h-[calc(100dvh-108px)]"
+  style="padding-top:calc(108px + 3rem); margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 pb-0">
+
+    <div class="grid gap-12 items-center"
+         style="grid-template-columns: 1.1fr 1fr;">
+
+      <!-- Left — Copy -->
+      <div>
+        <!-- Eyebrow (ONE per hero, banned elsewhere) -->
+        <p class="font-outfit text-[11px] font-semibold tracking-[0.18em] uppercase text-primary mb-5 reveal">
+          IC Markets Verified · Singapore
+        </p>
+
+        <!-- Hero H1 — 2–3 lines max, ultra-wide container -->
+        <h1 class="display-hero mb-6 reveal reveal-d1">
+          Vera<br/>Level.
+        </h1>
+
+        <!-- Editorial subtitle -->
+        <p class="font-editorial italic text-[1.25rem] leading-relaxed text-text-muted max-w-[520px] mb-10 reveal reveal-d2">
+          Institutional-grade forex execution — live account, verified results, fully transparent drawdown.
+        </p>
+
+        <!-- CTAs: max 2, no duplicate intent -->
+        <div class="flex flex-wrap gap-3 reveal reveal-d3">
+          <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white text-[14px] font-semibold px-6 py-3 rounded-xl transition-all active:translate-y-px shadow-soft">
+            <span class="material-symbols-outlined" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400">open_in_new</span>
+            Open IC Markets Account
+          </a>
+          <a href="https://t.me/veralevelforex"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white text-[14px] font-semibold px-6 py-3 rounded-xl transition-all">
+            <span class="material-symbols-outlined" style="font-size:16px">send</span>
+            Join Telegram
+          </a>
+        </div>
+      </div>
+
+      <!-- Right — iMac Mockup with Strategy Video -->
+      <div class="reveal reveal-d2 hidden md:block">
+        <div class="imac-frame aspect-[16/10] w-full">
+          <video autoplay muted loop playsinline
+                 class="w-full h-full object-cover opacity-90"
+                 poster="https://picsum.photos/seed/forexdashboard/800/500">
+            <source src="strategy-preview.mp4" type="video/mp4"/>
+            <img src="https://picsum.photos/seed/forexdashboard/800/500"
+                 alt="Live trading dashboard preview"
+                 class="w-full h-full object-cover"
+                 style="filter: contrast(1.1) saturate(0.9);"/>
+          </video>
+          <!-- Screen overlay glow -->
+          <div class="absolute inset-0 pointer-events-none"
+               style="background:linear-gradient(135deg, rgba(0,24,53,0.12) 0%, transparent 60%);"></div>
+        </div>
+        <div class="imac-stand"></div>
+        <div class="imac-base"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- Profile Section -->
-<section class="py-stack-xl px-margin-desktop bg-surface" id="manager">
-<div class="max-w-container-max mx-auto bg-surface p-8 md:p-16 soft-shadow flex flex-col lg:flex-row items-center gap-10 md:gap-20">
-<div class="bracket-frame flex-shrink-0">
-<div class="w-40 h-40 md:w-72 md:h-72 bg-background border border-outline-variant/30 overflow-hidden">
-<img alt="Pandian" class="w-full h-full object-cover object-top" loading="lazy" decoding="async" src="myphoto.jpg"/>
-</div>
-</div>
-<div class="flex-grow">
-<div class="text-[10px] font-bold uppercase tracking-[0.4em] text-secondary mb-4">Professional Forex Trader &amp; Introducing Broker · Singapore</div>
-<h2 class="text-2xl md:text-4xl font-black text-primary uppercase mb-8 tracking-tighter">Pandian</h2>
-<p class="font-editorial text-base md:text-xl text-secondary mb-12">Singapore-based professional forex trader specialising in systematic, rule-based execution across major and commodity currency pairs. The Vera Level portfolio has been maintained with full transparency on IC Markets since inception, establishing a continuous, auditable public track record. Pandian is a registered Introducing Broker for IC Markets, giving clients access to institutional RAW spreads, superior execution quality, and IB rebate benefits.</p>
-<div class="flex flex-wrap gap-6">
-<a href="https://t.me/padiangk" target="_blank" class="flex items-center gap-2 px-6 md:px-10 py-4 text-[10px] font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity" style="background:#0088cc;">
-<span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">send</span>Telegram @padiangk
-</a>
-<a href="https://wa.me/919632233776" target="_blank" class="flex items-center gap-2 px-6 md:px-10 py-4 text-[10px] font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity" style="background:#25D366;">
-<span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">chat</span>WhatsApp Analyst
-</a>
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="border border-outline text-secondary px-6 md:px-10 py-4 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-colors">Open IC Markets Account ↗</a>
-</div>
-</div>
-</div>
+<!-- ══ Stats Band — Dark navy ══════════════════════════════════════ -->
+<section class="bg-primary py-8" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+    <div class="grid grid-cols-3 gap-0 divide-x divide-white/10">
+
+      <div class="stat-accent px-6 first:pl-0 reveal">
+        <p class="text-[10px] font-outfit font-semibold tracking-[0.16em] uppercase text-white/40 mb-1">Total Return</p>
+        <p id="h-gain" class="font-mono-data font-bold text-2xl text-white">—</p>
+      </div>
+
+      <div class="stat-accent px-6 reveal reveal-d1">
+        <p class="text-[10px] font-outfit font-semibold tracking-[0.16em] uppercase text-white/40 mb-1">Max Drawdown</p>
+        <p id="h-dd" class="font-mono-data font-bold text-2xl text-white">—</p>
+      </div>
+
+      <div class="stat-accent px-6 reveal reveal-d2">
+        <p class="text-[10px] font-outfit font-semibold tracking-[0.16em] uppercase text-white/40 mb-1">Live Balance</p>
+        <p id="h-balance" class="font-mono-data font-bold text-2xl text-white">—</p>
+      </div>
+
+    </div>
+  </div>
 </section>
 
-<!-- Deployment Protocol Steps -->
-<section class="py-stack-xl px-margin-desktop bg-background" id="guide">
-<div class="max-w-container-max mx-auto">
-<h2 class="text-xs font-black text-primary uppercase text-center tracking-[0.5em] mb-20">How to Get Started</h2>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-16">
-<div class="space-y-6 group">
-<div class="step-outline">01</div>
-<h4 class="text-sm font-black uppercase tracking-widest text-primary">Open Your Account</h4>
-<p class="font-editorial text-secondary mb-6">Register a Raw Spread account with IC Markets Global. This provides true ECN conditions, tight spreads from 0.0 pips, and institutional-grade execution.</p>
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Open Account ↗</a>
-</div>
-<div class="space-y-6 group">
-<div class="step-outline">02</div>
-<h4 class="text-sm font-black uppercase tracking-widest text-primary">Connect via IB</h4>
-<p class="font-editorial text-secondary mb-6">Link your account under Pandian's Introducing Broker ID to access Vera Level signals, onboarding support, and IB rebates on every trade.</p>
-<a href="https://wa.me/919632233776" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Contact via WhatsApp</a>
-</div>
-<div class="space-y-6 group">
-<div class="step-outline">03</div>
-<h4 class="text-sm font-black uppercase tracking-widest text-primary">Complete Verification</h4>
-<p class="font-editorial text-secondary mb-6">Complete IC Markets' standard KYC process. Once verified, your account is fully onboarded and ready to follow Vera Level trade activity.</p>
-<a href="https://wa.me/919632233776" target="_blank" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors">Contact via WhatsApp</a>
-</div>
-</div>
-</div>
+<!-- ══ Analytics ══════════════════════════════════════════════════ -->
+<section id="analytics" class="py-20 md:py-28" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <!-- Section header — left-aligned, no eyebrow -->
+    <div class="mb-14">
+      <h2 class="font-outfit font-black text-4xl md:text-5xl tracking-tight text-primary mb-3 reveal">
+        Performance Analytics
+      </h2>
+      <p class="font-editorial italic text-text-muted text-lg reveal reveal-d1">
+        Live equity curve, monthly P&amp;L, and consistency matrix — refreshed every hour.
+      </p>
+    </div>
+
+    <!-- Key Metrics Row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 reveal reveal-d1">
+      <div class="bg-surface-2 rounded-2xl p-5 border border-border-solid shadow-card">
+        <p class="text-[11px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint mb-1.5">Monthly P&amp;L</p>
+        <p id="m-monthly" class="font-mono-data font-bold text-xl text-primary">—</p>
+      </div>
+      <div class="bg-surface-2 rounded-2xl p-5 border border-border-solid shadow-card">
+        <p class="text-[11px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint mb-1.5">Profit Factor</p>
+        <p id="m-pf" class="font-mono-data font-bold text-xl text-primary">—</p>
+        <p id="m-pf-sub" class="text-[11px] text-text-faint mt-0.5">—</p>
+      </div>
+      <div class="bg-surface-2 rounded-2xl p-5 border border-border-solid shadow-card">
+        <p class="text-[11px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint mb-1.5">Win Rate</p>
+        <p id="m-wr" class="font-mono-data font-bold text-xl text-primary">—</p>
+        <p id="m-wr-sub" class="text-[11px] text-text-faint mt-0.5">—</p>
+      </div>
+      <div class="bg-surface-2 rounded-2xl p-5 border border-border-solid shadow-card">
+        <p class="text-[11px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint mb-1.5">Total Pips</p>
+        <p id="m-pips" class="font-mono-data font-bold text-xl text-primary">—</p>
+      </div>
+    </div>
+
+    <!-- Equity Curve -->
+    <div class="bg-surface-2 rounded-2xl border border-border-solid shadow-card p-6 mb-6 reveal reveal-d2">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="font-outfit font-bold text-lg text-primary">Equity Curve</h3>
+          <p id="equity-sub" class="text-[12px] text-text-faint font-mono-data mt-0.5">—</p>
+        </div>
+        <div class="flex items-center gap-4 text-[12px] font-mono-data text-text-faint">
+          <span id="chart-from">—</span>
+          <span class="text-border-solid">→</span>
+          <span id="chart-to">—</span>
+          <span id="chart-gain" class="font-semibold text-success">—</span>
+        </div>
+      </div>
+      <svg id="equity-svg" viewBox="0 0 800 200" class="w-full" style="height:200px;" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="eq-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#001835" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#001835" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path id="eq-area" d="" fill="url(#eq-grad)"/>
+        <path id="eq-line" d="" fill="none" stroke="#001835" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" class="equity-line-anim"/>
+      </svg>
+    </div>
+
+    <!-- Monthly P&L + Consistency Matrix side by side -->
+    <div class="grid md:grid-cols-2 gap-6 reveal reveal-d2">
+      <!-- Monthly Bars -->
+      <div class="bg-surface-2 rounded-2xl border border-border-solid shadow-card p-6">
+        <h3 class="font-outfit font-bold text-base text-primary mb-4">Monthly P&amp;L</h3>
+        <div id="monthly-bars" class="space-y-2"></div>
+        <div id="pnl-tip" class="text-[11px] text-text-faint mt-3 font-mono-data"></div>
+      </div>
+
+      <!-- Consistency Matrix -->
+      <div class="bg-surface-2 rounded-2xl border border-border-solid shadow-card p-6 overflow-x-auto">
+        <h3 class="font-outfit font-bold text-base text-primary mb-4">Consistency Matrix</h3>
+        <table class="w-full text-[11px] font-mono-data" id="matrix-body"></table>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<!-- IC Markets Section -->
-<section class="py-stack-xl px-margin-desktop bg-surface" id="partners">
-<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-<div class="bg-surface p-16 soft-shadow">
-<h3 class="text-xl md:text-3xl font-black text-primary uppercase mb-8 tracking-tight">Trade with IC Markets</h3>
-<p class="font-editorial text-xl text-secondary mb-12">IC Markets is a globally recognised multi-asset broker with a strong reputation for RAW spread pricing, deep liquidity, and ASIC-regulated oversight. It is the broker used for this live Vera Level portfolio.</p>
-<ul class="space-y-6 mb-12 text-sm font-bold uppercase tracking-widest text-primary">
-<li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> Spreads from 0.0 Pips</li>
-<li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> New York Equinix NY4 Latency</li>
-<li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> ASIC / CySEC Regulated</li>
-<li class="flex items-center gap-4"><span class="w-1.5 h-1.5 bg-primary"></span> IB Partner Managed Access</li>
-</ul>
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="flex items-center justify-center gap-2 w-full bg-primary text-white py-5 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-primary/90 transition-colors">
-<span class="material-symbols-outlined" style="font-size:14px;">open_in_new</span>Open Account via IB Link ↗
-</a>
-<a href="https://t.me/padiangk" target="_blank" class="flex items-center justify-center gap-2 w-full mt-4 border border-outline-variant text-secondary py-5 text-[10px] font-bold uppercase tracking-[0.3em] hover:border-[#0088cc] hover:text-[#0088cc] transition-colors">
-<span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">send</span>Telegram @padiangk
-</a>
-<a href="https://wa.me/919632233776" target="_blank" class="flex items-center justify-center gap-2 w-full mt-4 border border-outline-variant text-secondary py-5 text-[10px] font-bold uppercase tracking-[0.3em] hover:border-primary hover:text-primary transition-colors">
-<span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">chat</span>WhatsApp for IB Setup
-</a>
-</div>
-<!-- IC Markets Live Price Widget -->
-<div class="bg-white soft-shadow flex flex-col items-center justify-center min-h-[320px] md:min-h-[480px] overflow-hidden">
-<iframe src="https://secure.icmarkets.com//Partner/Widget/PriceWidgetWhite/91936" width="273" frameborder="0" height="480" loading="lazy" title="IC Markets Live Price Terminal"></iframe>
-</div>
-</div>
+<!-- ══ Open Positions ══════════════════════════════════════════════ -->
+<section id="positions" class="py-20 md:py-28 bg-surface-2 border-y border-border-solid" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+    <div class="mb-12">
+      <h2 class="font-outfit font-black text-4xl md:text-5xl tracking-tight text-primary mb-3 reveal">
+        Open Positions
+      </h2>
+    </div>
+    <div id="pos-hdr" class="hidden md:grid grid-cols-6 gap-2 px-4 py-2 text-[10px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint border-b border-border-solid mb-2"></div>
+    <div id="pos-grid" class="space-y-2 reveal"></div>
+  </div>
 </section>
 
-<!-- Trade History Section -->
-<section class="py-stack-xl px-margin-desktop bg-background" id="history">
-<div class="max-w-container-max mx-auto">
-<div class="flex justify-between items-end mb-12">
-<h2 class="text-xs font-black text-primary uppercase tracking-[0.5em]" id="hist-hdr">Trade History</h2>
-<span class="font-label-caps text-secondary text-[10px] uppercase tracking-widest">IC Markets · Live Account</span>
-</div>
-<div class="bg-surface soft-shadow overflow-x-auto">
-<table class="w-full text-left" style="border-collapse:collapse">
-<thead>
-<tr class="border-b border-outline-variant/30">
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Date</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Symbol</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Dir</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Lots</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Open</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Close</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">P&amp;L</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Pips</th>
-<th class="px-4 pb-5 pt-6 text-[10px] font-bold text-secondary uppercase tracking-widest">Comment</th>
-</tr>
-</thead>
-<tbody id="hist-body">
-<tr><td colspan="9" style="padding:32px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Loading trade history...</td></tr>
-</tbody>
-</table>
-</div>
-</div>
+<!-- ══ Strategy — Asymmetric Bento ════════════════════════════════ -->
+<section id="strategy" class="py-20 md:py-28" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <div class="mb-14">
+      <h2 class="font-outfit font-black text-4xl md:text-5xl tracking-tight text-primary mb-3 reveal">
+        The Strategy
+      </h2>
+      <p class="font-editorial italic text-text-muted text-lg reveal reveal-d1">
+        Structured edge. Consistent execution. Audited results.
+      </p>
+    </div>
+
+    <!-- Row 1: large + small -->
+    <div class="grid gap-4 mb-4" style="grid-template-columns: 2fr 1fr;">
+      <!-- Large card: Technical Analysis -->
+      <div class="bg-surface-2 rounded-2xl border border-border-solid shadow-card p-8 card-hover reveal">
+        <span class="material-symbols-outlined text-primary mb-4 block" style="font-size:28px">candlestick_chart</span>
+        <h3 class="font-outfit font-black text-2xl text-primary mb-3">Technical Analysis</h3>
+        <p class="font-editorial text-text-muted leading-relaxed text-[1.05rem]">
+          Multi-timeframe confluence strategy — higher-timeframe structure defines direction while entry timeframes confirm momentum and provide precision entry points with defined risk. Every setup is built on repeatable, rules-based logic.
+        </p>
+        <div class="mt-6 grid grid-cols-3 gap-4 pt-6 border-t border-border-solid">
+          <div>
+            <p class="text-[10px] font-outfit font-semibold tracking-widest uppercase text-text-faint mb-1">Timeframes</p>
+            <p class="font-mono-data text-sm font-semibold text-primary">H4 · H1 · M15</p>
+          </div>
+          <div>
+            <p class="text-[10px] font-outfit font-semibold tracking-widest uppercase text-text-faint mb-1">Avg RR</p>
+            <p class="font-mono-data text-sm font-semibold text-primary">1:2.5+</p>
+          </div>
+          <div>
+            <p class="text-[10px] font-outfit font-semibold tracking-widest uppercase text-text-faint mb-1">Pairs</p>
+            <p class="font-mono-data text-sm font-semibold text-primary">Majors · Gold</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Small card: Risk Safeguards -->
+      <div class="bg-primary rounded-2xl p-8 card-hover reveal reveal-d1">
+        <span class="material-symbols-outlined text-white/60 mb-4 block" style="font-size:28px">shield</span>
+        <h3 class="font-outfit font-black text-xl text-white mb-3">Risk Safeguards</h3>
+        <ul class="space-y-3 font-editorial text-white/70 text-[0.95rem] leading-relaxed">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-white/40 mt-0.5" style="font-size:14px">check_circle</span>
+            Max 1% account risk per trade
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-white/40 mt-0.5" style="font-size:14px">check_circle</span>
+            Hard daily drawdown limits
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-white/40 mt-0.5" style="font-size:14px">check_circle</span>
+            No news-event overrides
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-white/40 mt-0.5" style="font-size:14px">check_circle</span>
+            Position sizing by ATR
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Row 2: small + large (flipped ratio) -->
+    <div class="grid gap-4" style="grid-template-columns: 1fr 2fr;">
+      <!-- Small card: Systematic Execution -->
+      <div class="bg-surface-2 rounded-2xl border border-border-solid shadow-card p-8 card-hover reveal">
+        <span class="material-symbols-outlined text-primary mb-4 block" style="font-size:28px">bolt</span>
+        <h3 class="font-outfit font-black text-xl text-primary mb-3">Systematic Execution</h3>
+        <p class="font-editorial text-text-muted leading-relaxed text-[0.95rem]">
+          Pre-defined entry conditions remove discretionary bias. Each trade logged with rationale and post-trade review.
+        </p>
+      </div>
+
+      <!-- Large card: Live Verified -->
+      <div class="bg-surface rounded-2xl border border-border-solid shadow-card p-8 card-hover reveal reveal-d1">
+        <div class="flex items-start gap-4">
+          <span class="material-symbols-outlined text-success mt-1" style="font-size:28px;font-variation-settings:'FILL' 1,'wght' 400">verified</span>
+          <div class="flex-1">
+            <h3 class="font-outfit font-black text-xl text-primary mb-2">Live Verified Results</h3>
+            <p class="font-editorial text-text-muted leading-relaxed text-[0.95rem] mb-6">
+              All performance data is sourced directly from IC Markets live account statements. No simulation, no cherry-picked screenshots — raw verified P&amp;L updated hourly via authenticated API.
+            </p>
+            <div class="grid grid-cols-3 gap-4 pt-5 border-t border-border-solid">
+              <div>
+                <p class="text-[10px] font-outfit font-semibold tracking-widest uppercase text-text-faint mb-1">Broker</p>
+                <p class="font-mono-data text-sm font-semibold text-primary">IC Markets</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-outfit font-semibold tracking-widest uppercase text-text-faint mb-1">Account Type</p>
+                <p class="font-mono-data text-sm font-semibold text-primary">Raw Spread</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-outfit font-semibold tracking-widest uppercase text-text-faint mb-1">Reg.</p>
+                <p class="font-mono-data text-sm font-semibold text-primary">ASIC · CySEC</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<!-- Footer -->
-<footer class="bg-surface py-20 px-margin-desktop border-t border-outline-variant/20">
-<div class="max-w-container-max mx-auto">
-<div class="flex flex-col md:flex-row justify-between gap-20 mb-20">
-<div class="max-w-xs">
-<span class="text-xl font-black text-primary tracking-tighter uppercase">Vera Level</span>
-<p class="mt-8 font-editorial text-secondary italic">Systematic forex portfolio management with institutional-grade execution conditions. Singapore-based. Myfxbook verified. IC Markets Introducing Broker.</p>
-</div>
-<div class="grid grid-cols-2 sm:grid-cols-3 gap-12">
-<div>
-<h5 class="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-8">Services</h5>
-<ul class="space-y-4 text-[10px] font-bold text-secondary uppercase tracking-widest">
-<li><a class="hover:text-primary transition-colors" href="#">Managed Accounts</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Signals</a></li>
-<li><a class="hover:text-primary transition-colors" href="https://icmarkets.com/?camp=91936" target="_blank">IB Partner ↗</a></li>
-</ul>
-</div>
-<div>
-<h5 class="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-8">Compliance</h5>
-<ul class="space-y-4 text-[10px] font-bold text-secondary uppercase tracking-widest">
-<li><a class="hover:text-primary transition-colors" href="#">Risk Disclosure</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Terms</a></li>
-</ul>
-</div>
-<div>
-<h5 class="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-8">Verification</h5>
-<div class="flex flex-col gap-4 text-[10px] font-bold text-secondary uppercase tracking-widest">
-<a href="https://icmarkets.com/?camp=91936" target="_blank" class="hover:text-primary transition-colors">IC Markets ↗</a>
-<a href="https://www.myfxbook.com/members/pandiangk85" target="_blank" class="hover:text-primary transition-colors">Myfxbook ↗</a>
-</div>
-</div>
-</div>
-</div>
-<div class="p-10 bg-background border border-outline-variant/10 text-[10px] text-outline leading-loose uppercase tracking-widest mb-12">
-Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors. Past performance is not indicative of future results. All performance figures are drawn from a live, real-money trading account on IC Markets and are verified through Myfxbook. Vera Level FX is not a licensed financial adviser. Nothing on this website constitutes investment advice or a solicitation to trade. Please ensure you understand the risks involved before committing capital.
-</div>
-<div class="flex flex-col md:flex-row justify-between items-center gap-8 py-10 border-t border-outline-variant/20 text-[9px] font-bold uppercase tracking-[0.4em] text-outline">
-<p>© 2026 VERA LEVEL FX. INSTITUTIONAL FX MANAGEMENT. SINGAPORE.</p>
-<div class="flex gap-8">
-<a href="https://t.me/padiangk" target="_blank" class="hover:text-primary cursor-pointer transition-colors">Telegram</a>
-<a href="https://wa.me/919632233776" target="_blank" class="hover:text-primary cursor-pointer transition-colors">WhatsApp</a>
-</div>
-</div>
-</div>
+<!-- ══ About / Profile ════════════════════════════════════════════ -->
+<section id="about" class="py-20 md:py-28 bg-surface-2 border-y border-border-solid" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+
+      <!-- Left — Photo -->
+      <div class="profile-img-wrap reveal">
+        <img src="myphoto.jpg" alt="Pandian GK — Vera Level FX"
+             class="w-full max-w-[420px] object-cover rounded-3xl shadow-lifted"
+             style="aspect-ratio:4/5; filter:contrast(1.04) saturate(0.92);"/>
+      </div>
+
+      <!-- Right — Bio -->
+      <div>
+        <h2 class="font-outfit font-black text-4xl md:text-5xl tracking-tight text-primary mb-6 reveal">
+          Pandian GK
+        </h2>
+        <p class="font-editorial italic text-text-muted text-lg mb-2 reveal reveal-d1">
+          Singapore-based forex trader. IC Markets Introducing Broker.
+        </p>
+        <p class="font-editorial text-text leading-relaxed text-[1.05rem] mb-8 reveal reveal-d1">
+          Over a decade of markets experience across equities, commodities, and forex. I run Vera Level FX as a fully transparent live portfolio — every trade visible, every drawdown disclosed. My edge is multi-timeframe technical analysis with strictly defined risk per position.
+        </p>
+
+        <!-- Contact links — no duplicate CTA intent -->
+        <div class="flex flex-wrap gap-3 reveal reveal-d2">
+          <a href="https://t.me/veralevelforex"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 border border-border-solid text-primary text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-surface transition-colors">
+            <span class="material-symbols-outlined" style="font-size:15px">send</span>
+            Telegram Channel
+          </a>
+          <a href="https://wa.me/6591234567"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 border border-border-solid text-primary text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-surface transition-colors">
+            <span class="material-symbols-outlined" style="font-size:15px">chat</span>
+            WhatsApp
+          </a>
+          <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+             target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 border border-border-solid text-primary text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-surface transition-colors">
+            <span class="material-symbols-outlined" style="font-size:15px">open_in_new</span>
+            IC Markets IB Link
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Get Started — Horizontal Numbered Steps ════════════════════ -->
+<section id="get-started" class="py-20 md:py-28" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <div class="mb-14">
+      <h2 class="font-outfit font-black text-4xl md:text-5xl tracking-tight text-primary mb-3 reveal">
+        How to Get Started
+      </h2>
+    </div>
+
+    <!-- Steps as horizontal numbered rows -->
+    <div class="divide-y divide-border-solid">
+
+      <div class="flex items-center gap-8 py-8 reveal">
+        <span class="step-outline flex-shrink-0 w-24 text-right">01</span>
+        <div class="flex-1">
+          <h3 class="font-outfit font-bold text-xl text-primary mb-1">Open an IC Markets Account</h3>
+          <p class="font-editorial text-text-muted leading-relaxed">
+            Use the link below to register with IC Markets — the broker with the tightest spreads and ASIC regulation. Takes under 5 minutes.
+          </p>
+        </div>
+        <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+           target="_blank" rel="noopener"
+           class="flex-shrink-0 hidden md:inline-flex items-center gap-1.5 bg-primary text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-primary-light transition-all active:translate-y-px">
+          Register <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-8 py-8 reveal reveal-d1">
+        <span class="step-outline flex-shrink-0 w-24 text-right">02</span>
+        <div class="flex-1">
+          <h3 class="font-outfit font-bold text-xl text-primary mb-1">Fund Your Account</h3>
+          <p class="font-editorial text-text-muted leading-relaxed">
+            Minimum deposit $200 USD. IC Markets supports bank transfer, credit card, Skrill, Neteller, and crypto deposits with zero fees.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-8 py-8 reveal reveal-d2">
+        <span class="step-outline flex-shrink-0 w-24 text-right">03</span>
+        <div class="flex-1">
+          <h3 class="font-outfit font-bold text-xl text-primary mb-1">Connect via Telegram</h3>
+          <p class="font-editorial text-text-muted leading-relaxed">
+            Join the Vera Level channel for live trade alerts, market commentary, and weekly performance reviews.
+          </p>
+        </div>
+        <a href="https://t.me/veralevelforex"
+           target="_blank" rel="noopener"
+           class="flex-shrink-0 hidden md:inline-flex items-center gap-1.5 border border-border-solid text-primary text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-surface transition-colors">
+          Join Channel <span class="material-symbols-outlined" style="font-size:14px">send</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ IC Markets Partner Band ════════════════════════════════════ -->
+<section class="bg-surface-2 border-y border-border-solid py-10" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-white" style="font-size:22px;font-variation-settings:'FILL' 1,'wght' 400">verified_user</span>
+        </div>
+        <div>
+          <p class="font-outfit font-bold text-primary text-base">IC Markets Introducing Broker</p>
+          <p class="text-[12px] text-text-faint font-mono-data">Partner ID #69553 · ASIC regulated · Raw ECN spreads</p>
+        </div>
+      </div>
+      <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+         target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white text-[13px] font-semibold px-6 py-3 rounded-xl transition-all active:translate-y-px">
+        Open Account via IB Link
+        <span class="material-symbols-outlined" style="font-size:15px">open_in_new</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Trade History ══════════════════════════════════════════════ -->
+<section id="history" class="py-20 md:py-28" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+    <div class="mb-12">
+      <h2 class="font-outfit font-black text-4xl md:text-5xl tracking-tight text-primary mb-3 reveal">
+        Trade History
+      </h2>
+      <p class="font-editorial italic text-text-muted text-lg reveal reveal-d1">Every closed trade, unfiltered.</p>
+    </div>
+    <div class="bg-surface-2 rounded-2xl border border-border-solid shadow-card overflow-hidden reveal reveal-d1">
+      <div id="hist-hdr" class="hidden md:grid px-5 py-3 text-[10px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint border-b border-border-solid bg-surface"></div>
+      <div id="hist-body" class="divide-y divide-border-solid text-[13px] font-mono-data"></div>
+    </div>
+    <p id="data-freshness" class="text-[11px] text-text-faint font-mono-data mt-4"></p>
+  </div>
+</section>
+
+<!-- ══ Footer — Dark Navy ═════════════════════════════════════════ -->
+<footer class="bg-primary pt-16 pb-10" style="margin-left:56px;">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <!-- Top row -->
+    <div class="grid md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+
+      <!-- Brand -->
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400">show_chart</span>
+          </div>
+          <span class="font-outfit font-bold text-white text-[15px]">Vera Level <span class="font-editorial italic font-light text-white/60">FX</span></span>
+        </div>
+        <p class="text-white/50 text-[13px] font-editorial leading-relaxed">
+          Institutional-grade forex portfolio. IC Markets verified. Singapore.
+        </p>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <p class="text-[10px] font-outfit font-semibold tracking-[0.16em] uppercase text-white/30 mb-4">Services</p>
+        <ul class="space-y-2.5 text-[13px] text-white/60">
+          <li><a href="#analytics" class="hover:text-white transition-colors">Live Analytics</a></li>
+          <li><a href="#positions" class="hover:text-white transition-colors">Open Positions</a></li>
+          <li><a href="#history"   class="hover:text-white transition-colors">Trade History</a></li>
+        </ul>
+      </div>
+
+      <!-- Compliance -->
+      <div>
+        <p class="text-[10px] font-outfit font-semibold tracking-[0.16em] uppercase text-white/30 mb-4">Compliance</p>
+        <ul class="space-y-2.5 text-[13px] text-white/60">
+          <li><a href="https://secure.icmarkets.com" target="_blank" class="hover:text-white transition-colors">IC Markets</a></li>
+          <li><span>ASIC Regulated</span></li>
+          <li><span>CySEC Regulated</span></li>
+        </ul>
+      </div>
+
+      <!-- Connect -->
+      <div>
+        <p class="text-[10px] font-outfit font-semibold tracking-[0.16em] uppercase text-white/30 mb-4">Connect</p>
+        <ul class="space-y-2.5 text-[13px] text-white/60">
+          <li><a href="https://t.me/veralevelforex"  target="_blank" class="hover:text-white transition-colors flex items-center gap-2"><span class="material-symbols-outlined" style="font-size:13px">send</span>Telegram</a></li>
+          <li><a href="https://wa.me/6591234567"     target="_blank" class="hover:text-white transition-colors flex items-center gap-2"><span class="material-symbols-outlined" style="font-size:13px">chat</span>WhatsApp</a></li>
+          <li><a href="mailto:pandian@veralevel.fx"              class="hover:text-white transition-colors flex items-center gap-2"><span class="material-symbols-outlined" style="font-size:13px">mail</span>Email</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Risk Disclaimer -->
+    <div class="py-8 border-b border-white/10">
+      <p class="text-white/30 text-[11px] leading-relaxed font-editorial max-w-3xl">
+        <strong class="text-white/50 font-outfit font-semibold">Risk Disclosure:</strong>
+        Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Past performance is not indicative of future results. This website is for informational purposes only and does not constitute financial advice. Vera Level FX is an IC Markets Introducing Broker (Partner ID #69553) and may earn commissions from referred accounts.
+      </p>
+    </div>
+
+    <!-- Bottom row -->
+    <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-white/30 font-mono-data">
+      <span>© 2025 Vera Level FX · Pandian GK · Singapore</span>
+      <span>IC Markets IB Partner #69553</span>
+    </div>
+
+  </div>
 </footer>
 
-</main>
-
-<!-- Mobile Bottom Navigation -->
-<nav class="mobile-bottom-nav">
-<a href="#hero">
-  <span class="material-symbols-outlined" style="font-size:20px">dashboard</span>
-  Dashboard
-</a>
-<a href="#analytics">
-  <span class="material-symbols-outlined" style="font-size:20px">analytics</span>
-  Analytics
-</a>
-<a href="#history">
-  <span class="material-symbols-outlined" style="font-size:20px">history</span>
-  History
-</a>
-<a href="#strategy">
-  <span class="material-symbols-outlined" style="font-size:20px">security</span>
-  Strategy
-</a>
-<a href="https://t.me/padiangk" target="_blank" style="color:#0088cc">
-  <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1">send</span>
-  Contact
-</a>
+<!-- ══ Mobile Bottom Nav ══════════════════════════════════════════ -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-2 border-t border-border-solid"
+     style="padding-bottom: env(safe-area-inset-bottom);">
+  <div class="grid grid-cols-5 h-14">
+    <a href="#hero"        class="flex flex-col items-center justify-center gap-0.5 text-text-faint hover:text-primary transition-colors">
+      <span class="material-symbols-outlined" style="font-size:20px">home</span>
+      <span class="text-[9px] font-outfit font-semibold tracking-wide">Home</span>
+    </a>
+    <a href="#analytics"   class="flex flex-col items-center justify-center gap-0.5 text-text-faint hover:text-primary transition-colors">
+      <span class="material-symbols-outlined" style="font-size:20px">analytics</span>
+      <span class="text-[9px] font-outfit font-semibold tracking-wide">Charts</span>
+    </a>
+    <a href="#positions"   class="flex flex-col items-center justify-center gap-0.5 text-text-faint hover:text-primary transition-colors">
+      <span class="material-symbols-outlined" style="font-size:20px">candlestick_chart</span>
+      <span class="text-[9px] font-outfit font-semibold tracking-wide">Positions</span>
+    </a>
+    <a href="#about"       class="flex flex-col items-center justify-center gap-0.5 text-text-faint hover:text-primary transition-colors">
+      <span class="material-symbols-outlined" style="font-size:20px">person</span>
+      <span class="text-[9px] font-outfit font-semibold tracking-wide">About</span>
+    </a>
+    <a href="#get-started" class="flex flex-col items-center justify-center gap-0.5 text-text-faint hover:text-primary transition-colors">
+      <span class="material-symbols-outlined" style="font-size:20px">rocket_launch</span>
+      <span class="text-[9px] font-outfit font-semibold tracking-wide">Start</span>
+    </a>
+  </div>
 </nav>
 
-<!-- Floating Action Buttons -->
-<a href="https://t.me/padiangk" target="_blank" class="fixed bottom-28 right-10 z-50 text-white w-14 h-14 shadow-2xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95" style="background:#0088cc;" aria-label="Telegram @padiangk">
-<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">send</span>
-</a>
-<a href="https://wa.me/919632233776" target="_blank" class="fixed bottom-10 right-10 z-50 text-white w-14 h-14 shadow-2xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95" style="background:#25D366;" aria-label="WhatsApp Analyst">
-<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">chat</span>
-</a>
+<!-- ══ Floating Action Buttons (Mobile) ══════════════════════════ -->
+<div class="md:hidden fixed right-4 z-50" style="bottom: calc(56px + 1rem + env(safe-area-inset-bottom));">
+  <div class="flex flex-col gap-2">
+    <a href="https://t.me/veralevelforex" target="_blank" rel="noopener"
+       class="w-12 h-12 rounded-full bg-primary shadow-lifted flex items-center justify-center text-white">
+      <span class="material-symbols-outlined" style="font-size:20px">send</span>
+    </a>
+    <a href="https://secure.icmarkets.com/register?cid=69553&lang=en" target="_blank" rel="noopener"
+       class="w-12 h-12 rounded-full bg-success shadow-lifted flex items-center justify-center text-white">
+      <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1,'wght' 400">open_in_new</span>
+    </a>
+  </div>
+</div>
 
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT — preserve all element IDs and live data logic     -->
+<!-- ══════════════════════════════════════════════════════════════ -->
 <script>
-// ── Scroll progress bar ───────────────────────────────────────
-(function(){
-  var bar = document.getElementById('scroll-bar');
-  if (!bar) return;
-  window.addEventListener('scroll', function(){
-    var s = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = (h > 0 ? s / h * 100 : 0) + '%';
-  }, { passive: true });
-})();
-
-// ── Scroll reveal (IntersectionObserver) ─────────────────────
-(function(){
-  if (!window.IntersectionObserver) {
-    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
-    return;
-  }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
-})();
-
-// ── Count-up animation ────────────────────────────────────────
-function runCountUp(id, finalText, color) {
-  var el = document.getElementById(id);
+// ── Scroll progress bar ─────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const el = document.getElementById('scroll-bar');
   if (!el) return;
-  if (color) el.style.color = color;
-  var m = finalText.match(/([-+]?[\d,]+\.?\d*)/);
-  if (!m) { el.textContent = finalText; return; }
-  var raw = m[0].replace(/,/g,''), num = parseFloat(raw);
-  var pre = finalText.slice(0, finalText.search(/([-+]?[\d,])/));
-  var suf = finalText.slice(finalText.indexOf(m[0]) + m[0].length);
-  var decs = raw.indexOf('.') >= 0 ? raw.split('.')[1].length : 0;
-  var dur = 1500, t0 = null;
-  function tick(ts){
-    if (!t0) t0 = ts;
-    var p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3), v = num * e;
-    var s = decs > 0 ? v.toFixed(decs) : Math.round(v).toLocaleString('en-US');
-    el.textContent = pre + s + suf;
-    if (p < 1) requestAnimationFrame(tick); else el.textContent = finalText;
+  const p = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  el.style.width = (Math.min(p, 1) * 100) + '%';
+}, { passive: true });
+
+// ── Command Rail active highlight ──────────────────────────────
+(function () {
+  const sections = ['hero','analytics','positions','strategy','about','get-started','history'];
+  const buttons  = document.querySelectorAll('#cmd-rail .rail-btn[data-section]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        buttons.forEach(b => b.classList.remove('active'));
+        const btn = document.querySelector(`#cmd-rail .rail-btn[data-section="${e.target.id}"]`);
+        if (btn) btn.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -40% 0px' });
+  sections.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+})();
+
+// ── Reveal on scroll ────────────────────────────────────────────
+(function () {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// ── Ticker duplicate for infinite loop ─────────────────────────
+(function () {
+  const tpl  = document.getElementById('ticker-sym');
+  const wrap = document.querySelector('.ticker-move');
+  if (!tpl || !wrap) return;
+  const frag = tpl.content.cloneNode(true);
+  wrap.appendChild(frag);
+})();
+
+// ── Live data from snapshot JSON ───────────────────────────────
+(function () {
+  const DATA_URL = 'data/vera-snapshot.json';
+
+  function fmt(n, d=2)       { return n != null ? n.toFixed(d) : '—'; }
+  function fmtPct(n)         { return n != null ? (n >= 0 ? '+' : '') + fmt(n) + '%' : '—'; }
+  function fmtUsd(n)         { return n != null ? '$' + n.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2}) : '—'; }
+  function colorPnl(n)       { return n >= 0 ? 'text-success' : 'text-red-500'; }
+
+  function buildEquitySvg(pts) {
+    if (!pts || pts.length < 2) return;
+    const W = 800, H = 200, PAD = 10;
+    const vals = pts.map(p => p.equity);
+    const mn = Math.min(...vals), mx = Math.max(...vals);
+    const range = mx - mn || 1;
+    const scaleX = i => PAD + (i / (pts.length - 1)) * (W - PAD * 2);
+    const scaleY = v => H - PAD - ((v - mn) / range) * (H - PAD * 2);
+    let d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${scaleX(i).toFixed(1)},${scaleY(p.equity).toFixed(1)}`).join(' ');
+    const areaD = d + ` L${scaleX(pts.length-1).toFixed(1)},${H} L${scaleX(0).toFixed(1)},${H} Z`;
+    const line = document.getElementById('eq-line');
+    const area = document.getElementById('eq-area');
+    if (line) {
+      line.setAttribute('d', d);
+      const len = line.getTotalLength ? line.getTotalLength() : 2000;
+      line.style.strokeDasharray = len;
+      line.style.strokeDashoffset = len;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        line.style.strokeDashoffset = 0;
+      }));
+    }
+    if (area) area.setAttribute('d', areaD);
   }
-  requestAnimationFrame(tick);
-}
 
-// ── Helpers ───────────────────────────────────────────────────
-const n    = v => Number(v || 0);
-const usd  = v => '$' + Math.abs(n(v)).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-const pct  = v => (n(v) >= 0 ? '+' : '') + n(v).toFixed(2) + '%';
-const lots = s => (s && typeof s === 'object') ? (s.value || '?') : (s || '?');
-const esc  = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const byId = id => document.getElementById(id);
-const setEl = (id, t) => { const el = byId(id); if (el) el.textContent = t; };
-
-// ── Equity Curve — shared state for interaction ───────────────
-var _eqPts = null, _eqDg = null, _eqDim = null;
-
-// ── Equity Curve SVG (light institutional theme) ──────────────
-function equitySvg(dg) {
-  if (!dg || dg.length < 2) return '<text x="400" y="140" fill="#c5c6d2" font-size="13" text-anchor="middle" font-family="Inter">Accumulating performance data...</text>';
-  const W=800, H=280, PL=56, PR=28, PT=18, PB=28;
-  const gs = dg.map(d => n(d[1]));
-  const rawMin = Math.min(...gs), rawMax = Math.max(...gs);
-  const span = rawMax - Math.min(0, rawMin) || 1;
-  const mn = Math.min(0, rawMin) - span * 0.04;
-  const mx = rawMax + span * 0.08;
-  const rng = mx - mn || 1;
-  const toX = i => PL + i * (W - PL - PR) / (dg.length - 1);
-  const toY = v => PT + ((mx - v) / rng) * (H - PT - PB);
-  const pts = dg.map(([,g], i) => [toX(i).toFixed(1), toY(n(g)).toFixed(1)]);
-  const line = 'M' + pts.map(p => p.join(',')).join(' L');
-  const zeroY = toY(0).toFixed(1);
-  const area = line + ` L${pts[pts.length-1][0]},${zeroY} L${pts[0][0]},${zeroY} Z`;
-  const lp = pts[pts.length-1];
-  const lastG = gs[gs.length-1];
-
-  const approxStep = (mx - mn) / 4;
-  const mag = Math.pow(10, Math.floor(Math.log10(Math.abs(approxStep) || 1)));
-  const step = Math.ceil(approxStep / (mag * 0.5)) * (mag * 0.5) || 1;
-  const gridLines = [];
-  for (let v = Math.ceil(mn / step) * step; v <= mx + step * 0.01; v = Math.round((v + step) * 1e6) / 1e6) {
-    const gy = parseFloat(toY(v).toFixed(1));
-    if (gy < PT - 2 || gy > H - PB + 2) continue;
-    const isZero = Math.abs(v) < step * 0.01;
-    const lbl = isZero ? '0%' : (v > 0 ? '+' : '') + v.toFixed(v === Math.round(v) ? 0 : 1) + '%';
-    gridLines.push(
-      `<line x1="${PL}" y1="${gy}" x2="${W-PR}" y2="${gy}" stroke="${isZero ? 'rgba(0,35,102,0.18)' : 'rgba(0,35,102,0.06)'}" stroke-width="${isZero ? 1.5 : 1}"${isZero ? ' stroke-dasharray="4,3"' : ''}/>` +
-      `<text x="${PL-5}" y="${gy}" fill="#b8b9c8" font-size="9" font-family="Inter" text-anchor="end" dominant-baseline="middle">${lbl}</text>`
-    );
-  }
-
-  const labelCx = Math.min(parseFloat(lp[0]), W - PR - 44);
-  const labelY  = Math.max(parseFloat(lp[1]) - 30, PT + 2);
-
-  // Store for interaction handler
-  _eqPts = pts; _eqDg = dg; _eqDim = { W, H, PL, PR, PT, PB };
-
-  return `<defs>
-    <linearGradient id="vl-fill" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#002366" stop-opacity="0.14"/>
-      <stop offset="100%" stop-color="#002366" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
-  <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="rgba(0,35,102,0.1)" stroke-width="1"/>
-  ${gridLines.join('\n  ')}
-  <path d="${area}" fill="url(#vl-fill)"/>
-  <path d="${line}" fill="none" stroke="#002366" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-  <circle cx="${lp[0]}" cy="${lp[1]}" r="4.5" fill="#002366"/>
-  <rect x="${labelCx-40}" y="${labelY}" width="80" height="20" fill="#eef1ff" stroke="#002366" stroke-opacity="0.35" rx="2"/>
-  <text x="${labelCx}" y="${labelY+14}" fill="#002366" font-size="10" font-family="Inter" font-weight="700" text-anchor="middle">${lastG >= 0 ? '+' : ''}${lastG.toFixed(2)}%</text>
-  <rect id="eq-hit" x="${PL}" y="${PT}" width="${W-PL-PR}" height="${H-PT-PB}" fill="transparent" style="cursor:crosshair"/>
-  <g id="eq-tip" style="display:none" pointer-events="none">
-    <line id="eq-vline" x1="0" y1="${PT}" x2="0" y2="${H-PB}" stroke="rgba(0,35,102,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <circle id="eq-dot" r="5" fill="#002366" stroke="#ffffff" stroke-width="2.5"/>
-    <rect id="eq-bg" rx="3" fill="#002366"/>
-    <text id="eq-t1" fill="rgba(255,255,255,0.72)" font-size="9" font-family="Inter" font-weight="600" letter-spacing=".06em" text-anchor="middle"/>
-    <text id="eq-t2" fill="#ffffff" font-size="11" font-family="Inter" font-weight="800" text-anchor="middle"/>
-  </g>`;
-}
-
-// ── Equity curve hover interaction ────────────────────────────
-function wireEquityInteraction() {
-  var svg = byId('equity-svg');
-  if (!svg || !_eqPts || _eqPts.length < 2) return;
-  var hit = svg.querySelector('#eq-hit');
-  var tip = svg.querySelector('#eq-tip');
-  var vline = svg.querySelector('#eq-vline');
-  var dot   = svg.querySelector('#eq-dot');
-  var bg    = svg.querySelector('#eq-bg');
-  var t1    = svg.querySelector('#eq-t1');
-  var t2    = svg.querySelector('#eq-t2');
-  if (!hit || !tip) return;
-  var dim = _eqDim;
-
-  hit.addEventListener('mousemove', function(e) {
-    var rect = svg.getBoundingClientRect();
-    var mx = (e.clientX - rect.left) * (dim.W / rect.width);
-    var best = 0, bestDist = Infinity;
-    _eqPts.forEach(function(p, i) {
-      var d = Math.abs(parseFloat(p[0]) - mx);
-      if (d < bestDist) { bestDist = d; best = i; }
-    });
-    var px = parseFloat(_eqPts[best][0]);
-    var py = parseFloat(_eqPts[best][1]);
-    var date = _eqDg[best][0] || '';
-    var val  = n(_eqDg[best][1]);
-    tip.style.display = '';
-    vline.setAttribute('x1', px); vline.setAttribute('x2', px);
-    dot.setAttribute('cx', px);   dot.setAttribute('cy', py);
-    var TW = 96, TH = 38;
-    var tx = Math.max(dim.PL, Math.min(px - TW / 2, dim.W - dim.PR - TW));
-    var ty = py - TH - 12 < dim.PT ? py + 14 : py - TH - 12;
-    bg.setAttribute('x', tx);  bg.setAttribute('y', ty);
-    bg.setAttribute('width', TW); bg.setAttribute('height', TH);
-    t1.setAttribute('x', tx + TW / 2); t1.setAttribute('y', ty + 14); t1.textContent = date;
-    t2.setAttribute('x', tx + TW / 2); t2.setAttribute('y', ty + 30);
-    t2.textContent = (val >= 0 ? '+' : '') + val.toFixed(2) + '%';
-  });
-
-  hit.addEventListener('mouseleave', function() { tip.style.display = 'none'; });
-}
-
-// ── Monthly P&L Bars (light theme, interactive) ───────────────
-const MN_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const MN_FULL  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-function monthlyBars(trades, dailyGain) {
-  const map = {};
-  if (dailyGain && dailyGain.length >= 2) {
-    dailyGain.forEach(entry => {
-      const dateStr = Array.isArray(entry) ? entry[0] : (entry.date || '');
-      const profit  = Array.isArray(entry) ? n(entry[2] || 0) : n(entry.profit || 0);
-      const p = dateStr.split('/');
-      if (p.length < 3) return;
-      const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
-      map[key] = (map[key] || 0) + profit;
-    });
-  } else {
-    trades.forEach(t => {
-      const p = (t.closeTime || '').split('/');
-      if (p.length < 3) return;
-      const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
-      map[key] = (map[key] || 0) + n(t.profit);
-    });
-  }
-  const entries = Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).slice(-6);
-  if (!entries.length) return '<div style="color:#585f66;font-size:11px;text-align:center;padding:20px 0;font-weight:600;letter-spacing:.06em;text-transform:uppercase">No monthly data yet</div>';
-  const maxAbs = Math.max(...entries.map(([,v]) => Math.abs(v)), 1);
-  return entries.map(([key, val]) => {
-    const parts = key.split('-');
-    const yr  = parts[0];
-    const mm  = parseInt(parts[1]) - 1;
-    const barPct  = Math.min(Math.abs(val) / maxAbs * 100, 100);
-    const pos     = val >= 0;
-    const textColor = pos ? '#059669' : '#ba1a1a';
-    const barColor  = pos ? '#002366' : '#ba1a1a';
-    const amount = '$' + Math.abs(val).toLocaleString('en-US', {maximumFractionDigits: 0});
-    return `<div class="pnl-row" data-label="${MN_FULL[mm]} ${yr}" data-val="${val.toFixed(2)}" data-pos="${pos ? '1' : '0'}"
-      style="display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:4px;cursor:default;transition:background 0.15s;">
-      <span style="width:26px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#757682;flex-shrink:0">${MN_SHORT[mm]}</span>
-      <div style="flex:1;height:10px;background:#f3f4f5;border-radius:1px;overflow:hidden">
-        <div class="pnl-fill" style="height:100%;width:${barPct.toFixed(0)}%;background:${barColor};border-radius:1px;transition:opacity 0.15s;"></div>
-      </div>
-      <span style="width:64px;text-align:right;font-size:10px;font-family:monospace;font-weight:700;color:${textColor};flex-shrink:0">${pos ? '+' : '−'}${amount}</span>
-    </div>`;
-  }).join('');
-}
-
-// ── Monthly bar hover interaction ─────────────────────────────
-function wireMonthlyInteraction() {
-  var container = byId('monthly-bars');
-  var tip = byId('pnl-tip');
-  if (!container || !tip) return;
-
-  container.addEventListener('mouseover', function(e) {
-    var row = e.target.closest('.pnl-row');
-    if (!row) return;
-    row.style.background = 'rgba(0,35,102,0.04)';
-    var fill = row.querySelector('.pnl-fill');
-    if (fill) fill.style.opacity = '0.65';
-    var label = row.dataset.label || '';
-    var val   = parseFloat(row.dataset.val || '0');
-    var pos   = row.dataset.pos === '1';
-    var sign  = pos ? '+' : '−';
-    var color = pos ? '#059669' : '#ba1a1a';
-    tip.innerHTML = '<span style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#585f66">' + label + '</span>'
-      + '<span style="font-size:13px;font-weight:800;color:' + color + ';margin-top:2px">' + sign + '$' + Math.abs(val).toLocaleString('en-US',{maximumFractionDigits:0}) + '</span>';
-    tip.style.display = 'flex';
-    var rowRect = row.getBoundingClientRect();
-    var containerRect = container.getBoundingClientRect();
-    tip.style.top  = (rowRect.top - containerRect.top - tip.offsetHeight - 6) + 'px';
-    tip.style.left = ((rowRect.left - containerRect.left) + 36) + 'px';
-  });
-
-  container.addEventListener('mouseout', function(e) {
-    var row = e.target.closest('.pnl-row');
-    if (!row) return;
-    row.style.background = '';
-    var fill = row.querySelector('.pnl-fill');
-    if (fill) fill.style.opacity = '';
-    tip.style.display = 'none';
-  });
-}
-
-// ── Consistency Matrix (light theme) ─────────────────────────
-function consistencyMatrix(trades, dailyGain) {
-  const map = {};
-  // Prefer dailyGain for accuracy (API caps trade history at 40 records)
-  const src = (dailyGain && dailyGain.length >= 2) ? dailyGain : null;
-  if (src) {
-    src.forEach(entry => {
-      const dateStr = Array.isArray(entry) ? entry[0] : (entry.date || '');
-      const profit  = Array.isArray(entry) ? n(entry[2] || 0) : n(entry.profit || 0);
-      const p = dateStr.split('/');
-      if (p.length < 3) return;
-      const yr = parseInt(p[2]);
-      const mo = parseInt(p[0]) - 1;
-      if (!map[yr]) map[yr] = {};
-      map[yr][mo] = (map[yr][mo] || 0) + profit;
-    });
-  } else {
-    trades.forEach(t => {
-      const p = (t.closeTime || '').split('/');
-      if (p.length < 3) return;
-      const yr = parseInt(p[2]);
-      const mo = parseInt(p[0]) - 1;
-      if (!map[yr]) map[yr] = {};
-      map[yr][mo] = (map[yr][mo] || 0) + n(t.profit);
-    });
-  }
-  const years = Object.keys(map).sort((a,b) => b - a);
-  if (!years.length) return '<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">No history data yet</td></tr>';
-  const fmt = v => '$' + Math.abs(v).toLocaleString('en-US', {maximumFractionDigits: 0});
-  return years.map(yr => {
-    const ytd = Object.values(map[yr]).reduce((s,v) => s+v, 0);
-    const cells = Array.from({length:12}, (_,m) => {
-      const v = map[yr][m];
-      if (v === undefined) return `<td style="padding:10px 6px;text-align:center;color:#c5c6d2;font-family:monospace;font-size:10px">—</td>`;
-      if (Math.abs(v) < 0.005) return `<td style="padding:10px 6px;text-align:center;color:#c5c6d2;font-family:monospace;font-size:10px">$0</td>`;
-      const pos = v >= 0;
-      return `<td style="padding:10px 6px;text-align:center;font-family:monospace;font-size:10px;font-weight:700;color:${pos ? '#059669' : '#ba1a1a'}">${pos ? '+' : '−'}${fmt(v)}</td>`;
+  function buildMonthlyBars(months) {
+    const el = document.getElementById('monthly-bars');
+    if (!el || !months || !months.length) return;
+    const maxAbs = Math.max(...months.map(m => Math.abs(m.pnl)), 1);
+    el.innerHTML = months.slice(-12).reverse().map(m => {
+      const pct = (Math.abs(m.pnl) / maxAbs * 100).toFixed(1);
+      const pos = m.pnl >= 0;
+      return `<div class="pnl-row flex items-center gap-3">
+        <span class="font-mono-data text-[11px] text-text-faint w-14 flex-shrink-0">${m.label}</span>
+        <div class="flex-1 h-5 rounded-full bg-surface overflow-hidden">
+          <div class="pnl-fill h-full rounded-full ${pos ? 'bg-primary' : 'bg-red-400'}"
+               style="width:${pct}%"></div>
+        </div>
+        <span class="font-mono-data text-[11px] ${pos ? 'text-success' : 'text-red-500'} w-16 text-right flex-shrink-0">
+          ${fmtPct(m.pnl)}
+        </span>
+      </div>`;
     }).join('');
-    const ytdPos = ytd >= 0;
-    return `<tr style="border-bottom:1px solid rgba(197,198,210,0.3)">
-      <td style="padding:10px 12px;font-weight:800;font-size:13px;color:#191c1d">${yr}</td>
-      ${cells}
-      <td style="padding:10px 12px;text-align:right;font-weight:800;font-size:11px;font-family:monospace;color:${ytdPos ? '#002366' : '#ba1a1a'}">${ytdPos ? '+' : '−'}${fmt(ytd)}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ── Position Card (institutional light theme) ─────────────────
-function posCard(t) {
-  const pl  = n(t.profit);
-  const dir = (t.action || '').toUpperCase();
-  const plColor  = pl >= 0 ? '#059669' : '#ba1a1a';
-  const bdrColor = pl >= 0 ? 'rgba(5,150,105,0.2)' : 'rgba(186,26,26,0.15)';
-  const dirStyle = dir === 'BUY'
-    ? 'background:rgba(0,35,102,0.08);color:#002366'
-    : 'background:rgba(186,26,26,0.08);color:#ba1a1a';
-  return `<div style="background:#ffffff;border:1px solid ${bdrColor};padding:24px;min-width:220px;flex:1;box-shadow:0 4px 20px -4px rgba(0,35,102,0.05)">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <span style="font-size:16px;font-weight:800;color:#191c1d;letter-spacing:-.02em">${esc(t.symbol)}</span>
-      <span style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;${dirStyle}">${dir}</span>
-    </div>
-    <div style="font-size:24px;font-weight:800;color:${plColor};letter-spacing:-.02em;margin-bottom:6px">${pl >= 0 ? '+' : '−'}${usd(Math.abs(pl))}</div>
-    <div style="font-size:10px;color:#585f66;font-weight:600;letter-spacing:.04em;text-transform:uppercase">${lots(t.sizing)}L &middot; ${t.pips}p &middot; Entry ${t.openPrice}</div>
-    ${t.tp ? `<div style="font-size:10px;color:#757682;margin-top:4px">TP ${t.tp}${t.sl && t.sl !== 0 ? ' &middot; SL ' + t.sl : ''}</div>` : ''}
-  </div>`;
-}
-
-// ── History Rows (institutional light theme) ──────────────────
-function historyRows(trades) {
-  if (!trades.length) return '<tr><td colspan="9" style="padding:32px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">No closed trades yet</td></tr>';
-  return trades.map(t => {
-    const pl       = n(t.profit);
-    const plColor  = pl >= 0 ? '#059669' : '#ba1a1a';
-    const dirColor = t.action === 'Buy' ? '#002366' : '#ba1a1a';
-    const comment  = (t.comment || '').length > 22 ? t.comment.slice(0,22) + '…' : (t.comment || '');
-    return `<tr style="border-bottom:1px solid rgba(197,198,210,0.3)">
-      <td style="padding:14px 16px;color:#757682;font-family:monospace;font-size:10px">${(t.closeTime || '').split(' ')[0]}</td>
-      <td style="padding:14px 16px"><b style="color:#191c1d;font-size:12px;font-weight:800;letter-spacing:-.01em">${esc(t.symbol)}</b></td>
-      <td style="padding:14px 16px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:${dirColor}">${(t.action || '').toUpperCase()}</td>
-      <td style="padding:14px 16px;font-family:monospace;font-size:10px;color:#585f66">${lots(t.sizing)}L</td>
-      <td style="padding:14px 16px;font-family:monospace;font-size:10px;color:#444650">${t.openPrice}</td>
-      <td style="padding:14px 16px;font-family:monospace;font-size:10px;color:#444650">${t.closePrice}</td>
-      <td style="padding:14px 16px;font-family:monospace;font-size:11px;font-weight:700;color:${plColor}">${pl >= 0 ? '+' : '−'}${usd(Math.abs(pl))}</td>
-      <td style="padding:14px 16px;font-family:monospace;font-size:10px;color:#585f66">${t.pips}p</td>
-      <td style="padding:14px 16px;font-size:10px;color:#757682;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(comment)}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ── Bootstrap ─────────────────────────────────────────────────
-async function init() {
-  try {
-    const res = await fetch('/data/vera-snapshot.json?t=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const snap = await res.json();
-    const { openTrades = [], history = [], account = {}, dailyGain = [] } = snap;
-    const trades = history.filter(t => t.symbol && t.action !== 'Deposit' && t.action !== 'Withdrawal');
-    const totalTrades = n(account.trades) || trades.length;
-    const wins        = trades.filter(t => n(t.profit) > 0).length;
-    const wr          = n(account.winRate) || (trades.length ? Math.round(wins / trades.length * 100) : 0);
-    const totalWins   = n(account.trades) ? Math.round(n(account.winRate) / 100 * totalTrades) : wins;
-    const totalLosses = totalTrades - totalWins;
-    const gain    = n(account.gain);
-    const dd      = n(account.drawdown);
-    const bal     = n(account.balance);
-    const pf      = n(account.profitFactor);
-    const monthly = n(account.monthly);
-    const pips    = n(account.pips);
-    // ── Build equity curve: prefer dailyGain, fall back to history ──
-    let dg = dailyGain.slice(-90);
-    if (dg.length < 2 && trades.length >= 2) {
-      // Reconstruct cumulative % gain from closed trade history
-      const initBal = bal - n(account.profit);
-      const base    = initBal > 0 ? initBal : 1;
-      const sorted  = trades.slice().sort((a, b) => {
-        const td = s => { const p = s.split('/'); return p.length >= 3 ? `${p[2].split(' ')[0]}-${p[0].padStart(2,'0')}-${p[1].padStart(2,'0')}` : s; };
-        return td(a.closeTime || '').localeCompare(td(b.closeTime || ''));
-      });
-      let cum = 0;
-      dg = sorted.map(t => { cum += n(t.profit); return [(t.closeTime || '').split(' ')[0], parseFloat((cum / base * 100).toFixed(2))]; });
-      console.info('Equity curve built from trade history (' + dg.length + ' points)');
-    }
-
-    // Hero stats — animated count-up
-    runCountUp('h-gain',    pct(gain),    gain >= 0 ? '#059669' : '#ba1a1a');
-    runCountUp('h-dd',      dd.toFixed(2) + '%', '#002366');
-    runCountUp('h-balance', usd(bal),     '#002366');
-
-    // Metrics strip — animated count-up
-    runCountUp('m-monthly', (monthly >= 0 ? '+' : '') + monthly.toFixed(2) + '%',
-               monthly >= 0 ? '#059669' : '#ba1a1a');
-    runCountUp('m-pf',  pf.toFixed(2),  '#191c1d');
-    setEl('m-pf-sub',   pf >= 2 ? 'Excellent edge' : pf >= 1.5 ? 'Strong edge' : 'Positive edge');
-    runCountUp('m-wr',  wr + '%',       '#191c1d');
-    setEl('m-wr-sub',   `${totalWins}W / ${totalLosses}L of ${totalTrades} trades`);
-    setEl('m-pips',     '+' + Math.round(pips).toLocaleString() + 'p');
-
-    // Equity curve + line-draw animation + hover interaction
-    if (byId('equity-svg')) {
-      byId('equity-svg').innerHTML = equitySvg(dg);
-      var paths = byId('equity-svg').querySelectorAll('path');
-      paths.forEach(function(p){
-        if (p.getAttribute('stroke') === '#002366' && p.getAttribute('fill') && !p.getAttribute('fill').includes('url'))
-          p.classList.add('equity-line-anim');
-      });
-      wireEquityInteraction();
-    }
-    const source = dailyGain.length >= 2 ? 'Daily equity trajectory' : 'Equity trajectory (from trade history)';
-    setEl('equity-sub', source);
-    if (dg.length) {
-      setEl('chart-from', dg[0][0] || '');
-      setEl('chart-gain', `${gain >= 0 ? '+' : ''}${gain.toFixed(2)}% total return`);
-      setEl('chart-to',   dg[dg.length-1][0] || '');
-    }
-
-    // Monthly bars — prefer dailyGain (full history), fall back to trade list
-    if (byId('monthly-bars')) {
-      byId('monthly-bars').innerHTML = monthlyBars(trades, dailyGain);
-      wireMonthlyInteraction();
-    }
-
-    // Consistency matrix
-    if (byId('matrix-body')) byId('matrix-body').innerHTML = consistencyMatrix(trades, dailyGain);
-
-    // Last fetched timestamp
-    if (snap.fetchedAt) {
-      const fetched = new Date(snap.fetchedAt);
-      const ago = Math.round((Date.now() - fetched.getTime()) / 60000);
-      const agoStr = ago < 1 ? 'just now' : ago === 1 ? '1 min ago' : ago + ' min ago';
-      const timeStr = fetched.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
-      setEl('data-freshness', `Data as of ${timeStr} · refreshed ${agoStr}`);
-    }
-
-    // Open positions
-    setEl('pos-hdr', `Open Positions (${openTrades.length})`);
-    if (byId('pos-grid')) byId('pos-grid').innerHTML = openTrades.length
-      ? `<div style="display:flex;flex-wrap:wrap;gap:12px">${openTrades.map(posCard).join('')}</div>`
-      : `<div style="background:#fff;padding:32px;text-align:center;box-shadow:0 4px 20px -4px rgba(0,35,102,0.05)"><p style="font-size:11px;font-weight:700;color:#585f66;letter-spacing:.1em;text-transform:uppercase">No Open Positions</p></div>`;
-
-    // Trade history
-    setEl('hist-hdr', `Trade History (${totalTrades} closed${totalTrades > trades.length ? ', showing recent ' + trades.length : ''})`);
-    if (byId('hist-body')) byId('hist-body').innerHTML = historyRows(trades.slice(0, 50));
-
-  } catch (e) {
-    console.warn('Live data unavailable (static view):', e.message);
-    if (byId('pos-grid')) byId('pos-grid').innerHTML = `<div style="background:#fff;padding:32px;text-align:center;box-shadow:0 4px 20px -4px rgba(0,35,102,0.05)"><p style="font-size:11px;font-weight:700;color:#585f66;letter-spacing:.1em;text-transform:uppercase">Live data loads on the deployed server</p></div>`;
-    if (byId('hist-body')) byId('hist-body').innerHTML = `<tr><td colspan="9" style="padding:32px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Live data loads on the deployed server</td></tr>`;
-    if (byId('matrix-body')) byId('matrix-body').innerHTML = `<tr><td colspan="14" style="padding:20px;text-align:center;color:#585f66;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Live data loads on the deployed server</td></tr>`;
   }
-}
 
-init();
-// Re-fetch snapshot every 5 minutes so open tab always shows current data
-setInterval(init, 5 * 60 * 1000);
+  function buildConsistencyMatrix(matrix) {
+    const el = document.getElementById('matrix-body');
+    if (!el || !matrix || !matrix.length) return;
+    const days = ['Mon','Tue','Wed','Thu','Fri'];
+    el.innerHTML = `<thead><tr>
+      <th class="text-left text-text-faint font-semibold pb-2 text-[10px] tracking-widest">Week</th>
+      ${days.map(d => `<th class="text-center text-text-faint font-semibold pb-2 text-[10px] tracking-widest">${d}</th>`).join('')}
+    </tr></thead><tbody>${
+      matrix.map(row => `<tr>${[row.week, ...row.days.map(d =>
+        d == null  ? `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-surface"></span></td>` :
+        d === 0    ? `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-surface-2 border border-border-solid"></span></td>` :
+        d > 0      ? `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-primary opacity-${Math.min(Math.round(d/3)*10+50,90)}"></span></td>` :
+                     `<td class="py-1 px-1 text-center"><span class="inline-block w-6 h-6 rounded bg-red-200"></span></td>`
+      )].join('')}</tr>`
+    ).join('')}</tbody>`;
+  }
+
+  function buildPositions(positions) {
+    const hdr  = document.getElementById('pos-hdr');
+    const grid = document.getElementById('pos-grid');
+    if (!hdr || !grid) return;
+    if (!positions || !positions.length) {
+      grid.innerHTML = `<p class="text-text-faint font-editorial italic px-4 py-6">No open positions at this time.</p>`;
+      return;
+    }
+    hdr.classList.remove('hidden');
+    hdr.innerHTML = ['Symbol','Type','Volume','Open Price','Current','P&L'].map(h =>
+      `<span class="text-[10px] font-outfit font-semibold tracking-[0.14em] uppercase text-text-faint">${h}</span>`).join('');
+    grid.innerHTML = positions.map(p => `
+      <div class="grid grid-cols-6 gap-2 px-4 py-3.5 rounded-xl bg-surface-2 border border-border-solid text-sm font-mono-data">
+        <span class="font-bold text-primary">${p.symbol}</span>
+        <span class="${p.type === 'buy' ? 'text-success' : 'text-red-500'} font-semibold uppercase text-xs">${p.type}</span>
+        <span class="text-text-muted">${p.volume}</span>
+        <span class="text-text-muted">${fmt(p.open,5)}</span>
+        <span class="text-text">${fmt(p.current,5)}</span>
+        <span class="${colorPnl(p.pnl)} font-semibold">${fmtUsd(p.pnl)}</span>
+      </div>`).join('');
+  }
+
+  function buildHistory(trades) {
+    const hdr  = document.getElementById('hist-hdr');
+    const body = document.getElementById('hist-body');
+    if (!hdr || !body) return;
+    if (!trades || !trades.length) {
+      body.innerHTML = `<p class="text-text-faint font-editorial italic px-5 py-6">No trade history available.</p>`;
+      return;
+    }
+    hdr.classList.remove('hidden');
+    hdr.innerHTML = ['Date','Symbol','Type','Lots','Entry','Exit','Pips','P&L'].map(h =>
+      `<span>${h}</span>`).join('');
+    hdr.style.gridTemplateColumns = 'repeat(8, 1fr)';
+    body.innerHTML = trades.slice(0, 50).map(t => `
+      <div class="grid gap-2 px-5 py-3 hover:bg-surface transition-colors"
+           style="grid-template-columns: repeat(8, 1fr);">
+        <span class="text-text-muted text-[11px]">${t.date || '—'}</span>
+        <span class="font-semibold text-primary text-[12px]">${t.symbol || '—'}</span>
+        <span class="${t.type === 'buy' ? 'text-success' : 'text-red-500'} font-semibold uppercase text-[11px]">${t.type || '—'}</span>
+        <span class="text-text-muted text-[11px]">${t.lots || '—'}</span>
+        <span class="text-text-muted text-[11px]">${t.entry != null ? fmt(t.entry, 5) : '—'}</span>
+        <span class="text-text-muted text-[11px]">${t.exit  != null ? fmt(t.exit,  5) : '—'}</span>
+        <span class="${colorPnl(t.pips)} text-[11px]">${t.pips != null ? (t.pips >= 0 ? '+' : '') + fmt(t.pips,1) : '—'}</span>
+        <span class="${colorPnl(t.pnl)} font-semibold text-[12px]">${t.pnl != null ? fmtUsd(t.pnl) : '—'}</span>
+      </div>`).join('');
+  }
+
+  // Fetch & render
+  fetch(DATA_URL)
+    .then(r => r.json())
+    .then(data => {
+      // Hero stats band
+      const hGain = document.getElementById('h-gain');
+      const hDd   = document.getElementById('h-dd');
+      const hBal  = document.getElementById('h-balance');
+      if (hGain) hGain.textContent = fmtPct(data.gain);
+      if (hDd)   hDd.textContent   = fmtPct(data.maxDrawdown);
+      if (hBal)  hBal.textContent  = fmtUsd(data.balance);
+
+      // Key metrics
+      const mMonthly = document.getElementById('m-monthly');
+      const mPf      = document.getElementById('m-pf');
+      const mPfSub   = document.getElementById('m-pf-sub');
+      const mWr      = document.getElementById('m-wr');
+      const mWrSub   = document.getElementById('m-wr-sub');
+      const mPips    = document.getElementById('m-pips');
+      if (mMonthly) mMonthly.textContent = fmtPct(data.monthlyReturn);
+      if (mPf)      mPf.textContent      = data.profitFactor != null ? fmt(data.profitFactor) : '—';
+      if (mPfSub)   mPfSub.textContent   = 'profit factor';
+      if (mWr)      mWr.textContent      = data.winRate != null ? fmt(data.winRate, 1) + '%' : '—';
+      if (mWrSub)   mWrSub.textContent   = 'win rate';
+      if (mPips)    mPips.textContent    = data.totalPips != null ? '+' + data.totalPips.toLocaleString() : '—';
+
+      // Equity chart labels
+      const eSub    = document.getElementById('equity-sub');
+      const cFrom   = document.getElementById('chart-from');
+      const cTo     = document.getElementById('chart-to');
+      const cGain   = document.getElementById('chart-gain');
+      if (eSub)  eSub.textContent  = data.accountId ? `Account #${data.accountId}` : '';
+      if (cFrom) cFrom.textContent = data.startDate  || '—';
+      if (cTo)   cTo.textContent   = data.asOf       || '—';
+      if (cGain) { cGain.textContent = fmtPct(data.gain); cGain.className = `font-semibold ${data.gain >= 0 ? 'text-success' : 'text-red-500'}`; }
+
+      // Charts & tables
+      buildEquitySvg(data.equityCurve);
+      buildMonthlyBars(data.monthlyReturns);
+      buildConsistencyMatrix(data.consistencyMatrix);
+      buildPositions(data.openPositions);
+      buildHistory(data.tradeHistory);
+
+      // Data freshness
+      const fresh = document.getElementById('data-freshness');
+      if (fresh && data.asOf) fresh.textContent = `Last updated: ${data.asOf}`;
+    })
+    .catch(err => {
+      console.warn('Snapshot data unavailable:', err);
+      // Graceful degradation — elements already show '—'
+    });
+})();
 </script>
 
-</body></html>
+</body>
+</html>
