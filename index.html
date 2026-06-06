@@ -257,7 +257,7 @@
     </nav>
 
     <!-- CTA -->
-    <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+    <a href="https://icmarkets.com/?camp=91936"
        target="_blank" rel="noopener"
        class="hidden md:inline-flex items-center gap-1.5 bg-primary hover:bg-primary-light text-white text-[13px] font-semibold px-4 py-2 rounded-lg transition-all active:translate-y-px">
       <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1,'wght' 400">open_in_new</span>
@@ -336,7 +336,7 @@
 
         <!-- CTAs: max 2, no duplicate intent -->
         <div class="flex flex-wrap gap-3 reveal reveal-d3">
-          <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+          <a href="https://icmarkets.com/?camp=91936"
              target="_blank" rel="noopener"
              class="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white text-[14px] font-semibold px-6 py-3 rounded-xl transition-all active:translate-y-px shadow-soft">
             <span class="material-symbols-outlined" style="font-size:16px;font-variation-settings:'FILL' 1,'wght' 400">open_in_new</span>
@@ -358,6 +358,7 @@
                  class="w-full h-full object-cover opacity-90"
                  poster="https://picsum.photos/seed/forexdashboard/800/500">
             <source src="hero-preview.mp4" type="video/mp4"/>
+
             <img src="https://picsum.photos/seed/forexdashboard/800/500"
                  alt="Live trading dashboard preview"
                  class="w-full h-full object-cover"
@@ -636,7 +637,7 @@
             <span class="material-symbols-outlined" style="font-size:15px">chat</span>
             WhatsApp
           </a>
-          <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+          <a href="https://icmarkets.com/?camp=91936"
              target="_blank" rel="noopener"
              class="inline-flex items-center gap-2 border border-border-solid text-primary text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-surface transition-colors">
             <span class="material-symbols-outlined" style="font-size:15px">open_in_new</span>
@@ -669,7 +670,7 @@
             Use the link below to register with IC Markets — the broker with the tightest spreads and ASIC regulation. Takes under 5 minutes.
           </p>
         </div>
-        <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+        <a href="https://icmarkets.com/?camp=91936"
            target="_blank" rel="noopener"
            class="flex-shrink-0 hidden md:inline-flex items-center gap-1.5 bg-primary text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl hover:bg-primary-light transition-all active:translate-y-px">
           Register <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
@@ -715,10 +716,10 @@
         </div>
         <div>
           <p class="font-outfit font-bold text-primary text-base">IC Markets Introducing Broker</p>
-          <p class="text-[12px] text-text-faint font-mono-data">Partner ID #69553 · ASIC regulated · Raw ECN spreads</p>
+          <p class="text-[12px] text-text-faint font-mono-data">IB #91936 · ASIC regulated · Raw ECN spreads</p>
         </div>
       </div>
-      <a href="https://secure.icmarkets.com/register?cid=69553&lang=en"
+      <a href="https://icmarkets.com/?camp=91936"
          target="_blank" rel="noopener"
          class="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white text-[13px] font-semibold px-6 py-3 rounded-xl transition-all active:translate-y-px">
         Open Account via IB Link
@@ -800,14 +801,14 @@
     <div class="py-8 border-b border-white/10">
       <p class="text-white/30 text-[11px] leading-relaxed font-editorial max-w-3xl">
         <strong class="text-white/50 font-outfit font-semibold">Risk Disclosure:</strong>
-        Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Past performance is not indicative of future results. This website is for informational purposes only and does not constitute financial advice. Vera Level FX is an IC Markets Introducing Broker (Partner ID #69553) and may earn commissions from referred accounts.
+        Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Past performance is not indicative of future results. This website is for informational purposes only and does not constitute financial advice. Vera Level FX is an IC Markets Introducing Broker (IB #91936) and may earn commissions from referred accounts.
       </p>
     </div>
 
     <!-- Bottom row -->
     <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-white/30 font-mono-data">
       <span>© 2025 Vera Level FX · Pandian GK · Singapore</span>
-      <span>IC Markets IB Partner #69553</span>
+      <span>IC Markets IB Partner #91936</span>
     </div>
 
   </div>
@@ -847,7 +848,7 @@
        class="w-12 h-12 rounded-full bg-primary shadow-lifted flex items-center justify-center text-white">
       <span class="material-symbols-outlined" style="font-size:20px">send</span>
     </a>
-    <a href="https://secure.icmarkets.com/register?cid=69553&lang=en" target="_blank" rel="noopener"
+    <a href="https://icmarkets.com/?camp=91936" target="_blank" rel="noopener"
        class="w-12 h-12 rounded-full bg-success shadow-lifted flex items-center justify-center text-white">
       <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1,'wght' 400">open_in_new</span>
     </a>
@@ -938,69 +939,73 @@ window.addEventListener('scroll', () => {
     if (area) area.setAttribute('d', areaD);
   }
 
-  function buildMonthlyBars(history) {
-    const el = document.getElementById('monthly-bars');
-    if (!el || !history || !history.length) return;
+  // Aggregate dailyGain ([date MM/DD/YYYY, cumulGain%, dailyPnL$]) by month
+  function monthlyFromDailyGain(dailyGain) {
     const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const map = {};
-    history.forEach(t => {
-      const p = (t.closeTime || '').split('/');
+    (dailyGain || []).forEach(d => {
+      const p = (d[0] || '').split('/'); // MM/DD/YYYY
       if (p.length < 3) return;
-      const key = p[2].split(' ')[0] + '-' + p[0].padStart(2,'0');
-      const label = MN[parseInt(p[0])-1] + ' ' + p[2].split(' ')[0].slice(2);
-      if (!map[key]) map[key] = { label, pnl: 0 };
-      map[key].pnl += n(t.profit);
+      const yr  = parseInt(p[2]);
+      const mo  = parseInt(p[0]) - 1;
+      const key = yr + '-' + String(mo + 1).padStart(2, '0');
+      if (!map[key]) map[key] = { label: MN[mo] + " '" + String(yr).slice(2), yr, mo, pnl: 0 };
+      map[key].pnl += n(d[2]);
     });
-    const months = Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).slice(-12);
+    return Object.entries(map).sort(([a],[b]) => a.localeCompare(b)).map(([,v]) => v);
+  }
+
+  function buildMonthlyBars(dailyGain) {
+    const el = document.getElementById('monthly-bars');
+    if (!el) return;
+    const months = monthlyFromDailyGain(dailyGain);
     if (!months.length) { el.innerHTML = '<p class="text-text-faint text-sm">No monthly data yet</p>'; return; }
-    const maxAbs = Math.max(...months.map(([,m]) => Math.abs(m.pnl)), 1);
-    el.innerHTML = [...months].reverse().map(([, m]) => {
-      const pct = (Math.abs(m.pnl) / maxAbs * 100).toFixed(1);
-      const pos = m.pnl >= 0;
+    const recent  = months.slice(-12);
+    const maxAbs  = Math.max(...recent.map(m => Math.abs(m.pnl)), 1);
+    el.innerHTML = [...recent].reverse().map(m => {
+      const barPct = (Math.abs(m.pnl) / maxAbs * 100).toFixed(1);
+      const pos    = m.pnl >= 0;
       return `<div class="pnl-row flex items-center gap-3">
-        <span class="font-mono-data text-[11px] text-text-faint w-14 flex-shrink-0">${m.label}</span>
+        <span class="font-mono-data text-[11px] text-text-faint w-16 flex-shrink-0">${m.label}</span>
         <div class="flex-1 h-5 rounded-full bg-surface overflow-hidden">
-          <div class="pnl-fill h-full rounded-full ${pos ? 'bg-primary' : 'bg-red-400'}" style="width:${pct}%"></div>
+          <div class="pnl-fill h-full rounded-full ${pos ? 'bg-primary' : 'bg-red-400'}" style="width:${barPct}%"></div>
         </div>
         <span class="font-mono-data text-[11px] ${pos ? 'text-success' : 'text-red-500'} w-20 text-right flex-shrink-0">
-          ${pos ? '+' : '-'}${fmtUsd(Math.abs(m.pnl))}
+          ${pos ? '+' : '-'}$${Math.abs(m.pnl).toFixed(0)}
         </span>
       </div>`;
     }).join('');
   }
 
-  function buildConsistencyMatrix(history) {
+  function buildConsistencyMatrix(dailyGain) {
     const el = document.getElementById('matrix-body');
-    if (!el || !history || !history.length) return;
-    const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const map = {};
-    history.forEach(t => {
-      const p = (t.closeTime || '').split('/');
-      if (p.length < 3) return;
-      const yr = parseInt(p[2]);
-      const mo = parseInt(p[0]) - 1;
-      if (!map[yr]) map[yr] = {};
-      map[yr][mo] = (map[yr][mo] || 0) + n(t.profit);
+    if (!el) return;
+    const MN     = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const months = monthlyFromDailyGain(dailyGain);
+    if (!months.length) { el.innerHTML = '<tr><td colspan="14" class="p-4 text-text-faint text-sm">No history yet</td></tr>'; return; }
+    const byYear = {};
+    months.forEach(m => {
+      if (!byYear[m.yr]) byYear[m.yr] = {};
+      byYear[m.yr][m.mo] = m.pnl;
     });
-    const years = Object.keys(map).sort((a,b) => b - a);
-    if (!years.length) { el.innerHTML = '<tr><td colspan="14" class="p-4 text-text-faint text-sm">No history yet</td></tr>'; return; }
+    const years = Object.keys(byYear).sort((a,b) => b - a);
     el.innerHTML = `<thead><tr>
       <th class="text-left text-text-faint text-[10px] tracking-widest pb-2 pr-3">Year</th>
       ${MN.map(m => `<th class="text-center text-text-faint text-[10px] tracking-widest pb-2 px-1">${m}</th>`).join('')}
       <th class="text-right text-text-faint text-[10px] tracking-widest pb-2 pl-2">YTD</th>
     </tr></thead><tbody>${
       years.map(yr => {
-        const ytd = Object.values(map[yr]).reduce((s,v) => s+v, 0);
-        const cells = Array.from({length:12}, (_,m) => {
-          const v = map[yr][m];
+        const ytd   = Object.values(byYear[yr]).reduce((s,v) => s+v, 0);
+        const cells = Array.from({length:12}, (_, m) => {
+          const v = byYear[yr][m];
           if (v === undefined) return `<td class="py-1 px-1 text-center text-text-faint text-[10px]">—</td>`;
           const pos = v >= 0;
-          return `<td class="py-1 px-1 text-center font-mono-data text-[10px] ${pos ? 'text-success' : 'text-red-500'}">${pos?'+':'-'}$${Math.abs(v).toFixed(0)}</td>`;
+          return `<td class="py-1 px-1 text-center font-mono-data text-[10px] ${pos ? 'text-success' : 'text-red-500'}">${pos ? '+' : '-'}$${Math.abs(v).toFixed(0)}</td>`;
         }).join('');
         return `<tr>
           <td class="py-1 pr-3 font-outfit font-bold text-[12px] text-primary">${yr}</td>
           ${cells}
-          <td class="py-1 pl-2 text-right font-mono-data font-bold text-[11px] ${ytd>=0?'text-success':'text-red-500'}">${ytd>=0?'+':'-'}$${Math.abs(ytd).toFixed(0)}</td>
+          <td class="py-1 pl-2 text-right font-mono-data font-bold text-[11px] ${ytd >= 0 ? 'text-success' : 'text-red-500'}">${ytd >= 0 ? '+' : '-'}$${Math.abs(ytd).toFixed(0)}</td>
         </tr>`;
       }).join('')
     }</tbody>`;
@@ -1106,8 +1111,8 @@ window.addEventListener('scroll', () => {
 
       // Charts & tables
       buildEquitySvg(data.dailyGain, acct.gain);
-      buildMonthlyBars(data.history);
-      buildConsistencyMatrix(data.history);
+      buildMonthlyBars(data.dailyGain);
+      buildConsistencyMatrix(data.dailyGain);
       buildPositions(data.openTrades);
       buildHistory(data.history);
 
