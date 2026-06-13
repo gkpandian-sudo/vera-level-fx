@@ -58,6 +58,56 @@ IC Markets raw spreads — ASIC regulated.
 {TAGS}"""
 
 
+def edu(edu_type: str, content: dict) -> str:
+    base_tags = (
+        "#forex #forextrader #forexsingapore #icmarkets #xauusd "
+        "#veralevelFX #tradingstrategy #singaporetrader #pandian "
+        "#forexeducation #fxtrading #priceaction"
+    )
+    cta = (
+        "\n\n📲 Live signals → t.me/pandiangk"
+        "\n📊 Live results → vera-level-forex.vercel.app"
+        "\n🏦 Open IC Markets (IB #91936) → icmarkets.com/?camp=91936"
+    )
+
+    if edu_type == 'risk':
+        return (
+            f"⚠️ Risk Management Rule #{content['rule_num']} — {content['title']}\n\n"
+            f"{content['body']}\n\n"
+            f"💰 Example: ${content['example_account']:,} account → "
+            f"${content['example_risk']:,} max risk per trade\n"
+            f"🎯 At {content['example_rr']} — that's the professional way."
+            f"{cta}\n\n{base_tags}"
+        )
+
+    if edu_type == 'pairs':
+        return (
+            f"🌍 Pair Spotlight — {content['pair']} ({content['full_name']})\n\n"
+            f"Best session: {content['best_session']}\n"
+            f"Avg spread: {content['avg_spread']}\n"
+            f"Volatility: {content['volatility']}\n"
+            f"My edge: {content['my_edge']}\n\n"
+            f'"{content["quote"]}"\n\n'
+            f"— Pandian, Vera Level FX"
+            f"{cta}\n\n{base_tags}"
+        )
+
+    # setup
+    steps_text = '\n'.join(
+        f"{i+1}. {title} — {desc}"
+        for i, (title, desc) in enumerate(content['steps'])
+    )
+    return (
+        f"📈 Setup Breakdown — {content['pair']} {content['direction']} "
+        f"({content['setup_type']})\n\n"
+        f"Timeframe: {content['timeframe']}\n"
+        f"Risk:Reward: {content['rr']}\n\n"
+        f"{steps_text}\n\n"
+        f"This is exactly how I structure every trade — no guessing, no emotion."
+        f"{cta}\n\n{base_tags}"
+    )
+
+
 def trust(account: dict) -> str:
     wr    = account.get('winRate', 0)
     pf    = account.get('profitFactor', 0)
