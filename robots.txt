@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vera-level-forex.vercel.app/sitemap.xml
