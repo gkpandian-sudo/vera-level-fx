@@ -26,6 +26,30 @@ ROOT         = Path(__file__).resolve().parent.parent
 DATA_FILE    = ROOT / 'data' / 'vera-snapshot.json'
 OUT_DIR      = ROOT / 'instagram' / 'posts'
 COUNTER_FILE = ROOT / 'data' / 'edu-counter.json'
+BUFFER_DIR   = ROOT / 'instagram' / 'buffer'
+
+
+def pop_buffer(post_type: str, edu_type: str = '') -> Path | None:
+    """Return the oldest buffered image for this post type, or None.
+
+    For edu posts, edu_type ('risk'|'pairs'|'setup') selects the sub-folder.
+    The file is moved to OUT_DIR immediately so it won't be used twice.
+    """
+    if post_type == 'edu' and edu_type:
+        folder = BUFFER_DIR / 'edu' / edu_type
+    else:
+        folder = BUFFER_DIR / post_type
+
+    pngs = sorted(p for p in folder.glob('*.png') if p.name != '.gitkeep')
+    if not pngs:
+        return None
+
+    src = pngs[0]   # oldest alphabetically / by name
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    dst = OUT_DIR / f'{date.today().isoformat()}-{post_type}-buffered.png'
+    src.rename(dst)
+    print(f'  [buffer] using pre-made image: {src.name} → {dst.name}')
+    return dst
 
 
 def load_data() -> dict:
@@ -119,20 +143,23 @@ def main():
         from generate_edu import make_risk_post, make_pairs_post, make_setup_post
         from captions     import edu as edu_caption
 
-        idx              = read_counter()
+        idx               = read_counter()
         edu_type, content = get_edu_content(idx)
-        next_idx         = (idx + 1) % 12
-
-        if edu_type == 'risk':
-            fig = make_risk_post(content)
-        elif edu_type == 'pairs':
-            fig = make_pairs_post(content)
-        else:
-            fig = make_setup_post(content)
+        next_idx          = (idx + 1) % 12
 
         caption    = edu_caption(edu_type, content)
-        image_path = save_image(fig, f'edu-{edu_type}')
-        plt.close('all')
+        image_path = pop_buffer('edu', edu_type)   # use buffered image if available
+
+        if image_path is None:
+            if edu_type == 'risk':
+                fig = make_risk_post(content)
+            elif edu_type == 'pairs':
+                fig = make_pairs_post(content)
+            else:
+                fig = make_setup_post(content)
+            image_path = save_image(fig, f'edu-{edu_type}')
+            plt.close('all')
+
         print(f'  saved: {image_path}')
 
         image_url = commit_and_push(image_path)
@@ -147,15 +174,19 @@ def main():
         print(f'Done — edu/{edu_type} post published.')
         return
 
+    # ── Non-edu post types — check buffer first ───────────────────
+    image_path = pop_buffer(post_type)
+
     if post_type == 'daily':
         open_trades = data.get('openTrades', [])
-        fig         = make_daily_card(data)
         caption     = daily_status(account, open_trades)
+        if image_path is None:
+            fig = make_daily_card(data)
     elif post_type == 'weekly':
-        fig     = make_weekly_card(data)
         caption = weekly(account)
+        if image_path is None:
+            fig = make_weekly_card(data)
     elif post_type == 'monthly':
-        fig     = make_monthly_chart(data)
         # rebuild monthly_pnl for caption
         monthly_pnl = {}
         for item in data.get('dailyGain', []):
@@ -168,12 +199,16 @@ def main():
             except Exception:
                 pass
         caption = monthly(account, monthly_pnl)
+        if image_path is None:
+            fig = make_monthly_chart(data)
     else:
-        fig     = make_winrate_card(data)
         caption = trust(account)
+        if image_path is None:
+            fig = make_winrate_card(data)
 
-    image_path = save_image(fig, post_type)
-    plt.close('all')
+    if image_path is None:
+        image_path = save_image(fig, post_type)
+        plt.close('all')
     print(f'  saved: {image_path}')
 
     image_url = commit_and_push(image_path)
