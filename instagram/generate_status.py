@@ -12,10 +12,10 @@ import matplotlib.patches as patches
 import numpy as np
 from datetime import datetime
 
-# Flat open notebook — left page is the writing canvas, no tilt needed
+# Flat open notebook — table spans full image width, centred at x=0.5
 _ROT      = 0.0
 _ROT_TAN  = 0.0
-_X_REF    = 0.055   # left edge of left-page writing area
+_X_REF    = 0.05    # left edge of table area
 
 NAVY   = '#010E1F'
 NAVY_S = '#051830'
@@ -61,6 +61,13 @@ def _fmt_pips(p: float) -> str:
     if abs(p) >= 1000:
         return f'{p/1000:+.1f}k'
     return f'{p:+.0f}p'
+
+
+def _fmt_price(p: float) -> str:
+    """Format entry price: 2dp for instruments >= 10 (gold, JPY), 4dp otherwise."""
+    if p == 0:
+        return '—'
+    return f'{p:.2f}' if p >= 10 else f'{p:.4f}'
 
 
 def make_daily_card(data: dict):
@@ -140,12 +147,12 @@ def make_daily_card(data: dict):
             fontsize=11, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=3)
 
-    # ── NOTEPAD AREA: ink text on flat left page (no rotation) ──────
-    # Left page writing area: x 0.055–0.435, y 0.10–0.665
+    # ── NOTEPAD AREA: ink text centred across full image width ──────
+    # Table area: x 0.05–0.95, centred at 0.5
     def _ty(x, y_base):
         return y_base + (x - _X_REF) * _ROT_TAN   # _ROT_TAN=0 → always y_base
 
-    def _tline(y_base, x0=_X_REF, x1=0.435, **kw):
+    def _tline(y_base, x0=_X_REF, x1=0.95, **kw):
         ax.plot([x0, x1], [_ty(x0, y_base), _ty(x1, y_base)],
                 transform=ax.transAxes, **kw)
 
@@ -154,22 +161,22 @@ def make_daily_card(data: dict):
                 rotation=_ROT, rotation_mode='anchor',
                 transform=ax.transAxes, **kw)
 
-    # Column x positions fitted to left page (x: 0.055–0.435)
-    CX = dict(pair=_X_REF, dir=0.178, pnl=0.258, pips=0.330, since=0.400)
+    # Column x positions — spread across full width (x: 0.05–0.95)
+    CX = dict(pair=_X_REF, dir=0.27, pnl=0.44, pips=0.61, entry=0.82)
 
-    # "OPEN TRADES" header — centred on left page
-    _ttext(0.245, 0.640, 'OPEN TRADES',
+    # "OPEN TRADES" header — centred on full image
+    _ttext(0.5, 0.640, 'OPEN TRADES',
            fontsize=17, color=INK, ha='center', va='center',
            fontfamily='monospace', fontweight='bold', zorder=4)
     _tline(0.620, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
 
-    # Column headers — PAIR left-aligned at _X_REF, rest centred at their CX
+    # Column headers
     col_defs = [
         ('PAIR',  _X_REF,       'left'),
         ('DIR',   CX['dir'],   'center'),
         ('P&L',   CX['pnl'],  'center'),
         ('PIPS',  CX['pips'], 'center'),
-        ('SINCE', CX['since'],'center'),
+        ('ENTRY', CX['entry'],'center'),
     ]
     for label, cx, ha in col_defs:
         _ttext(cx, 0.605, label,
@@ -183,23 +190,18 @@ def make_daily_card(data: dict):
         for r, trade in enumerate(rows):
             ry = 0.568 - r * row_gap
 
-            pair   = trade.get('symbol', '—')
-            action = trade.get('action', '').upper()
-            profit = trade.get('profit', 0)
-            t_pips = trade.get('pips', 0)
-            open_t = trade.get('openTime', '')
-            try:
-                open_str = datetime.strptime(open_t, '%m/%d/%Y %H:%M').strftime('%m/%d')
-            except Exception:
-                open_str = open_t[:5]
+            pair       = trade.get('symbol', '—')
+            action     = trade.get('action', '').upper()
+            profit     = trade.get('profit', 0)
+            t_pips     = trade.get('pips', 0)
+            open_price = trade.get('openPrice', 0)
 
-            # PAIR: ha='left' at _X_REF so every symbol starts at the same anchor
             row_data = [
-                (pair,              _X_REF,       'bold',   14, 'left'),
-                (action[:3],        CX['dir'],    'bold',   13, 'center'),
-                (f'{profit:+.0f}',  CX['pnl'],  'normal', 12, 'center'),
-                (_fmt_pips(t_pips),  CX['pips'], 'normal', 12, 'center'),
-                (open_str,          CX['since'], 'normal', 12, 'center'),
+                (pair,                   _X_REF,       'bold',   14, 'left'),
+                (action[:3],             CX['dir'],    'bold',   13, 'center'),
+                (f'{profit:+.0f}',       CX['pnl'],  'normal', 12, 'center'),
+                (_fmt_pips(t_pips),      CX['pips'], 'normal', 12, 'center'),
+                (_fmt_price(open_price), CX['entry'],'normal', 12, 'center'),
             ]
             for text, cx, fw, fs, ha in row_data:
                 _ttext(cx, ry, text,
@@ -209,14 +211,14 @@ def make_daily_card(data: dict):
             if r < len(rows) - 1:
                 _tline(ry - 0.026, color=INK, linewidth=0.4, alpha=0.13, zorder=4)
     else:
-        _ttext(0.245, 0.460, 'no open positions',
+        _ttext(0.5, 0.460, 'no open positions',
                fontsize=13, color=INK, ha='center', va='center', alpha=0.42,
                fontstyle='italic', zorder=4)
 
     # Stats footer on notepad
     stats_y = 0.240 if not rows else max(0.160, 0.568 - len(rows) * row_gap - 0.050)
     _tline(stats_y + 0.028, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
-    _ttext(0.245, stats_y,
+    _ttext(0.5, stats_y,
            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips',
            fontsize=10, color=INK, ha='center', va='center', alpha=0.58,
            fontfamily='monospace', zorder=4)
