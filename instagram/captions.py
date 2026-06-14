@@ -108,6 +108,48 @@ def edu(edu_type: str, content: dict) -> str:
     )
 
 
+def daily_status(account: dict, open_trades: list) -> str:
+    balance   = account.get('balance', 0)
+    equity    = account.get('equity', balance)
+    daily_pct = account.get('daily', 0)
+    win_rate  = account.get('winRate', 0)
+    pf        = account.get('profitFactor', 0)
+    pips      = int(account.get('pips', 0))
+    trades    = int(account.get('trades', 0))
+    date      = datetime.now().strftime('%d %b %Y')
+
+    direction_emoji = '📈' if daily_pct >= 0 else '📉'
+    daily_sign      = '+' if daily_pct >= 0 else ''
+
+    open_lines = []
+    for t in open_trades[:5]:
+        pair   = t.get('symbol', '')
+        action = t.get('action', '').upper()
+        profit = t.get('profit', 0)
+        icon   = '🟢' if profit >= 0 else '🔴'
+        open_lines.append(f"  {icon} {pair} {action}  ${profit:+.2f}")
+    positions_block = '\n'.join(open_lines) if open_lines else '  No open positions'
+
+    return f"""{direction_emoji} Live Trade Update — {date}
+
+💰 Balance: ${balance:,.2f}
+⚖️ Equity: ${equity:,.2f}
+📊 Daily: {daily_sign}{daily_pct:.2f}%
+
+🔓 Open Positions:
+{positions_block}
+
+📈 Running stats: {win_rate:.0f}% win rate · PF {pf:.2f} · +{pips:,} pips · {trades:,} trades
+
+Fully automated system on IC Markets.
+Every position tracked live on Myfxbook — zero manipulation.
+
+🔗 Live stats: veralevel-fx.github.io
+📩 DM to connect
+
+{TAGS}"""
+
+
 def trust(account: dict) -> str:
     wr    = account.get('winRate', 0)
     pf    = account.get('profitFactor', 0)

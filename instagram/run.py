@@ -62,6 +62,8 @@ def decide_post_type(today: date) -> str:
         return 'weekly'
     if weekday in (1, 3):       # Tuesday, Thursday
         return 'edu'
+    if weekday in (2, 4):       # Wednesday, Friday
+        return 'daily'
     return 'trust'
 
 
@@ -100,9 +102,10 @@ def main():
     import matplotlib.pyplot as plt
 
     sys.path.insert(0, str(ROOT / 'instagram'))
-    from generate  import make_weekly_card, make_monthly_chart, make_winrate_card
-    from captions  import weekly, monthly, trust
-    from post      import publish
+    from generate        import make_weekly_card, make_monthly_chart, make_winrate_card
+    from generate_status import make_daily_card
+    from captions        import weekly, monthly, trust, daily_status
+    from post            import publish
 
     data       = load_data()
     account    = data.get('account', {})
@@ -144,7 +147,11 @@ def main():
         print(f'Done — edu/{edu_type} post published.')
         return
 
-    if post_type == 'weekly':
+    if post_type == 'daily':
+        open_trades = data.get('openTrades', [])
+        fig         = make_daily_card(data)
+        caption     = daily_status(account, open_trades)
+    elif post_type == 'weekly':
         fig     = make_weekly_card(data)
         caption = weekly(account)
     elif post_type == 'monthly':
