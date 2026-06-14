@@ -32,27 +32,28 @@ RED        = '#fca5a5'
 SIZE = (10.8, 10.8)
 DPI  = 100
 
-BG_URLS = {
-    'risk':  'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&q=85',
-    'pairs': 'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=1200&q=85',
-    'setup': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1200&q=85',
+from pathlib import Path
+
+ASSETS_DIR = Path(__file__).resolve().parent / 'assets'
+
+BG_FILES = {
+    'risk':  ASSETS_DIR / 'bg-risk.png',
+    'pairs': ASSETS_DIR / 'bg-pairs.png',
+    'setup': ASSETS_DIR / 'bg-setup.png',
 }
 
 
 def _fetch_bg(post_type: str):
-    """Return numpy RGB array (1080,1080,3) normalised 0-1, or None on failure."""
+    """Load Canva background PNG, return numpy RGBA array (1080,1080,4) 0-1, or None."""
     try:
-        import requests
         from PIL import Image
-        url = BG_URLS.get(post_type, BG_URLS['risk'])
-        r = requests.get(url, timeout=8)
-        r.raise_for_status()
-        img = Image.open(io.BytesIO(r.content)).convert('RGB')
-        img = img.resize((1080, 1080), Image.LANCZOS)
-        arr = np.array(img) / 255.0
-        gray = arr.mean(axis=2, keepdims=True)
-        arr  = arr * 0.6 + gray * 0.4
-        arr  = arr * 0.5
+        path = BG_FILES.get(post_type, BG_FILES['risk'])
+        img  = Image.open(path).convert('RGBA')
+        img  = img.resize((1080, 1080), Image.LANCZOS)
+        arr  = np.array(img) / 255.0
+        # Darken slightly so the Canva geometry shows as subtle texture,
+        # then the navy gradient overlay (zorder=1) sits cleanly on top.
+        arr[..., :3] *= 0.55
         return arr
     except Exception:
         return None
@@ -69,7 +70,8 @@ def _base_fig(post_type: str):
 
     bg_arr = _fetch_bg(post_type)
     if bg_arr is not None:
-        ax_bg.imshow(bg_arr, extent=[0, 1, 0, 1], aspect='auto', origin='upper', zorder=0)
+        ax_bg.imshow(bg_arr, extent=[0, 1, 0, 1], aspect='auto', origin='upper',
+                     zorder=0, alpha=0.7)
 
     grad = np.linspace(0, 1, 256).reshape(256, 1)
     cmap = LinearSegmentedColormap.from_list('navy_fade', [
