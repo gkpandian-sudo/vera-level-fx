@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 TAGS = (
@@ -8,11 +9,15 @@ TAGS = (
     "#forexlifestyle #passiveincome #tradingresults"
 )
 
+_TELEGRAM = os.environ.get('BRAND_TELEGRAM', '')
+_WEBSITE  = os.environ.get('BRAND_WEBSITE', '')
+_IB_URL   = os.environ.get('BRAND_IB_URL', '')
+
 _CTA = (
-    "\n\n📲 Live signals → https://t.me/pandiangk"
-    "\n🌐 Live account → https://vera-level-forex.vercel.app"
-    "\n🏦 Open IC Markets account →"
-    "\nhttps://icmarkets.com/global/en/?camp=91936"
+    f"\n\n📲 Live signals → {_TELEGRAM}"
+    f"\n🌐 Live account → {_WEBSITE}"
+    f"\n🏦 Open IC Markets account →"
+    f"\n{_IB_URL}"
 )
 
 
@@ -65,7 +70,7 @@ IC Markets raw spreads — ASIC regulated.
 def edu(edu_type: str, content: dict) -> str:
     base_tags = (
         "#forex #forextrader #forexsingapore #icmarkets #xauusd "
-        "#veralevelFX #tradingstrategy #singaporetrader #pandian "
+        "#veralevelFX #tradingstrategy #singaporetrader "
         "#forexeducation #fxtrading #priceaction"
     )
     cta = _CTA
@@ -88,7 +93,7 @@ def edu(edu_type: str, content: dict) -> str:
             f"Volatility: {content['volatility']}\n"
             f"My edge: {content['my_edge']}\n\n"
             f'"{content["quote"]}"\n\n'
-            f"— Pandian, Vera Level FX"
+            f"— {os.environ.get('BRAND_AUTHOR', 'Vera Level FX')}"
             f"{cta}\n\n{base_tags}"
         )
 

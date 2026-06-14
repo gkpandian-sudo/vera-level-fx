@@ -3,6 +3,7 @@ generate.py — Weekly, Monthly and Trust card renderers.
 1080×1080 @ 100 DPI.  Mobile-first font sizing.
 """
 
+import os
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -62,7 +63,7 @@ def _footer(ax):
     ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
             fontsize=15, color=MUTED, va='center', ha='right',
             transform=ax.transAxes, fontfamily='monospace')
-    ax.text(0.5, 0.030, 'Not financial advice  ·  veralevel-fx.github.io',
+    ax.text(0.5, 0.030, f'Not financial advice  ·  {os.environ.get("BRAND_DOMAIN", "veralevelFX")}',
             fontsize=18, color=DIM, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
 

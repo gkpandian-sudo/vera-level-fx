@@ -54,6 +54,12 @@ jobs:
           GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           POST_TYPE:         ${{ github.event.inputs.post_type }}
+          BRAND_TELEGRAM:    ${{ secrets.BRAND_TELEGRAM }}
+          BRAND_WEBSITE:     ${{ secrets.BRAND_WEBSITE }}
+          BRAND_IB_URL:      ${{ secrets.BRAND_IB_URL }}
+          BRAND_AUTHOR:      ${{ secrets.BRAND_AUTHOR }}
+          BRAND_SIGNAL_CTA:  ${{ secrets.BRAND_SIGNAL_CTA }}
+          BRAND_DOMAIN:      ${{ secrets.BRAND_DOMAIN }}
         run: python instagram/run.py
 
       - name: Upload image artifact

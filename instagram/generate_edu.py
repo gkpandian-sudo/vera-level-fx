@@ -12,6 +12,7 @@ Mobile-first font scale (image shown at ~35% on phone screen):
   display   96pt → 33pt          (pair names, big numbers)
 """
 
+import os
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -241,7 +242,7 @@ def make_risk_post(content: dict):
 
     # CTA
     ax.text(0.06, 0.242,
-            '>>  t.me/pandiangk  —  live signals & trade alerts',
+            os.environ.get('BRAND_SIGNAL_CTA', '>>  join our live signals channel'),
             fontsize=26, color=MUTED, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
@@ -315,7 +316,7 @@ def make_pairs_post(content: dict):
         ax.text(0.092, 0.388 - i * 0.058, line,
                 fontsize=28, color=CREAM, va='top', style='italic',
                 transform=ax.transAxes, zorder=5, linespacing=1.4)
-    ax.text(0.092, 0.210, '— Pandian, Vera Level FX',
+    ax.text(0.092, 0.210, f'— {os.environ.get("BRAND_AUTHOR", "Vera Level FX")}',
             fontsize=24, color=DIM, va='top',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 

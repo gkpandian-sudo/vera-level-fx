@@ -24,3 +24,6 @@ Thumbs.db
 # Tool internals
 .claude/
 .superpowers/
+
+# Internal planning docs (contain personal data, keep local only)
+docs/superpowers/
