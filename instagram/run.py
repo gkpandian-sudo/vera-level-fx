@@ -27,6 +27,31 @@ DATA_FILE    = ROOT / 'data' / 'vera-snapshot.json'
 OUT_DIR      = ROOT / 'instagram' / 'posts'
 COUNTER_FILE = ROOT / 'data' / 'edu-counter.json'
 BUFFER_DIR   = ROOT / 'instagram' / 'buffer'
+QR_PATH      = ROOT / 'instagram' / 'assets' / 'qr-icmarkets.jpg'
+
+
+def overlay_qr(image_path: Path):
+    """Stamp the IC Markets referral QR code onto the bottom-right corner."""
+    try:
+        from PIL import Image
+        post = Image.open(image_path).convert('RGBA')
+        W, H = post.size
+
+        qr      = Image.open(QR_PATH).convert('RGBA')
+        qr_size = max(140, W // 7)          # ~154px on 1080 canvas
+        qr      = qr.resize((qr_size, qr_size), Image.LANCZOS)
+
+        pad     = 10
+        bg_size = qr_size + pad * 2
+        bg      = Image.new('RGBA', (bg_size, bg_size), (255, 255, 255, 235))
+        bg.paste(qr, (pad, pad), qr)
+
+        margin = 18
+        post.paste(bg, (W - bg_size - margin, H - bg_size - margin - 10), bg)
+        post.convert('RGB').save(image_path, quality=95)
+        print(f'  [qr] stamped referral QR onto {image_path.name}')
+    except Exception as e:
+        print(f'  [qr] skipped: {e}', file=sys.stderr)
 
 
 def pop_buffer(post_type: str, edu_type: str = '') -> Path | None:
@@ -161,6 +186,7 @@ def main():
             plt.close('all')
 
         print(f'  saved: {image_path}')
+        overlay_qr(image_path)
 
         image_url = commit_and_push(image_path)
         print(f'  url:   {image_url}')
@@ -210,6 +236,7 @@ def main():
         image_path = save_image(fig, post_type)
         plt.close('all')
     print(f'  saved: {image_path}')
+    overlay_qr(image_path)
 
     image_url = commit_and_push(image_path)
     print(f'  url:   {image_url}')
