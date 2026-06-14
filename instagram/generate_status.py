@@ -12,8 +12,8 @@ import matplotlib.patches as patches
 import numpy as np
 from datetime import datetime
 
-# Notepad paper tilt: measured from photo corners — 1.76° counter-clockwise
-_ROT      = 1.76
+# Notepad paper tilt: 14° counter-clockwise to follow pad writing angle
+_ROT      = 14.0
 _ROT_TAN  = math.tan(math.radians(_ROT))
 _X_REF    = 0.190   # left edge of notepad text area (reference x for tilt calc)
 
@@ -133,12 +133,13 @@ def make_daily_card(data: dict):
             fontsize=11, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=3)
 
-    # ── NOTEPAD AREA: ink text on white paper, tilted to match paper angle ──
+    # ── NOTEPAD AREA: ink text tilted 14° to follow pad writing angle ────
+    # At 14°, tan(14°)≈0.249; x spans 0.190→0.600 (Δx=0.410 → Δy=0.102 max).
+    # All y_base values chosen so rightmost column stays below the overlay (y<0.555).
     def _ty(x, y_base):
-        """y at position x on a line whose left end (x=_X_REF) is at y_base."""
         return y_base + (x - _X_REF) * _ROT_TAN
 
-    def _tline(y_base, x0=_X_REF, x1=0.710, **kw):
+    def _tline(y_base, x0=_X_REF, x1=0.600, **kw):
         ax.plot([x0, x1], [_ty(x0, y_base), _ty(x1, y_base)],
                 transform=ax.transAxes, **kw)
 
@@ -147,28 +148,31 @@ def make_daily_card(data: dict):
                 rotation=_ROT, rotation_mode='anchor',
                 transform=ax.transAxes, **kw)
 
-    # "OPEN TRADES" header
-    _ttext(0.245, 0.548, 'OPEN TRADES',
+    # Column x positions (compressed to fit within x: 0.190–0.600)
+    CX = dict(pair=0.255, dir=0.348, pnl=0.420, pips=0.490, since=0.562)
+
+    # "OPEN TRADES" header  — y_base=0.460: right end y≈0.544 < 0.555 ✓
+    _ttext(0.245, 0.460, 'OPEN TRADES',
            fontsize=19, color=INK, ha='left', va='center',
            fontfamily='monospace', fontweight='bold', zorder=4)
-    _tline(0.524, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
+    _tline(0.442, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
 
-    # Column headers
+    # Column headers  — y_base=0.425: SINCE y≈0.518 < 0.555 ✓
     col_defs = [
-        ('PAIR', 0.268), ('DIR', 0.385), ('P&L', 0.470),
-        ('PIPS', 0.548), ('SINCE', 0.628),
+        ('PAIR', CX['pair']), ('DIR', CX['dir']), ('P&L', CX['pnl']),
+        ('PIPS', CX['pips']), ('SINCE', CX['since']),
     ]
     for label, cx in col_defs:
-        _ttext(cx, 0.502, label,
+        _ttext(cx, 0.425, label,
                fontsize=13, color=INK, ha='center', va='center', alpha=0.52,
                fontfamily='monospace', fontweight='bold', zorder=4)
-    _tline(0.484, color=INK, linewidth=0.5, alpha=0.18, zorder=4)
+    _tline(0.408, color=INK, linewidth=0.5, alpha=0.18, zorder=4)
 
-    # Trade rows
-    row_gap = 0.066
+    # Trade rows — row 1 y_base=0.385: SINCE y≈0.478 < 0.555 ✓
+    row_gap = 0.060
     if rows:
         for r, trade in enumerate(rows):
-            ry = 0.458 - r * row_gap
+            ry = 0.385 - r * row_gap
 
             pair   = trade.get('symbol', '—')
             action = trade.get('action', '').upper()
@@ -181,11 +185,11 @@ def make_daily_card(data: dict):
                 open_str = open_t[:5]
 
             row_data = [
-                (pair,              0.268, 'bold',   16),
-                (action[:3],        0.385, 'bold',   15),
-                (f'{profit:+.0f}',  0.470, 'normal', 14),
-                (f'{t_pips:+.0f}p', 0.548, 'normal', 14),
-                (open_str,          0.628, 'normal', 14),
+                (pair,              CX['pair'],  'bold',   16),
+                (action[:3],        CX['dir'],   'bold',   15),
+                (f'{profit:+.0f}',  CX['pnl'],  'normal', 14),
+                (f'{t_pips:+.0f}p', CX['pips'], 'normal', 14),
+                (open_str,          CX['since'], 'normal', 14),
             ]
             for text, cx, fw, fs in row_data:
                 _ttext(cx, ry, text,
@@ -193,16 +197,16 @@ def make_daily_card(data: dict):
                        fontfamily='monospace', fontweight=fw, zorder=4)
 
             if r < len(rows) - 1:
-                _tline(ry - 0.028, color=INK, linewidth=0.4, alpha=0.13, zorder=4)
+                _tline(ry - 0.026, color=INK, linewidth=0.4, alpha=0.13, zorder=4)
     else:
-        _ttext(0.44, 0.420, 'no open positions',
+        _ttext(0.390, 0.330, 'no open positions',
                fontsize=15, color=INK, ha='center', va='center', alpha=0.42,
                fontstyle='italic', zorder=4)
 
     # Stats footer on notepad
-    stats_y = 0.245 if not rows else 0.458 - len(rows) * row_gap - 0.050
-    _tline(stats_y + 0.032, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
-    _ttext(0.450, stats_y,
+    stats_y = 0.160 if not rows else max(0.090, 0.385 - len(rows) * row_gap - 0.050)
+    _tline(stats_y + 0.030, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
+    _ttext(0.390, stats_y,
            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips',
            fontsize=12, color=INK, ha='center', va='center', alpha=0.58,
            fontfamily='monospace', zorder=4)
