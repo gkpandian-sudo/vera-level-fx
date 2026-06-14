@@ -157,14 +157,17 @@ def make_daily_card(data: dict):
            fontfamily='monospace', fontweight='bold', zorder=4)
     _tline(0.442, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
 
-    # Column headers  — y_base=0.425: SINCE y≈0.518 < 0.555 ✓
+    # Column headers — PAIR left-aligned at _X_REF, rest centred at their CX
     col_defs = [
-        ('PAIR', CX['pair']), ('DIR', CX['dir']), ('P&L', CX['pnl']),
-        ('PIPS', CX['pips']), ('SINCE', CX['since']),
+        ('PAIR',  _X_REF,     'left'),
+        ('DIR',   CX['dir'],  'center'),
+        ('P&L',   CX['pnl'],  'center'),
+        ('PIPS',  CX['pips'], 'center'),
+        ('SINCE', CX['since'],'center'),
     ]
-    for label, cx in col_defs:
+    for label, cx, ha in col_defs:
         _ttext(cx, 0.425, label,
-               fontsize=13, color=INK, ha='center', va='center', alpha=0.52,
+               fontsize=13, color=INK, ha=ha, va='center', alpha=0.52,
                fontfamily='monospace', fontweight='bold', zorder=4)
     _tline(0.408, color=INK, linewidth=0.5, alpha=0.18, zorder=4)
 
@@ -184,16 +187,17 @@ def make_daily_card(data: dict):
             except Exception:
                 open_str = open_t[:5]
 
+            # pair: ha='left' at _X_REF so every symbol starts at the same x
             row_data = [
-                (pair,              CX['pair'],  'bold',   16),
-                (action[:3],        CX['dir'],   'bold',   15),
-                (f'{profit:+.0f}',  CX['pnl'],  'normal', 14),
-                (f'{t_pips:+.0f}p', CX['pips'], 'normal', 14),
-                (open_str,          CX['since'], 'normal', 14),
+                (pair,              _X_REF,     'bold',   16, 'left'),
+                (action[:3],        CX['dir'],   'bold',   15, 'center'),
+                (f'{profit:+.0f}',  CX['pnl'],  'normal', 14, 'center'),
+                (f'{t_pips:+.0f}p', CX['pips'], 'normal', 14, 'center'),
+                (open_str,          CX['since'], 'normal', 14, 'center'),
             ]
-            for text, cx, fw, fs in row_data:
+            for text, cx, fw, fs, ha in row_data:
                 _ttext(cx, ry, text,
-                       fontsize=fs, color=INK, ha='center', va='center',
+                       fontsize=fs, color=INK, ha=ha, va='center',
                        fontfamily='monospace', fontweight=fw, zorder=4)
 
             if r < len(rows) - 1:
