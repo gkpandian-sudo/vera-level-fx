@@ -1,3 +1,8 @@
+"""
+generate.py — Weekly, Monthly and Trust card renderers.
+1080×1080 @ 100 DPI.  Mobile-first font sizing.
+"""
+
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -5,86 +10,86 @@ import matplotlib.patches as patches
 import numpy as np
 from datetime import datetime
 
-# ── Brand palette ────────────────────────────────────────────────
-NAVY   = '#060F24'
-NAVY_S = '#0A1630'
-NAVY_L = '#0E1E3C'
-GOLD   = '#D4AF37'
-GOLD_B = '#EAC84A'
-WHITE  = '#EDF2FA'
-MUTED  = '#8BADD4'
-DIM    = '#4A6A9B'
-GREEN  = '#10B981'
-RED    = '#FC8585'
-AMBER  = '#F59E0B'
+# ── Brand palette ─────────────────────────────────────────────────
+NAVY   = '#010E1F'
+NAVY_S = '#051830'
+NAVY_L = '#0A2545'
+GOLD   = '#F0C040'
+GOLD_B = '#FFD060'
+WHITE  = '#FFFFFF'
+CREAM  = '#F0EEE8'
+MUTED  = '#B8CFEA'
+DIM    = '#6A8EB8'
+GREEN  = '#00E096'
+RED    = '#FF6B6B'
+AMBER  = '#FFA040'
 
 SIZE = (10.8, 10.8)
 DPI  = 100
 
 
-# ── Shared helpers ───────────────────────────────────────────────
-
 def _base(nrows=1, ncols=1):
     fig, ax = plt.subplots(figsize=SIZE, facecolor=NAVY)
     ax.set_facecolor(NAVY)
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.axis('off')
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
     return fig, ax
 
 
-def _gold_line(ax, y, x0=0.06, x1=0.94, lw=1.5, alpha=0.85):
-    ax.axhline(y=y, xmin=x0, xmax=x1, color=GOLD, linewidth=lw, alpha=alpha,
-               transform=ax.transAxes)
+def _hline(ax, y, x0=0.06, x1=0.94, color=GOLD, alpha=0.45, lw=1.5):
+    ax.plot([x0, x1], [y, y], color=color, linewidth=lw,
+            alpha=alpha, transform=ax.transAxes)
 
 
 def _header(ax):
-    ax.add_patch(patches.Rectangle((0, 0.974), 1, 0.026,
-                                    facecolor=GOLD, transform=ax.transAxes, zorder=5))
-    ax.text(0.5, 0.933, 'VERA LEVEL FX',
-            fontsize=15, fontweight='bold', color=GOLD, ha='center', va='center',
+    ax.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+    ))
+    ax.text(0.5, 0.946, 'VERA LEVEL FX',
+            fontsize=22, fontweight='bold', color=GOLD, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
-    ax.text(0.5, 0.904, 'INSTITUTIONAL FOREX PORTFOLIO  ·  MYFXBOOK VERIFIED',
-            fontsize=7.5, color=MUTED, ha='center', va='center',
+    ax.text(0.5, 0.916, 'ALGORITHMIC FOREX  ·  IC MARKETS  ·  MYFXBOOK VERIFIED',
+            fontsize=15, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
-    _gold_line(ax, 0.885, alpha=0.5)
+    _hline(ax, 0.898, alpha=0.4)
 
 
 def _footer(ax):
-    _gold_line(ax, 0.082, alpha=0.5)
-    ax.text(0.5, 0.052, 'IC MARKETS  ·  ASIC REGULATED  ·  @veralevel.fx',
-            fontsize=8, color=MUTED, ha='center', va='center',
+    _hline(ax, 0.095, alpha=0.4)
+    ax.text(0.06, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
+            fontsize=20, color=GOLD, va='center',
+            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+    ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
+            fontsize=20, color=MUTED, va='center', ha='right',
             transform=ax.transAxes, fontfamily='monospace')
-    ax.text(0.5, 0.022, 'Not financial advice  ·  veralevel-fx.github.io',
-            fontsize=7, color=DIM, ha='center', va='center',
+    ax.text(0.5, 0.030, 'Not financial advice  ·  veralevel-fx.github.io',
+            fontsize=18, color=DIM, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
 
 
 def _metric_card(ax, x, y, w, h, label, value, color, sub=''):
     ax.add_patch(patches.FancyBboxPatch(
-        (x, y), w, h, boxstyle='round,pad=0.004',
-        facecolor=NAVY_S, edgecolor=GOLD, linewidth=0.7,
+        (x, y), w, h, boxstyle='round,pad=0.006',
+        facecolor=NAVY_S, edgecolor=color, linewidth=1.2,
         transform=ax.transAxes, zorder=2
     ))
-    # top colour accent
     ax.add_patch(patches.Rectangle(
-        (x, y + h - 0.003), w, 0.003,
+        (x, y + h - 0.005), w, 0.005,
         facecolor=color, transform=ax.transAxes, zorder=3
     ))
-    pad = 0.018
-    ax.text(x + pad, y + h - 0.028, label,
-            fontsize=7.5, color=MUTED, va='top', transform=ax.transAxes,
+    pad = 0.020
+    ax.text(x + pad, y + h - 0.022, label,
+            fontsize=20, color=MUTED, va='top', transform=ax.transAxes,
             fontfamily='monospace', fontweight='bold')
-    ax.text(x + pad, y + h - 0.085, value,
-            fontsize=22, color=color, va='top', transform=ax.transAxes,
+    ax.text(x + pad, y + h * 0.42, value,
+            fontsize=36, color=color, va='center', transform=ax.transAxes,
             fontweight='bold')
     if sub:
-        ax.text(x + pad, y + 0.018, sub,
-                fontsize=7, color=DIM, va='bottom', transform=ax.transAxes,
+        ax.text(x + pad, y + 0.016, sub,
+                fontsize=18, color=DIM, va='bottom', transform=ax.transAxes,
                 fontfamily='monospace')
 
 
-# ── Post 1: Weekly Performance Card ─────────────────────────────
+# ── Weekly Performance Card ──────────────────────────────────────
 
 def make_weekly_card(data):
     account  = data.get('account', {})
@@ -100,44 +105,47 @@ def make_weekly_card(data):
     fig, ax = _base()
     _header(ax)
 
-    ax.text(0.5, 0.845, 'Weekly Performance',
-            fontsize=28, fontweight='bold', color=WHITE,
+    ax.text(0.5, 0.848, 'Weekly Performance',
+            fontsize=48, fontweight='bold', color=WHITE,
             ha='center', va='center', transform=ax.transAxes, fontstyle='italic')
-    ax.text(0.5, 0.808, datetime.now().strftime('%d %B %Y').upper(),
-            fontsize=9, color=MUTED, ha='center', va='center',
+    ax.text(0.5, 0.812, datetime.now().strftime('%d %B %Y').upper(),
+            fontsize=22, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
-    _gold_line(ax, 0.788)
+    _hline(ax, 0.792)
+
+    gain_color  = GREEN if gain >= 0  else RED
+    month_color = GREEN if monthly >= 0 else RED
+    gain_sign   = '+' if gain >= 0 else ''
+    month_sign  = '+' if monthly >= 0 else ''
 
     metrics = [
-        ('ACCOUNT BALANCE', f'${balance:,.2f}', GOLD,  ''),
-        ('TOTAL GAIN',      f'+{gain:.2f}%',     GREEN, 'since inception'),
-        ('MONTHLY RETURN',  f'+{monthly:.2f}%',  GREEN, '30-day rolling avg'),
-        ('WIN RATE',        f'{win_rate:.0f}%',  WHITE, f'{trades:,} total trades'),
-        ('PROFIT FACTOR',   f'{pf:.2f}',         GOLD,  'benchmark > 1.5'),
-        ('MAX DRAWDOWN',    f'{dd:.1f}%',        AMBER, 'controlled risk'),
+        ('ACCOUNT BALANCE', f'${balance:,.0f}',             GOLD,        ''),
+        ('TOTAL GAIN',      f'{gain_sign}{gain:.2f}%',      gain_color,  'since inception'),
+        ('MONTHLY AVG',     f'{month_sign}{monthly:.2f}%',  month_color, '30-day rolling'),
+        ('WIN RATE',        f'{win_rate:.0f}%',             WHITE,       f'{trades:,} trades'),
+        ('PROFIT FACTOR',   f'{pf:.2f}',                    GOLD,        'benchmark > 1.5'),
+        ('DRAWDOWN',        f'{dd:.1f}%',                   AMBER,       'balance drawdown'),
     ]
 
     xs = [0.06, 0.53]
-    ys = [0.598, 0.395, 0.192]
-    card_w, card_h = 0.41, 0.185
+    ys = [0.596, 0.390, 0.184]
+    cw, ch = 0.41, 0.185
 
     for i, (label, value, color, sub) in enumerate(metrics):
-        _metric_card(ax, xs[i % 2], ys[i // 2], card_w, card_h, label, value, color, sub)
+        _metric_card(ax, xs[i % 2], ys[i // 2], cw, ch, label, value, color, sub)
 
-    ax.text(0.5, 0.140, f'+{pips:,} PIPS TOTAL',
-            fontsize=14, color=GOLD_B, ha='center', va='center',
+    ax.text(0.5, 0.138, f'+{pips:,} PIPS  ·  {trades:,} TOTAL TRADES',
+            fontsize=26, color=GOLD_B, ha='center', va='center',
             transform=ax.transAxes, fontweight='bold', fontfamily='monospace')
 
     _footer(ax)
-    plt.tight_layout(pad=0)
     return fig
 
 
-# ── Post 2: Monthly P&L Chart ────────────────────────────────────
+# ── Monthly P&L Chart ────────────────────────────────────────────
 
 def make_monthly_chart(data):
-    account   = data.get('account', {})
-    daily     = data.get('dailyGain', [])
+    daily = data.get('dailyGain', [])
 
     monthly_pnl = {}
     for item in daily:
@@ -155,55 +163,50 @@ def make_monthly_chart(data):
 
     fig = plt.figure(figsize=SIZE, facecolor=NAVY)
     ax_bg = fig.add_axes([0, 0, 1, 1], facecolor=NAVY)
-    ax_bg.set_xlim(0, 1)
-    ax_bg.set_ylim(0, 1)
-    ax_bg.axis('off')
+    ax_bg.set_xlim(0, 1); ax_bg.set_ylim(0, 1); ax_bg.axis('off')
 
     _header(ax_bg)
-    ax_bg.text(0.5, 0.845, 'Monthly P&L',
-               fontsize=28, fontweight='bold', color=WHITE,
+    ax_bg.text(0.5, 0.848, 'Monthly P&L',
+               fontsize=48, fontweight='bold', color=WHITE,
                ha='center', va='center', transform=ax_bg.transAxes, fontstyle='italic')
-    ax_bg.text(0.5, 0.808, '12-MONTH BREAKDOWN  ·  DAILY GAIN DATA',
-               fontsize=9, color=MUTED, ha='center', va='center',
+    ax_bg.text(0.5, 0.812, '12-MONTH ROLLING BREAKDOWN',
+               fontsize=22, color=MUTED, ha='center', va='center',
                transform=ax_bg.transAxes, fontfamily='monospace')
-    _gold_line(ax_bg, 0.788)
+    ax_bg.plot([0.06, 0.94], [0.792, 0.792], color=GOLD, linewidth=1.5,
+               alpha=0.45, transform=ax_bg.transAxes)
 
-    # Chart subplot inset
-    ax = fig.add_axes([0.08, 0.13, 0.84, 0.635], facecolor=NAVY_L)
+    ax = fig.add_axes([0.06, 0.130, 0.88, 0.645], facecolor=NAVY_L)
     for spine in ax.spines.values():
-        spine.set_color(GOLD)
-        spine.set_alpha(0.25)
-    ax.tick_params(colors=MUTED, labelsize=8)
+        spine.set_color(GOLD); spine.set_alpha(0.3)
+    ax.tick_params(colors=MUTED, labelsize=16)
     ax.set_axisbelow(True)
-    ax.yaxis.grid(True, color=GOLD, alpha=0.07, linewidth=0.5)
+    ax.yaxis.grid(True, color=GOLD, alpha=0.08, linewidth=0.6)
     ax.xaxis.grid(False)
 
     x      = np.arange(len(keys))
     colors = [GREEN if v >= 0 else RED for v in vals]
-    bars   = ax.bar(x, vals, color=colors, width=0.62, alpha=0.88, zorder=3)
+    bars   = ax.bar(x, vals, color=colors, width=0.64, alpha=0.88, zorder=3)
 
     ax.set_xticks(x)
-    ax.set_xticklabels(keys, fontsize=7.5, color=MUTED, fontfamily='monospace')
-    ax.tick_params(axis='y', labelcolor=MUTED, labelsize=8)
-    ax.axhline(y=0, color=GOLD, linewidth=0.8, alpha=0.45)
+    ax.set_xticklabels(keys, fontsize=15, color=MUTED, fontfamily='monospace')
+    ax.tick_params(axis='y', labelcolor=MUTED, labelsize=15)
+    ax.axhline(y=0, color=GOLD, linewidth=1.0, alpha=0.5)
 
-    # Value labels on bars
     vmax = max(abs(v) for v in vals) if vals else 1
     for bar_r, val in zip(bars, vals):
-        offset = vmax * 0.04
+        offset = vmax * 0.05
         ypos   = bar_r.get_height() + (offset if val >= 0 else -offset)
         ax.text(bar_r.get_x() + bar_r.get_width() / 2, ypos,
                 f'{val:+.1f}%',
                 ha='center', va='bottom' if val >= 0 else 'top',
-                fontsize=6.5, color=GREEN if val >= 0 else RED,
+                fontsize=13, color=GREEN if val >= 0 else RED,
                 fontweight='bold', fontfamily='monospace')
 
     _footer(ax_bg)
-    plt.tight_layout(pad=0)
     return fig
 
 
-# ── Post 3: Win Rate / Trust Card ───────────────────────────────
+# ── Win Rate / Trust Card ────────────────────────────────────────
 
 def make_winrate_card(data):
     account  = data.get('account', {})
@@ -216,63 +219,63 @@ def make_winrate_card(data):
     fig, ax = _base()
     _header(ax)
 
-    ax.text(0.5, 0.845, 'Live Track Record',
-            fontsize=28, fontweight='bold', color=WHITE,
+    ax.text(0.5, 0.848, 'Live Track Record',
+            fontsize=48, fontweight='bold', color=WHITE,
             ha='center', va='center', transform=ax.transAxes, fontstyle='italic')
-    ax.text(0.5, 0.808, 'VERIFIED PERFORMANCE  ·  LIVE ACCOUNT  ·  NOT DEMO',
-            fontsize=9, color=MUTED, ha='center', va='center',
+    ax.text(0.5, 0.812, 'VERIFIED  ·  LIVE ACCOUNT  ·  NOT DEMO',
+            fontsize=22, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
-    _gold_line(ax, 0.788)
+    _hline(ax, 0.792)
 
-    # Donut
-    ax_d = fig.add_axes([0.28, 0.42, 0.44, 0.36], aspect='equal')
+    # Donut chart
+    ax_d = fig.add_axes([0.25, 0.44, 0.50, 0.36], aspect='equal')
     ax_d.set_facecolor(NAVY)
     wins = max(0, min(win_rate / 100, 1))
     ax_d.pie([wins, 1 - wins], colors=[GOLD, NAVY_L], startangle=90,
              counterclock=False,
-             wedgeprops={'width': 0.36, 'edgecolor': NAVY, 'linewidth': 2.5})
+             wedgeprops={'width': 0.38, 'edgecolor': NAVY, 'linewidth': 3})
     ax_d.text(0, 0.12, f'{win_rate:.0f}%',
-              fontsize=42, fontweight='bold', color=WHITE, ha='center', va='center')
-    ax_d.text(0, -0.28, 'WIN RATE',
-              fontsize=10, color=MUTED, ha='center', va='center',
+              fontsize=68, fontweight='bold', color=WHITE,
+              ha='center', va='center')
+    ax_d.text(0, -0.34, 'WIN RATE',
+              fontsize=20, color=MUTED, ha='center', va='center',
               fontfamily='monospace', fontweight='bold')
 
-    # Three stat cards
+    # Stat cards
     stat_items = [
-        ('PROFIT FACTOR', f'{pf:.2f}',          GOLD),
-        ('TOTAL GAIN',    f'+{gain:.2f}%',        GREEN),
-        ('TOTAL TRADES',  f'{trades:,}',           WHITE),
+        ('PROFIT FACTOR', f'{pf:.2f}',    GOLD),
+        ('TOTAL GAIN',    f'+{gain:.1f}%', GREEN),
+        ('TRADES',        f'{trades:,}',   WHITE),
     ]
-    cw, ch = 0.26, 0.10
-    cy     = 0.285
+    cw, ch = 0.27, 0.118
+    cy     = 0.290
     for i, (label, value, color) in enumerate(stat_items):
-        cx = 0.06 + i * 0.32
+        cx = 0.06 + i * 0.323
         ax.add_patch(patches.FancyBboxPatch(
-            (cx, cy), cw, ch, boxstyle='round,pad=0.005',
-            facecolor=NAVY_S, edgecolor=GOLD, linewidth=0.7,
+            (cx, cy), cw, ch, boxstyle='round,pad=0.006',
+            facecolor=NAVY_S, edgecolor=color, linewidth=1.2,
             transform=ax.transAxes, zorder=2
         ))
         ax.add_patch(patches.Rectangle(
-            (cx, cy + ch - 0.003), cw, 0.003,
+            (cx, cy + ch - 0.005), cw, 0.005,
             facecolor=color, transform=ax.transAxes, zorder=3
         ))
-        ax.text(cx + cw / 2, cy + ch - 0.022, label,
-                fontsize=7.5, color=MUTED, ha='center', va='top',
+        ax.text(cx + cw / 2, cy + ch - 0.025, label,
+                fontsize=18, color=MUTED, ha='center', va='top',
                 transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
         ax.text(cx + cw / 2, cy + 0.022, value,
-                fontsize=17, color=color, ha='center', va='bottom',
+                fontsize=30, color=color, ha='center', va='bottom',
                 transform=ax.transAxes, fontweight='bold')
 
-    ax.text(0.5, 0.215,
-            f'+{pips:,} pips total  ·  every trade live-verified on Myfxbook',
-            fontsize=9, color=MUTED, ha='center', va='center',
+    ax.text(0.5, 0.226,
+            f'+{pips:,} pips  ·  every trade live-verified on Myfxbook',
+            fontsize=22, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
 
-    ax.text(0.5, 0.162,
+    ax.text(0.5, 0.172,
             '"Consistent. Algorithmic. Transparent."',
-            fontsize=12, color=WHITE, ha='center', va='center',
+            fontsize=28, color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontstyle='italic')
 
     _footer(ax)
-    plt.tight_layout(pad=0)
     return fig
