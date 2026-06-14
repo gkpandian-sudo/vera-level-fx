@@ -27,3 +27,25 @@ Thumbs.db
 
 # Internal planning docs (contain personal data, keep local only)
 docs/superpowers/
+
+# Website / portfolio files (personal data — keep local only)
+index.html
+index-v2.html
+index-backup.html
+myphoto.jpg
+logo.png
+hero-preview.mp4
+robots.txt
+sitemap.xml
+vercel.json
+google*.html
+Animated_trading_bar_charts_*.jpeg
+stitch_vera_level_forex_portfolio/
+
+# Internal docs (personal data)
+docs/build_doc.py
+docs/*.docx
+
+# Diagnostic / utility scripts with hardcoded credentials
+instagram/diagnose_meta.py
+fetch_snapshot.py
