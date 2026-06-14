@@ -147,11 +147,10 @@ def publish(image_url: str, caption: str) -> str:
 
 ## 3.5 Create instagram/captions.py
 
-Caption text for all post types. Brand-specific links are loaded from **GitHub Secrets** (environment variables) — never hardcoded in the file. You will add the secret values in Phase 4.
+Caption text for all post types. Customise the `TAGS`, `_CTA`, and any brand strings.
 
 **`instagram/captions.py`**
 ```python
-import os
 from datetime import datetime
 
 # CUSTOMISE: replace with hashtags relevant to your brand and location
@@ -163,16 +162,12 @@ TAGS = (
     "#forexlifestyle #passiveincome #tradingresults"
 )
 
-# Brand links are injected at runtime from GitHub Secrets (see Phase 4 section 4.4)
-_TELEGRAM = os.environ.get('BRAND_TELEGRAM', '')
-_WEBSITE  = os.environ.get('BRAND_WEBSITE', '')
-_IB_URL   = os.environ.get('BRAND_IB_URL', '')
-
+# CUSTOMISE: replace all three links with your own
 _CTA = (
-    f"\n\n📲 Live signals → {_TELEGRAM}"
-    f"\n🌐 Live account → {_WEBSITE}"
-    f"\n🏦 Open IC Markets account →"
-    f"\n{_IB_URL}"
+    "\n\n📲 Live signals → https://t.me/YOUR_TELEGRAM_USERNAME"
+    "\n🌐 Live account → https://YOUR_WEBSITE_URL"
+    "\n🏦 Open IC Markets account →"
+    "\nhttps://icmarkets.com/global/en/?camp=YOUR_CAMP_ID"
 )
 
 
@@ -248,7 +243,7 @@ def edu(edu_type: str, content: dict) -> str:
             f"Volatility: {content['volatility']}\n"
             f"My edge: {content['my_edge']}\n\n"
             f'"{content["quote"]}"\n\n'
-            f"— {os.environ.get('BRAND_AUTHOR', 'YourBrand FX')}"
+            f"— Your Name, YourBrand FX"
             f"{cta}\n\n{base_tags}"
         )
 
@@ -315,8 +310,7 @@ def trust(account: dict) -> str:
     trades = int(account.get('trades', 0))
     pips  = int(account.get('pips', 0))
 
-    brand = os.environ.get('BRAND_AUTHOR', 'YourBrand FX')
-    return f"""✅ Live Track Record — {brand}
+    return f"""✅ Live Track Record — YourBrand FX
 
 🎯 Win Rate: {wr:.0f}% across {trades:,} trades
 ⚡ Profit Factor: {pf:.2f}

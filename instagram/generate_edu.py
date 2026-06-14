@@ -137,7 +137,7 @@ def _footer(ax):
     ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
             fontsize=15, color=MUTED, va='center', ha='right',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
-    ax.text(0.5, 0.030, f'Not financial advice  ·  {os.environ.get("BRAND_DOMAIN", "")}',
+    ax.text(0.5, 0.030, 'Not financial advice  ·  vera-level-forex.vercel.app',
             fontsize=18, color=DIM, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 

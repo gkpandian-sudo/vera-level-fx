@@ -96,7 +96,7 @@ See [Phase 0](docs/setup/phase-0-prerequisites.md) for step-by-step setup of all
 
 | File | What to change |
 |---|---|
-| `instagram/captions.py` | `TAGS` (your hashtags) — brand links come from GitHub Secrets, not this file |
+| `instagram/captions.py` | `_CTA` block (your links), `TAGS` (your hashtags), brand name in trust caption |
 | `instagram/edu_content.py` | All 12 slots — your own rules, pair analyses, trade setups |
 | `instagram/assets/qr-icmarkets.jpg` | Your IC Markets IB referral QR code image |
 | `instagram/assets/bg-daily-notepad.jpg` | Your background photo for the daily card |
@@ -389,7 +389,7 @@ Create folders, install dependencies, then create the following files. Full file
 |---|---|---|
 | `instagram/requirements.txt` | No | Python dependencies |
 | `instagram/post.py` | **No** | Meta API publisher |
-| `instagram/captions.py` | **Yes** — `TAGS`, hashtags (links via GitHub Secrets) | Caption text generator |
+| `instagram/captions.py` | **Yes** — `_CTA`, `TAGS`, brand name | Caption text generator |
 | `instagram/edu_content.py` | **Yes** — all content | 12-slot educational library |
 | `instagram/run.py` | Minimal — QR filename only | Pipeline orchestrator |
 | `instagram/generate.py` | **Yes** — colours, brand name | Weekly/monthly/trust card renderer |
@@ -481,30 +481,12 @@ RED    = '#FF6B6B'   # loss numbers          → keep red for clarity
 
 ## CTA Block (captions.py)
 
-Brand links are loaded from **GitHub Secrets** at runtime — never hardcoded. Set these six secrets in your repo (Settings → Secrets → Actions):
-
-| Secret | Example value |
-|---|---|
-| `BRAND_TELEGRAM` | `https://t.me/your_channel` |
-| `BRAND_WEBSITE` | `https://your-website.com` |
-| `BRAND_IB_URL` | `https://icmarkets.com/global/en/?camp=YOUR_ID` |
-| `BRAND_AUTHOR` | `Your Name, YourBrand FX` |
-| `BRAND_SIGNAL_CTA` | `>> join our live signals channel` |
-| `BRAND_DOMAIN` | `your-domain.com` |
-
-The code in `captions.py` reads them automatically:
-
 ```python
-import os
-_TELEGRAM = os.environ.get('BRAND_TELEGRAM', '')
-_WEBSITE  = os.environ.get('BRAND_WEBSITE', '')
-_IB_URL   = os.environ.get('BRAND_IB_URL', '')
-
 _CTA = (
-    f"\n\n📲 Live signals → {_TELEGRAM}"
-    f"\n🌐 Live account → {_WEBSITE}"
-    f"\n🏦 Open IC Markets account →"
-    f"\n{_IB_URL}"
+    "\n\n📲 Live signals → https://t.me/YOUR_TELEGRAM_USERNAME"
+    "\n🌐 Live account → https://YOUR_WEBSITE_URL"
+    "\n🏦 Open IC Markets account →"
+    "\nhttps://icmarkets.com/global/en/?camp=YOUR_CAMP_ID"
 )
 ```
 
