@@ -1,55 +1,82 @@
 # instagram/edu_content.py
+# Educational content for rotating Instagram posts — Vera Level FX
+# Methodology: quantitative multi-pair algorithmic system on IC Markets
+# Source inspiration: LQS engine concepts (liquidity, quantitative sizing, structure)
+# DO NOT reference external system names in captions
 
 RISK_RULES = [
     {
         "rule_num": "01",
-        "title": "The 1% Rule",
-        "body": "Never risk more than 1% of your account on a single trade. One bad trade should never wipe your week.",
-        "example_account": 10000,
-        "example_risk": 100,
-        "example_rr": "1:2.5",
-        "example_target": 250,
-        "tag": "ESSENTIAL",
-    },
-    {
-        "rule_num": "02",
-        "title": "Daily Drawdown Limit",
-        "body": "If you're down 3% in a single day, close everything and stop trading. Protect the week, not the session.",
-        "example_account": 10000,
-        "example_risk": 300,
-        "example_rr": "Daily limit",
-        "example_target": 0,
-        "tag": "PROTECTION",
-    },
-    {
-        "rule_num": "03",
-        "title": "ATR-Based Position Sizing",
-        "body": "Let the market's volatility decide your lot size — not your gut. High ATR = smaller lots. Low ATR = larger lots.",
-        "example_account": 10000,
-        "example_risk": 100,
-        "example_rr": "ATR x multiplier",
-        "example_target": 0,
+        "title": "Lot Sizing By Balance",
+        "body": (
+            "Professional algos never risk a fixed dollar amount — they risk a fixed "
+            "percentage of current balance. At 0.01 lots per $333, your position "
+            "scales with your account, so drawdowns shrink in real terms as balance drops."
+        ),
+        "example_account": 3000,
+        "example_risk": 90,
+        "example_rr": "1:2.5 RR",
+        "example_target": 225,
         "tag": "SIZING",
     },
     {
+        "rule_num": "02",
+        "title": "Grid Spacing Discipline",
+        "body": (
+            "In a multi-position system, each additional level must have minimum 100-pip "
+            "spacing. Tighter grids stack exposure too fast — you don't survive the "
+            "recovery. Wide spacing buys time for the market to breathe and reverse."
+        ),
+        "example_account": 3000,
+        "example_risk": 30,
+        "example_rr": "Per grid level",
+        "example_target": 0,
+        "tag": "GRID CONTROL",
+    },
+    {
+        "rule_num": "03",
+        "title": "Balance vs Equity Drawdown",
+        "body": (
+            "Balance drawdown = realised closed losses. Equity drawdown = floating "
+            "open positions. A 50% equity drawdown with 2% balance drawdown means the "
+            "system is in recovery — not dead. Most retail traders panic-close right "
+            "before the reversal."
+        ),
+        "example_account": 3000,
+        "example_risk": 60,
+        "example_rr": "Equity vs Balance",
+        "example_target": 0,
+        "tag": "PSYCHOLOGY",
+    },
+    {
         "rule_num": "04",
-        "title": "Minimum Risk:Reward",
-        "body": "Only take trades offering at least 1:2 RR. If the reward doesn't justify the risk, skip the trade. Always.",
-        "example_account": 10000,
-        "example_risk": 100,
-        "example_rr": "1:2 minimum",
-        "example_target": 200,
-        "tag": "SELECTION",
+        "title": "Multi-Pair Diversification",
+        "body": (
+            "Never concentrate all positions in one pair. Running 4+ uncorrelated "
+            "instruments means one pair's drawdown gets offset by others trending "
+            "profitably. EURUSD, GBPJPY, XAUUSD and USDJPY each react differently to "
+            "the same macro event."
+        ),
+        "example_account": 3000,
+        "example_risk": 75,
+        "example_rr": "Cross-pair hedge",
+        "example_target": 0,
+        "tag": "DIVERSIFICATION",
     },
     {
         "rule_num": "05",
-        "title": "No News Trading",
-        "body": "High-impact news (NFP, CPI, FOMC) creates random spikes that invalidate technical setups. Sit out or close early.",
-        "example_account": 10000,
-        "example_risk": 0,
-        "example_rr": "Skip the trade",
+        "title": "Win Rate vs Profit Factor",
+        "body": (
+            "A 76% win rate sounds great — but it means nothing without profit factor. "
+            "Our system's 673 trades show that the 24% of losses are small and the 76% "
+            "of wins are large. Profit Factor > 1.5 is institutional. Below 1.0 means "
+            "you're bleeding slowly."
+        ),
+        "example_account": 3000,
+        "example_risk": 100,
+        "example_rr": "PF > 1.5 target",
         "example_target": 0,
-        "tag": "DISCIPLINE",
+        "tag": "METRICS",
     },
 ]
 
@@ -57,106 +84,202 @@ PAIRS = [
     {
         "pair": "EURUSD",
         "full_name": "Euro / US Dollar",
-        "best_session": "London/NY",
-        "avg_spread": "0.1 pip",
-        "volatility": "Medium",
-        "my_edge": "H4 Trend",
-        "quote": "Most liquid pair in the world. Clean structure, respects levels — my bread and butter.",
+        "best_session": "London + NY Overlap (13:00–17:00 SGT)",
+        "avg_spread": "0.0–0.2 pips (IC Raw)",
+        "volatility": "Medium — 60–90 pips/day avg",
+        "my_edge": (
+            "Cleanest structure of all pairs. Algo reads the 4H trend and stacks "
+            "positions in the direction of the dominant cycle. Best pair for "
+            "trend-continuation grid entries."
+        ),
+        "quote": (
+            "The most liquid instrument on earth. Institutional flow is visible in the "
+            "price action if you know where to look."
+        ),
     },
     {
         "pair": "GBPJPY",
         "full_name": "British Pound / Japanese Yen",
-        "best_session": "London Open",
-        "avg_spread": "1.2 pips",
-        "volatility": "Very High",
-        "my_edge": "Breakout",
-        "quote": "The Dragon. Volatile, aggressive, and rewarding when you read the momentum right.",
+        "best_session": "London Open (15:00–18:00 SGT)",
+        "avg_spread": "1.0–1.5 pips (IC Raw)",
+        "volatility": "Very High — 150–200 pips/day avg",
+        "my_edge": (
+            "Wide daily range creates fast recovery windows for grid systems. "
+            "When the trend is confirmed on H4, even a 3-level grid closes at "
+            "breakeven or better within hours — not days."
+        ),
+        "quote": (
+            "The Dragon moves fast and hard. It punishes indecision but rewards "
+            "systematic entries at key structural levels."
+        ),
     },
     {
         "pair": "XAUUSD",
         "full_name": "Gold / US Dollar",
-        "best_session": "NY Open",
-        "avg_spread": "0.3 pip",
-        "volatility": "High",
-        "my_edge": "S&R Levels",
-        "quote": "Gold rewards patience. Wait for the key level — then strike with full conviction.",
+        "best_session": "NY Open (21:30–00:00 SGT)",
+        "avg_spread": "0.2–0.5 pips (IC Raw)",
+        "volatility": "High — $15–$30 range per session",
+        "my_edge": (
+            "Gold reacts sharply to DXY and macro news. The algo avoids major news "
+            "windows and targets the post-news continuation leg — where institutional "
+            "flow completes its move without retail chasing it."
+        ),
+        "quote": (
+            "Gold tells you what institutions think before equities do. Follow the "
+            "smart money, not the headlines."
+        ),
     },
     {
         "pair": "USDJPY",
         "full_name": "US Dollar / Japanese Yen",
-        "best_session": "Asian Session",
-        "avg_spread": "0.2 pip",
-        "volatility": "Low-Med",
-        "my_edge": "Range Play",
-        "quote": "The Asian session king. Predictable ranges when Tokyo is in control.",
+        "best_session": "Asian Session (01:00–08:00 SGT)",
+        "avg_spread": "0.0–0.3 pips (IC Raw)",
+        "volatility": "Low–Med — 50–80 pips/day avg",
+        "my_edge": (
+            "Tight Asian ranges create high-probability mean-reversion zones. "
+            "The algo identifies the session boundary, waits for a false break, "
+            "then fades the spike back into range — clean, systematic, repeatable."
+        ),
+        "quote": (
+            "In Tokyo hours, USDJPY is the most predictable pair on the board. "
+            "Patience in Asia pays in London."
+        ),
     },
 ]
 
 SETUPS = [
     {
-        "pair": "GBPJPY",
+        "pair": "EURUSD",
         "direction": "LONG",
-        "setup_type": "Trend Continuation",
-        "timeframe": "H4 · H1 · M15",
+        "setup_type": "Trend Continuation — Liquidity Sweep + Reentry",
+        "timeframe": "H4 Bias · H1 Structure · M15 Entry",
         "rr": "1:2.5",
         "steps": [
-            ("H4 Bias — Bullish", "Price above 20 EMA, higher highs structure confirmed"),
-            ("H1 Entry Zone", "Pullback to key support + bullish engulfing candle"),
-            ("M15 Trigger", "Momentum entry — SL below swing low, TP next H4 resistance"),
+            (
+                "H4 Bias Confirmed",
+                "Price above key EMA — higher highs, higher lows intact. "
+                "Institutional trend is bullish."
+            ),
+            (
+                "Liquidity Sweep Identified",
+                "Price dips below previous H1 swing low, sweeps retail stop-losses, "
+                "then immediately reverses — smart money accumulation signal."
+            ),
+            (
+                "Structure Break on M15",
+                "After sweep, M15 breaks the last lower high — confirms reversal and "
+                "trend resumption. This is the entry trigger."
+            ),
+            (
+                "Entry + Risk Parameters",
+                "Long entry on M15 BOS candle close. SL below liquidity sweep wick. "
+                "TP at next H4 resistance level — minimum 1:2.5 RR required."
+            ),
         ],
     },
     {
         "pair": "XAUUSD",
         "direction": "SHORT",
-        "setup_type": "S&R Reversal",
-        "timeframe": "H4 · H1 · M15",
+        "setup_type": "Institutional Rejection — Premium Zone Short",
+        "timeframe": "H4 Supply · H1 Confirmation · M15 Entry",
         "rr": "1:2.0",
         "steps": [
-            ("H4 Key Resistance", "Price rejected from major resistance zone — bearish wick"),
-            ("H1 Confirmation", "Lower high formed + bearish engulfing below zone"),
-            ("M15 Entry", "Momentum entry short — SL above wick, TP next S1 level"),
+            (
+                "H4 Supply Zone",
+                "Identify the last strong bearish impulse origin — this is the "
+                "institutional supply zone. Mark the body and wicks."
+            ),
+            (
+                "Price Returns to Supply",
+                "Gold rallies back into the supply zone — retail traders see "
+                "'breakout', institutions see a reloading opportunity."
+            ),
+            (
+                "H1 Rejection Candle",
+                "Bearish engulfing or shooting star inside the zone confirms "
+                "institutional selling pressure. Volume spike is ideal."
+            ),
+            (
+                "M15 Short Entry",
+                "Short on break of H1 rejection candle low. SL above supply zone. "
+                "TP at next H4 demand zone — 1:2 minimum."
+            ),
         ],
     },
     {
-        "pair": "EURUSD",
+        "pair": "GBPJPY",
         "direction": "LONG",
-        "setup_type": "London Breakout",
-        "timeframe": "H1 · M15 · M5",
+        "setup_type": "London Open Momentum — Breakout + Retest",
+        "timeframe": "H1 Range · M15 Break · M5 Entry",
         "rr": "1:2.5",
         "steps": [
-            ("Pre-London Range", "Identify Asia session high/low — mark both levels"),
-            ("Breakout Candle", "London open breaks Asia high with strong momentum candle"),
-            ("Retest Entry", "Wait for pullback to broken level — enter on M5 confirmation"),
+            (
+                "Define Asia Session Range",
+                "Mark GBPJPY high and low from 01:00–08:00 SGT. "
+                "This range becomes the battle zone at London open."
+            ),
+            (
+                "London Open Candle",
+                "At 15:00 SGT, watch for a strong directional candle breaking "
+                "the Asia range with momentum — this is institutional London flow."
+            ),
+            (
+                "Retest Entry",
+                "Price breaks the Asia high then pulls back to test it as support. "
+                "M5 bullish confirmation candle at that level = high probability entry."
+            ),
+            (
+                "Entry + Management",
+                "Long at retest. SL below Asia range high (now support). "
+                "TP = 2× the Asia range height projected upward. Trail stop at 1:1."
+            ),
         ],
     },
     {
         "pair": "USDJPY",
         "direction": "SHORT",
-        "setup_type": "Asian Range Break",
-        "timeframe": "H1 · M15",
+        "setup_type": "Asian False Break — Mean Reversion",
+        "timeframe": "H1 Range · M15 Signal · M5 Trigger",
         "rr": "1:2.0",
         "steps": [
-            ("Define Range", "Mark Asian session high and low (typically 30-60 pip range)"),
-            ("False Break Check", "Price spikes above range then reverses — bearish signal"),
-            ("Short on Retest", "Enter short on retest of range low — SL above range high"),
+            (
+                "Define Tight Asia Range",
+                "USDJPY during 01:00–08:00 SGT typically holds a 30–60 pip range. "
+                "Mark the high and low clearly."
+            ),
+            (
+                "Spot the False Break",
+                "Price spikes above the range high (triggering retail buy stops) "
+                "then closes back below — classic liquidity hunt. This is the signal."
+            ),
+            (
+                "M15 Bearish Confirmation",
+                "After the false break, wait for M15 to form a lower high below the "
+                "range high. This confirms reversal and smart money direction."
+            ),
+            (
+                "Short Entry + Parameters",
+                "Short at M15 lower high. SL above the false break wick. "
+                "TP at Asia range low — or extend to next H1 support for 1:2+."
+            ),
         ],
     },
 ]
 
-# 12-slot rotation sequence: (type, index_into_type_list)
+# 12-slot, 6-week rotation: every Tue + Thu gets one slot
 ROTATION_SEQUENCE = [
-    ("risk",  0),   # Week 1 Tue  — Risk: 1% Rule
+    ("risk",  0),   # Week 1 Tue  — Lot Sizing By Balance
     ("pairs", 0),   # Week 1 Thu  — Pair: EURUSD
-    ("setup", 0),   # Week 2 Tue  — Setup: GBPJPY Trend
-    ("risk",  1),   # Week 2 Thu  — Risk: Daily DD Limit
+    ("setup", 0),   # Week 2 Tue  — Setup: EURUSD Liquidity Sweep Long
+    ("risk",  1),   # Week 2 Thu  — Grid Spacing Discipline
     ("pairs", 2),   # Week 3 Tue  — Pair: XAUUSD
-    ("setup", 1),   # Week 3 Thu  — Setup: XAUUSD S&R
-    ("risk",  2),   # Week 4 Tue  — Risk: ATR Sizing
+    ("setup", 1),   # Week 3 Thu  — Setup: XAUUSD Premium Zone Short
+    ("risk",  2),   # Week 4 Tue  — Balance vs Equity Drawdown
     ("pairs", 1),   # Week 4 Thu  — Pair: GBPJPY
-    ("setup", 2),   # Week 5 Tue  — Setup: EURUSD Breakout
-    ("risk",  3),   # Week 5 Thu  — Risk: RR Minimum
+    ("setup", 2),   # Week 5 Tue  — Setup: GBPJPY London Breakout
+    ("risk",  3),   # Week 5 Thu  — Multi-Pair Diversification
     ("pairs", 3),   # Week 6 Tue  — Pair: USDJPY
-    ("setup", 3),   # Week 6 Thu  — Setup: USDJPY Range
+    ("setup", 3),   # Week 6 Thu  — Setup: USDJPY Asian False Break
 ]
 
 

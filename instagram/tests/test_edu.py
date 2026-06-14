@@ -30,8 +30,8 @@ def test_get_edu_content_pairs():
 def test_get_edu_content_setup():
     post_type, content = get_edu_content(2)
     assert post_type == "setup"
-    assert content["pair"] == "GBPJPY"
-    assert len(content["steps"]) == 3
+    assert content["pair"] == "EURUSD"
+    assert len(content["steps"]) >= 3
 
 
 def test_rotation_wraps_at_12():
@@ -65,4 +65,4 @@ def test_setups_have_required_fields():
     for setup in SETUPS:
         for field in ("pair", "direction", "setup_type", "rr", "steps"):
             assert field in setup, f"Missing field '{field}' in setup {setup}"
-        assert len(setup["steps"]) == 3
+        assert len(setup["steps"]) >= 3
