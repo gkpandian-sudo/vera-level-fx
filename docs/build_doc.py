@@ -558,12 +558,111 @@ doc.add_page_break()
 
 
 # ════════════════════════════════════════════════════════════════
-# 4. EDUCATIONAL CONTENT ROTATION
+# 4. CONTENT BUFFER
 # ════════════════════════════════════════════════════════════════
 
-heading1('4. Educational Content Rotation (6-Week Cycle)')
+heading1('4. Content Buffer — Pre-Made Image Queue')
 
-heading2('4.1  Rotation Structure')
+heading2('4.1  What It Is')
+
+body(
+    'The content buffer is a set of folders on your laptop where you can drop pre-designed '
+    '1080×1080 PNG images during your free time. When the Instagram pipeline runs, it checks '
+    'the buffer first. If a buffered image exists for that post type, it uses that instead of '
+    'auto-generating one. If the buffer is empty, it falls back to auto-generation as normal.'
+)
+body(
+    'This lets you batch-create high-quality graphics (in Canva, on your phone, or any design '
+    'tool) whenever you have spare time, then let the pipeline drain them automatically on schedule.'
+)
+
+heading2('4.2  Folder Structure')
+
+body('Location: vera-level-fx/instagram/buffer/')
+
+table_2col(
+    [
+        ('buffer/daily/',       'Pre-made live position cards — used on Wednesday and Friday posts'),
+        ('buffer/weekly/',      'Pre-made weekly performance cards — used on Monday posts'),
+        ('buffer/monthly/',     'Pre-made monthly P&L charts — used on 1st of month posts'),
+        ('buffer/trust/',       'Pre-made win rate / trust cards — used when post type is "trust"'),
+        ('buffer/edu/risk/',    'Pre-made risk management educational posts — Tue/Thu rotation'),
+        ('buffer/edu/pairs/',   'Pre-made pair spotlight educational posts — Tue/Thu rotation'),
+        ('buffer/edu/setup/',   'Pre-made trade setup breakdown posts — Tue/Thu rotation'),
+    ],
+    col_widths=(5, 11),
+    header=('Folder', 'Purpose'),
+)
+
+heading2('4.3  How It Works')
+
+bullet('Drop one or more 1080×1080 PNG files into the matching subfolder.')
+bullet('Commit and push to GitHub.')
+bullet('On the next scheduled post for that type, run.py calls pop_buffer() before generating.')
+bullet('pop_buffer() picks the alphabetically oldest PNG from the folder (FIFO).')
+bullet('The file is immediately moved to instagram/posts/YYYY-MM-DD-{type}-buffered.png — it will never be used twice.')
+bullet('Caption is always generated live from the current vera-snapshot.json data — only the image is buffered.')
+bullet('If the buffer folder is empty, the pipeline generates the image automatically as usual.')
+
+note_box(
+    '💡  To control the order in which buffered images are used, prefix filenames with a number: '
+    '"01_gold-setup.png", "02_eurusd-chart.png". They will be consumed in alphabetical order.',
+    'E8F4FD'
+)
+
+heading2('4.4  Step-by-Step: Adding an Image to the Buffer')
+
+body('From your laptop:')
+code_block([
+    '# 1. Copy your PNG into the correct subfolder:',
+    '#    vera-level-fx\\instagram\\buffer\\daily\\my-chart-June.png',
+    '',
+    '# 2. Stage and commit:',
+    'cd "C:\\Users\\USER\\Downloads\\04 - FX Trading\\vera-level-fx"',
+    'git add instagram/buffer/',
+    'git commit -m "buffer: add daily chart for June"',
+    'git push',
+    '',
+    '# 3. Done. The next Wednesday or Friday post will use your image.',
+])
+
+heading2('4.5  Checking Buffer Status')
+
+body('See what images are currently queued:')
+code_block([
+    'ls vera-level-fx\\instagram\\buffer\\daily\\',
+    'ls vera-level-fx\\instagram\\buffer\\weekly\\',
+    'ls vera-level-fx\\instagram\\buffer\\edu\\risk\\',
+    '# etc.',
+])
+
+heading2('4.6  Buffer Logic in run.py')
+
+body('The pop_buffer() function in instagram/run.py handles buffer consumption:')
+code_block([
+    'def pop_buffer(post_type, edu_type=""):',
+    '    folder = BUFFER_DIR / post_type          # e.g. buffer/daily/',
+    '    if edu_type:',
+    '        folder = BUFFER_DIR / "edu" / edu_type  # e.g. buffer/edu/risk/',
+    '    pngs = sorted(folder.glob("*.png"))      # alphabetical order',
+    '    if not pngs:',
+    '        return None                           # buffer empty → auto-generate',
+    '    src = pngs[0]                             # oldest file',
+    '    dst = OUT_DIR / f"{today}-{post_type}-buffered.png"',
+    '    src.rename(dst)                           # move out of buffer',
+    '    return dst                                # pipeline uses this path',
+])
+
+doc.add_page_break()
+
+
+# ════════════════════════════════════════════════════════════════
+# 5. EDUCATIONAL CONTENT ROTATION
+# ════════════════════════════════════════════════════════════════
+
+heading1('5. Educational Content Rotation (6-Week Cycle)')
+
+heading2('5.1  Rotation Structure')
 
 body(
     'Educational posts are published every Tuesday and Thursday at 09:00 SGT. '
@@ -591,7 +690,7 @@ table_2col(
     header=('Slot', 'Content'),
 )
 
-heading2('4.2  Counter File')
+heading2('5.2  Counter File')
 
 code_block([
     '// data/edu-counter.json',
@@ -608,9 +707,9 @@ doc.add_page_break()
 # 5. GITHUB ACTIONS WORKFLOW
 # ════════════════════════════════════════════════════════════════
 
-heading1('5. GitHub Actions Workflow')
+heading1('6. GitHub Actions Workflow')
 
-heading2('5.1  Workflow File')
+heading2('6.1  Workflow File')
 
 body('File: .github/workflows/insta-post.yml')
 
@@ -626,7 +725,7 @@ code_block([
     '  workflow_dispatch:            → manual trigger (POST_TYPE input)',
 ])
 
-heading2('5.2  Workflow Steps')
+heading2('6.2  Workflow Steps')
 
 table_2col(
     [
@@ -640,7 +739,7 @@ table_2col(
     header=('Step', 'Action'),
 )
 
-heading2('5.3  Manual Trigger (workflow_dispatch)')
+heading2('6.3  Manual Trigger (workflow_dispatch)')
 
 body(
     'Any post type can be triggered manually from GitHub → Actions → Instagram Auto-Post → Run workflow. '
@@ -659,7 +758,7 @@ table_2col(
     header=('POST_TYPE value', 'Post generated'),
 )
 
-heading2('5.4  Required GitHub Secrets')
+heading2('6.4  Required GitHub Secrets')
 
 table_2col(
     [
@@ -684,7 +783,7 @@ doc.add_page_break()
 # 6. END-TO-END POSTING FLOW
 # ════════════════════════════════════════════════════════════════
 
-heading1('6. End-to-End Posting Flow (Step by Step)')
+heading1('7. End-to-End Posting Flow (Step by Step)')
 
 heading2('Phase 1 — Data Collection (Daily, 08:00 SGT, Windows Laptop)')
 
@@ -747,9 +846,9 @@ doc.add_page_break()
 # 7. SECURITY & CREDENTIALS
 # ════════════════════════════════════════════════════════════════
 
-heading1('7. Security & Credentials')
+heading1('8. Security & Credentials')
 
-heading2('7.1  What Is Kept Secret')
+heading2('8.1  What Is Kept Secret')
 
 table_2col(
     [
@@ -764,13 +863,13 @@ table_2col(
     header=('Credential', 'Storage location'),
 )
 
-heading2('7.2  What Is Public')
+heading2('8.2  What Is Public')
 
 bullet('vera-level-fx GitHub repo — all Instagram code, image assets, vera-snapshot.json (account data only, no credentials).')
 bullet('Generated PNG files committed to the repo — publicly visible via raw GitHub CDN URLs.')
 bullet('edu-counter.json — the rotation index counter.')
 
-heading2('7.3  Brand Name Protection')
+heading2('8.3  Brand Name Protection')
 
 body(
     'The system contains a hardcoded strip list to prevent certain brand names from appearing '
@@ -792,9 +891,9 @@ doc.add_page_break()
 # 8. TROUBLESHOOTING
 # ════════════════════════════════════════════════════════════════
 
-heading1('8. Troubleshooting')
+heading1('9. Troubleshooting')
 
-heading2('8.1  Scraper / Data Issues')
+heading2('9.1  Scraper / Data Issues')
 
 table_2col(
     [
@@ -813,7 +912,7 @@ table_2col(
     header=('Symptom', 'Fix'),
 )
 
-heading2('8.2  Instagram Pipeline Issues')
+heading2('9.2  Instagram Pipeline Issues')
 
 table_2col(
     [
@@ -829,12 +928,18 @@ table_2col(
          'Manually edit data/edu-counter.json to the correct index (0–11) and commit.'),
         ('Monthly chart shows no bars',
          'dailyGain array is empty in vera-snapshot.json. The historyStart date in fetcher.js may need updating.'),
+        ('Buffered image not being used',
+         'Check the file is a .png (not .jpg or .PNG) and is in the correct subfolder. '
+         'Run "ls instagram/buffer/daily/" to confirm. Also check git push succeeded so GitHub Actions can see the file.'),
+        ('Wrong image used from buffer',
+         'Buffer is FIFO — rename files with "01_", "02_" prefixes to control order. '
+         'Or delete/archive unwanted files from the buffer folder and push again.'),
     ],
     col_widths=(5, 11),
     header=('Symptom', 'Fix'),
 )
 
-heading2('8.3  Manual Commands')
+heading2('9.3  Manual Commands')
 
 body('Test the scraper without sending Telegram or pushing:')
 code_block(['cd "C:\\Users\\USER\\Downloads\\myfxbook-mcp"', 'node src/runner.js --dry'])
@@ -867,7 +972,7 @@ doc.add_page_break()
 # 9. MAINTENANCE CHECKLIST
 # ════════════════════════════════════════════════════════════════
 
-heading1('9. Maintenance Checklist')
+heading1('10. Maintenance Checklist')
 
 heading2('Monthly')
 bullet('Refresh META_ACCESS_TOKEN before 60-day expiry — update GitHub Secret.')
@@ -883,6 +988,8 @@ heading2('As Needed')
 bullet('If Myfxbook changes their DOM selectors, update scraper.js CSS selectors.')
 bullet('If Meta API changes Instagram publishing endpoints, update post.py.')
 bullet('If background photo (bg-daily-notepad.jpg) needs updating, replace the asset and verify overlay positions still align in generate_status.py.')
+bullet('Top up the content buffer (instagram/buffer/) with fresh pre-made images whenever you have design time — aim to keep at least 2–3 images queued per post type.')
+bullet('Archive used buffer images from instagram/posts/*-buffered.png if you want to review what was posted.')
 
 divider()
 doc.add_paragraph()
