@@ -291,6 +291,7 @@ table_2col(
         ('vera-level-fx/data/vera-snapshot.json', 'Mirror of above — what the Instagram pipeline reads'),
         ('vera-level-fx/instagram/run.py', 'Instagram pipeline entry point — decides post type, generates image, publishes'),
         ('vera-level-fx/instagram/generate_status.py', 'Daily live-positions card renderer (notepad background, ink overlay)'),
+        ('vera-level-fx/instagram/assets/qr-icmarkets.jpg', 'IC Markets referral QR code — stamped onto every post image before publishing'),
         ('vera-level-fx/instagram/generate.py', 'Weekly performance, monthly P&L chart, and win-rate card renderers'),
         ('vera-level-fx/instagram/generate_edu.py', 'Educational post renderers (Risk, Pair Spotlight, Trade Setup)'),
         ('vera-level-fx/instagram/edu_content.py', 'Educational content library — 5 risk rules, 4 pairs, 4 setups'),
@@ -475,14 +476,15 @@ heading3('Daily Live Positions Card (generate_status.py)')
 
 body(
     'Background: a photograph of an open notebook on a desk with a MacBook showing a trading chart. '
-    'The left page of the notebook is used as the "writing surface" for trade data.'
+    'The table spans the full image width (x 0.05–0.95), centred at the midpoint.'
 )
-bullet('A dark semi-transparent overlay (alpha 0.62) covers the laptop area at the top of the image.')
+bullet('A dark semi-transparent overlay (alpha 0.62) covers the laptop/keyboard area at the top of the image.')
 bullet('Branding strip: gold bar with "VERA LEVEL FX", live date/time, equity/balance/daily metrics.')
-bullet('Trade data is rendered in INK colour (#0A1628) directly onto the white left page of the notebook.')
-bullet('Up to 5 open positions shown: pair, direction (BUY/SELL), P&L in USD, pips, open date.')
+bullet('Trade data is rendered in INK colour (#0A1628) directly onto the white notebook page.')
+bullet('Up to 5 open positions shown: PAIR · DIR · P&L (USD) · PIPS · ENTRY (open price).')
+bullet('ENTRY price formatted as 4 decimal places for FX pairs (e.g. 1.1829), 2 decimal places for instruments ≥ 10 (e.g. 4089.47 for XAUUSD).')
 bullet('Large pip values (>999) are abbreviated: e.g. 13,617 pips → "+13.6k".')
-bullet('Stats footer: win rate, profit factor, total pips.')
+bullet('Stats footer: win rate, profit factor, total pips — centred across full width.')
 bullet('Duplicate positions (same symbol + time + action) are deduplicated before display.')
 
 heading3('Weekly Performance Card (generate.py)')
@@ -507,6 +509,19 @@ body(
     '(Profit Factor, Total Gain, Trades). Designed to build social proof and trust.'
 )
 
+heading3('IC Markets Referral QR Code Overlay (run.py — overlay_qr)')
+
+body(
+    'After every image is generated (or retrieved from the buffer), run.py stamps the IC Markets '
+    'referral QR code into the bottom-right corner of the PNG before committing and publishing.'
+)
+bullet('QR code asset: instagram/assets/qr-icmarkets.jpg (100×100 RGBA source).')
+bullet('Resized to ~154px on a 1080 canvas (1/7th of image width) — large enough to scan from a phone screen.')
+bullet('Placed on a white semi-transparent background (alpha 235) with 10px padding for contrast on any card colour.')
+bullet('Positioned 18px from the right edge and 28px from the bottom — avoids cutting off by Instagram\'s rounded corners.')
+bullet('Links to: https://icmarkets.com/?camp=91936 — IB referral campaign #91936.')
+bullet('If the QR asset is missing or Pillow fails, the overlay step is skipped silently — the post still publishes.')
+
 heading3('Educational Posts (generate_edu.py)')
 
 body('Three sub-types on a 6-week rotation (posted every Tuesday and Thursday):')
@@ -518,19 +533,36 @@ heading2('3.4  Caption Generation (captions.py)')
 
 body(
     'Every image is paired with a caption generated from the same live data. '
-    'Captions include the key metrics, a call to action, and a fixed set of hashtags.'
+    'Captions include the key metrics, a shared call-to-action block, and a fixed set of hashtags.'
 )
 
 table_2col(
     [
-        ('weekly(account)',             'Balance, gain, monthly avg, win rate, profit factor, pips + hashtags'),
-        ('monthly(account, pnl_dict)',  'Last 6 months breakdown with green/red emoji per month'),
-        ('daily_status(account, trades)', 'Equity, balance, daily %, open positions list with profit emoji'),
-        ('trust(account)',              'Win rate, profit factor, total gain, pips + credibility copy'),
-        ('edu(type, content)',          'Type-specific educational caption with IB link and Telegram CTA'),
+        ('weekly(account)',               'Balance, gain, monthly avg, win rate, profit factor, pips + CTA + hashtags'),
+        ('monthly(account, pnl_dict)',    'Last 6 months breakdown with green/red emoji per month + CTA + hashtags'),
+        ('daily_status(account, trades)', 'Equity, balance, daily %, open positions list with profit emoji + CTA + hashtags'),
+        ('trust(account)',                'Win rate, profit factor, total gain, pips + credibility copy + CTA + hashtags'),
+        ('edu(type, content)',            'Type-specific educational copy + CTA + edu hashtags'),
     ],
     col_widths=(5.5, 10.5),
     header=('Function', 'Content'),
+)
+
+heading3('Call-to-Action Block (_CTA)')
+
+body('All five caption functions share a single _CTA constant appended at the end of every caption:')
+
+code_block([
+    '📲 Live signals → https://t.me/pandiangk',
+    '🌐 Live account → https://vera-level-forex.vercel.app',
+    '🏦 Open IC Markets account →',
+    'https://icmarkets.com/global/en/?camp=91936',
+])
+
+note_box(
+    '📌  All three URLs use the full https:// prefix so Instagram renders them as tappable links '
+    'on mobile. The IC Markets URL includes the IB referral parameter camp=91936.',
+    'E8F4FD'
 )
 
 heading2('3.5  Publishing to Instagram (post.py)')
@@ -806,6 +838,7 @@ bullet('run.py loads vera-snapshot.json, determines post type from the day of we
 bullet('Appropriate generator function is called with the live account data.')
 bullet('Matplotlib renders the 1080×1080 PNG (no display server needed — Agg backend).')
 bullet('PNG is saved to instagram/posts/YYYY-MM-DD-{type}.png.')
+bullet('IC Markets referral QR code (camp=91936) is stamped onto the bottom-right corner via PIL.')
 bullet('PNG is git-committed and pushed to the repo — creating a stable public URL on GitHub\'s CDN.')
 bullet('20-second delay for CDN propagation.')
 bullet('Caption is generated from the same live data.')
@@ -982,7 +1015,8 @@ bullet('Check GitHub Actions run history for failed jobs.')
 heading2('Quarterly')
 bullet('Review and refresh educational content in edu_content.py if market conditions have changed.')
 bullet('Update example account sizes and stats in Risk Management rules if balance has grown significantly.')
-bullet('Check IC Markets IB link is still valid (icmarkets.com/?camp=91936).')
+bullet('Check IC Markets IB link is still valid: https://icmarkets.com/global/en/?camp=91936.')
+bullet('Verify QR code (instagram/assets/qr-icmarkets.jpg) still scans to the correct referral URL.')
 
 heading2('As Needed')
 bullet('If Myfxbook changes their DOM selectors, update scraper.js CSS selectors.')
