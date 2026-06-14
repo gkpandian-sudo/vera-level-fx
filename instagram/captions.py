@@ -10,8 +10,9 @@ TAGS = (
 
 _CTA = (
     "\n\n📲 Live signals → t.me/pandiangk"
-    "\n🌐 Live account → vera-level-forex.vercel.app"
-    "\n🏦 Open IC Markets account → icmarkets.com/global/en/?camp=91936"
+    "\n🌐 Live account → https://vera-level-forex.vercel.app"
+    "\n🏦 Open IC Markets account →"
+    "\nhttps://icmarkets.com/global/en/?camp=91936"
 )
 
 
