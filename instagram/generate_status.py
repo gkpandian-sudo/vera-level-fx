@@ -4,12 +4,18 @@ generate_status.py — Daily live-positions card for Vera Level FX.
 """
 
 import os
+import math
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 from datetime import datetime
+
+# Notepad paper tilt: measured from photo corners — 1.76° counter-clockwise
+_ROT      = 1.76
+_ROT_TAN  = math.tan(math.radians(_ROT))
+_X_REF    = 0.190   # left edge of notepad text area (reference x for tilt calc)
 
 NAVY   = '#010E1F'
 NAVY_S = '#051830'
@@ -127,20 +133,25 @@ def make_daily_card(data: dict):
             fontsize=11, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=3)
 
-    # ── NOTEPAD AREA: ink text on white paper ────────────────────
-    # Paper region (matplotlib y=0 at bottom):
-    #   crop 39px from top of 812×891 → 812×812 → scale to 1080×1080 (×1.330)
-    #   paper top in orig: y~380 → after crop: 341 → scaled: 454px → mpl y: 0.580
-    #   paper bottom: nearly y=1080 → mpl y: ~0.001
-    #   paper x: orig 85-670 → scaled 113-891 → mpl x: 0.105 to 0.825
+    # ── NOTEPAD AREA: ink text on white paper, tilted to match paper angle ──
+    def _ty(x, y_base):
+        """y at position x on a line whose left end (x=_X_REF) is at y_base."""
+        return y_base + (x - _X_REF) * _ROT_TAN
+
+    def _tline(y_base, x0=_X_REF, x1=0.710, **kw):
+        ax.plot([x0, x1], [_ty(x0, y_base), _ty(x1, y_base)],
+                transform=ax.transAxes, **kw)
+
+    def _ttext(x, y_base, label, **kw):
+        ax.text(x, _ty(x, y_base), label,
+                rotation=_ROT, rotation_mode='anchor',
+                transform=ax.transAxes, **kw)
 
     # "OPEN TRADES" header
-    ax.text(0.245, 0.548, 'OPEN TRADES',
-            fontsize=19, color=INK, ha='left', va='center',
-            transform=ax.transAxes, fontfamily='monospace',
-            fontweight='bold', zorder=4)
-    ax.plot([0.190, 0.710], [0.524, 0.524], color=INK, linewidth=0.9, alpha=0.28,
-            transform=ax.transAxes, zorder=4)
+    _ttext(0.245, 0.548, 'OPEN TRADES',
+           fontsize=19, color=INK, ha='left', va='center',
+           fontfamily='monospace', fontweight='bold', zorder=4)
+    _tline(0.524, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
 
     # Column headers
     col_defs = [
@@ -148,12 +159,10 @@ def make_daily_card(data: dict):
         ('PIPS', 0.548), ('SINCE', 0.628),
     ]
     for label, cx in col_defs:
-        ax.text(cx, 0.502, label,
-                fontsize=13, color=INK, ha='center', va='center', alpha=0.52,
-                transform=ax.transAxes, fontfamily='monospace',
-                fontweight='bold', zorder=4)
-    ax.plot([0.190, 0.710], [0.484, 0.484], color=INK, linewidth=0.5, alpha=0.18,
-            transform=ax.transAxes, zorder=4)
+        _ttext(cx, 0.502, label,
+               fontsize=13, color=INK, ha='center', va='center', alpha=0.52,
+               fontfamily='monospace', fontweight='bold', zorder=4)
+    _tline(0.484, color=INK, linewidth=0.5, alpha=0.18, zorder=4)
 
     # Trade rows
     row_gap = 0.066
@@ -179,28 +188,24 @@ def make_daily_card(data: dict):
                 (open_str,          0.628, 'normal', 14),
             ]
             for text, cx, fw, fs in row_data:
-                ax.text(cx, ry, text,
-                        fontsize=fs, color=INK, ha='center', va='center',
-                        transform=ax.transAxes, fontfamily='monospace',
-                        fontweight=fw, zorder=4)
+                _ttext(cx, ry, text,
+                       fontsize=fs, color=INK, ha='center', va='center',
+                       fontfamily='monospace', fontweight=fw, zorder=4)
 
             if r < len(rows) - 1:
-                ax.plot([0.190, 0.710], [ry - 0.028, ry - 0.028],
-                        color=INK, linewidth=0.4, alpha=0.13,
-                        transform=ax.transAxes, zorder=4)
+                _tline(ry - 0.028, color=INK, linewidth=0.4, alpha=0.13, zorder=4)
     else:
-        ax.text(0.44, 0.420, 'no open positions',
-                fontsize=15, color=INK, ha='center', va='center', alpha=0.42,
-                transform=ax.transAxes, fontstyle='italic', zorder=4)
+        _ttext(0.44, 0.420, 'no open positions',
+               fontsize=15, color=INK, ha='center', va='center', alpha=0.42,
+               fontstyle='italic', zorder=4)
 
     # Stats footer on notepad
     stats_y = 0.245 if not rows else 0.458 - len(rows) * row_gap - 0.050
-    ax.plot([0.190, 0.710], [stats_y + 0.032, stats_y + 0.032],
-            color=INK, linewidth=0.7, alpha=0.22, transform=ax.transAxes, zorder=4)
-    ax.text(0.450, stats_y,
-            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips',
-            fontsize=12, color=INK, ha='center', va='center', alpha=0.58,
-            transform=ax.transAxes, fontfamily='monospace', zorder=4)
+    _tline(stats_y + 0.032, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
+    _ttext(0.450, stats_y,
+           f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips',
+           fontsize=12, color=INK, ha='center', va='center', alpha=0.58,
+           fontfamily='monospace', zorder=4)
 
     # Footer watermark (very bottom of image, below notepad leather frame)
     ax.text(0.5, 0.028, '@veralevel.fx  ·  Not financial advice',
