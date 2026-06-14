@@ -15,7 +15,7 @@ from datetime import datetime
 # Notepad paper tilt: 14° counter-clockwise to follow pad writing angle
 _ROT      = 14.0
 _ROT_TAN  = math.tan(math.radians(_ROT))
-_X_REF    = 0.230   # left edge of notepad text area (reference x for tilt calc)
+_X_REF    = 0.258   # left edge of notepad text area — aligns with EURUSD left edge
 
 NAVY   = '#010E1F'
 NAVY_S = '#051830'
