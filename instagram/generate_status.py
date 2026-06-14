@@ -15,7 +15,7 @@ from datetime import datetime
 # Notepad paper tilt: 14° counter-clockwise to follow pad writing angle
 _ROT      = 14.0
 _ROT_TAN  = math.tan(math.radians(_ROT))
-_X_REF    = 0.190   # left edge of notepad text area (reference x for tilt calc)
+_X_REF    = 0.230   # left edge of notepad text area (reference x for tilt calc)
 
 NAVY   = '#010E1F'
 NAVY_S = '#051830'
@@ -139,7 +139,7 @@ def make_daily_card(data: dict):
     def _ty(x, y_base):
         return y_base + (x - _X_REF) * _ROT_TAN
 
-    def _tline(y_base, x0=_X_REF, x1=0.600, **kw):
+    def _tline(y_base, x0=_X_REF, x1=0.640, **kw):
         ax.plot([x0, x1], [_ty(x0, y_base), _ty(x1, y_base)],
                 transform=ax.transAxes, **kw)
 
@@ -148,11 +148,11 @@ def make_daily_card(data: dict):
                 rotation=_ROT, rotation_mode='anchor',
                 transform=ax.transAxes, **kw)
 
-    # Column x positions (compressed to fit within x: 0.190–0.600)
-    CX = dict(pair=0.255, dir=0.348, pnl=0.420, pips=0.490, since=0.562)
+    # Column x positions (shifted right +0.04 to sit within white paper)
+    CX = dict(pair=0.295, dir=0.388, pnl=0.460, pips=0.530, since=0.602)
 
     # "OPEN TRADES" header  — y_base=0.460: right end y≈0.544 < 0.555 ✓
-    _ttext(0.245, 0.460, 'OPEN TRADES',
+    _ttext(0.285, 0.460, 'OPEN TRADES',
            fontsize=19, color=INK, ha='left', va='center',
            fontfamily='monospace', fontweight='bold', zorder=4)
     _tline(0.442, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
@@ -199,14 +199,14 @@ def make_daily_card(data: dict):
             if r < len(rows) - 1:
                 _tline(ry - 0.026, color=INK, linewidth=0.4, alpha=0.13, zorder=4)
     else:
-        _ttext(0.390, 0.330, 'no open positions',
+        _ttext(0.430, 0.330, 'no open positions',
                fontsize=15, color=INK, ha='center', va='center', alpha=0.42,
                fontstyle='italic', zorder=4)
 
     # Stats footer on notepad
     stats_y = 0.160 if not rows else max(0.090, 0.385 - len(rows) * row_gap - 0.050)
     _tline(stats_y + 0.030, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
-    _ttext(0.390, stats_y,
+    _ttext(0.430, stats_y,
            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips',
            fontsize=12, color=INK, ha='center', va='center', alpha=0.58,
            fontfamily='monospace', zorder=4)
