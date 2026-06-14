@@ -56,6 +56,13 @@ def _load_notepad_bg():
         return None
 
 
+def _fmt_pips(p: float) -> str:
+    """Format pip value — abbreviate to 1 decimal + k suffix above ±999."""
+    if abs(p) >= 1000:
+        return f'{p/1000:+.1f}k'
+    return f'{p:+.0f}p'
+
+
 def make_daily_card(data: dict):
     account     = data.get('account', {})
     open_trades = data.get('openTrades', [])
@@ -191,7 +198,7 @@ def make_daily_card(data: dict):
                 (pair,              _X_REF,       'bold',   14, 'left'),
                 (action[:3],        CX['dir'],    'bold',   13, 'center'),
                 (f'{profit:+.0f}',  CX['pnl'],  'normal', 12, 'center'),
-                (f'{t_pips:+.0f}p', CX['pips'], 'normal', 12, 'center'),
+                (_fmt_pips(t_pips),  CX['pips'], 'normal', 12, 'center'),
                 (open_str,          CX['since'], 'normal', 12, 'center'),
             ]
             for text, cx, fw, fs, ha in row_data:
