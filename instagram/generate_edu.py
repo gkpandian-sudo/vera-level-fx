@@ -44,16 +44,23 @@ BG_FILES = {
 }
 
 
+_NAVY_RGB = np.array([0.004, 0.055, 0.122])  # NAVY colour for pre-blend
+
 def _load_bg(post_type: str):
-    """Load Canva background as darkened RGBA array, or None."""
+    """Return a pre-blended RGB array: 5% Canva texture + 95% navy.
+
+    Pre-blending in numpy avoids matplotlib alpha-compositing quirks that
+    allow Canva template text to bleed through even with overlay patches.
+    """
     try:
         from PIL import Image
         path = BG_FILES.get(post_type, BG_FILES['risk'])
-        img  = Image.open(path).convert('RGBA')
+        img  = Image.open(path).convert('RGB')        # drop alpha channel
         img  = img.resize((1080, 1080), Image.LANCZOS)
-        arr  = np.array(img) / 255.0
-        arr[..., :3] *= 0.35   # darken to subtle texture
-        return arr
+        arr  = np.array(img, dtype=np.float32) / 255.0
+        # Blend: 5% Canva content (too dark to read) + 95% navy
+        blended = arr * 0.05 + _NAVY_RGB * 0.95
+        return np.clip(blended, 0, 1)
     except Exception:
         return None
 
@@ -68,7 +75,7 @@ def _base_fig(post_type: str):
     bg = _load_bg(post_type)
     if bg is not None:
         ax_bg.imshow(bg, extent=[0, 1, 0, 1], aspect='auto',
-                     origin='upper', zorder=0, alpha=0.55)
+                     origin='upper', zorder=0)
 
     # Deep navy gradient overlay (ensures readability)
     grad = np.linspace(0, 1, 512).reshape(512, 1)
@@ -78,7 +85,7 @@ def _base_fig(post_type: str):
         (1.00, (0.002, 0.04,  0.09,  0.88)),
     ])
     ax_bg.imshow(grad, extent=[0, 1, 0, 1], aspect='auto',
-                 origin='upper', cmap=cmap, zorder=1)
+                 origin='upper', cmap=cmap, zorder=2)
 
     # Subtle grain
     rng = np.random.default_rng(7)
@@ -123,11 +130,11 @@ def _brand_header(ax):
 def _footer(ax):
     _hline(ax, 0.095, alpha=0.4)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
-            fontsize=20, color=GOLD, va='center',
+            fontsize=15, color=GOLD, va='center',
             transform=ax.transAxes, fontfamily='monospace',
             fontweight='bold', zorder=5)
     ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
-            fontsize=20, color=MUTED, va='center', ha='right',
+            fontsize=15, color=MUTED, va='center', ha='right',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
     ax.text(0.5, 0.030, 'Not financial advice  ·  vera-level-forex.vercel.app',
             fontsize=18, color=DIM, ha='center', va='center',
@@ -272,7 +279,7 @@ def make_pairs_post(content: dict):
         ('BEST SESSION', content['best_session'],  GOLD),
         ('AVG SPREAD',   content['avg_spread'],    GREEN),
         ('VOLATILITY',   content['volatility'],    AMBER),
-        ('MY EDGE',      content['my_edge'][:28],  WHITE),
+        ('MY EDGE',      _wrap(content['my_edge'], 18)[0],  WHITE),
     ]
     cw, ch = 0.425, 0.120
     xs = [0.06, 0.515]
@@ -295,7 +302,7 @@ def make_pairs_post(content: dict):
                 fontsize=20, color=MUTED, fontweight='bold', va='top',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
         ax.text(cx + 0.018, cy + 0.016, value,
-                fontsize=28, color=color, fontweight='bold', va='bottom',
+                fontsize=22, color=color, fontweight='bold', va='bottom',
                 transform=ax.transAxes, zorder=6)
 
     _hline(ax, 0.415, alpha=0.35)

@@ -84,9 +84,9 @@ PAIRS = [
     {
         "pair": "EURUSD",
         "full_name": "Euro / US Dollar",
-        "best_session": "London + NY Overlap (13:00–17:00 SGT)",
+        "best_session": "London+NY 1300–1700 SGT",
         "avg_spread": "0.0–0.2 pips (IC Raw)",
-        "volatility": "Medium — 60–90 pips/day avg",
+        "volatility": "Medium — 60–90 pips/day",
         "my_edge": (
             "Cleanest structure of all pairs. Algo reads the 4H trend and stacks "
             "positions in the direction of the dominant cycle. Best pair for "
@@ -100,9 +100,9 @@ PAIRS = [
     {
         "pair": "GBPJPY",
         "full_name": "British Pound / Japanese Yen",
-        "best_session": "London Open (15:00–18:00 SGT)",
+        "best_session": "London Open 1500–1800",
         "avg_spread": "1.0–1.5 pips (IC Raw)",
-        "volatility": "Very High — 150–200 pips/day avg",
+        "volatility": "Very High — 150–200 pip",
         "my_edge": (
             "Wide daily range creates fast recovery windows for grid systems. "
             "When the trend is confirmed on H4, even a 3-level grid closes at "
@@ -116,9 +116,9 @@ PAIRS = [
     {
         "pair": "XAUUSD",
         "full_name": "Gold / US Dollar",
-        "best_session": "NY Open (21:30–00:00 SGT)",
+        "best_session": "NY Open 2130–0000 SGT",
         "avg_spread": "0.2–0.5 pips (IC Raw)",
-        "volatility": "High — $15–$30 range per session",
+        "volatility": "High — 15–30 USD/session",
         "my_edge": (
             "Gold reacts sharply to DXY and macro news. The algo avoids major news "
             "windows and targets the post-news continuation leg — where institutional "
@@ -132,9 +132,9 @@ PAIRS = [
     {
         "pair": "USDJPY",
         "full_name": "US Dollar / Japanese Yen",
-        "best_session": "Asian Session (01:00–08:00 SGT)",
+        "best_session": "Asian 0100–0800 SGT",
         "avg_spread": "0.0–0.3 pips (IC Raw)",
-        "volatility": "Low–Med — 50–80 pips/day avg",
+        "volatility": "Low–Med 50–80 pips/day",
         "my_edge": (
             "Tight Asian ranges create high-probability mean-reversion zones. "
             "The algo identifies the session boundary, waits for a false break, "

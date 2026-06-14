@@ -29,7 +29,8 @@ DPI  = 100
 
 
 def _base(nrows=1, ncols=1):
-    fig, ax = plt.subplots(figsize=SIZE, facecolor=NAVY)
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY)
+    ax = fig.add_axes([0, 0, 1, 1])
     ax.set_facecolor(NAVY)
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
     return fig, ax
@@ -56,10 +57,10 @@ def _header(ax):
 def _footer(ax):
     _hline(ax, 0.095, alpha=0.4)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
-            fontsize=20, color=GOLD, va='center',
+            fontsize=15, color=GOLD, va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
     ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
-            fontsize=20, color=MUTED, va='center', ha='right',
+            fontsize=15, color=MUTED, va='center', ha='right',
             transform=ax.transAxes, fontfamily='monospace')
     ax.text(0.5, 0.030, 'Not financial advice  ·  veralevel-fx.github.io',
             fontsize=18, color=DIM, ha='center', va='center',
@@ -229,7 +230,7 @@ def make_winrate_card(data):
 
     # Donut chart
     ax_d = fig.add_axes([0.25, 0.44, 0.50, 0.36], aspect='equal')
-    ax_d.set_facecolor(NAVY)
+    ax_d.set_facecolor('none')
     wins = max(0, min(win_rate / 100, 1))
     ax_d.pie([wins, 1 - wins], colors=[GOLD, NAVY_L], startangle=90,
              counterclock=False,
@@ -244,7 +245,7 @@ def make_winrate_card(data):
     # Stat cards
     stat_items = [
         ('PROFIT FACTOR', f'{pf:.2f}',    GOLD),
-        ('TOTAL GAIN',    f'+{gain:.1f}%', GREEN),
+        ('TOTAL GAIN',    f'{gain:+.1f}%', GREEN),
         ('TRADES',        f'{trades:,}',   WHITE),
     ]
     cw, ch = 0.27, 0.118

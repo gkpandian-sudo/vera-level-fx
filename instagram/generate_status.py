@@ -49,10 +49,10 @@ def _header(ax):
 def _footer(ax):
     _hline(ax, 0.095, alpha=0.4)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
-            fontsize=20, color=GOLD, va='center',
+            fontsize=15, color=GOLD, va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
     ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
-            fontsize=20, color=MUTED, va='center', ha='right',
+            fontsize=15, color=MUTED, va='center', ha='right',
             transform=ax.transAxes, fontfamily='monospace')
     ax.text(0.5, 0.030, 'Not financial advice  ·  vera-level-forex.vercel.app',
             fontsize=18, color=DIM, ha='center', va='center',
@@ -79,7 +79,7 @@ def make_daily_card(data: dict):
         if key not in seen:
             seen.add(key)
             rows.append(t)
-    rows = rows[:5]
+    rows = rows[:4]
 
     fig, ax = plt.subplots(figsize=SIZE, facecolor=NAVY)
     ax.set_facecolor(NAVY)
@@ -179,7 +179,7 @@ def make_daily_card(data: dict):
                 transform=ax.transAxes, fontstyle='italic')
 
     # ── Running stats row ─────────────────────────────────────────
-    stats_y = 0.158
+    stats_y = 0.126
     _hline(ax, stats_y + 0.068, alpha=0.3)
 
     stat_items = [
