@@ -8,6 +8,12 @@ TAGS = (
     "#forexlifestyle #passiveincome #tradingresults"
 )
 
+_CTA = (
+    "\n\n📲 Live signals → t.me/pandiangk"
+    "\n🌐 Live account → vera-level-forex.vercel.app"
+    "\n🏦 Open IC Markets account → icmarkets.com/global/en/?camp=91936"
+)
+
 
 def weekly(account: dict) -> str:
     bal   = account.get('balance', 0)
@@ -29,9 +35,7 @@ def weekly(account: dict) -> str:
 
 Fully automated algorithmic trading on IC Markets.
 Every trade live-verified on Myfxbook — zero manipulation.
-
-🔗 Live stats: veralevel-fx.github.io
-📩 DM to connect
+{_CTA}
 
 {TAGS}"""
 
@@ -52,8 +56,7 @@ def monthly(account: dict, monthly_pnl: dict) -> str:
 
 Systematic execution. No emotions. No manual overrides.
 IC Markets raw spreads — ASIC regulated.
-
-🔗 Full chart: veralevel-fx.github.io
+{_CTA}
 
 {TAGS}"""
 
@@ -64,11 +67,7 @@ def edu(edu_type: str, content: dict) -> str:
         "#veralevelFX #tradingstrategy #singaporetrader #pandian "
         "#forexeducation #fxtrading #priceaction"
     )
-    cta = (
-        "\n\n📲 Live signals → t.me/pandiangk"
-        "\n📊 Live results → vera-level-forex.vercel.app"
-        "\n🏦 Open IC Markets (IB #91936) → icmarkets.com/?camp=91936"
-    )
+    cta = _CTA
 
     if edu_type == 'risk':
         return (
@@ -143,9 +142,7 @@ def daily_status(account: dict, open_trades: list) -> str:
 
 Fully automated system on IC Markets.
 Every position tracked live on Myfxbook — zero manipulation.
-
-🔗 Live stats: veralevel-fx.github.io
-📩 DM to connect
+{_CTA}
 
 {TAGS}"""
 
@@ -168,8 +165,6 @@ This is a LIVE account on IC Markets.
 Not a demo. Not backtested. Publicly audited on Myfxbook.
 
 Every entry. Every exit. Every result — visible to anyone.
-
-🔗 Verify yourself: veralevel-fx.github.io
-📩 DM for details
+{_CTA}
 
 {TAGS}"""
