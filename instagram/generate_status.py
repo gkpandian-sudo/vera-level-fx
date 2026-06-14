@@ -12,10 +12,10 @@ import matplotlib.patches as patches
 import numpy as np
 from datetime import datetime
 
-# Notepad paper tilt: 14° counter-clockwise to follow pad writing angle
-_ROT      = 14.0
-_ROT_TAN  = math.tan(math.radians(_ROT))
-_X_REF    = 0.258   # left edge of notepad text area — aligns with EURUSD left edge
+# Flat open notebook — left page is the writing canvas, no tilt needed
+_ROT      = 0.0
+_ROT_TAN  = 0.0
+_X_REF    = 0.055   # left edge of left-page writing area
 
 NAVY   = '#010E1F'
 NAVY_S = '#051830'
@@ -89,10 +89,10 @@ def make_daily_card(data: dict):
     else:
         ax.set_facecolor(NAVY)
 
-    # Dark overlay on monitor/top area for readability (y > 0.55)
+    # Dark overlay on laptop/keyboard area for readability (y > 0.665)
     ax.add_patch(patches.Rectangle(
-        (0, 0.555), 1, 0.445,
-        facecolor='black', alpha=0.58,
+        (0, 0.665), 1, 0.335,
+        facecolor='black', alpha=0.62,
         transform=ax.transAxes, zorder=1
     ))
 
@@ -133,13 +133,12 @@ def make_daily_card(data: dict):
             fontsize=11, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=3)
 
-    # ── NOTEPAD AREA: ink text tilted 14° to follow pad writing angle ────
-    # At 14°, tan(14°)≈0.249; x spans 0.190→0.600 (Δx=0.410 → Δy=0.102 max).
-    # All y_base values chosen so rightmost column stays below the overlay (y<0.555).
+    # ── NOTEPAD AREA: ink text on flat left page (no rotation) ──────
+    # Left page writing area: x 0.055–0.435, y 0.10–0.665
     def _ty(x, y_base):
-        return y_base + (x - _X_REF) * _ROT_TAN
+        return y_base + (x - _X_REF) * _ROT_TAN   # _ROT_TAN=0 → always y_base
 
-    def _tline(y_base, x0=_X_REF, x1=0.640, **kw):
+    def _tline(y_base, x0=_X_REF, x1=0.435, **kw):
         ax.plot([x0, x1], [_ty(x0, y_base), _ty(x1, y_base)],
                 transform=ax.transAxes, **kw)
 
@@ -148,34 +147,34 @@ def make_daily_card(data: dict):
                 rotation=_ROT, rotation_mode='anchor',
                 transform=ax.transAxes, **kw)
 
-    # Column x positions (shifted right +0.04 to sit within white paper)
-    CX = dict(pair=0.295, dir=0.388, pnl=0.460, pips=0.530, since=0.602)
+    # Column x positions fitted to left page (x: 0.055–0.435)
+    CX = dict(pair=_X_REF, dir=0.178, pnl=0.258, pips=0.330, since=0.400)
 
-    # "OPEN TRADES" header  — y_base=0.460: right end y≈0.544 < 0.555 ✓
-    _ttext(0.285, 0.460, 'OPEN TRADES',
-           fontsize=19, color=INK, ha='left', va='center',
+    # "OPEN TRADES" header — centred on left page
+    _ttext(0.245, 0.640, 'OPEN TRADES',
+           fontsize=17, color=INK, ha='center', va='center',
            fontfamily='monospace', fontweight='bold', zorder=4)
-    _tline(0.442, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
+    _tline(0.620, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
 
     # Column headers — PAIR left-aligned at _X_REF, rest centred at their CX
     col_defs = [
-        ('PAIR',  _X_REF,     'left'),
-        ('DIR',   CX['dir'],  'center'),
+        ('PAIR',  _X_REF,       'left'),
+        ('DIR',   CX['dir'],   'center'),
         ('P&L',   CX['pnl'],  'center'),
         ('PIPS',  CX['pips'], 'center'),
         ('SINCE', CX['since'],'center'),
     ]
     for label, cx, ha in col_defs:
-        _ttext(cx, 0.425, label,
-               fontsize=13, color=INK, ha=ha, va='center', alpha=0.52,
+        _ttext(cx, 0.605, label,
+               fontsize=11, color=INK, ha=ha, va='center', alpha=0.52,
                fontfamily='monospace', fontweight='bold', zorder=4)
-    _tline(0.408, color=INK, linewidth=0.5, alpha=0.18, zorder=4)
+    _tline(0.586, color=INK, linewidth=0.5, alpha=0.18, zorder=4)
 
-    # Trade rows — row 1 y_base=0.385: SINCE y≈0.478 < 0.555 ✓
+    # Trade rows
     row_gap = 0.060
     if rows:
         for r, trade in enumerate(rows):
-            ry = 0.385 - r * row_gap
+            ry = 0.568 - r * row_gap
 
             pair   = trade.get('symbol', '—')
             action = trade.get('action', '').upper()
@@ -187,13 +186,13 @@ def make_daily_card(data: dict):
             except Exception:
                 open_str = open_t[:5]
 
-            # pair: ha='left' at _X_REF so every symbol starts at the same x
+            # PAIR: ha='left' at _X_REF so every symbol starts at the same anchor
             row_data = [
-                (pair,              _X_REF,     'bold',   16, 'left'),
-                (action[:3],        CX['dir'],   'bold',   15, 'center'),
-                (f'{profit:+.0f}',  CX['pnl'],  'normal', 14, 'center'),
-                (f'{t_pips:+.0f}p', CX['pips'], 'normal', 14, 'center'),
-                (open_str,          CX['since'], 'normal', 14, 'center'),
+                (pair,              _X_REF,       'bold',   14, 'left'),
+                (action[:3],        CX['dir'],    'bold',   13, 'center'),
+                (f'{profit:+.0f}',  CX['pnl'],  'normal', 12, 'center'),
+                (f'{t_pips:+.0f}p', CX['pips'], 'normal', 12, 'center'),
+                (open_str,          CX['since'], 'normal', 12, 'center'),
             ]
             for text, cx, fw, fs, ha in row_data:
                 _ttext(cx, ry, text,
@@ -203,16 +202,16 @@ def make_daily_card(data: dict):
             if r < len(rows) - 1:
                 _tline(ry - 0.026, color=INK, linewidth=0.4, alpha=0.13, zorder=4)
     else:
-        _ttext(0.430, 0.330, 'no open positions',
-               fontsize=15, color=INK, ha='center', va='center', alpha=0.42,
+        _ttext(0.245, 0.460, 'no open positions',
+               fontsize=13, color=INK, ha='center', va='center', alpha=0.42,
                fontstyle='italic', zorder=4)
 
     # Stats footer on notepad
-    stats_y = 0.160 if not rows else max(0.090, 0.385 - len(rows) * row_gap - 0.050)
-    _tline(stats_y + 0.030, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
-    _ttext(0.430, stats_y,
+    stats_y = 0.240 if not rows else max(0.160, 0.568 - len(rows) * row_gap - 0.050)
+    _tline(stats_y + 0.028, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
+    _ttext(0.245, stats_y,
            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips',
-           fontsize=12, color=INK, ha='center', va='center', alpha=0.58,
+           fontsize=10, color=INK, ha='center', va='center', alpha=0.58,
            fontfamily='monospace', zorder=4)
 
     # Footer watermark (very bottom of image, below notepad leather frame)
