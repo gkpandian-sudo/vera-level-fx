@@ -1,0 +1,22 @@
+# Secrets — never commit these
+.env
+.env.*
+*.secret
+secrets.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+
+# Local test outputs (keep instagram/posts/ for CDN but ignore local scratch)
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
