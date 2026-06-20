@@ -103,16 +103,7 @@ def make_daily_card(data: dict):
 
     d_color = GREEN if daily_pct >= 0 else RED
 
-    # Gold top bar with branding
-    ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.040, facecolor=GOLD, transform=ax.transAxes, zorder=5
-    ))
-    ax.text(0.5, 0.979, 'VERA LEVEL FX',
-            fontsize=19, fontweight='bold', color=NAVY,
-            ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=6)
-
-    ax.text(0.5, 0.934,
+    ax.text(0.5, 0.955,
             'LIVE POSITION UPDATE  ·  ' + datetime.now().strftime('%d %B %Y').upper(),
             fontsize=15, color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
@@ -174,8 +165,8 @@ def make_daily_card(data: dict):
             p_color = GREEN if profit >= 0 else RED
 
             ax.text(col_x['pair'],  ry, pair,              fontsize=19, fontweight='bold', color=WHITE,   ha='left',   va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['dir'],   ry, action[:3],        fontsize=17, fontweight='bold', color=p_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',  fontsize=17, fontweight='bold', color=p_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['dir'],   ry, action[:3],        fontsize=17, fontweight='bold', color=WHITE,   ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',  fontsize=17, fontweight='bold', color=WHITE,   ha='center', va='center', transform=ax.transAxes, zorder=6)
             ax.text(col_x['pips'],  ry, _fmt_pips(t_pips), fontsize=17, color=WHITE,       ha='center', va='center', transform=ax.transAxes, zorder=6)
             ax.text(col_x['entry'], ry, _fmt_price(entry), fontsize=16, color=WHITE,        ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
             if r < len(rows) - 1:
@@ -196,24 +187,11 @@ def make_daily_card(data: dict):
             fontsize=15, fontweight='bold', color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # QR code — IC Markets IB referral
-    qr_path = Path(__file__).parent / 'assets' / 'qr-icmarkets.jpg'
-    if qr_path.exists():
-        qr_img = __import__('PIL.Image', fromlist=['Image']).open(qr_path).convert('RGB')
-        qr_img = qr_img.resize((220, 220))
-        qr_arr = np.array(qr_img, dtype=np.float32) / 255.0
-        # square extent: 0.20 wide = 216px, 0.20 tall = 216px
-        ax.imshow(qr_arr, extent=[0.06, 0.26, 0.045, 0.225], aspect='auto', zorder=7)
-
-    ax.text(0.30, 0.195, 'Open IC Markets account',
-            fontsize=18, fontweight='bold', color=WHITE,
-            ha='left', va='center', transform=ax.transAxes, zorder=7)
-    ax.text(0.30, 0.148, 'icmarkets.com/?camp=91936',
-            fontsize=17, fontweight='bold', color=GOLD,
-            ha='left', va='center', transform=ax.transAxes, zorder=7)
-    ax.text(0.30, 0.103, 'Same broker I use  ·  ASIC regulated',
-            fontsize=14, color=MUTED, ha='left', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=7)
+    # CTA
+    ax.text(0.5, 0.148, 'Trade with my broker  ·  icmarkets.com/?camp=91936',
+            fontsize=15, fontweight='bold', color=GOLD,
+            ha='center', va='center', transform=ax.transAxes,
+            fontfamily='monospace', zorder=6)
 
     # Footer
     ax.text(0.94, 0.022, '@veralevel.fx  ·  Not financial advice',

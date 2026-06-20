@@ -237,9 +237,7 @@ def main():
         image_path = save_image(fig, post_type)
         plt.close('all')
     print(f'  saved: {image_path}')
-    # daily card has QR embedded in the design — skip the corner stamp
-    if post_type != 'daily':
-        overlay_qr(image_path)
+    overlay_qr(image_path)
 
     image_url = commit_and_push(image_path)
     print(f'  url:   {image_url}')
