@@ -225,15 +225,28 @@ def make_monthly_chart(data):
     ax_bg = fig.add_axes([0, 0, 1, 1], facecolor=NAVY)
     ax_bg.set_xlim(0, 1); ax_bg.set_ylim(0, 1); ax_bg.axis('off')
 
-    _header(ax_bg)
+    # Gold top bar
+    ax_bg.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax_bg.transAxes, zorder=5
+    ))
+    ax_bg.text(0.5, 0.946, 'VERA LEVEL FX',
+               fontsize=20, fontweight='bold', color=GOLD,
+               ha='center', va='center', transform=ax_bg.transAxes, zorder=6)
+    # Verified badge
+    ax_bg.add_patch(patches.Circle(
+        (0.20, 0.913), 0.007, facecolor=GREEN, transform=ax_bg.transAxes, zorder=6
+    ))
+    ax_bg.text(0.5, 0.913, 'IC Markets Verified  ·  ASIC Regulated',
+               fontsize=13, color=GOLD, ha='center', va='center',
+               transform=ax_bg.transAxes, zorder=6)
     ax_bg.text(0.5, 0.848, 'Monthly P&L',
                fontsize=48, fontweight='bold', color=WHITE,
                ha='center', va='center', transform=ax_bg.transAxes, fontstyle='italic')
     ax_bg.text(0.5, 0.812, '12-MONTH ROLLING BREAKDOWN',
-               fontsize=22, color=MUTED, ha='center', va='center',
+               fontsize=18, color=MUTED, ha='center', va='center',
                transform=ax_bg.transAxes, fontfamily='monospace')
     ax_bg.plot([0.06, 0.94], [0.792, 0.792], color=GOLD, linewidth=1.5,
-               alpha=0.45, transform=ax_bg.transAxes)
+               alpha=0.4, transform=ax_bg.transAxes)
 
     ax = fig.add_axes([0.06, 0.130, 0.88, 0.645], facecolor=NAVY_L)
     for spine in ax.spines.values():
@@ -262,7 +275,17 @@ def make_monthly_chart(data):
                 fontsize=13, color=GREEN if val >= 0 else RED,
                 fontweight='bold', fontfamily='monospace')
 
-    _footer(ax_bg)
+    ax_bg.plot([0.06, 0.94], [0.095, 0.095], color=GOLD, linewidth=1.2,
+               alpha=0.3, transform=ax_bg.transAxes, zorder=5)
+    ax_bg.text(0.94, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
+               fontsize=15, color=GOLD, va='center', ha='right',
+               transform=ax_bg.transAxes, fontweight='bold', zorder=5)
+    ax_bg.text(0.5, 0.065, 'icmarkets.com/?camp=91936',
+               fontsize=14, color=MUTED, ha='center', va='center',
+               transform=ax_bg.transAxes, zorder=5)
+    ax_bg.text(0.5, 0.030, 'Not financial advice  ·  vera-level-forex.vercel.app',
+               fontsize=14, color=DIM, ha='center', va='center',
+               transform=ax_bg.transAxes, zorder=5)
     return fig
 
 

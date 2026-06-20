@@ -126,3 +126,17 @@ def test_trust_card_size():
     w, h = img.size
     assert w == h, f"Expected square image, got {img.size}"
     assert w >= 900, f"Expected at least 900px, got {w}"
+
+
+def test_monthly_chart_size():
+    from instagram.generate import make_monthly_chart
+    data = {'account': DUMMY_ACCOUNT, 'openTrades': [], 'dailyGain': [
+        ['2026-01-15', 2.1, 80], ['2026-02-15', -0.5, -20],
+        ['2026-03-15', 3.2, 120], ['2026-04-15', 1.8, 70],
+        ['2026-05-15', -1.1, -40], ['2026-06-15', 4.0, 160],
+    ]}
+    fig = make_monthly_chart(data)
+    img = _fig_to_pil(fig)
+    w, h = img.size
+    assert w == h, f"Expected square image, got {img.size}"
+    assert w >= 900
