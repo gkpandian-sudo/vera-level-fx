@@ -31,7 +31,7 @@ QR_PATH      = ROOT / 'instagram' / 'assets' / 'qr-icmarkets.jpg'
 
 
 def overlay_qr(image_path: Path):
-    """Stamp the IC Markets referral QR code onto the bottom-right corner."""
+    """Stamp the IC Markets referral QR code onto the bottom-left corner."""
     try:
         from PIL import Image
         post = Image.open(image_path).convert('RGBA')
@@ -47,9 +47,9 @@ def overlay_qr(image_path: Path):
         bg.paste(qr, (pad, pad), qr)
 
         margin = 18
-        post.paste(bg, (W - bg_size - margin, H - bg_size - margin - 10), bg)
+        post.paste(bg, (margin, H - bg_size - margin - 10), bg)
         post.convert('RGB').save(image_path, quality=95)
-        print(f'  [qr] stamped referral QR onto {image_path.name}')
+        print(f'  [qr] stamped referral QR onto {image_path.name} (bottom-left)')
     except Exception as e:
         print(f'  [qr] skipped: {e}', file=sys.stderr)
 
