@@ -348,79 +348,107 @@ def make_pairs_post(content: dict):
 # ═══════════════════════════════════════════════════════════════════
 
 def make_setup_post(content: dict):
-    fig, ax = _base_fig('setup')
-    _brand_header(ax)
+    from instagram.composer import load_background, split_layout
 
-    dir_color = GREEN if content['direction'] == 'LONG' else RED
-    dir_icon  = '▲' if content['direction'] == 'LONG' else '▼'
+    # Photo top 42%, dark step panel bottom 58%
+    bg, split_y = split_layout(
+        load_background(ASSETS_DIR / 'bg-setup.jpg'),
+        split_frac=0.42,
+    )
 
-    # Direction badge
-    _pill(ax, 0.06, 0.856, 0.245, 0.038,
-          f'{dir_icon}  {content["direction"]} SETUP', dir_color)
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY, dpi=DPI)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    # Pair + timeframe + RR
-    ax.text(0.06, 0.843, content['pair'],
-            fontsize=82, fontweight='black', color=WHITE,
-            va='top', transform=ax.transAxes, zorder=5)
+    direction = content.get('direction', 'LONG')
+    dir_color = GREEN if direction == 'LONG' else RED
+    dir_icon  = '▲' if direction == 'LONG' else '▼'
+    pair      = content.get('pair', '')
+    rr        = content.get('rr', '1:2')
+    steps     = content.get('steps', [])
 
-    ax.text(0.06, 0.755, content['setup_type'],
-            fontsize=28, color=MUTED, va='top', style='italic',
-            transform=ax.transAxes, zorder=5)
+    # Gold top bar
+    ax.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+    ))
+    ax.text(0.5, 0.946, 'VERA LEVEL FX',
+            fontsize=18, fontweight='bold', color=GOLD,
+            ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    ax.text(0.06, 0.722,
-            content['timeframe'] + '  ·  RR ' + content['rr'],
-            fontsize=24, color=dir_color, fontweight='bold', va='top',
-            transform=ax.transAxes, fontfamily='monospace', zorder=5, alpha=0.9)
+    # Direction pill (on photo area, just above the split)
+    ax.add_patch(patches.FancyBboxPatch(
+        (0.06, split_y + 0.010), 0.28, 0.034, boxstyle='round,pad=0.005',
+        facecolor=(0.0, 0.88, 0.59, 0.15) if direction == 'LONG' else (1.0, 0.42, 0.42, 0.15),
+        edgecolor=dir_color, linewidth=1.2,
+        transform=ax.transAxes, zorder=6
+    ))
+    ax.text(0.20, split_y + 0.027, f'{dir_icon}  {direction} SETUP',
+            fontsize=16, fontweight='bold', color=dir_color,
+            ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=7)
 
-    _hline(ax, 0.708, alpha=0.4)
+    # Pair + setup type label
+    ax.text(0.40, split_y + 0.028, f'{pair}  ·  {content.get("setup_type", "")}',
+            fontsize=17, color=WHITE, ha='left', va='center',
+            transform=ax.transAxes, zorder=6)
 
-    # Steps — evenly space 4 steps in the content zone
-    steps = content['steps']
-    n = len(steps)
-    zone_top, zone_bot = 0.698, 0.175
-    step_h = (zone_top - zone_bot) / n
+    # Steps in black panel
+    panel_bottom = 0.130
+    usable_h     = split_y - panel_bottom
+    step_h       = usable_h / max(len(steps), 1)
 
-    for i, (title, desc) in enumerate(steps):
-        cy = zone_top - (i + 0.5) * step_h  # centre of this step slot
+    for i, (title, desc) in enumerate(steps[:4]):
+        cy = split_y - (i + 0.5) * step_h
 
         # Circle number
-        circle = plt.Circle(
-            (0.082, cy + 0.02), 0.032,
-            facecolor=(0.04, 0.15, 0.30, 0.75),
-            edgecolor=GOLD, linewidth=1.5,
+        circ = plt.Circle(
+            (0.088, cy + 0.010), 0.030,
+            facecolor=(0.04, 0.14, 0.28, 0.85),
+            edgecolor=GOLD, linewidth=1.4,
             transform=ax.transAxes, zorder=6
         )
-        ax.add_patch(circle)
-        ax.text(0.082, cy + 0.02, str(i + 1),
-                fontsize=26, fontweight='bold', color=GOLD,
+        ax.add_patch(circ)
+        ax.text(0.088, cy + 0.010, str(i + 1),
+                fontsize=22, fontweight='bold', color=GOLD,
                 ha='center', va='center', transform=ax.transAxes, zorder=7)
 
-        # Connector line between circles
-        if i < n - 1:
-            ax.plot([0.082, 0.082],
-                    [cy + 0.02 - 0.032, cy + 0.02 - step_h + 0.032],
-                    color=GOLD, alpha=0.22, linewidth=1.2,
+        # Connector line
+        if i < len(steps) - 1:
+            ax.plot([0.088, 0.088],
+                    [cy + 0.010 - 0.030, cy + 0.010 - step_h + 0.030],
+                    color=GOLD, alpha=0.20, linewidth=1.2,
                     transform=ax.transAxes, zorder=5)
 
-        # Step title + description
-        ax.text(0.133, cy + 0.048, title,
-                fontsize=30, fontweight='bold', color=WHITE,
-                va='center', transform=ax.transAxes, zorder=5)
-        desc_lines = _wrap(desc, 44)
+        # Title + description
+        ax.text(0.136, cy + 0.030, title,
+                fontsize=24, fontweight='bold', color=WHITE,
+                va='center', transform=ax.transAxes, zorder=6)
+        desc_lines = _wrap(desc, 46)
         for j, dl in enumerate(desc_lines[:2]):
-            ax.text(0.133, cy - 0.003 - j * 0.042, dl,
-                    fontsize=24, color=MUTED, va='top',
-                    transform=ax.transAxes, zorder=5, linespacing=1.3)
+            ax.text(0.136, cy - 0.008 - j * 0.038, dl,
+                    fontsize=18, color=MUTED, va='top',
+                    transform=ax.transAxes, zorder=6, linespacing=1.3)
 
     # Bottom pills
-    _hline(ax, 0.168, alpha=0.3)
+    _hline(ax, panel_bottom + 0.005, alpha=0.25)
     pill_items = [
-        ('RISK 1%',           RED,      0.06),
-        ('RR ' + content['rr'], dir_color, 0.24),
-        ('IC MARKETS',        GOLD,     0.42),
+        ('RISK 1%',     RED,       0.06),
+        (f'RR {rr}',   dir_color, 0.24),
+        ('IC MARKETS',  GOLD,      0.42),
     ]
     for label, color, px in pill_items:
-        _pill(ax, px, 0.115, 0.165, 0.042, label, color)
+        _pill(ax, px, 0.058, 0.160, 0.040, label, color)
 
-    _footer(ax)
+    # CTA
+    ax.text(0.66, 0.078, 'Alerts → t.me/pandiangk',
+            fontsize=16, fontweight='bold', color=GOLD,
+            ha='left', va='center', transform=ax.transAxes, zorder=6)
+
+    # Footer
+    ax.text(0.94, 0.024, '@veralevel.fx  ·  Not financial advice',
+            fontsize=12, color=DIM, ha='right', va='center',
+            transform=ax.transAxes, zorder=6)
+
     return fig

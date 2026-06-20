@@ -97,3 +97,23 @@ def test_pairs_card_xauusd():
     img = _fig_to_pil(fig)
     w, h = img.size
     assert w == h, "Expected square image"
+
+
+def test_setup_card():
+    from instagram.generate_edu import make_setup_post
+    content = {
+        'pair': 'EURUSD', 'direction': 'LONG',
+        'setup_type': 'Liquidity Sweep + Reentry',
+        'timeframe': 'H4 to M15', 'rr': '1:2.5',
+        'steps': [
+            ('H4 Bias Confirmed', 'Price above key EMA. Institutional trend bullish.'),
+            ('Liquidity Sweep', 'Price dips below H1 swing low, sweeps retail stops.'),
+            ('Structure Break', 'M15 breaks the last lower high, confirms reversal.'),
+            ('Entry + Risk', 'Long on M15 BOS candle close. SL below sweep. RR 1:2.5.'),
+        ],
+    }
+    fig = make_setup_post(content)
+    img = _fig_to_pil(fig)
+    w, h = img.size
+    assert w == h, f"Expected square image, got {img.size}"
+    assert w >= 900, f"Expected at least 900px, got {w}"
