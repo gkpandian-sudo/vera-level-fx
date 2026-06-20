@@ -71,7 +71,7 @@ def _fmt_price(p: float) -> str:
 
 
 def make_daily_card(data: dict):
-    from instagram.composer import load_background, frosted_glass_region
+    from instagram.composer import load_background, gradient_panel
     from pathlib import Path
 
     account     = data.get('account', {})
@@ -94,11 +94,7 @@ def make_daily_card(data: dict):
     rows = rows[:5]
 
     bg_path = Path(__file__).parent / 'assets' / 'bg-daily.jpg'
-    bg = frosted_glass_region(
-        load_background(bg_path),
-        y_frac=0.56, h_frac=0.44,
-        blur_r=14, darkness=0.76,
-    )
+    bg = gradient_panel(load_background(bg_path), height_frac=0.58)
 
     fig = plt.figure(figsize=SIZE, facecolor='black')
     ax = fig.add_axes([0, 0, 1, 1])
