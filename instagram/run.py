@@ -150,6 +150,7 @@ def main():
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
 
+    sys.path.insert(0, str(ROOT))
     sys.path.insert(0, str(ROOT / 'instagram'))
     from generate        import make_weekly_card, make_monthly_chart, make_winrate_card
     from generate_status import make_daily_card
