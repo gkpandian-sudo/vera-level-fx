@@ -23,7 +23,7 @@ def dark_bg() -> np.ndarray:
     return arr
 
 
-def load_background(path, size: tuple = _SIZE) -> np.ndarray:
+def load_background(path: 'str | Path', size: tuple = _SIZE) -> np.ndarray:
     """Load AI background, center-crop to square, resize to size.
 
     Returns dark_bg() if path does not exist.
@@ -42,6 +42,8 @@ def load_background(path, size: tuple = _SIZE) -> np.ndarray:
         img = img.resize(size, Image.LANCZOS)
         return np.array(img, dtype=np.float32) / 255.0
     except Exception:
+        # PIL raises various undocumented exceptions on corrupt/truncated images;
+        # fall back to dark background rather than crashing the posting pipeline
         return dark_bg()
 
 
@@ -52,6 +54,7 @@ def gradient_panel(arr: np.ndarray, height_frac: float = 0.50) -> np.ndarray:
     start_y = int(H * (1.0 - height_frac))
     for y in range(start_y, H):
         progress = (y - start_y) / max(H - start_y, 1)
+        # exponent > 1 creates slow fade at top of panel, fast at bottom
         alpha = progress ** 1.4
         arr[y] = arr[y] * (1.0 - alpha)
     return np.clip(arr, 0.0, 1.0)
@@ -83,7 +86,7 @@ def frosted_glass_region(
 def split_layout(
     arr: np.ndarray,
     split_frac: float = 0.50,
-) -> tuple:
+) -> tuple[np.ndarray, float]:
     """Paint the bottom (1 - split_frac) of the image solid black.
 
     Returns:
