@@ -114,37 +114,37 @@ def make_daily_card(data: dict):
 
     ax.text(0.5, 0.934,
             'LIVE POSITION UPDATE  ·  ' + datetime.now().strftime('%d %B %Y').upper(),
-            fontsize=13, color=WHITE, ha='center', va='center',
+            fontsize=15, color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # Equity / Balance / Daily metrics above glass card
+    # Equity / Balance / Daily metrics
     metrics = [
         ('EQUITY',  f'USD {equity:,.0f}',   GOLD),
-        ('BALANCE', f'USD {balance:,.0f}',  CREAM),
+        ('BALANCE', f'USD {balance:,.0f}',  WHITE),
         ('DAILY',   f'{daily_pct:+.2f}%',   d_color),
     ]
     for i, (label, value, color) in enumerate(metrics):
         mx = 0.08 + i * 0.305
-        ax.text(mx + 0.10, 0.885, label,
-                fontsize=13, color=MUTED, ha='center', va='center',
+        ax.text(mx + 0.10, 0.887, label,
+                fontsize=15, color=WHITE, fontweight='bold', ha='center', va='center',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
-        ax.text(mx + 0.10, 0.854, value,
-                fontsize=20, color=color, ha='center', va='center',
+        ax.text(mx + 0.10, 0.852, value,
+                fontsize=26, color=color, ha='center', va='center',
                 transform=ax.transAxes, fontweight='bold', zorder=6)
 
-    ax.plot([0.06, 0.94], [0.825, 0.825], color=GOLD, linewidth=0.8, alpha=0.3,
+    ax.plot([0.06, 0.94], [0.822, 0.822], color=GOLD, linewidth=0.8, alpha=0.3,
             transform=ax.transAxes, zorder=6)
 
-    # LIVE indicator (no box)
-    ax.text(0.94, 0.796, '● LIVE',
-            fontsize=14, fontweight='bold', color=RED,
+    # LIVE indicator
+    ax.text(0.94, 0.793, '● LIVE',
+            fontsize=16, fontweight='bold', color=RED,
             ha='right', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Open positions header
     n_open = len(rows)
-    ax.text(0.06, 0.796, f'{n_open} Open Position{"s" if n_open != 1 else ""}',
-            fontsize=26, fontweight='black', color=WHITE,
+    ax.text(0.06, 0.793, f'{n_open} Open Position{"s" if n_open != 1 else ""}',
+            fontsize=32, fontweight='black', color=WHITE,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
 
     # Trade table
@@ -153,58 +153,71 @@ def make_daily_card(data: dict):
                ('P&L', 'pnl', 'center'), ('PIPS', 'pips', 'center'),
                ('ENTRY', 'entry', 'center')]
 
-    ax.plot([0.06, 0.94], [0.754, 0.754], color=GOLD, linewidth=0.8, alpha=0.25,
+    ax.plot([0.06, 0.94], [0.752, 0.752], color=GOLD, linewidth=0.8, alpha=0.25,
             transform=ax.transAxes, zorder=6)
     for label, key, ha in headers:
-        ax.text(col_x[key], 0.740, label,
-                fontsize=13, color=MUTED, ha=ha, va='center',
+        ax.text(col_x[key], 0.737, label,
+                fontsize=15, color=WHITE, fontweight='bold', ha=ha, va='center',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
-    ax.plot([0.06, 0.94], [0.722, 0.722], color=GOLD, linewidth=0.8, alpha=0.18,
+    ax.plot([0.06, 0.94], [0.718, 0.718], color=GOLD, linewidth=0.8, alpha=0.18,
             transform=ax.transAxes, zorder=6)
 
-    row_gap = 0.060
+    row_gap = 0.062
     if rows:
         for r, trade in enumerate(rows):
-            ry = 0.704 - r * row_gap
-            pair   = trade.get('symbol', '—')
-            action = trade.get('action', '').upper()
-            profit = trade.get('profit', 0)
-            t_pips = trade.get('pips', 0)
-            entry  = trade.get('openPrice', 0)
+            ry = 0.700 - r * row_gap
+            pair    = trade.get('symbol', '—')
+            action  = trade.get('action', '').upper()
+            profit  = trade.get('profit', 0)
+            t_pips  = trade.get('pips', 0)
+            entry   = trade.get('openPrice', 0)
             p_color = GREEN if profit >= 0 else RED
 
-            ax.text(col_x['pair'],  ry, pair,               fontsize=15, fontweight='bold', color=WHITE,   ha='left',   va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['dir'],   ry, action[:3],         fontsize=14, fontweight='bold', color=p_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',   fontsize=14, color=p_color,    ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['pips'],  ry, _fmt_pips(t_pips),  fontsize=14, color=MUTED,      ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['entry'], ry, _fmt_price(entry),  fontsize=13, color=MUTED,      ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
+            ax.text(col_x['pair'],  ry, pair,              fontsize=19, fontweight='bold', color=WHITE,   ha='left',   va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['dir'],   ry, action[:3],        fontsize=17, fontweight='bold', color=p_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',  fontsize=17, fontweight='bold', color=p_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['pips'],  ry, _fmt_pips(t_pips), fontsize=17, color=WHITE,       ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['entry'], ry, _fmt_price(entry), fontsize=16, color=WHITE,        ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
             if r < len(rows) - 1:
-                ax.plot([0.06, 0.94], [ry - 0.025, ry - 0.025],
-                        color=GOLD, linewidth=0.5, alpha=0.12,
+                ax.plot([0.06, 0.94], [ry - 0.026, ry - 0.026],
+                        color=GOLD, linewidth=0.5, alpha=0.15,
                         transform=ax.transAxes, zorder=6)
     else:
-        ax.text(0.5, 0.640, 'No open positions',
-                fontsize=18, color=DIM, ha='center', va='center',
+        ax.text(0.5, 0.630, 'No open positions',
+                fontsize=20, color=MUTED, ha='center', va='center',
                 fontstyle='italic', transform=ax.transAxes, zorder=6)
 
-    # Stats footer inside glass area
-    bottom_y = max(0.180, 0.704 - len(rows) * row_gap - 0.055)
-    ax.plot([0.06, 0.94], [bottom_y + 0.024, bottom_y + 0.024],
+    # Stats bar
+    bottom_y = max(0.270, 0.700 - len(rows) * row_gap - 0.050)
+    ax.plot([0.06, 0.94], [bottom_y + 0.026, bottom_y + 0.026],
             color=GOLD, linewidth=0.8, alpha=0.2, transform=ax.transAxes, zorder=6)
     ax.text(0.5, bottom_y,
             f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips  —  verified on Myfxbook',
-            fontsize=13, color=MUTED, ha='center', va='center',
+            fontsize=15, fontweight='bold', color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # CTA
-    ax.text(0.5, 0.135,
-            'Live trade alerts  →  t.me/pandiangk',
-            fontsize=17, fontweight='bold', color=GOLD,
-            ha='center', va='center', transform=ax.transAxes, zorder=6)
+    # QR code — IC Markets IB referral
+    qr_path = Path(__file__).parent / 'assets' / 'qr-icmarkets.jpg'
+    if qr_path.exists():
+        qr_img = __import__('PIL.Image', fromlist=['Image']).open(qr_path).convert('RGB')
+        qr_img = qr_img.resize((220, 220))
+        qr_arr = np.array(qr_img, dtype=np.float32) / 255.0
+        # square extent: 0.20 wide = 216px, 0.20 tall = 216px
+        ax.imshow(qr_arr, extent=[0.06, 0.26, 0.045, 0.225], aspect='auto', zorder=7)
 
-    # Footer watermark
-    ax.text(0.94, 0.032, '@veralevel.fx  ·  Not financial advice',
-            fontsize=12, color=MUTED, ha='right', va='center',
+    ax.text(0.30, 0.195, 'Open IC Markets account',
+            fontsize=18, fontweight='bold', color=WHITE,
+            ha='left', va='center', transform=ax.transAxes, zorder=7)
+    ax.text(0.30, 0.148, 'icmarkets.com/?camp=91936',
+            fontsize=17, fontweight='bold', color=GOLD,
+            ha='left', va='center', transform=ax.transAxes, zorder=7)
+    ax.text(0.30, 0.103, 'Same broker I use  ·  ASIC regulated',
+            fontsize=14, color=MUTED, ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=7)
+
+    # Footer
+    ax.text(0.94, 0.022, '@veralevel.fx  ·  Not financial advice',
+            fontsize=14, color=MUTED, ha='right', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     return fig
