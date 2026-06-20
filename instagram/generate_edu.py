@@ -251,28 +251,28 @@ def make_risk_post(content: dict):
     # Stats — plain text, no boxes
     _hline(ax, 0.315, alpha=0.25)
     ax.text(0.06, 0.292, 'ACCOUNT SIZE',
-            fontsize=14, color=DIM, va='center',
+            fontsize=14, color=MUTED, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
     ax.text(0.06, 0.258, f'${content["example_account"]:,}',
             fontsize=36, fontweight='bold', color=GOLD, va='center',
             transform=ax.transAxes, zorder=5)
 
     ax.text(0.52, 0.292, 'MAX RISK / TRADE',
-            fontsize=14, color=DIM, va='center',
+            fontsize=14, color=MUTED, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
     ax.text(0.52, 0.258, f'${content["example_risk"]:,}',
             fontsize=36, fontweight='bold', color=RED, va='center',
             transform=ax.transAxes, zorder=5)
 
     ax.text(0.06, 0.215, f'RR  →  {content["example_rr"]}',
-            fontsize=18, color=MUTED, va='center',
+            fontsize=18, color=CREAM, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
     # CTA
     _hline(ax, 0.196, alpha=0.25)
     ax.text(0.06, 0.162,
             os.environ.get('BRAND_SIGNAL_CTA', '>>  join our live signals channel'),
-            fontsize=20, color=MUTED, va='center',
+            fontsize=20, color=CREAM, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
     # Footer
@@ -281,7 +281,7 @@ def make_risk_post(content: dict):
             fontsize=15, color=GOLD, va='center', ha='right',
             transform=ax.transAxes, fontweight='bold', zorder=5)
     ax.text(0.94, 0.030, 'Not financial advice  ·  IC MARKETS · ASIC',
-            fontsize=12, color=DIM, ha='right', va='center',
+            fontsize=12, color=MUTED, ha='right', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
     return fig
@@ -318,7 +318,7 @@ def make_pairs_post(content: dict):
             ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
     ax.text(0.5, 0.916, 'ALGORITHMIC FOREX  ·  IC MARKETS  ·  MYFXBOOK VERIFIED',
-            fontsize=13, color=MUTED, ha='center', va='center',
+            fontsize=13, color=CREAM, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # PAIR SPOTLIGHT label (at top of black panel)
@@ -354,7 +354,7 @@ def make_pairs_post(content: dict):
         cx, cy = xs[i % 2], ys[i // 2]
         # Label
         ax.text(cx, cy + ch - 0.004, label,
-                fontsize=13, color=DIM, fontweight='bold', va='top',
+                fontsize=13, color=MUTED, fontweight='bold', va='top',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
         # Value (wrapped, no box)
         val_lines = _wrap(str(value), 38)[:2]
@@ -376,7 +376,7 @@ def make_pairs_post(content: dict):
 
     # Footer
     ax.text(0.94, 0.032, '@veralevel.fx  ·  Not financial advice',
-            fontsize=13, color=DIM, ha='right', va='center',
+            fontsize=13, color=MUTED, ha='right', va='center',
             transform=ax.transAxes, zorder=6)
 
     return fig
@@ -461,7 +461,7 @@ def make_setup_post(content: dict):
         desc_lines = _wrap(desc, 46)
         for j, dl in enumerate(desc_lines[:2]):
             ax.text(0.136, cy - 0.008 - j * 0.038, dl,
-                    fontsize=18, color=MUTED, va='top',
+                    fontsize=18, color=CREAM, va='top',
                     transform=ax.transAxes, zorder=6, linespacing=1.3)
 
     # Bottom info (no boxes)
@@ -483,7 +483,7 @@ def make_setup_post(content: dict):
 
     # Footer
     ax.text(0.94, 0.024, '@veralevel.fx  ·  Not financial advice',
-            fontsize=12, color=DIM, ha='right', va='center',
+            fontsize=12, color=MUTED, ha='right', va='center',
             transform=ax.transAxes, zorder=6)
 
     return fig

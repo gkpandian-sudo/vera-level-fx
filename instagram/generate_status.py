@@ -130,7 +130,7 @@ def make_daily_card(data: dict):
     for i, (label, value, color) in enumerate(metrics):
         mx = 0.08 + i * 0.305
         ax.text(mx + 0.10, 0.885, label,
-                fontsize=12, color=DIM, ha='center', va='center',
+                fontsize=13, color=MUTED, ha='center', va='center',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
         ax.text(mx + 0.10, 0.854, value,
                 fontsize=20, color=color, ha='center', va='center',
@@ -161,7 +161,7 @@ def make_daily_card(data: dict):
             transform=ax.transAxes, zorder=6)
     for label, key, ha in headers:
         ax.text(col_x[key], 0.740, label,
-                fontsize=12, color=DIM, ha=ha, va='center',
+                fontsize=13, color=MUTED, ha=ha, va='center',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
     ax.plot([0.06, 0.94], [0.722, 0.722], color=GOLD, linewidth=0.8, alpha=0.18,
             transform=ax.transAxes, zorder=6)
@@ -181,7 +181,7 @@ def make_daily_card(data: dict):
             ax.text(col_x['dir'],   ry, action[:3],         fontsize=14, fontweight='bold', color=p_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
             ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',   fontsize=14, color=p_color,    ha='center', va='center', transform=ax.transAxes, zorder=6)
             ax.text(col_x['pips'],  ry, _fmt_pips(t_pips),  fontsize=14, color=MUTED,      ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['entry'], ry, _fmt_price(entry),  fontsize=13, color=DIM,        ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
+            ax.text(col_x['entry'], ry, _fmt_price(entry),  fontsize=13, color=MUTED,      ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
             if r < len(rows) - 1:
                 ax.plot([0.06, 0.94], [ry - 0.025, ry - 0.025],
                         color=GOLD, linewidth=0.5, alpha=0.12,
@@ -197,7 +197,7 @@ def make_daily_card(data: dict):
             color=GOLD, linewidth=0.8, alpha=0.2, transform=ax.transAxes, zorder=6)
     ax.text(0.5, bottom_y,
             f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips  —  verified on Myfxbook',
-            fontsize=13, color=DIM, ha='center', va='center',
+            fontsize=13, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # CTA
@@ -208,7 +208,7 @@ def make_daily_card(data: dict):
 
     # Footer watermark
     ax.text(0.94, 0.032, '@veralevel.fx  ·  Not financial advice',
-            fontsize=12, color=WHITE, ha='right', va='center',
-            alpha=0.55, transform=ax.transAxes, fontfamily='monospace', zorder=6)
+            fontsize=12, color=MUTED, ha='right', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     return fig

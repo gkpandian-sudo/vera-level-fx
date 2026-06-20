@@ -333,7 +333,7 @@ def make_winrate_card(data):
             fontsize=110, fontweight='black', color=WHITE,
             ha='center', va='center', transform=ax.transAxes, zorder=6)
     ax.text(0.5, 0.590, f'WIN RATE  ·  {trades:,} TRADES',
-            fontsize=20, color=MUTED, ha='center', va='center',
+            fontsize=20, color=CREAM, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Stats row (no boxes — plain labeled text like weekly card)
@@ -347,20 +347,20 @@ def make_winrate_card(data):
                 fontsize=26, fontweight='black', color=color,
                 ha='center', va='center', transform=ax.transAxes, zorder=6)
         ax.text(px, 0.514, lbl,
-                fontsize=13, color=DIM, ha='center', va='center',
+                fontsize=13, color=MUTED, ha='center', va='center',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Profit factor
     ax.text(0.5, 0.462,
             f'Profit Factor {pf:.2f}  ·  1% max risk per trade',
-            fontsize=17, color=DIM, ha='center', va='center',
+            fontsize=17, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # CTAs
     _hline(ax, 0.420, alpha=0.2)
     ax.text(0.5, 0.388,
             'Verify every trade yourself  →  Myfxbook.com',
-            fontsize=17, color=MUTED, ha='center', va='center',
+            fontsize=17, color=CREAM, ha='center', va='center',
             transform=ax.transAxes, zorder=6)
     ax.text(0.5, 0.355,
             'Open IC Markets  →  icmarkets.com/?camp=91936',
@@ -369,8 +369,7 @@ def make_winrate_card(data):
 
     # Footer
     ax.text(0.5, 0.040, '@veralevel.fx  ·  VERA LEVEL FX  ·  Not financial advice',
-            fontsize=14, color=WHITE, ha='center', va='center',
-            alpha=0.45, transform=ax.transAxes,
-            fontfamily='monospace', zorder=6)
+            fontsize=14, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     return fig
