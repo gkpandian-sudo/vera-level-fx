@@ -64,3 +64,36 @@ def test_daily_card_with_no_trades():
     img = _fig_to_pil(fig)
     w, h = img.size
     assert w == h, "Expected square image"
+
+
+def test_pairs_card_eurusd():
+    from instagram.generate_edu import make_pairs_post
+    content = {
+        'pair': 'EURUSD', 'full_name': 'Euro / US Dollar',
+        'best_session': 'London+NY 1300-1700 SGT',
+        'avg_spread': '0.0-0.2 pips (IC Raw)',
+        'volatility': 'Medium - 60-90 pips/day',
+        'my_edge': 'Cleanest structure',
+        'quote': 'The most liquid instrument on earth.',
+    }
+    fig = make_pairs_post(content)
+    img = _fig_to_pil(fig)
+    w, h = img.size
+    assert w == h, f"Expected square image, got {img.size}"
+    assert w >= 900, f"Expected at least 900px, got {w}"
+
+
+def test_pairs_card_xauusd():
+    from instagram.generate_edu import make_pairs_post
+    content = {
+        'pair': 'XAUUSD', 'full_name': 'Gold / US Dollar',
+        'best_session': 'London+NY overlap',
+        'avg_spread': '0.1-0.3 pips (IC Raw)',
+        'volatility': 'High - 150-300 pips/day',
+        'my_edge': 'Institutional order flow',
+        'quote': 'Gold is not random. Learn to read it.',
+    }
+    fig = make_pairs_post(content)
+    img = _fig_to_pil(fig)
+    w, h = img.size
+    assert w == h, "Expected square image"

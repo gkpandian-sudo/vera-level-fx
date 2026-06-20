@@ -255,72 +255,91 @@ def make_risk_post(content: dict):
 # ═══════════════════════════════════════════════════════════════════
 
 def make_pairs_post(content: dict):
-    fig, ax = _base_fig('pairs')
-    _brand_header(ax)
+    from instagram.composer import load_background, split_layout
 
-    # Section label
-    ax.text(0.06, 0.876, 'PAIR SPOTLIGHT',
-            fontsize=24, color=GOLD, fontweight='bold', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=5, alpha=0.9)
-    _hline(ax, 0.858, x0=0.06, x1=0.35, alpha=0.6)
+    pair = content.get('pair', 'EURUSD').upper()
+    bg_key = {
+        'EURUSD': 'bg-pairs-eurusd.jpg',
+        'XAUUSD': 'bg-pairs-xauusd.jpg',
+        'AUDCAD': 'bg-pairs-audcad.jpg',
+    }.get(pair, 'bg-pairs-eurusd.jpg')
 
-    # Pair name (huge display)
-    ax.text(0.06, 0.840, content['pair'],
-            fontsize=96, fontweight='black', color=WHITE,
-            va='top', transform=ax.transAxes, zorder=5, linespacing=1.0)
+    # Split: photo top 52%, black panel bottom 48%
+    bg, split_y = split_layout(load_background(ASSETS_DIR / bg_key), split_frac=0.52)
 
-    ax.text(0.06, 0.735, content['full_name'].upper(),
-            fontsize=26, color=GOLD, fontweight='bold', va='top',
-            transform=ax.transAxes, fontfamily='monospace', zorder=5)
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY, dpi=DPI)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    _hline(ax, 0.710, alpha=0.4)
+    # Gold top bar
+    ax.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+    ))
+    ax.text(0.5, 0.946, 'VERA LEVEL FX',
+            fontsize=18, fontweight='bold', color=GOLD,
+            ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+    ax.text(0.5, 0.916, 'ALGORITHMIC FOREX  ·  IC MARKETS  ·  MYFXBOOK VERIFIED',
+            fontsize=13, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # Stat cards — 2 columns × 2 rows
-    stat_data = [
-        ('BEST SESSION', content['best_session'],  GOLD),
-        ('AVG SPREAD',   content['avg_spread'],    GREEN),
-        ('VOLATILITY',   content['volatility'],    AMBER),
-        ('MY EDGE',      _wrap(content['my_edge'], 18)[0],  WHITE),
+    # PAIR SPOTLIGHT label (at top of black panel)
+    ax.text(0.06, split_y - 0.028, 'PAIR SPOTLIGHT',
+            fontsize=17, color=GOLD, fontweight='bold',
+            ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    # Pair name hero
+    ax.text(0.06, split_y - 0.105, pair,
+            fontsize=80, fontweight='black', color=WHITE,
+            ha='left', va='center', transform=ax.transAxes, zorder=6)
+    ax.text(0.06, split_y - 0.160, content.get('full_name', '').upper(),
+            fontsize=18, color=GOLD, fontweight='bold',
+            ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    _hline(ax, split_y - 0.175, alpha=0.3)
+
+    # Stat 2x2 grid
+    stats = [
+        ('BEST SESSION', content.get('best_session', ''),  GOLD),
+        ('AVG SPREAD',   content.get('avg_spread', ''),    GREEN),
+        ('VOLATILITY',   content.get('volatility', ''),    AMBER),
+        ('MY EDGE',      content.get('my_edge', ''),       WHITE),
     ]
-    cw, ch = 0.425, 0.120
+    grid_top = split_y - 0.195
+    cw, ch = 0.425, 0.095
     xs = [0.06, 0.515]
-    ys = [0.570, 0.430]
+    ys = [grid_top, grid_top - 0.108]
 
-    for i, (label, value, color) in enumerate(stat_data):
+    for i, (label, value, color) in enumerate(stats):
         cx, cy = xs[i % 2], ys[i // 2]
         ax.add_patch(patches.FancyBboxPatch(
-            (cx, cy), cw, ch, boxstyle='round,pad=0.008',
-            facecolor=(0.02, 0.10, 0.22, 0.70),
-            edgecolor=color, linewidth=1.2,
+            (cx, cy), cw, ch, boxstyle='round,pad=0.006',
+            facecolor=(0.02, 0.06, 0.14, 0.80),
+            edgecolor=color, linewidth=1.0,
             transform=ax.transAxes, zorder=5
         ))
-        ax.add_patch(patches.Rectangle(
-            (cx, cy + ch - 0.006), cw, 0.006,
-            facecolor=color, alpha=0.9,
-            transform=ax.transAxes, zorder=6
-        ))
-        ax.text(cx + 0.018, cy + ch - 0.022, label,
-                fontsize=20, color=MUTED, fontweight='bold', va='top',
+        ax.text(cx + 0.014, cy + ch - 0.018, label,
+                fontsize=13, color=MUTED, fontweight='bold', va='top',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
-        ax.text(cx + 0.018, cy + 0.016, value,
-                fontsize=22, color=color, fontweight='bold', va='bottom',
+        ax.text(cx + 0.014, cy + 0.014, value,
+                fontsize=16, color=color, fontweight='bold', va='bottom',
                 transform=ax.transAxes, zorder=6)
 
-    _hline(ax, 0.415, alpha=0.35)
+    # CTA
+    cta_y = ys[1] - 0.055
+    _hline(ax, cta_y + 0.025, alpha=0.2)
+    ax.text(0.06, cta_y, 'Trade with raw spreads  →  icmarkets.com/?camp=91936',
+            fontsize=16, fontweight='bold', color=GOLD,
+            ha='left', va='center', transform=ax.transAxes, zorder=6)
 
-    # Quote
-    ax.plot([0.06, 0.06], [0.220, 0.395], color=GOLD,
-            linewidth=3, alpha=0.5, transform=ax.transAxes, zorder=4)
-    quote_lines = _wrap(f'"{content["quote"]}"', 46)
-    for i, line in enumerate(quote_lines[:3]):
-        ax.text(0.092, 0.388 - i * 0.058, line,
-                fontsize=28, color=CREAM, va='top', style='italic',
-                transform=ax.transAxes, zorder=5, linespacing=1.4)
-    ax.text(0.092, 0.210, f'— {os.environ.get("BRAND_AUTHOR", "Vera Level FX")}',
-            fontsize=24, color=DIM, va='top',
-            transform=ax.transAxes, fontfamily='monospace', zorder=5)
+    # Footer
+    ax.text(0.94, 0.032, '@veralevel.fx  ·  Not financial advice',
+            fontsize=13, color=DIM, ha='right', va='center',
+            transform=ax.transAxes, zorder=6)
 
-    _footer(ax)
     return fig
 
 
