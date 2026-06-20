@@ -117,3 +117,12 @@ def test_setup_card():
     w, h = img.size
     assert w == h, f"Expected square image, got {img.size}"
     assert w >= 900, f"Expected at least 900px, got {w}"
+
+
+def test_trust_card_size():
+    from instagram.generate import make_winrate_card
+    fig = make_winrate_card(DUMMY_DATA)
+    img = _fig_to_pil(fig)
+    w, h = img.size
+    assert w == h, f"Expected square image, got {img.size}"
+    assert w >= 900, f"Expected at least 900px, got {w}"

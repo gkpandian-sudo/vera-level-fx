@@ -269,73 +269,100 @@ def make_monthly_chart(data):
 # ── Win Rate / Trust Card ────────────────────────────────────────
 
 def make_winrate_card(data):
+    from instagram.composer import load_background, vignette
+    from pathlib import Path
+
     account  = data.get('account', {})
     win_rate = account.get('winRate', 0)
     pf       = account.get('profitFactor', 0)
     gain     = account.get('gain', 0)
     trades   = int(account.get('trades', 0))
     pips     = int(account.get('pips', 0))
+    balance  = account.get('balance', 0)
+    gain_sign = '+' if gain >= 0 else ''
 
-    fig, ax = _base()
-    _header(ax)
+    # Full-bleed background with vignette
+    bg_path = Path(__file__).parent / 'assets' / 'bg-trust.jpg'
+    bg = vignette(load_background(bg_path), strength=0.68)
 
-    ax.text(0.5, 0.848, 'Live Track Record',
-            fontsize=48, fontweight='bold', color=WHITE,
-            ha='center', va='center', transform=ax.transAxes, fontstyle='italic')
-    ax.text(0.5, 0.812, 'VERIFIED  ·  LIVE ACCOUNT  ·  NOT DEMO',
-            fontsize=22, color=MUTED, ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace')
-    _hline(ax, 0.792)
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    # Donut chart
-    ax_d = fig.add_axes([0.25, 0.44, 0.50, 0.36], aspect='equal')
-    ax_d.set_facecolor('none')
-    wins = max(0, min(win_rate / 100, 1))
-    ax_d.pie([wins, 1 - wins], colors=[GOLD, NAVY_L], startangle=90,
-             counterclock=False,
-             wedgeprops={'width': 0.38, 'edgecolor': NAVY, 'linewidth': 3})
-    ax_d.text(0, 0.12, f'{win_rate:.0f}%',
-              fontsize=68, fontweight='bold', color=WHITE,
-              ha='center', va='center')
-    ax_d.text(0, -0.34, 'WIN RATE',
-              fontsize=20, color=MUTED, ha='center', va='center',
-              fontfamily='monospace', fontweight='bold')
+    # IC Markets Verified badge (top-centre)
+    ax.add_patch(patches.FancyBboxPatch(
+        (0.22, 0.915), 0.56, 0.034, boxstyle='round,pad=0.010',
+        facecolor=(240/255, 192/255, 64/255, 0.10),
+        edgecolor=(240/255, 192/255, 64/255, 0.35), linewidth=1.0,
+        transform=ax.transAxes, zorder=5
+    ))
+    ax.add_patch(patches.Circle(
+        (0.285, 0.932), 0.008,
+        facecolor=GREEN, transform=ax.transAxes, zorder=6
+    ))
+    ax.text(0.5, 0.932, 'IC Markets Verified  ·  ASIC Regulated',
+            fontsize=16, color=GOLD, fontweight='bold',
+            ha='center', va='center', transform=ax.transAxes, zorder=7)
 
-    # Stat cards
-    stat_items = [
-        ('PROFIT FACTOR', f'{pf:.2f}',    GOLD),
-        ('TOTAL GAIN',    f'{gain:+.1f}%', GREEN),
-        ('TRADES',        f'{trades:,}',   WHITE),
+    # Post type label (gold pill)
+    ax.add_patch(patches.FancyBboxPatch(
+        (0.32, 0.858), 0.36, 0.034, boxstyle='round,pad=0.010',
+        facecolor=(240/255, 192/255, 64/255, 0.85), edgecolor='none',
+        transform=ax.transAxes, zorder=5
+    ))
+    ax.text(0.5, 0.875, 'LIVE TRACK RECORD',
+            fontsize=14, fontweight='black', color=NAVY,
+            ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    # Hero: win rate %
+    ax.text(0.5, 0.690, f'{win_rate:.0f}%',
+            fontsize=110, fontweight='black', color=WHITE,
+            ha='center', va='center', transform=ax.transAxes, zorder=6)
+    ax.text(0.5, 0.590, f'WIN RATE  ·  {trades:,} TRADES',
+            fontsize=20, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    # Pill stats row
+    pills = [
+        (f'${balance:,.0f} Balance', 0.14),
+        (f'{gain_sign}{gain:.1f}% Gain', 0.40),
+        (f'+{pips:,} Pips', 0.66),
     ]
-    cw, ch = 0.27, 0.118
-    cy     = 0.290
-    for i, (label, value, color) in enumerate(stat_items):
-        cx = 0.06 + i * 0.323
+    pill_y = 0.515
+    pill_w = 0.22
+    for label, px in pills:
         ax.add_patch(patches.FancyBboxPatch(
-            (cx, cy), cw, ch, boxstyle='round,pad=0.006',
-            facecolor=NAVY_S, edgecolor=color, linewidth=1.2,
-            transform=ax.transAxes, zorder=2
+            (px, pill_y), pill_w, 0.034, boxstyle='round,pad=0.008',
+            facecolor=(1, 1, 1, 0.08), edgecolor=(1, 1, 1, 0.18), linewidth=0.8,
+            transform=ax.transAxes, zorder=5
         ))
-        ax.add_patch(patches.Rectangle(
-            (cx, cy + ch - 0.005), cw, 0.005,
-            facecolor=color, transform=ax.transAxes, zorder=3
-        ))
-        ax.text(cx + cw / 2, cy + ch - 0.025, label,
-                fontsize=18, color=MUTED, ha='center', va='top',
-                transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
-        ax.text(cx + cw / 2, cy + 0.022, value,
-                fontsize=30, color=color, ha='center', va='bottom',
-                transform=ax.transAxes, fontweight='bold')
+        ax.text(px + pill_w / 2, pill_y + 0.017, label,
+                fontsize=15, color=WHITE, ha='center', va='center',
+                transform=ax.transAxes, zorder=6)
 
-    ax.text(0.5, 0.226,
-            f'+{pips:,} pips  ·  every trade live-verified on Myfxbook',
-            fontsize=22, color=MUTED, ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace')
+    # Profit factor
+    ax.text(0.5, 0.462,
+            f'Profit Factor {pf:.2f}  ·  1% max risk per trade',
+            fontsize=17, color=DIM, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    ax.text(0.5, 0.172,
-            '"Consistent. Algorithmic. Transparent."',
-            fontsize=28, color=WHITE, ha='center', va='center',
-            transform=ax.transAxes, fontstyle='italic')
+    # CTAs
+    _hline(ax, 0.420, alpha=0.2)
+    ax.text(0.5, 0.388,
+            'Verify every trade yourself  →  Myfxbook.com',
+            fontsize=17, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, zorder=6)
+    ax.text(0.5, 0.355,
+            'Open IC Markets  →  icmarkets.com/?camp=91936',
+            fontsize=18, fontweight='bold', color=GOLD,
+            ha='center', va='center', transform=ax.transAxes, zorder=6)
 
-    _footer(ax)
+    # Footer
+    ax.text(0.5, 0.040, '@veralevel.fx  ·  VERA LEVEL FX  ·  Not financial advice',
+            fontsize=14, color=WHITE, ha='center', va='center',
+            alpha=0.45, transform=ax.transAxes,
+            fontfamily='monospace', zorder=6)
+
     return fig
