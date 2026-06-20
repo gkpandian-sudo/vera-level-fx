@@ -97,7 +97,8 @@ def edu(edu_type: str, content: dict) -> str:
             f"max ${content['example_risk']:,} at risk per trade.\n"
             f"At {content['example_rr']} — that is how professionals protect capital.\n\n"
             f"Save this post. Refer to it before your next trade.\n"
-            f"I use this rule on every position in my live IC Markets account."
+            f"I use this rule on every position in my live IC Markets account.\n"
+            f"IC Markets is ASIC regulated — available for Indian traders: {_IB_URL}"
             f"{cta}\n\n{base_tags}"
         )
 
@@ -111,8 +112,8 @@ def edu(edu_type: str, content: dict) -> str:
             f'"{content["quote"]}"\n\n'
             f"If you are trading {content['pair']} with high spreads, "
             f"you are giving away your edge before the trade starts.\n"
-            f"IC Markets Raw gives you the tightest spreads available.\n"
-            f"Available for Indian traders: {_IB_URL}"
+            f"IC Markets Raw — ASIC regulated, available for Indian traders.\n"
+            f"Open your account: {_IB_URL}"
             f"{cta}\n\n{base_tags}"
         )
 
@@ -130,6 +131,7 @@ def edu(edu_type: str, content: dict) -> str:
         f"{steps_text}\n\n"
         f"Save this post — use it as a checklist before your next {content['pair']} trade.\n\n"
         f"This is the exact logic behind every position in my verified IC Markets account.\n"
+        f"IC Markets — ASIC regulated, available for Indian traders.\n"
         f"Get notified when this setup triggers:"
         f"{cta}\n\n{base_tags}"
     )
