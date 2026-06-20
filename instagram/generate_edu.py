@@ -324,9 +324,13 @@ def make_pairs_post(content: dict):
         ax.text(cx + 0.014, cy + ch - 0.018, label,
                 fontsize=13, color=MUTED, fontweight='bold', va='top',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
-        ax.text(cx + 0.014, cy + 0.014, value,
-                fontsize=16, color=color, fontweight='bold', va='bottom',
-                transform=ax.transAxes, zorder=6)
+        # wrap long values (e.g. MY EDGE) so they don't overflow the card
+        val_lines = _wrap(str(value), 38)[:2]
+        line_gap = 0.028
+        for k, vl in enumerate(val_lines):
+            ax.text(cx + 0.014, cy + 0.010 + (len(val_lines) - 1 - k) * line_gap, vl,
+                    fontsize=14, color=color, fontweight='bold', va='bottom',
+                    transform=ax.transAxes, zorder=6, clip_on=True)
 
     # CTA
     cta_y = ys[1] - 0.055
