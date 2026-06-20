@@ -98,12 +98,6 @@ def _base_fig(post_type: str):
         ax_bg.plot([0, 1], [v, v], color=GOLD, alpha=0.018, linewidth=0.5, zorder=2)
         ax_bg.plot([v, v], [0, 1], color=GOLD, alpha=0.018, linewidth=0.5, zorder=2)
 
-    # Top gold bar
-    ax_bg.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD,
-        transform=ax_bg.transAxes, zorder=3
-    ))
-
     # Content axes
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 1); ax.set_ylim(0, 1)
@@ -207,35 +201,20 @@ def make_risk_post(content: dict):
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
     ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    # Gold top bar
-    ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
-    ))
-
-    # Brand
-    ax.text(0.06, 0.946, 'VERA LEVEL FX',
-            fontsize=20, fontweight='bold', color=GOLD,
-            ha='left', va='center', transform=ax.transAxes, zorder=6)
-    ax.add_patch(patches.Circle((0.075, 0.923), 0.007,
-        facecolor=GREEN, transform=ax.transAxes, zorder=6))
-    ax.text(0.090, 0.923, 'IC Markets Verified  ·  ASIC Regulated',
-            fontsize=14, color=GOLD, ha='left', va='center',
-            transform=ax.transAxes, zorder=6)
-
-    # Section label + tag (plain text, no box)
-    ax.text(0.06, 0.876, 'RISK MANAGEMENT RULE ' + content['rule_num'],
+    # Section label + tag
+    ax.text(0.06, 0.955, 'RISK MANAGEMENT RULE ' + content['rule_num'],
             fontsize=16, color=RED, fontweight='bold', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
-    ax.text(0.94, 0.876, content['tag'],
+    ax.text(0.94, 0.955, content['tag'],
             fontsize=16, color=RED, fontweight='bold', va='center', ha='right',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
-    _hline(ax, 0.858, alpha=0.30)
+    _hline(ax, 0.937, alpha=0.30)
 
     # Rule title — wrap to 2 lines if long so nothing clips at right edge
     title_lines = _wrap(content['title'], 16)
     for ti, tl in enumerate(title_lines[:2]):
-        ax.text(0.06, 0.840 - ti * 0.072, tl,
+        ax.text(0.06, 0.920 - ti * 0.072, tl,
                 fontsize=56, fontweight='black', color=WHITE,
                 va='top', transform=ax.transAxes, zorder=5, clip_on=True)
 
@@ -277,7 +256,7 @@ def make_risk_post(content: dict):
 
     # Footer
     _hline(ax, 0.098, alpha=0.3)
-    ax.text(0.94, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
+    ax.text(0.94, 0.065, '@veralevel.fx',
             fontsize=15, color=GOLD, va='center', ha='right',
             transform=ax.transAxes, fontweight='bold', zorder=5)
     ax.text(0.94, 0.030, 'Not financial advice  ·  IC MARKETS · ASIC',
@@ -308,18 +287,6 @@ def make_pairs_post(content: dict):
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
     ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
-
-    # Gold top bar
-    ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
-    ))
-    ax.text(0.5, 0.946, 'VERA LEVEL FX',
-            fontsize=18, fontweight='bold', color=GOLD,
-            ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=6)
-    ax.text(0.5, 0.916, 'ALGORITHMIC FOREX  ·  IC MARKETS  ·  MYFXBOOK VERIFIED',
-            fontsize=13, color=CREAM, ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # PAIR SPOTLIGHT label (at top of black panel)
     ax.text(0.06, split_y - 0.028, 'PAIR SPOTLIGHT',
@@ -406,15 +373,6 @@ def make_setup_post(content: dict):
     pair      = content.get('pair', '')
     rr        = content.get('rr', '1:2')
     steps     = content.get('steps', [])
-
-    # Gold top bar
-    ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
-    ))
-    ax.text(0.5, 0.946, 'VERA LEVEL FX',
-            fontsize=18, fontweight='bold', color=GOLD,
-            ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Direction label (no box)
     ax.text(0.06, split_y + 0.027, f'{dir_icon}  {direction} SETUP',

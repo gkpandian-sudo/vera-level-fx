@@ -118,31 +118,15 @@ def make_weekly_card(data):
     gain_color = GREEN if gain >= 0 else RED
     gain_sign  = '+' if gain >= 0 else ''
 
-    # Gold top bar
-    ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
-    ))
-
-    # Account name
-    ax.text(0.06, 0.946, 'VERA LEVEL FX',
-            fontsize=20, fontweight='bold', color=GOLD,
-            ha='left', va='center', transform=ax.transAxes, zorder=6)
-
     # Verified badge
-    ax.add_patch(patches.FancyBboxPatch(
-        (0.06, 0.910), 0.50, 0.026, boxstyle='round,pad=0.004',
-        facecolor=(240/255, 192/255, 64/255, 0.12),
-        edgecolor=(240/255, 192/255, 64/255, 0.4), linewidth=0.8,
-        transform=ax.transAxes, zorder=5
-    ))
-    ax.add_patch(patches.Circle((0.075, 0.923), 0.007,
+    ax.add_patch(patches.Circle((0.075, 0.960), 0.007,
         facecolor=GREEN, transform=ax.transAxes, zorder=6))
-    ax.text(0.090, 0.923, 'IC Markets Verified  ·  ASIC Regulated',
+    ax.text(0.090, 0.960, 'IC Markets Verified  ·  ASIC Regulated',
             fontsize=14, color=GOLD, ha='left', va='center',
             transform=ax.transAxes, zorder=6)
 
     # Post type label
-    ax.text(0.06, 0.868,
+    ax.text(0.06, 0.923,
             f'WEEKLY PERFORMANCE  ·  {datetime.now().strftime("%d %B %Y").upper()}',
             fontsize=16, color=MUTED, ha='left', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
@@ -192,7 +176,7 @@ def make_weekly_card(data):
 
     # Footer
     _hline(ax, 0.095, alpha=0.3)
-    ax.text(0.94, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
+    ax.text(0.94, 0.065, '@veralevel.fx',
             fontsize=15, color=GOLD, va='center', ha='right',
             transform=ax.transAxes, fontweight='bold', zorder=6)
     ax.text(0.94, 0.030, 'Not financial advice',
@@ -225,30 +209,23 @@ def make_monthly_chart(data):
     ax_bg = fig.add_axes([0, 0, 1, 1], facecolor=NAVY)
     ax_bg.set_xlim(0, 1); ax_bg.set_ylim(0, 1); ax_bg.axis('off')
 
-    # Gold top bar
-    ax_bg.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax_bg.transAxes, zorder=5
-    ))
-    ax_bg.text(0.5, 0.946, 'VERA LEVEL FX',
-               fontsize=20, fontweight='bold', color=GOLD,
-               ha='center', va='center', transform=ax_bg.transAxes, zorder=6)
     # Verified badge
     ax_bg.add_patch(patches.Circle(
-        (0.20, 0.913), 0.007, facecolor=GREEN, transform=ax_bg.transAxes, zorder=6
+        (0.36, 0.960), 0.007, facecolor=GREEN, transform=ax_bg.transAxes, zorder=6
     ))
-    ax_bg.text(0.5, 0.913, 'IC Markets Verified  ·  ASIC Regulated',
+    ax_bg.text(0.5, 0.960, 'IC Markets Verified  ·  ASIC Regulated',
                fontsize=13, color=GOLD, ha='center', va='center',
                transform=ax_bg.transAxes, zorder=6)
-    ax_bg.text(0.5, 0.848, 'Monthly P&L',
+    ax_bg.text(0.5, 0.912, 'Monthly P&L',
                fontsize=48, fontweight='bold', color=WHITE,
                ha='center', va='center', transform=ax_bg.transAxes, fontstyle='italic')
-    ax_bg.text(0.5, 0.812, '12-MONTH ROLLING BREAKDOWN',
+    ax_bg.text(0.5, 0.874, '12-MONTH ROLLING BREAKDOWN',
                fontsize=18, color=MUTED, ha='center', va='center',
                transform=ax_bg.transAxes, fontfamily='monospace')
-    ax_bg.plot([0.06, 0.94], [0.792, 0.792], color=GOLD, linewidth=1.5,
+    ax_bg.plot([0.06, 0.94], [0.854, 0.854], color=GOLD, linewidth=1.5,
                alpha=0.4, transform=ax_bg.transAxes)
 
-    ax = fig.add_axes([0.06, 0.130, 0.88, 0.645], facecolor=NAVY_L)
+    ax = fig.add_axes([0.06, 0.130, 0.88, 0.700], facecolor=NAVY_L)
     for spine in ax.spines.values():
         spine.set_color(GOLD); spine.set_alpha(0.3)
     ax.tick_params(colors=MUTED, labelsize=16)
@@ -277,7 +254,7 @@ def make_monthly_chart(data):
 
     ax_bg.plot([0.06, 0.94], [0.095, 0.095], color=GOLD, linewidth=1.2,
                alpha=0.3, transform=ax_bg.transAxes, zorder=5)
-    ax_bg.text(0.94, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
+    ax_bg.text(0.94, 0.065, '@veralevel.fx',
                fontsize=15, color=GOLD, va='center', ha='right',
                transform=ax_bg.transAxes, fontweight='bold', zorder=5)
     ax_bg.text(0.5, 0.065, 'icmarkets.com/?camp=91936',
@@ -368,7 +345,7 @@ def make_winrate_card(data):
             ha='center', va='center', transform=ax.transAxes, zorder=6)
 
     # Footer
-    ax.text(0.5, 0.040, '@veralevel.fx  ·  VERA LEVEL FX  ·  Not financial advice',
+    ax.text(0.5, 0.040, '@veralevel.fx  ·  Not financial advice',
             fontsize=14, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
