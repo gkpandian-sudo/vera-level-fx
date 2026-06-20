@@ -288,57 +288,51 @@ def make_pairs_post(content: dict):
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
     ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    # PAIR SPOTLIGHT label (at top of black panel)
-    ax.text(0.06, split_y - 0.028, 'PAIR SPOTLIGHT',
-            fontsize=17, color=GOLD, fontweight='bold',
+    # PAIR SPOTLIGHT + full name on one header line
+    full_name = content.get('full_name', '').upper()
+    ax.text(0.06, split_y - 0.028,
+            f'PAIR SPOTLIGHT  ·  {full_name}',
+            fontsize=13, color=GOLD, fontweight='bold',
             ha='left', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # Pair name hero
-    ax.text(0.06, split_y - 0.105, pair,
-            fontsize=80, fontweight='black', color=WHITE,
+    # Pair name — reduced size to avoid clashing with stat grid
+    ax.text(0.06, split_y - 0.068, pair,
+            fontsize=40, fontweight='black', color=WHITE,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
-    ax.text(0.06, split_y - 0.160, content.get('full_name', '').upper(),
-            fontsize=18, color=GOLD, fontweight='bold',
-            ha='left', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    _hline(ax, split_y - 0.175, alpha=0.3)
+    _hline(ax, split_y - 0.108, alpha=0.3)
 
-    # Stat 2x2 grid
+    # Stat 2x2 grid — pushed well below the pair name
     stats = [
         ('BEST SESSION', content.get('best_session', ''),  GOLD),
         ('AVG SPREAD',   content.get('avg_spread', ''),    GREEN),
         ('VOLATILITY',   content.get('volatility', ''),    AMBER),
         ('MY EDGE',      content.get('my_edge', ''),       WHITE),
     ]
-    grid_top = split_y - 0.195
-    cw, ch = 0.425, 0.095
+    grid_top = split_y - 0.185
+    cw, ch = 0.425, 0.085
     xs = [0.06, 0.515]
-    ys = [grid_top, grid_top - 0.108]
+    ys = [grid_top, grid_top - 0.098]
 
     for i, (label, value, color) in enumerate(stats):
         cx, cy = xs[i % 2], ys[i // 2]
-        # Label
         ax.text(cx, cy + ch - 0.004, label,
                 fontsize=13, color=MUTED, fontweight='bold', va='top',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
-        # Value (wrapped, no box)
-        val_lines = _wrap(str(value), 38)[:2]
-        line_gap = 0.028
+        val_lines = _wrap(str(value), 40)[:2]
         for k, vl in enumerate(val_lines):
-            ax.text(cx, cy + ch * 0.52 - k * line_gap, vl,
-                    fontsize=14, color=color, fontweight='bold', va='top',
+            ax.text(cx, cy + ch * 0.52 - k * 0.028, vl,
+                    fontsize=15, color=color, fontweight='bold', va='top',
                     transform=ax.transAxes, zorder=6, clip_on=True)
-        # Thin separator line below each cell
         ax.plot([cx, cx + cw], [cy, cy], color=color, linewidth=0.5, alpha=0.20,
                 transform=ax.transAxes, zorder=5)
 
     # CTA
-    cta_y = ys[1] - 0.055
-    _hline(ax, cta_y + 0.025, alpha=0.2)
+    cta_y = ys[1] - 0.050
+    _hline(ax, cta_y + 0.022, alpha=0.2)
     ax.text(0.06, cta_y, 'Trade with raw spreads  →  icmarkets.com/?camp=91936',
-            fontsize=16, fontweight='bold', color=GOLD,
+            fontsize=15, fontweight='bold', color=GOLD,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
 
     # Footer
@@ -413,14 +407,14 @@ def make_setup_post(content: dict):
                     transform=ax.transAxes, zorder=5)
 
         # Title + description
-        ax.text(0.136, cy + 0.030, title,
-                fontsize=24, fontweight='bold', color=WHITE,
+        ax.text(0.136, cy + 0.028, title,
+                fontsize=21, fontweight='bold', color=WHITE,
                 va='center', transform=ax.transAxes, zorder=6)
-        desc_lines = _wrap(desc, 46)
+        desc_lines = _wrap(desc, 52)
         for j, dl in enumerate(desc_lines[:2]):
-            ax.text(0.136, cy - 0.008 - j * 0.038, dl,
-                    fontsize=18, color=CREAM, va='top',
-                    transform=ax.transAxes, zorder=6, linespacing=1.3)
+            ax.text(0.136, cy - 0.010 - j * 0.030, dl,
+                    fontsize=15, color=CREAM, va='top',
+                    transform=ax.transAxes, zorder=6, linespacing=1.2)
 
     # Bottom info (no boxes)
     _hline(ax, panel_bottom + 0.005, alpha=0.25)
@@ -435,7 +429,7 @@ def make_setup_post(content: dict):
             va='center', transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
     # CTA
-    ax.text(0.66, 0.078, 'Alerts → t.me/pandiangk',
+    ax.text(0.66, 0.078, '@veralevel.fx',
             fontsize=16, fontweight='bold', color=GOLD,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
 
