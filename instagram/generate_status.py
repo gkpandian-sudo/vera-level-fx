@@ -139,16 +139,11 @@ def make_daily_card(data: dict):
     ax.plot([0.06, 0.94], [0.825, 0.825], color=GOLD, linewidth=0.8, alpha=0.3,
             transform=ax.transAxes, zorder=6)
 
-    # LIVE badge
-    ax.add_patch(patches.FancyBboxPatch(
-        (0.78, 0.790), 0.16, 0.026, boxstyle='round,pad=0.005',
-        facecolor=(1.0, 0.23, 0.23, 0.85), edgecolor='none',
-        transform=ax.transAxes, zorder=6
-    ))
-    ax.text(0.86, 0.803, '● LIVE',
-            fontsize=13, fontweight='bold', color=WHITE,
-            ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=7)
+    # LIVE indicator (no box)
+    ax.text(0.94, 0.796, '● LIVE',
+            fontsize=14, fontweight='bold', color=RED,
+            ha='right', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Open positions header
     n_open = len(rows)

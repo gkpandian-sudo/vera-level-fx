@@ -313,29 +313,18 @@ def make_winrate_card(data):
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
     ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    # IC Markets Verified badge (top-centre)
-    ax.add_patch(patches.FancyBboxPatch(
-        (0.22, 0.915), 0.56, 0.034, boxstyle='round,pad=0.010',
-        facecolor=(240/255, 192/255, 64/255, 0.10),
-        edgecolor=(240/255, 192/255, 64/255, 0.35), linewidth=1.0,
-        transform=ax.transAxes, zorder=5
-    ))
+    # IC Markets Verified (no box)
     ax.add_patch(patches.Circle(
-        (0.285, 0.932), 0.008,
+        (0.275, 0.932), 0.008,
         facecolor=GREEN, transform=ax.transAxes, zorder=6
     ))
     ax.text(0.5, 0.932, 'IC Markets Verified  ·  ASIC Regulated',
             fontsize=16, color=GOLD, fontweight='bold',
             ha='center', va='center', transform=ax.transAxes, zorder=7)
 
-    # Post type label (gold pill)
-    ax.add_patch(patches.FancyBboxPatch(
-        (0.32, 0.858), 0.36, 0.034, boxstyle='round,pad=0.010',
-        facecolor=(240/255, 192/255, 64/255, 0.85), edgecolor='none',
-        transform=ax.transAxes, zorder=5
-    ))
+    # Post type label (no box)
     ax.text(0.5, 0.875, 'LIVE TRACK RECORD',
-            fontsize=14, fontweight='black', color=NAVY,
+            fontsize=14, fontweight='black', color=GOLD,
             ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
@@ -347,23 +336,19 @@ def make_winrate_card(data):
             fontsize=20, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # Pill stats row
-    pills = [
-        (f'${balance:,.0f} Balance', 0.14),
-        (f'{gain_sign}{gain:.1f}% Gain', 0.40),
-        (f'+{pips:,} Pips', 0.66),
+    # Stats row (no boxes — plain labeled text like weekly card)
+    stats_row = [
+        (f'${balance:,.0f}',        'BALANCE', GOLD,                        0.20),
+        (f'{gain_sign}{gain:.1f}%', 'GAIN',    GREEN if gain >= 0 else RED, 0.50),
+        (f'+{pips:,}',              'PIPS',    WHITE,                       0.78),
     ]
-    pill_y = 0.515
-    pill_w = 0.22
-    for label, px in pills:
-        ax.add_patch(patches.FancyBboxPatch(
-            (px, pill_y), pill_w, 0.034, boxstyle='round,pad=0.008',
-            facecolor=(1, 1, 1, 0.08), edgecolor=(1, 1, 1, 0.18), linewidth=0.8,
-            transform=ax.transAxes, zorder=5
-        ))
-        ax.text(px + pill_w / 2, pill_y + 0.017, label,
-                fontsize=15, color=WHITE, ha='center', va='center',
-                transform=ax.transAxes, zorder=6)
+    for val, lbl, color, px in stats_row:
+        ax.text(px, 0.548, val,
+                fontsize=26, fontweight='black', color=color,
+                ha='center', va='center', transform=ax.transAxes, zorder=6)
+        ax.text(px, 0.514, lbl,
+                fontsize=13, color=DIM, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Profit factor
     ax.text(0.5, 0.462,

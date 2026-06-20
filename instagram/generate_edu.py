@@ -198,55 +198,92 @@ def _wrap(text: str, width: int) -> list[str]:
 # ═══════════════════════════════════════════════════════════════════
 
 def make_risk_post(content: dict):
-    fig, ax = _base_fig('risk')
-    _brand_header(ax)
+    from instagram.composer import load_background, gradient_panel
 
-    # Huge watermark number
-    ax.text(0.92, 0.55, content['rule_num'],
-            fontsize=260, color='white', alpha=0.03,
-            ha='right', va='center', transform=ax.transAxes,
-            fontweight='bold', zorder=3)
+    bg = gradient_panel(load_background(ASSETS_DIR / 'bg-daily.jpg'), height_frac=0.62)
 
-    # Section label + tag pill
-    ax.text(0.06, 0.876, '⚠  RISK MANAGEMENT RULE ' + content['rule_num'],
-            fontsize=22, color=RED, fontweight='bold', va='center',
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY, dpi=DPI)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
+
+    # Gold top bar
+    ax.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+    ))
+
+    # Brand
+    ax.text(0.06, 0.946, 'VERA LEVEL FX',
+            fontsize=20, fontweight='bold', color=GOLD,
+            ha='left', va='center', transform=ax.transAxes, zorder=6)
+    ax.add_patch(patches.Circle((0.075, 0.923), 0.007,
+        facecolor=GREEN, transform=ax.transAxes, zorder=6))
+    ax.text(0.090, 0.923, 'IC Markets Verified  ·  ASIC Regulated',
+            fontsize=14, color=GOLD, ha='left', va='center',
+            transform=ax.transAxes, zorder=6)
+
+    # Section label + tag (plain text, no box)
+    ax.text(0.06, 0.876, 'RISK MANAGEMENT RULE ' + content['rule_num'],
+            fontsize=16, color=RED, fontweight='bold', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
-    _pill(ax, 0.71, 0.856, 0.23, 0.038, content['tag'], RED)
+    ax.text(0.94, 0.876, content['tag'],
+            fontsize=16, color=RED, fontweight='bold', va='center', ha='right',
+            transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
-    _hline(ax, 0.848, alpha=0.35)
+    _hline(ax, 0.858, alpha=0.30)
 
-    # Rule title
-    ax.text(0.06, 0.830, content['title'],
-            fontsize=58, fontweight='black', color=WHITE,
-            va='top', transform=ax.transAxes, zorder=5,
-            linespacing=1.05)
+    # Rule title — wrap to 2 lines if long so nothing clips at right edge
+    title_lines = _wrap(content['title'], 16)
+    for ti, tl in enumerate(title_lines[:2]):
+        ax.text(0.06, 0.840 - ti * 0.072, tl,
+                fontsize=56, fontweight='black', color=WHITE,
+                va='top', transform=ax.transAxes, zorder=5, clip_on=True)
 
-    _hline(ax, 0.710, alpha=0.25, color=WHITE)
+    _hline(ax, 0.720, alpha=0.22, color=WHITE)
 
-    # Body text — wrap at 40 chars, max 4 lines
+    # Body text
     body_lines = _wrap(content['body'], 40)
     for i, line in enumerate(body_lines[:4]):
-        ax.text(0.06, 0.695 - i * 0.072, line,
+        ax.text(0.06, 0.705 - i * 0.072, line,
                 fontsize=32, color=CREAM, va='top',
-                transform=ax.transAxes, zorder=5, linespacing=1.5)
+                transform=ax.transAxes, zorder=5, linespacing=1.5, clip_on=True)
 
-    # Stat cards
-    _glass_card(ax, 0.06, 0.305, 0.415, 0.140,
-                'ACCOUNT SIZE', f'${content["example_account"]:,}',
-                GOLD, 'example capital')
-    _glass_card(ax, 0.525, 0.305, 0.415, 0.140,
-                'MAX RISK / TRADE', f'${content["example_risk"]:,}',
-                RED, f'RR → {content["example_rr"]}')
+    # Stats — plain text, no boxes
+    _hline(ax, 0.315, alpha=0.25)
+    ax.text(0.06, 0.292, 'ACCOUNT SIZE',
+            fontsize=14, color=DIM, va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=5)
+    ax.text(0.06, 0.258, f'${content["example_account"]:,}',
+            fontsize=36, fontweight='bold', color=GOLD, va='center',
+            transform=ax.transAxes, zorder=5)
 
-    _hline(ax, 0.295, alpha=0.3)
+    ax.text(0.52, 0.292, 'MAX RISK / TRADE',
+            fontsize=14, color=DIM, va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=5)
+    ax.text(0.52, 0.258, f'${content["example_risk"]:,}',
+            fontsize=36, fontweight='bold', color=RED, va='center',
+            transform=ax.transAxes, zorder=5)
 
-    # CTA
-    ax.text(0.06, 0.242,
-            os.environ.get('BRAND_SIGNAL_CTA', '>>  join our live signals channel'),
-            fontsize=26, color=MUTED, va='center',
+    ax.text(0.06, 0.215, f'RR  →  {content["example_rr"]}',
+            fontsize=18, color=MUTED, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
-    _footer(ax)
+    # CTA
+    _hline(ax, 0.196, alpha=0.25)
+    ax.text(0.06, 0.162,
+            os.environ.get('BRAND_SIGNAL_CTA', '>>  join our live signals channel'),
+            fontsize=20, color=MUTED, va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=5)
+
+    # Footer
+    _hline(ax, 0.098, alpha=0.3)
+    ax.text(0.94, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
+            fontsize=15, color=GOLD, va='center', ha='right',
+            transform=ax.transAxes, fontweight='bold', zorder=5)
+    ax.text(0.94, 0.030, 'Not financial advice  ·  IC MARKETS · ASIC',
+            fontsize=12, color=DIM, ha='right', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=5)
+
     return fig
 
 
@@ -315,22 +352,20 @@ def make_pairs_post(content: dict):
 
     for i, (label, value, color) in enumerate(stats):
         cx, cy = xs[i % 2], ys[i // 2]
-        ax.add_patch(patches.FancyBboxPatch(
-            (cx, cy), cw, ch, boxstyle='round,pad=0.006',
-            facecolor=(0.02, 0.06, 0.14, 0.80),
-            edgecolor=color, linewidth=1.0,
-            transform=ax.transAxes, zorder=5
-        ))
-        ax.text(cx + 0.014, cy + ch - 0.018, label,
-                fontsize=13, color=MUTED, fontweight='bold', va='top',
+        # Label
+        ax.text(cx, cy + ch - 0.004, label,
+                fontsize=13, color=DIM, fontweight='bold', va='top',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
-        # wrap long values (e.g. MY EDGE) so they don't overflow the card
+        # Value (wrapped, no box)
         val_lines = _wrap(str(value), 38)[:2]
         line_gap = 0.028
         for k, vl in enumerate(val_lines):
-            ax.text(cx + 0.014, cy + 0.010 + (len(val_lines) - 1 - k) * line_gap, vl,
-                    fontsize=14, color=color, fontweight='bold', va='bottom',
+            ax.text(cx, cy + ch * 0.52 - k * line_gap, vl,
+                    fontsize=14, color=color, fontweight='bold', va='top',
                     transform=ax.transAxes, zorder=6, clip_on=True)
+        # Thin separator line below each cell
+        ax.plot([cx, cx + cw], [cy, cy], color=color, linewidth=0.5, alpha=0.20,
+                transform=ax.transAxes, zorder=5)
 
     # CTA
     cta_y = ys[1] - 0.055
@@ -381,17 +416,11 @@ def make_setup_post(content: dict):
             ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # Direction pill (on photo area, just above the split)
-    ax.add_patch(patches.FancyBboxPatch(
-        (0.06, split_y + 0.010), 0.28, 0.034, boxstyle='round,pad=0.005',
-        facecolor=(0.0, 0.88, 0.59, 0.15) if direction == 'LONG' else (1.0, 0.42, 0.42, 0.15),
-        edgecolor=dir_color, linewidth=1.2,
-        transform=ax.transAxes, zorder=6
-    ))
-    ax.text(0.20, split_y + 0.027, f'{dir_icon}  {direction} SETUP',
-            fontsize=16, fontweight='bold', color=dir_color,
-            ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=7)
+    # Direction label (no box)
+    ax.text(0.06, split_y + 0.027, f'{dir_icon}  {direction} SETUP',
+            fontsize=18, fontweight='bold', color=dir_color,
+            ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Pair + setup type label
     ax.text(0.40, split_y + 0.028, f'{pair}  ·  {content.get("setup_type", "")}',
@@ -435,15 +464,17 @@ def make_setup_post(content: dict):
                     fontsize=18, color=MUTED, va='top',
                     transform=ax.transAxes, zorder=6, linespacing=1.3)
 
-    # Bottom pills
+    # Bottom info (no boxes)
     _hline(ax, panel_bottom + 0.005, alpha=0.25)
-    pill_items = [
-        ('RISK 1%',     RED,       0.06),
-        (f'RR {rr}',   dir_color, 0.24),
-        ('IC MARKETS',  GOLD,      0.42),
-    ]
-    for label, color, px in pill_items:
-        _pill(ax, px, 0.058, 0.160, 0.040, label, color)
+    ax.text(0.06, 0.078, 'RISK 1%',
+            fontsize=16, fontweight='bold', color=RED,
+            va='center', transform=ax.transAxes, fontfamily='monospace', zorder=5)
+    ax.text(0.26, 0.078, f'RR {rr}',
+            fontsize=16, fontweight='bold', color=dir_color,
+            va='center', transform=ax.transAxes, fontfamily='monospace', zorder=5)
+    ax.text(0.42, 0.078, 'IC MARKETS',
+            fontsize=16, fontweight='bold', color=GOLD,
+            va='center', transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
     # CTA
     ax.text(0.66, 0.078, 'Alerts → t.me/pandiangk',
