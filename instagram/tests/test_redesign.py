@@ -46,3 +46,21 @@ def test_weekly_card_has_content():
     img = _fig_to_pil(fig)
     arr = np.array(img)
     assert arr.mean() > 5, "Image appears to be entirely black"
+
+
+def test_daily_card_size():
+    from instagram.generate_status import make_daily_card
+    fig = make_daily_card(DUMMY_DATA)
+    img = _fig_to_pil(fig)
+    w, h = img.size
+    assert w == h, f"Expected square image, got {img.size}"
+    assert w >= 900, f"Expected at least 900px, got {w}"
+
+
+def test_daily_card_with_no_trades():
+    from instagram.generate_status import make_daily_card
+    data = {'account': DUMMY_ACCOUNT, 'openTrades': [], 'dailyGain': []}
+    fig = make_daily_card(data)
+    img = _fig_to_pil(fig)
+    w, h = img.size
+    assert w == h, "Expected square image"

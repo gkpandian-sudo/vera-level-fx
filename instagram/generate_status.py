@@ -71,6 +71,9 @@ def _fmt_price(p: float) -> str:
 
 
 def make_daily_card(data: dict):
+    from instagram.composer import load_background, frosted_glass_region
+    from pathlib import Path
+
     account     = data.get('account', {})
     open_trades = data.get('openTrades', [])
 
@@ -79,10 +82,9 @@ def make_daily_card(data: dict):
     daily_pct = account.get('daily', 0)
     win_rate  = account.get('winRate', 0)
     pips      = int(account.get('pips', 0))
-    trades    = int(account.get('trades', 0))
     pf        = account.get('profitFactor', 0)
 
-    # Deduplicate + strip brand names
+    # Deduplicate trades
     seen, rows = set(), []
     for t in open_trades:
         key = (t.get('symbol', ''), t.get('openTime', ''), t.get('action', ''))
@@ -91,141 +93,127 @@ def make_daily_card(data: dict):
             rows.append(t)
     rows = rows[:5]
 
-    bg = _load_notepad_bg()
+    bg_path = Path(__file__).parent / 'assets' / 'bg-daily.jpg'
+    bg = frosted_glass_region(
+        load_background(bg_path),
+        y_frac=0.56, h_frac=0.44,
+        blur_r=14, darkness=0.76,
+    )
 
     fig = plt.figure(figsize=SIZE, facecolor='black')
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    # ── Background photo ─────────────────────────────────────────
-    if bg is not None:
-        ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
-    else:
-        ax.set_facecolor(NAVY)
+    d_color = GREEN if daily_pct >= 0 else RED
 
-    # Dark overlay on laptop/keyboard area for readability (y > 0.665)
+    # Gold top bar with branding
     ax.add_patch(patches.Rectangle(
-        (0, 0.665), 1, 0.335,
-        facecolor='black', alpha=0.62,
-        transform=ax.transAxes, zorder=1
-    ))
-
-    # ── Top branding band ────────────────────────────────────────
-    ax.add_patch(patches.Rectangle(
-        (0, 0.960), 1, 0.040,
-        facecolor=GOLD, transform=ax.transAxes, zorder=2
+        (0, 0.974), 1, 0.040, facecolor=GOLD, transform=ax.transAxes, zorder=5
     ))
     ax.text(0.5, 0.979, 'VERA LEVEL FX',
             fontsize=19, fontweight='bold', color=NAVY,
             ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=3)
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    ax.text(0.5, 0.930, 'LIVE POSITION UPDATE  ·  ' + datetime.now().strftime('%d %B %Y  %H:%M SGT').upper(),
+    ax.text(0.5, 0.934,
+            'LIVE POSITION UPDATE  ·  ' + datetime.now().strftime('%d %B %Y').upper(),
             fontsize=13, color=WHITE, ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=3)
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # ── Equity / Balance / Daily (on darkened monitor area) ──────
-    d_color = GREEN if daily_pct >= 0 else RED
+    # Equity / Balance / Daily metrics above glass card
     metrics = [
         ('EQUITY',  f'USD {equity:,.0f}',   GOLD),
         ('BALANCE', f'USD {balance:,.0f}',  CREAM),
         ('DAILY',   f'{daily_pct:+.2f}%',   d_color),
     ]
     for i, (label, value, color) in enumerate(metrics):
-        mx = 0.08 + i * 0.315
-        ax.text(mx + 0.115, 0.882, label,
-                fontsize=13, color=DIM, ha='center', va='center',
-                transform=ax.transAxes, fontfamily='monospace', zorder=3)
-        ax.text(mx + 0.115, 0.848, value,
+        mx = 0.08 + i * 0.305
+        ax.text(mx + 0.10, 0.885, label,
+                fontsize=12, color=DIM, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
+        ax.text(mx + 0.10, 0.854, value,
                 fontsize=20, color=color, ha='center', va='center',
-                transform=ax.transAxes, fontweight='bold',
-                fontfamily='monospace', zorder=3)
+                transform=ax.transAxes, fontweight='bold', zorder=6)
 
-    ax.plot([0.06, 0.94], [0.816, 0.816], color=GOLD, linewidth=0.8, alpha=0.35,
-            transform=ax.transAxes, zorder=3)
-    ax.text(0.5, 0.793, 'ALGORITHMIC FOREX  ·  IC MARKETS  ·  MYFXBOOK VERIFIED',
-            fontsize=11, color=MUTED, ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=3)
+    ax.plot([0.06, 0.94], [0.825, 0.825], color=GOLD, linewidth=0.8, alpha=0.3,
+            transform=ax.transAxes, zorder=6)
 
-    # ── NOTEPAD AREA: ink text centred across full image width ──────
-    # Table area: x 0.05–0.95, centred at 0.5
-    def _ty(x, y_base):
-        return y_base + (x - _X_REF) * _ROT_TAN   # _ROT_TAN=0 → always y_base
+    # LIVE badge
+    ax.add_patch(patches.FancyBboxPatch(
+        (0.78, 0.790), 0.16, 0.026, boxstyle='round,pad=0.005',
+        facecolor=(1.0, 0.23, 0.23, 0.85), edgecolor='none',
+        transform=ax.transAxes, zorder=6
+    ))
+    ax.text(0.86, 0.803, '● LIVE',
+            fontsize=13, fontweight='bold', color=WHITE,
+            ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=7)
 
-    def _tline(y_base, x0=_X_REF, x1=0.95, **kw):
-        ax.plot([x0, x1], [_ty(x0, y_base), _ty(x1, y_base)],
-                transform=ax.transAxes, **kw)
+    # Open positions header
+    n_open = len(rows)
+    ax.text(0.06, 0.796, f'{n_open} Open Position{"s" if n_open != 1 else ""}',
+            fontsize=26, fontweight='black', color=WHITE,
+            ha='left', va='center', transform=ax.transAxes, zorder=6)
 
-    def _ttext(x, y_base, label, **kw):
-        ax.text(x, _ty(x, y_base), label,
-                rotation=_ROT, rotation_mode='anchor',
-                transform=ax.transAxes, **kw)
+    # Trade table
+    col_x = {'pair': 0.06, 'dir': 0.300, 'pnl': 0.470, 'pips': 0.640, 'entry': 0.810}
+    headers = [('PAIR', 'pair', 'left'), ('DIR', 'dir', 'center'),
+               ('P&L', 'pnl', 'center'), ('PIPS', 'pips', 'center'),
+               ('ENTRY', 'entry', 'center')]
 
-    # Column x positions — spread across full width (x: 0.05–0.95)
-    CX = dict(pair=_X_REF, dir=0.27, pnl=0.44, pips=0.61, entry=0.82)
+    ax.plot([0.06, 0.94], [0.754, 0.754], color=GOLD, linewidth=0.8, alpha=0.25,
+            transform=ax.transAxes, zorder=6)
+    for label, key, ha in headers:
+        ax.text(col_x[key], 0.740, label,
+                fontsize=12, color=DIM, ha=ha, va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
+    ax.plot([0.06, 0.94], [0.722, 0.722], color=GOLD, linewidth=0.8, alpha=0.18,
+            transform=ax.transAxes, zorder=6)
 
-    # "OPEN TRADES" header — centred on full image
-    _ttext(0.5, 0.640, 'OPEN TRADES',
-           fontsize=17, color=INK, ha='center', va='center',
-           fontfamily='monospace', fontweight='bold', zorder=4)
-    _tline(0.620, color=INK, linewidth=0.9, alpha=0.28, zorder=4)
-
-    # Column headers
-    col_defs = [
-        ('PAIR',  _X_REF,       'left'),
-        ('DIR',   CX['dir'],   'center'),
-        ('P&L',   CX['pnl'],  'center'),
-        ('PIPS',  CX['pips'], 'center'),
-        ('ENTRY', CX['entry'],'center'),
-    ]
-    for label, cx, ha in col_defs:
-        _ttext(cx, 0.605, label,
-               fontsize=11, color=INK, ha=ha, va='center', alpha=0.52,
-               fontfamily='monospace', fontweight='bold', zorder=4)
-    _tline(0.586, color=INK, linewidth=0.5, alpha=0.18, zorder=4)
-
-    # Trade rows
     row_gap = 0.060
     if rows:
         for r, trade in enumerate(rows):
-            ry = 0.568 - r * row_gap
+            ry = 0.704 - r * row_gap
+            pair   = trade.get('symbol', '—')
+            action = trade.get('action', '').upper()
+            profit = trade.get('profit', 0)
+            t_pips = trade.get('pips', 0)
+            entry  = trade.get('openPrice', 0)
+            p_color = GREEN if profit >= 0 else RED
 
-            pair       = trade.get('symbol', '—')
-            action     = trade.get('action', '').upper()
-            profit     = trade.get('profit', 0)
-            t_pips     = trade.get('pips', 0)
-            open_price = trade.get('openPrice', 0)
-
-            row_data = [
-                (pair,                   _X_REF,       'bold',   14, 'left'),
-                (action[:3],             CX['dir'],    'bold',   13, 'center'),
-                (f'{profit:+.0f}',       CX['pnl'],  'normal', 12, 'center'),
-                (_fmt_pips(t_pips),      CX['pips'], 'normal', 12, 'center'),
-                (_fmt_price(open_price), CX['entry'],'normal', 12, 'center'),
-            ]
-            for text, cx, fw, fs, ha in row_data:
-                _ttext(cx, ry, text,
-                       fontsize=fs, color=INK, ha=ha, va='center',
-                       fontfamily='monospace', fontweight=fw, zorder=4)
-
+            ax.text(col_x['pair'],  ry, pair,               fontsize=15, fontweight='bold', color=WHITE,   ha='left',   va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['dir'],   ry, action[:3],         fontsize=14, fontweight='bold', color=p_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',   fontsize=14, color=p_color,    ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['pips'],  ry, _fmt_pips(t_pips),  fontsize=14, color=MUTED,      ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['entry'], ry, _fmt_price(entry),  fontsize=13, color=DIM,        ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
             if r < len(rows) - 1:
-                _tline(ry - 0.026, color=INK, linewidth=0.4, alpha=0.13, zorder=4)
+                ax.plot([0.06, 0.94], [ry - 0.025, ry - 0.025],
+                        color=GOLD, linewidth=0.5, alpha=0.12,
+                        transform=ax.transAxes, zorder=6)
     else:
-        _ttext(0.5, 0.460, 'no open positions',
-               fontsize=13, color=INK, ha='center', va='center', alpha=0.42,
-               fontstyle='italic', zorder=4)
+        ax.text(0.5, 0.640, 'No open positions',
+                fontsize=18, color=DIM, ha='center', va='center',
+                fontstyle='italic', transform=ax.transAxes, zorder=6)
 
-    # Stats footer on notepad
-    stats_y = 0.240 if not rows else max(0.160, 0.568 - len(rows) * row_gap - 0.050)
-    _tline(stats_y + 0.028, color=INK, linewidth=0.7, alpha=0.22, zorder=4)
-    _ttext(0.5, stats_y,
-           f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips',
-           fontsize=10, color=INK, ha='center', va='center', alpha=0.58,
-           fontfamily='monospace', zorder=4)
+    # Stats footer inside glass area
+    bottom_y = max(0.180, 0.704 - len(rows) * row_gap - 0.055)
+    ax.plot([0.06, 0.94], [bottom_y + 0.024, bottom_y + 0.024],
+            color=GOLD, linewidth=0.8, alpha=0.2, transform=ax.transAxes, zorder=6)
+    ax.text(0.5, bottom_y,
+            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips  —  verified on Myfxbook',
+            fontsize=13, color=DIM, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # Footer watermark (very bottom of image, below notepad leather frame)
-    ax.text(0.5, 0.028, '@veralevel.fx  ·  Not financial advice',
-            fontsize=12, color=WHITE, ha='center', va='center', alpha=0.72,
-            transform=ax.transAxes, fontfamily='monospace', zorder=3)
+    # CTA
+    ax.text(0.5, 0.135,
+            'Live trade alerts  →  t.me/pandiangk',
+            fontsize=17, fontweight='bold', color=GOLD,
+            ha='center', va='center', transform=ax.transAxes, zorder=6)
+
+    # Footer watermark
+    ax.text(0.94, 0.032, '@veralevel.fx  ·  Not financial advice',
+            fontsize=12, color=WHITE, ha='right', va='center',
+            alpha=0.55, transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     return fig
