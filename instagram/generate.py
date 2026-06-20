@@ -94,6 +94,9 @@ def _metric_card(ax, x, y, w, h, label, value, color, sub=''):
 # ── Weekly Performance Card ──────────────────────────────────────
 
 def make_weekly_card(data):
+    from instagram.composer import load_background, gradient_panel
+    from pathlib import Path
+
     account  = data.get('account', {})
     balance  = account.get('balance', 0)
     gain     = account.get('gain', 0)
@@ -104,43 +107,98 @@ def make_weekly_card(data):
     pips     = int(account.get('pips', 0))
     trades   = int(account.get('trades', 0))
 
-    fig, ax = _base()
-    _header(ax)
+    bg_path = Path(__file__).parent / 'assets' / 'bg-weekly.jpg'
+    bg = gradient_panel(load_background(bg_path), height_frac=0.52)
 
-    ax.text(0.5, 0.848, 'Weekly Performance',
-            fontsize=48, fontweight='bold', color=WHITE,
-            ha='center', va='center', transform=ax.transAxes, fontstyle='italic')
-    ax.text(0.5, 0.812, datetime.now().strftime('%d %B %Y').upper(),
-            fontsize=22, color=MUTED, ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace')
-    _hline(ax, 0.792)
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.imshow(bg, extent=[0, 1, 0, 1], aspect='auto', zorder=0)
 
-    gain_color  = GREEN if gain >= 0  else RED
-    month_color = GREEN if monthly >= 0 else RED
-    gain_sign   = '+' if gain >= 0 else ''
-    month_sign  = '+' if monthly >= 0 else ''
+    gain_color = GREEN if gain >= 0 else RED
+    gain_sign  = '+' if gain >= 0 else ''
 
-    metrics = [
-        ('ACCOUNT BALANCE', f'${balance:,.0f}',             GOLD,        ''),
-        ('TOTAL GAIN',      f'{gain_sign}{gain:.2f}%',      gain_color,  'since inception'),
-        ('MONTHLY AVG',     f'{month_sign}{monthly:.2f}%',  month_color, '30-day rolling'),
-        ('WIN RATE',        f'{win_rate:.0f}%',             WHITE,       f'{trades:,} trades'),
-        ('PROFIT FACTOR',   f'{pf:.2f}',                    GOLD,        'benchmark > 1.5'),
-        ('DRAWDOWN',        f'{dd:.1f}%',                   AMBER,       'balance drawdown'),
+    # Gold top bar
+    ax.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+    ))
+
+    # Account name
+    ax.text(0.06, 0.946, 'VERA LEVEL FX',
+            fontsize=20, fontweight='bold', color=GOLD,
+            ha='left', va='center', transform=ax.transAxes, zorder=6)
+
+    # Verified badge
+    ax.add_patch(patches.FancyBboxPatch(
+        (0.06, 0.910), 0.50, 0.026, boxstyle='round,pad=0.004',
+        facecolor=(240/255, 192/255, 64/255, 0.12),
+        edgecolor=(240/255, 192/255, 64/255, 0.4), linewidth=0.8,
+        transform=ax.transAxes, zorder=5
+    ))
+    ax.add_patch(patches.Circle((0.075, 0.923), 0.007,
+        facecolor=GREEN, transform=ax.transAxes, zorder=6))
+    ax.text(0.090, 0.923, 'IC Markets Verified  ·  ASIC Regulated',
+            fontsize=14, color=GOLD, ha='left', va='center',
+            transform=ax.transAxes, zorder=6)
+
+    # Post type label
+    ax.text(0.06, 0.868,
+            f'WEEKLY PERFORMANCE  ·  {datetime.now().strftime("%d %B %Y").upper()}',
+            fontsize=16, color=MUTED, ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    # Hero: gain %
+    ax.text(0.06, 0.810, f'{gain_sign}{gain:.1f}%',
+            fontsize=88, fontweight='black', color=gain_color,
+            ha='left', va='center', transform=ax.transAxes,
+            linespacing=1.0, zorder=6)
+    ax.text(0.06, 0.760, 'Total gain since inception',
+            fontsize=20, color=MUTED, ha='left', va='center',
+            transform=ax.transAxes, zorder=6)
+
+    _hline(ax, 0.740, alpha=0.3)
+
+    # 4-stat row
+    stats = [
+        (f'${balance:,.0f}',   'BALANCE',   GOLD),
+        (f'{win_rate:.0f}%',   'WIN RATE',  WHITE),
+        (f'+{pips:,}',         'PIPS',      GREEN),
+        (f'{trades:,}',        'TRADES',    MUTED),
     ]
+    col_w = 0.22
+    for i, (val, lbl, color) in enumerate(stats):
+        cx = 0.06 + i * col_w
+        ax.text(cx, 0.700, val,
+                fontsize=30, fontweight='black', color=color,
+                ha='left', va='center', transform=ax.transAxes, zorder=6)
+        ax.text(cx, 0.668, lbl,
+                fontsize=14, color=DIM, ha='left', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    xs = [0.06, 0.53]
-    ys = [0.596, 0.390, 0.184]
-    cw, ch = 0.41, 0.185
+    # Risk row
+    ax.text(0.06, 0.630,
+            f'Profit Factor {pf:.2f}  ·  Drawdown {dd:.1f}%  ·  1% max risk per trade',
+            fontsize=16, color=DIM, ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    for i, (label, value, color, sub) in enumerate(metrics):
-        _metric_card(ax, xs[i % 2], ys[i // 2], cw, ch, label, value, color, sub)
+    # CTA
+    _hline(ax, 0.595, alpha=0.25)
+    ax.text(0.06, 0.568, 'Open your IC Markets account — same broker I use:',
+            fontsize=17, color=MUTED, ha='left', va='center',
+            transform=ax.transAxes, zorder=6)
+    ax.text(0.06, 0.542, 'icmarkets.com/?camp=91936',
+            fontsize=19, fontweight='bold', color=GOLD,
+            ha='left', va='center', transform=ax.transAxes, zorder=6)
 
-    ax.text(0.5, 0.138, f'+{pips:,} PIPS  ·  {trades:,} TOTAL TRADES',
-            fontsize=26, color=GOLD_B, ha='center', va='center',
-            transform=ax.transAxes, fontweight='bold', fontfamily='monospace')
+    # Footer
+    _hline(ax, 0.095, alpha=0.3)
+    ax.text(0.94, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
+            fontsize=15, color=GOLD, va='center', ha='right',
+            transform=ax.transAxes, fontweight='bold', zorder=6)
+    ax.text(0.94, 0.030, 'Not financial advice',
+            fontsize=14, color=DIM, ha='right', va='center',
+            transform=ax.transAxes, zorder=6)
 
-    _footer(ax)
     return fig
 
 
