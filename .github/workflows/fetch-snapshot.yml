@@ -42,4 +42,5 @@ jobs:
           git config user.name  "github-actions[bot]"
           git add data/vera-snapshot.json
           git diff --cached --quiet || git commit -m "data: update vera-snapshot $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin master
           git push origin master

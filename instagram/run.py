@@ -95,6 +95,7 @@ def write_and_commit_counter(index: int):
         ['git', 'config', 'user.name',  'github-actions[bot]'],
         ['git', 'add', str(COUNTER_FILE)],
         ['git', 'commit', '-m', f'chore: advance edu counter to {index} [skip ci]'],
+        ['git', 'pull',   '--rebase', 'origin', 'master'],
         ['git', 'push',   'origin', 'master'],
     ]
     for cmd in cmds:
@@ -134,6 +135,7 @@ def commit_and_push(image_path: Path) -> str:
         ['git', 'config', 'user.name',  'github-actions[bot]'],
         ['git', 'add',    str(image_path)],
         ['git', 'commit', '-m', f'auto: instagram post {date.today()} [skip ci]'],
+        ['git', 'pull',   '--rebase', 'origin', branch],
         ['git', 'push',   'origin', branch],
     ]
     for cmd in cmds:
