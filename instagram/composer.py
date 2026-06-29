@@ -98,7 +98,7 @@ def split_layout(
     H = arr.shape[0]
     split_px = int(H * split_frac)
 
-    arr[split_px:] = 0.0
+    arr[split_px:] = _NAVY_RGB
 
     gold = np.array([0.941, 0.753, 0.251], dtype=np.float32)
     arr[split_px:split_px + 3] = gold

@@ -196,7 +196,11 @@ def make_monthly_chart(data):
         date_s = item[0] if isinstance(item, list) else item.get('date', '')
         val    = item[1] if isinstance(item, list) else item.get('value', 0)
         try:
-            dt  = datetime.fromisoformat(str(date_s)[:10])
+            ds = str(date_s)
+            try:
+                dt = datetime.fromisoformat(ds[:10])
+            except ValueError:
+                dt = datetime.strptime(ds, '%m/%d/%Y')
             key = dt.strftime('%b %y')
             monthly_pnl[key] = monthly_pnl.get(key, 0) + float(val)
         except Exception:

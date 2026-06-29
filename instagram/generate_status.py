@@ -162,13 +162,15 @@ def make_daily_card(data: dict):
             profit  = trade.get('profit', 0)
             t_pips  = trade.get('pips', 0)
             entry   = trade.get('openPrice', 0)
-            p_color = GREEN if profit >= 0 else RED
+            p_color   = GREEN if profit >= 0 else RED
+            dir_color = GREEN if 'BUY' in action else RED
+            pip_color = GREEN if t_pips >= 0 else RED
 
-            ax.text(col_x['pair'],  ry, pair,              fontsize=19, fontweight='bold', color=WHITE,   ha='left',   va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['dir'],   ry, action[:3],        fontsize=17, fontweight='bold', color=WHITE,   ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',  fontsize=17, fontweight='bold', color=WHITE,   ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['pips'],  ry, _fmt_pips(t_pips), fontsize=17, color=WHITE,       ha='center', va='center', transform=ax.transAxes, zorder=6)
-            ax.text(col_x['entry'], ry, _fmt_price(entry), fontsize=16, color=WHITE,        ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
+            ax.text(col_x['pair'],  ry, pair,              fontsize=19, fontweight='bold', color=WHITE,     ha='left',   va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['dir'],   ry, action[:3],        fontsize=17, fontweight='bold', color=dir_color, ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['pnl'],   ry, f'{profit:+.0f}',  fontsize=17, fontweight='bold', color=p_color,   ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['pips'],  ry, _fmt_pips(t_pips), fontsize=17, color=pip_color,   ha='center', va='center', transform=ax.transAxes, zorder=6)
+            ax.text(col_x['entry'], ry, _fmt_price(entry), fontsize=16, color=MUTED,        ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
             if r < len(rows) - 1:
                 ax.plot([0.06, 0.94], [ry - 0.026, ry - 0.026],
                         color=GOLD, linewidth=0.5, alpha=0.15,
