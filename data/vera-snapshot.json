@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-06-29T12:30:20Z",
+  "fetchedAt": "2026-06-29T22:34:22Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
-    "gain": 25.43,
-    "absGain": 10.43,
+    "gain": 25.82,
+    "absGain": 10.67,
     "daily": 0.18,
-    "monthly": 5.39,
+    "monthly": 5.45,
     "withdrawals": 1765,
     "deposits": 5201.08,
     "interest": -216.73,
-    "profit": 542.21,
-    "balance": 3977.79,
+    "profit": 554.71,
+    "balance": 3990.29,
     "drawdown": 51.04,
-    "equity": 3879.1,
-    "equityPercent": 97.52,
+    "equity": 3917.22,
+    "equityPercent": 98.17,
     "demo": false,
-    "lastUpdateDate": "06/29/2026 12:08",
+    "lastUpdateDate": "06/29/2026 19:58",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -302.67,
+    "commission": -303.37,
     "currency": "USD",
     "profitFactor": 1.06,
-    "pips": 72281.6,
+    "pips": 72413.6,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -45,8 +45,8 @@
       "tp": 1.19,
       "sl": 0,
       "comment": "",
-      "profit": -42.24,
-      "pips": -422.4,
+      "profit": -40.41,
+      "pips": -404.1,
       "swap": -10.41,
       "magic": "0"
     },
@@ -62,8 +62,8 @@
       "tp": 0,
       "sl": 0,
       "comment": "",
-      "profit": -43.5,
-      "pips": -217.5,
+      "profit": -39.84,
+      "pips": -199.2,
       "swap": -7.15,
       "magic": "0"
     },
@@ -79,13 +79,32 @@
       "tp": 0,
       "sl": 0,
       "comment": "",
-      "profit": 10.34,
-      "pips": 9.4,
+      "profit": 30.47,
+      "pips": 27.7,
       "swap": -5.73,
       "magic": "0"
     }
   ],
   "history": [
+    {
+      "openTime": "06/29/2026 22:30",
+      "closeTime": "06/29/2026 22:32",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.10"
+      },
+      "openPrice": 4018.79,
+      "closePrice": 4017.47,
+      "tp": 0,
+      "sl": 0,
+      "pips": 132,
+      "profit": 12.5,
+      "comment": "#4082077020|TOL LANGIT ETF - IV",
+      "interest": 0,
+      "commission": -0.7
+    },
     {
       "openTime": "06/29/2026 08:30",
       "closeTime": "06/29/2026 09:01",
@@ -826,25 +845,6 @@
       "comment": "TOL LANGIT ETF - VII_PendingB TOL LANGIT ETF - VII_PendingB[sl 4011.75]",
       "interest": 0,
       "commission": -0.15
-    },
-    {
-      "openTime": "06/24/2026 15:25",
-      "closeTime": "06/24/2026 15:26",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.08"
-      },
-      "openPrice": 4015.46,
-      "closePrice": 4015.97,
-      "tp": 0,
-      "sl": 4015.56,
-      "pips": -51,
-      "profit": -4.64,
-      "comment": "TOL LANGIT ETF - VII_PendingC TOL LANGIT ETF - VII_PendingC[sl 4015.56]",
-      "interest": 0,
-      "commission": -0.56
     }
   ],
   "dailyGain": [
@@ -1245,8 +1245,8 @@
     ],
     [
       "06/29/2026",
-      25.43,
-      41.89
+      25.82,
+      54.39
     ]
   ]
 }
