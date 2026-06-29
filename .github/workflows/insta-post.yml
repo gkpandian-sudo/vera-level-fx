@@ -2,18 +2,9 @@ name: Instagram Auto-Post
 
 on:
   schedule:
-    # Monday    09:00 SGT = 01:00 UTC → weekly performance card
-    - cron: '0 1 * * 1'
-    # Tuesday   09:00 SGT = 01:00 UTC → educational post (rotating)
-    - cron: '0 1 * * 2'
-    # Wednesday 09:00 SGT = 01:00 UTC → live trade update
-    - cron: '0 1 * * 3'
-    # Thursday  09:00 SGT = 01:00 UTC → educational post (rotating)
-    - cron: '0 1 * * 4'
-    # Friday    09:00 SGT = 01:00 UTC → live trade update
-    - cron: '0 1 * * 5'
-    # 1st of every month 09:00 SGT   → monthly P&L chart
-    - cron: '0 1 1 * *'
+    # Daily 06:00 SGT = 22:00 UTC (previous day)
+    # Post type is decided by run.py: monthly (1st) > weekly (Mon) > edu (Tue) > daily (all other days)
+    - cron: '0 22 * * *'
   workflow_dispatch:
     inputs:
       post_type:

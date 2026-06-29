@@ -110,11 +110,9 @@ def decide_post_type(today: date) -> str:
     weekday = today.weekday()   # 0=Mon … 6=Sun
     if weekday == 0:
         return 'weekly'
-    if weekday in (1, 3):       # Tuesday, Thursday
+    if weekday == 1:            # Tuesday only — one edu per week
         return 'edu'
-    if weekday in (2, 4):       # Wednesday, Friday
-        return 'daily'
-    return 'trust'
+    return 'daily'
 
 
 def save_image(fig, post_type: str) -> Path:
