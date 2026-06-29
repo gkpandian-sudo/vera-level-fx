@@ -2,8 +2,8 @@ name: Fetch Vera Snapshot
 
 on:
   schedule:
-    # Daily at 21:30 UTC = 05:30 AM SGT (30 min before the 06:00 AM post)
-    - cron: '30 21 * * *'
+    # Mon–Fri 05:30 SGT = 21:30 UTC Sun–Thu (30 min before the 06:00 AM post)
+    - cron: '30 21 * * 0-4'
   workflow_dispatch:
 
 permissions:

@@ -2,9 +2,9 @@ name: Instagram Auto-Post
 
 on:
   schedule:
-    # Daily 06:00 SGT = 22:00 UTC (previous day)
+    # Mon–Fri 06:00 SGT = 22:00 UTC Sun–Thu (SGT is UTC+8, post fires the UTC night before)
     # Post type is decided by run.py: monthly (1st) > weekly (Mon) > edu (Tue) > daily (all other days)
-    - cron: '0 22 * * *'
+    - cron: '0 22 * * 0-4'
   workflow_dispatch:
     inputs:
       post_type:
