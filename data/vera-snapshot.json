@@ -4,19 +4,19 @@
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": 39.52,
-    "absGain": 18.93,
-    "daily": 0.26,
+    "absGain": 19.02,
+    "daily": 0.25,
     "monthly": 7.97,
     "withdrawals": 1765,
     "deposits": 5201.08,
     "interest": -216.54,
-    "profit": 985.28,
+    "profit": 989.13,
     "balance": 4424.71,
     "drawdown": 51.04,
-    "equity": 4301.76,
-    "equityPercent": 97.22,
+    "equity": 4352.58,
+    "equityPercent": 98.37,
     "demo": false,
-    "lastUpdateDate": "06/30/2026 09:02",
+    "lastUpdateDate": "06/30/2026 15:13",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
@@ -48,8 +48,8 @@
       "tp": 1.19,
       "sl": 0,
       "comment": "",
-      "profit": -43.89,
-      "pips": -438.9,
+      "profit": -40.26,
+      "pips": -402.6,
       "swap": -10.49,
       "magic": "0"
     },
@@ -65,8 +65,8 @@
       "tp": 0,
       "sl": 0,
       "comment": "",
-      "profit": -46.8,
-      "pips": -234,
+      "profit": -39.54,
+      "pips": -197.7,
       "swap": -7.32,
       "magic": "0"
     },
@@ -82,39 +82,13 @@
       "tp": 0,
       "sl": 0,
       "comment": "",
-      "profit": -7.81,
-      "pips": -7.1,
+      "profit": 32.12,
+      "pips": 29.2,
       "swap": -6.64,
       "magic": "0"
     }
   ],
   "openOrders": [
-    {
-      "openTime": "06/29/2026 01:02",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4890.45,
-      "tp": 4976.02,
-      "sl": 4849.7,
-      "comment": "TOL LANGIT ETF - VII_PendingB"
-    },
-    {
-      "openTime": "06/29/2026 02:00",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.10"
-      },
-      "openPrice": 4094.86,
-      "tp": 4188.39,
-      "sl": 4083.47,
-      "comment": "TOL LANGIT ETF - VII_PendingE"
-    },
     {
       "openTime": "06/29/2026 03:45",
       "symbol": "XAUUSD",
@@ -127,32 +101,6 @@
       "tp": 4127.67,
       "sl": 4093.01,
       "comment": "TOL LANGIT ETF - V.2"
-    },
-    {
-      "openTime": "06/29/2026 08:00",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.09"
-      },
-      "openPrice": 4094.87,
-      "tp": 4155.65,
-      "sl": 4082.71,
-      "comment": "TOL LANGIT ETF - VII_PendingC"
-    },
-    {
-      "openTime": "06/29/2026 10:00",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.09"
-      },
-      "openPrice": 4094.86,
-      "tp": 4188.3,
-      "sl": 4082.67,
-      "comment": "TOL LANGIT ETF - VII_PendingA"
     },
     {
       "openTime": "06/29/2026 12:00",
@@ -168,17 +116,56 @@
       "comment": "TOL LANGIT ETF - VII GS"
     },
     {
-      "openTime": "06/30/2026 12:00",
+      "openTime": "06/30/2026 17:30",
+      "symbol": "XAUUSD",
+      "action": "Buy Stop",
+      "sizing": {
+        "type": "lots",
+        "value": "0.11"
+      },
+      "openPrice": 4094.87,
+      "tp": 4188.13,
+      "sl": 4083.52,
+      "comment": "TOL LANGIT ETF - VII_PendingE"
+    },
+    {
+      "openTime": "06/30/2026 17:30",
       "symbol": "XAUUSD",
       "action": "Sell Stop",
       "sizing": {
         "type": "lots",
         "value": "0.11"
       },
-      "openPrice": 3945.38,
-      "tp": 3853.02,
-      "sl": 3956.62,
+      "openPrice": 3945.4,
+      "tp": 3852.14,
+      "sl": 3956.75,
       "comment": "TOL LANGIT ETF - VII_PendingE"
+    },
+    {
+      "openTime": "06/30/2026 17:30",
+      "symbol": "XAUUSD",
+      "action": "Buy Stop",
+      "sizing": {
+        "type": "lots",
+        "value": "0.10"
+      },
+      "openPrice": 4094.87,
+      "tp": 4155.69,
+      "sl": 4082.71,
+      "comment": "TOL LANGIT ETF - VII_PendingC"
+    },
+    {
+      "openTime": "06/30/2026 17:30",
+      "symbol": "XAUUSD",
+      "action": "Buy Stop",
+      "sizing": {
+        "type": "lots",
+        "value": "0.10"
+      },
+      "openPrice": 4094.87,
+      "tp": 4188.13,
+      "sl": 4082.71,
+      "comment": "TOL LANGIT ETF - VII_PendingA"
     }
   ],
   "history": [
@@ -368,7 +355,7 @@
       "sl": 3951.51,
       "pips": 760.7,
       "profit": 67.82,
-      "comment": "TOL LANGIT ETF - VII_PendingC TOL LANGIT ETF - VII_PendingC[sl 3951.51]",
+      "comment": "TOL LANGIT ETF - VII_PendingC[sl 3951.51]",
       "interest": 0,
       "commission": -0.64
     },
@@ -387,7 +374,7 @@
       "sl": 3951.51,
       "pips": 758.7,
       "profit": 67.64,
-      "comment": "TOL LANGIT ETF - VII_PendingA TOL LANGIT ETF - VII_PendingA[sl 3951.51]",
+      "comment": "TOL LANGIT ETF - VII_PendingA[sl 3951.51]",
       "interest": 0,
       "commission": -0.64
     },
@@ -1350,5 +1337,5 @@
       434.42
     ]
   ],
-  "fetchedAt": "2026-06-30T11:32:08.095Z"
+  "fetchedAt": "2026-07-01T11:40:29.060Z"
 }
