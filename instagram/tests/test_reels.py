@@ -130,3 +130,51 @@ def test_make_trust_reel_returns_four_clips():
     assert len(clips) == 4
     total_dur = sum(c.duration for c in clips)
     assert 11.0 < total_dur < 13.0
+
+
+SAMPLE_DAILY_GAIN = [
+    ['2026-01-31', 2.1, 210], ['2026-02-28', -1.5, -150],
+    ['2026-03-31', 3.2, 320], ['2026-04-30', -0.8, -80],
+    ['2026-05-31', 1.9, 190], ['2026-06-30', -96.8, -9680],
+]
+
+
+def test_make_monthly_reel_returns_four_clips():
+    from reels.scenes import make_monthly_reel
+    data = {'account': SAMPLE_ACCOUNT, 'dailyGain': SAMPLE_DAILY_GAIN}
+    clips = make_monthly_reel(data)
+    assert len(clips) == 4
+    total_dur = sum(c.duration for c in clips)
+    assert 26.0 < total_dur < 30.0
+
+
+def test_make_transparency_reel_returns_four_clips():
+    from reels.scenes import make_transparency_reel
+    clips = make_transparency_reel({'account': SAMPLE_ACCOUNT})
+    assert len(clips) == 4
+    total_dur = sum(c.duration for c in clips)
+    assert 23.0 < total_dur < 27.0
+
+
+def test_make_recovery_plan_reel_returns_four_clips():
+    from reels.scenes import make_recovery_plan_reel
+    clips = make_recovery_plan_reel()
+    assert len(clips) == 4
+    total_dur = sum(c.duration for c in clips)
+    assert 26.0 < total_dur < 30.0
+
+
+def test_make_edu_reel_returns_four_clips():
+    from reels.scenes import make_edu_reel
+    content = {
+        'rule_num': 1,
+        'title': '1% Risk Rule',
+        'body': 'Never risk more than 1% of your account per trade.',
+        'example_account': 10000,
+        'example_risk': 100,
+        'example_rr': '1:3',
+    }
+    clips = make_edu_reel('risk', content)
+    assert len(clips) == 4
+    total_dur = sum(c.duration for c in clips)
+    assert 20.0 < total_dur < 24.0
