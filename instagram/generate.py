@@ -551,7 +551,8 @@ def make_recovery_plan_card(data=None):
                 facecolor=NAVY_S, transform=ax.transAxes, zorder=1
             ))
 
-        ax.text(col_x[0], y, f'{'▶ ' if is_now else ''}{month}',
+        prefix = '> ' if is_now else ''
+        ax.text(col_x[0], y, f'{prefix}{month}',
                 fontsize=14 if is_now else 13, color=m_color, ha='left', va='center',
                 transform=ax.transAxes, fontweight='bold' if is_now else 'normal')
         ax.text(col_x[1], y, f'+${topup:,.0f}',
