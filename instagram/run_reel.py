@@ -41,8 +41,11 @@ def commit_and_push(video_path: Path) -> str:
     ]
     for cmd in cmds:
         r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
-        if r.returncode != 0 and 'nothing to commit' not in r.stdout:
+        if r.returncode != 0:
+            if 'nothing to commit' in r.stdout or 'nothing to commit' in r.stderr:
+                continue
             print(r.stderr, file=sys.stderr)
+            raise RuntimeError(f'git command failed: {cmd[1]}')
 
     return f'https://raw.githubusercontent.com/{repo}/{branch}/{rel}'
 
@@ -124,9 +127,13 @@ def main():
         caption           = edu_caption(edu_type, content, lang=lang)
         write_and_commit_counter(next_idx)
 
-    else:  # trust
+    elif post_type == 'trust':
         clips   = make_trust_reel(data)
         caption = trust(account, lang=lang)
+
+    else:
+        raise ValueError(f'Unknown POST_TYPE: {post_type!r}. '
+                         f'Expected: daily|weekly|monthly|trust|edu|transparency|recovery-plan')
 
     # ── Render ────────────────────────────────────────────────────────────────
     audio_path = get_track(post_type)
