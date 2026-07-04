@@ -76,3 +76,20 @@ def test_audio_build_clip_none_when_no_file():
     from reels.audio import build_audio_clip
     result = build_audio_clip(None, 10.0)
     assert result is None
+
+
+# ── render.py tests ───────────────────────────────────────────────────────────
+
+def test_render_creates_mp4(tmp_path):
+    import numpy as np
+    from moviepy.editor import VideoClip
+    from reels.render import render
+
+    def make_frame(t):
+        return np.full((1920, 1080, 3), int(t * 50) % 256, dtype=np.uint8)
+
+    clips = [VideoClip(make_frame, duration=1.0).set_fps(30)]
+    out   = tmp_path / 'test.mp4'
+    render(clips, audio_path=None, out_path=str(out), fps=30)
+    assert out.exists()
+    assert out.stat().st_size > 1000
