@@ -1,15 +1,13 @@
 from __future__ import annotations
-from pathlib import Path
 
 
 def render(clips: list, audio_path: 'Path | None', out_path: str,
-           fps: int = 30, size: tuple = (1080, 1920)) -> None:
+           fps: int = 30) -> None:
     """Concatenate VideoClips, add optional audio, write MP4.
 
     clips      — list of MoviePy VideoClip (each has .fps set)
     audio_path — Path to MP3/WAV file, or None for silent
     out_path   — output file path (string)
-    size       — (width, height) — default 1080×1920
     """
     from moviepy.editor import concatenate_videoclips
 
