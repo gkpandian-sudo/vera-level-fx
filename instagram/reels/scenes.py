@@ -1,4 +1,5 @@
 from __future__ import annotations
+import textwrap
 import numpy as np
 from PIL import Image, ImageDraw
 from moviepy.editor import VideoClip
@@ -396,7 +397,7 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         hero = _clip(hero_frame, 5.0)
 
         body  = content.get('body', '')
-        body_lines = [body[i:i+42] for i in range(0, len(body), 42)]
+        body_lines = textwrap.wrap(body, width=42)
         ex_text = (f"${content['example_account']:,} account\n"
                    f"-> max ${content['example_risk']:,} per trade\n"
                    f"at {content['example_rr']}")
