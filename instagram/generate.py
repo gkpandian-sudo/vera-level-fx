@@ -354,3 +354,128 @@ def make_winrate_card(data):
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     return fig
+
+
+# ── Transparency / Recovery Card ─────────────────────────────────
+
+def make_transparency_card(data):
+    account  = data.get('account', {})
+    gain     = account.get('gain', 0)
+    dd       = account.get('drawdown', 0)
+    balance  = account.get('balance', 0)
+    trades   = int(account.get('trades', 0))
+    win_rate = account.get('winRate', 0)
+
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.set_facecolor(NAVY)
+
+    # Top gold bar
+    ax.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+    ))
+
+    # Brand name
+    ax.text(0.5, 0.946, 'VERA LEVEL FX',
+            fontsize=22, fontweight='bold', color=GOLD, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
+    ax.text(0.5, 0.916, 'FULL TRANSPARENCY  ·  NOTHING HIDDEN',
+            fontsize=15, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
+    _hline(ax, 0.898, alpha=0.35)
+
+    # Hero: loss number — intentionally RED and large
+    gain_sign = '+' if gain >= 0 else ''
+    ax.text(0.5, 0.790,
+            f'{gain_sign}{gain:.1f}%',
+            fontsize=100, fontweight='black', color=RED,
+            ha='center', va='center', transform=ax.transAxes, zorder=6)
+    ax.text(0.5, 0.730, 'TOTAL GAIN SINCE INCEPTION',
+            fontsize=16, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
+
+    _hline(ax, 0.706, alpha=0.25)
+
+    # What changed section
+    ax.text(0.06, 0.672, 'WHAT HAPPENED',
+            fontsize=14, color=AMBER, ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+    ax.text(0.06, 0.642,
+            'Entry frequency too high during volatile XAUUSD run.',
+            fontsize=17, color=CREAM, ha='left', va='center',
+            transform=ax.transAxes)
+    ax.text(0.06, 0.614,
+            'Capital eroded faster than wins could recover.',
+            fontsize=17, color=CREAM, ha='left', va='center',
+            transform=ax.transAxes)
+
+    _hline(ax, 0.592, alpha=0.20)
+
+    ax.text(0.06, 0.562, 'WHAT CHANGED',
+            fontsize=14, color=GREEN, ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+    ax.text(0.06, 0.532,
+            'Reduced frequency · tighter session filters',
+            fontsize=17, color=CREAM, ha='left', va='center',
+            transform=ax.transAxes)
+    ax.text(0.06, 0.504,
+            'London/NY overlap only · 1% risk rule unchanged',
+            fontsize=17, color=CREAM, ha='left', va='center',
+            transform=ax.transAxes)
+
+    _hline(ax, 0.480, alpha=0.20)
+
+    # Stats row: balance · drawdown · trades · win rate
+    stats = [
+        (f'${balance:,.0f}',  'BALANCE',   GOLD,  0.14),
+        (f'{dd:.1f}%',        'DRAWDOWN',  RED,   0.38),
+        (f'{trades:,}',       'TRADES',    WHITE, 0.62),
+        (f'{win_rate:.0f}%',  'WIN RATE',  GREEN, 0.86),
+    ]
+    for val, lbl, color, px in stats:
+        ax.text(px, 0.444, val,
+                fontsize=28, fontweight='black', color=color,
+                ha='center', va='center', transform=ax.transAxes, zorder=6)
+        ax.text(px, 0.410, lbl,
+                fontsize=13, color=DIM, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    _hline(ax, 0.382, alpha=0.20)
+
+    # CTA
+    ax.text(0.5, 0.348,
+            'Verify every trade — Myfxbook account #12044019',
+            fontsize=17, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes)
+    ax.text(0.5, 0.316,
+            'Live alerts as recovery unfolds  →  t.me/pandiangk',
+            fontsize=19, fontweight='bold', color=GOLD,
+            ha='center', va='center', transform=ax.transAxes)
+
+    # Recovery journey callout box
+    ax.add_patch(patches.FancyBboxPatch(
+        (0.06, 0.200), 0.88, 0.096,
+        boxstyle='round,pad=0.006',
+        facecolor=NAVY_S, edgecolor=AMBER, linewidth=1.4,
+        transform=ax.transAxes, zorder=2
+    ))
+    ax.text(0.5, 0.260,
+            'Any account showing only winning months is lying to you.',
+            fontsize=17, color=CREAM, ha='center', va='center',
+            transform=ax.transAxes, zorder=3)
+    ax.text(0.5, 0.224,
+            'This is what real trading looks like. The recovery starts now.',
+            fontsize=17, color=AMBER, ha='center', va='center',
+            transform=ax.transAxes, fontweight='bold', zorder=3)
+
+    # Footer
+    _hline(ax, 0.095, alpha=0.35)
+    ax.text(0.06, 0.065, '@veralevel.fx  ·  IC MARKETS  ·  ASIC REGULATED',
+            fontsize=14, color=GOLD, va='center',
+            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+    ax.text(0.94, 0.030, 'Not financial advice',
+            fontsize=14, color=DIM, ha='right', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
+
+    return fig

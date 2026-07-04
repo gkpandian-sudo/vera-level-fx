@@ -152,9 +152,9 @@ def main():
 
     sys.path.insert(0, str(ROOT))
     sys.path.insert(0, str(ROOT / 'instagram'))
-    from generate        import make_weekly_card, make_monthly_chart, make_winrate_card
+    from generate        import make_weekly_card, make_monthly_chart, make_winrate_card, make_transparency_card
     from generate_status import make_daily_card
-    from captions        import weekly, monthly, trust, daily_status
+    from captions        import weekly, monthly, trust, daily_status, transparency
     from post            import publish
 
     data       = load_data()
@@ -228,6 +228,10 @@ def main():
         caption = monthly(account, monthly_pnl)
         if image_path is None:
             fig = make_monthly_chart(data)
+    elif post_type == 'transparency':
+        caption = transparency(account)
+        if image_path is None:
+            fig = make_transparency_card(data)
     else:
         caption = trust(account)
         if image_path is None:
