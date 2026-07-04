@@ -93,3 +93,40 @@ def test_render_creates_mp4(tmp_path):
     render(clips, audio_path=None, out_path=str(out), fps=30)
     assert out.exists()
     assert out.stat().st_size > 1000
+
+
+# ── scenes.py tests ───────────────────────────────────────────────────────────
+
+SAMPLE_ACCOUNT = {
+    'balance': 973, 'equity': 971, 'gain': -96.8,
+    'daily': 0.43, 'winRate': 71.0, 'profitFactor': 1.42,
+    'pips': 3812, 'trades': 287, 'drawdown': 96.8,
+}
+SAMPLE_OPEN = [
+    {'symbol': 'XAUUSD', 'action': 'buy',  'profit': 12.50},
+    {'symbol': 'EURUSD', 'action': 'sell', 'profit': -4.20},
+]
+
+
+def test_make_daily_reel_returns_four_clips():
+    from reels.scenes import make_daily_reel
+    clips = make_daily_reel({'account': SAMPLE_ACCOUNT, 'openTrades': SAMPLE_OPEN})
+    assert len(clips) == 4
+    total_dur = sum(c.duration for c in clips)
+    assert 9.0 < total_dur < 11.0
+
+
+def test_make_weekly_reel_returns_four_clips():
+    from reels.scenes import make_weekly_reel
+    clips = make_weekly_reel({'account': SAMPLE_ACCOUNT}, recovery_day=5)
+    assert len(clips) == 4
+    total_dur = sum(c.duration for c in clips)
+    assert 11.0 < total_dur < 13.0
+
+
+def test_make_trust_reel_returns_four_clips():
+    from reels.scenes import make_trust_reel
+    clips = make_trust_reel({'account': SAMPLE_ACCOUNT})
+    assert len(clips) == 4
+    total_dur = sum(c.duration for c in clips)
+    assert 11.0 < total_dur < 13.0
