@@ -48,13 +48,14 @@ jobs:
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          POST_TYPE:         ${{ github.event.inputs.post_type }}
-          POST_LANG:         ${{ github.event.inputs.post_lang }}
+          POST_TYPE:         ${{ github.event.inputs.post_type || 'weekly' }}
+          POST_LANG:         ${{ github.event.inputs.post_lang || 'en' }}
           RECOVERY_START:    ${{ secrets.RECOVERY_START }}
           BRAND_IB_URL:      ${{ secrets.BRAND_IB_URL }}
         run: python instagram/run_reel.py
 
       - name: Upload reel artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: instagram-reel-${{ github.run_id }}
