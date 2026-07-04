@@ -1,11 +1,12 @@
 {
+  "fetchedAt": "2026-07-02T22:33:17Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -96.82,
     "absGain": -55.17,
-    "daily": -2.56,
+    "daily": -2.58,
     "monthly": -54.15,
     "withdrawals": 1765,
     "deposits": 6201.08,
@@ -29,158 +30,9 @@
     "invitationUrl": "",
     "server": {
       "name": "IC Markets"
-    },
-    "trades": 891,
-    "winRate": 71,
-    "avgWin": 15.99,
-    "avgLoss": 51.23
+    }
   },
   "openTrades": [],
-  "openOrders": [
-    {
-      "openTime": "07/01/2026 03:00",
-      "symbol": "XAUUSD",
-      "action": "Sell Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.15"
-      },
-      "openPrice": 3943.31,
-      "tp": 3911.67,
-      "sl": 3951.81,
-      "comment": "TOL LANGIT ETF - V.1"
-    },
-    {
-      "openTime": "07/01/2026 03:00",
-      "symbol": "XAUUSD",
-      "action": "Sell Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.43"
-      },
-      "openPrice": 3943.31,
-      "tp": 3911.67,
-      "sl": 3946.33,
-      "comment": "TOL LANGIT ETF - V.2"
-    },
-    {
-      "openTime": "07/02/2026 04:00",
-      "symbol": "XAUUSD",
-      "action": "Sell Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 3962.17,
-      "tp": 3947.58,
-      "sl": 3969.37,
-      "comment": "TOL LANGIT ETF - VII GS"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4219.89,
-      "tp": 4314.71,
-      "sl": 4207.52,
-      "comment": "TOL LANGIT ETF - VII_PendingA"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Sell Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 3962.21,
-      "tp": 3867.39,
-      "sl": 3974.58,
-      "comment": "TOL LANGIT ETF - VII_PendingA"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4890.44,
-      "tp": 4977.02,
-      "sl": 4849.21,
-      "comment": "TOL LANGIT ETF - VII_PendingB"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Sell Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 3945.44,
-      "tp": 3858.86,
-      "sl": 3986.67,
-      "comment": "TOL LANGIT ETF - VII_PendingB"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Sell Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 3945.44,
-      "tp": 3883.6,
-      "sl": 3957.81,
-      "comment": "TOL LANGIT ETF - VII_PendingC"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Sell Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 3962.21,
-      "tp": 3867.39,
-      "sl": 3973.75,
-      "comment": "TOL LANGIT ETF - VII_PendingE"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4219.89,
-      "tp": 4314.71,
-      "sl": 4208.35,
-      "comment": "TOL LANGIT ETF - VII_PendingE"
-    },
-    {
-      "openTime": "07/02/2026 16:00",
-      "symbol": "XAUUSD",
-      "action": "Buy Stop",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4381.31,
-      "tp": 4443.15,
-      "sl": 4368.94,
-      "comment": "TOL LANGIT ETF - VII_PendingC"
-    }
-  ],
   "history": [
     {
       "openTime": "07/02/2026 15:30",
@@ -1364,6 +1216,5 @@
       -96.82,
       -41.52
     ]
-  ],
-  "fetchedAt": "2026-07-03T01:26:15.274Z"
+  ]
 }
