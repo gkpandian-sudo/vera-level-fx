@@ -26,7 +26,7 @@ AMBER = (255, 160, 64)
 _FONT_DIR = Path(__file__).parent.parent / 'assets' / 'fonts'
 
 
-def _load_font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
+def _load_font(size: int, bold: bool = False):
     candidates = []
     if bold:
         candidates += [
@@ -75,8 +75,10 @@ def radial_bg() -> np.ndarray:
 
 def _ease_out(t: float, dur: float) -> float:
     """Ease-out cubic: smooth deceleration from 0 → 1 over dur seconds."""
-    x = max(0.0, min(1.0, t / dur))
-    return 1.0 - (1.0 - x) ** 3
+    if dur <= 0:
+        return 1.0
+    x = min(t / dur, 1.0)
+    return 1 - (1 - x) ** 3
 
 
 # ── Particle overlay ──────────────────────────────────────────────────────────
