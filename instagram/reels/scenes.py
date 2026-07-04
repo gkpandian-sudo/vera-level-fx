@@ -1,9 +1,12 @@
 from __future__ import annotations
+import numpy as np
+from PIL import Image
 from moviepy.editor import VideoClip
 from reels.animator import (
     W, H, GOLD, WHITE, GREEN, RED, MUTED,
     logo_fade_frame, countup_frame, cascade_text_frame,
     fade_in_frame, cta_fade_frame, _ease_out,
+    _bg_frame, _draw_alpha_text, _load_font,
 )
 
 FPS = 30
@@ -30,7 +33,6 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     daily_pct = float(acct.get('daily')   or 0)
     win_rate  = float(acct.get('winRate') or 0)
     pips      = int(acct.get('pips')   or 0)
-    trades    = int(acct.get('trades') or 0)
     pf        = float(acct.get('profitFactor') or 0)
     pnl_color = GREEN if daily_pct >= 0 else RED
     sign      = '+' if daily_pct >= 0 else ''
@@ -42,9 +44,6 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     cx, cy   = W // 2, H // 2
 
     def hero_frame(t):
-        import numpy as np
-        from PIL import Image
-        from reels.animator import _bg_frame, _draw_alpha_text, _load_font
         f   = countup_frame(t, 0, balance, 2.0, '${:,.0f}', WHITE, 110, (cx, cy - 80))
         img = Image.fromarray(f)
         if t > 1.5:
