@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       post_type:
-        description: 'Post type (weekly | monthly | daily | trust | edu | transparency)'
+        description: 'Post type (weekly | monthly | daily | trust | edu | transparency | recovery-plan)'
         required: false
         default: 'weekly'
       post_lang:

@@ -479,3 +479,125 @@ def make_transparency_card(data):
             transform=ax.transAxes, fontfamily='monospace')
 
     return fig
+
+
+# ── Recovery Plan Card ───────────────────────────────────────────
+
+# Fixed 6-month simulation: (month, topup, end_balance)
+_RECOVERY_MONTHS = [
+    ('July',      1_000,  1_500.00),
+    ('August',    1_000,  3_750.00),
+    ('September', 1_000,  7_125.00),
+    ('October',   1_000, 12_187.50),
+    ('November',  1_000, 19_781.25),
+    ('December',  1_000, 31_171.88),
+]
+_RECOVERY_INVESTED  = 6_000
+_RECOVERY_PROJECTED = 31_171.88
+
+
+def make_recovery_plan_card(data=None):
+    fig = plt.figure(figsize=SIZE, facecolor=NAVY)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
+    ax.set_facecolor(NAVY)
+
+    # Top gold bar
+    ax.add_patch(patches.Rectangle(
+        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+    ))
+
+    # Header
+    ax.text(0.5, 0.946, 'VERA LEVEL FX  ·  RECOVERY PLAN',
+            fontsize=20, fontweight='bold', color=GOLD, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
+    ax.text(0.5, 0.916, 'ETF MEDIUM RISK  ·  JULY – DECEMBER 2026',
+            fontsize=14, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
+    _hline(ax, 0.898, alpha=0.35)
+
+    # Strategy summary line
+    ax.text(0.5, 0.868,
+            '$1,000/month top-up  ·  50% monthly target  ·  GRID EA low-risk mode',
+            fontsize=14, color=CREAM, ha='center', va='center',
+            transform=ax.transAxes)
+
+    _hline(ax, 0.848, alpha=0.20)
+
+    # Table header
+    col_x = [0.06, 0.32, 0.58, 0.82]
+    headers = ['MONTH', 'TOP-UP', 'END BALANCE', '']
+    for hdr, x in zip(headers, col_x):
+        ax.text(x, 0.826, hdr,
+                fontsize=12, color=DIM, ha='left', va='center',
+                transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+
+    _hline(ax, 0.814, color=GOLD, alpha=0.25, lw=1.0)
+
+    # Table rows
+    row_h   = 0.092
+    start_y = 0.790
+    current_month = datetime.now().strftime('%B')
+
+    for i, (month, topup, end_bal) in enumerate(_RECOVERY_MONTHS):
+        y       = start_y - i * row_h
+        is_now  = month == current_month
+        m_color = GOLD if is_now else CREAM
+        b_color = GREEN
+
+        if is_now:
+            ax.add_patch(patches.Rectangle(
+                (0.04, y - 0.028), 0.92, 0.054,
+                facecolor=NAVY_S, transform=ax.transAxes, zorder=1
+            ))
+
+        ax.text(col_x[0], y, f'{'▶ ' if is_now else ''}{month}',
+                fontsize=14 if is_now else 13, color=m_color, ha='left', va='center',
+                transform=ax.transAxes, fontweight='bold' if is_now else 'normal')
+        ax.text(col_x[1], y, f'+${topup:,.0f}',
+                fontsize=13, color=MUTED, ha='left', va='center',
+                transform=ax.transAxes, fontfamily='monospace')
+        ax.text(col_x[2], y, f'${end_bal:,.0f}',
+                fontsize=14 if is_now else 13, color=b_color, ha='left', va='center',
+                transform=ax.transAxes, fontweight='bold' if is_now else 'normal',
+                fontfamily='monospace')
+
+    _hline(ax, 0.240, alpha=0.25)
+
+    # Totals row
+    ax.text(0.06, 0.210, 'TOTAL INVESTED',
+            fontsize=14, color=MUTED, ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+    ax.text(0.50, 0.210, f'${_RECOVERY_INVESTED:,.0f}',
+            fontsize=22, color=AMBER, ha='center', va='center',
+            transform=ax.transAxes, fontweight='black')
+
+    ax.text(0.06, 0.170, 'PROJECTED DEC',
+            fontsize=14, color=MUTED, ha='left', va='center',
+            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+    ax.text(0.50, 0.170, f'${_RECOVERY_PROJECTED:,.0f}',
+            fontsize=22, color=GREEN, ha='center', va='center',
+            transform=ax.transAxes, fontweight='black')
+
+    # Disclaimer box
+    ax.add_patch(patches.FancyBboxPatch(
+        (0.06, 0.108), 0.88, 0.044,
+        boxstyle='round,pad=0.005',
+        facecolor=NAVY_S, edgecolor=AMBER, linewidth=1.0,
+        transform=ax.transAxes, zorder=2
+    ))
+    ax.text(0.5, 0.130,
+            'Simulation only. 50% monthly is a target, not a guarantee. Not financial advice.',
+            fontsize=11, color=DIM, ha='center', va='center',
+            transform=ax.transAxes, zorder=3, fontfamily='monospace')
+
+    # Footer
+    _hline(ax, 0.095, alpha=0.35)
+    ax.text(0.06, 0.065, '@veralevel.fx  ·  IC MARKETS  ·  ASIC REGULATED',
+            fontsize=13, color=GOLD, va='center',
+            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
+    ax.text(0.94, 0.030, 't.me/pandiangk',
+            fontsize=13, color=MUTED, ha='right', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
+
+    return fig

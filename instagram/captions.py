@@ -212,9 +212,9 @@ Verify yourself: search "Vera Level" on Myfxbook.com
 
 def transparency(account: dict, lang: str = 'en') -> str:
     """One-time recovery/drawdown transparency post."""
-    bal  = account.get('balance', 0)
-    gain = account.get('gain', 0)
-    dd   = account.get('drawdown', 0)
+    bal  = account.get('balance') or 0
+    gain = account.get('gain') or 0
+    dd   = account.get('drawdown') or 0
 
     return f"""📉 Down {gain:.1f}%. Here's the full story.
 
@@ -237,5 +237,40 @@ This is what real trading looks like. The recovery starts now.
 📉 Max drawdown: {dd:.1f}%
 🔍 Full history: Myfxbook #12044019
 {_CTA_TELEGRAM}{_tamil_line('trust', lang)}
+
+{TAGS}"""
+
+
+def recovery_plan(lang: str = 'en') -> str:
+    """Recovery plan simulation post — fixed numbers, not live account data."""
+    tamil = (
+        "\n\n📈 Recovery Plan — $1,000/மாதம் top-up, December வரை. "
+        "இது simulation மட்டும் — guarantee இல்லை. Follow பண்ணுங்க journey-ஐ."
+    ) if lang == 'tamil' else ''
+
+    return f"""📈 Recovery Plan — ETF Medium Risk
+
+Here is the plan. No hype, just numbers.
+
+$1,000 added every month. 50% monthly target. July to December.
+At the same time, the GRID EA runs at much lower risk until December.
+
+💰 July: +$1,000 → $1,500
+💰 August: +$1,000 → $3,750
+💰 September: +$1,000 → $7,125
+💰 October: +$1,000 → $12,187
+💰 November: +$1,000 → $19,781
+💰 December: +$1,000 → $31,171
+
+📌 Total invested: $6,000
+📌 Projected balance: $31,171
+📌 Projected profit: $25,171
+
+This is a simulation. Nobody guarantees 50% every month. \
+But it gives a real target to work towards — and you will see every step live.
+
+Every top-up, every trade, every result will be on Myfxbook. Nothing hidden.
+
+Follow the full journey:{_CTA_TELEGRAM}{tamil}
 
 {TAGS}"""
