@@ -178,3 +178,14 @@ def test_make_edu_reel_returns_four_clips():
     assert len(clips) == 4
     total_dur = sum(c.duration for c in clips)
     assert 20.0 < total_dur < 24.0
+
+
+def test_publish_reel_function_exists():
+    import os, sys, inspect
+    os.environ.setdefault('IG_USER_ID', 'dummy')
+    os.environ.setdefault('META_ACCESS_TOKEN', 'dummy')
+    sys.modules.pop('post', None)
+    from post import publish_reel
+    sig = inspect.signature(publish_reel)
+    assert 'video_url' in sig.parameters
+    assert 'caption' in sig.parameters

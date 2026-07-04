@@ -50,3 +50,46 @@ def publish(image_url: str, caption: str) -> str:
     post_id = result['id']
     print(f'  published: {post_id}')
     return post_id
+
+
+def publish_reel(video_url: str, caption: str) -> str:
+    """Publish a video as an Instagram Reel.
+
+    Two-step Meta Graph API: create container → poll until FINISHED → publish.
+    Poll timeout is 5 minutes (30 × 10s — video encoding is slower than images).
+    """
+    data = _check(requests.post(
+        f'{GRAPH}/{IG_ID}/media',
+        params={
+            'media_type':   'REELS',
+            'video_url':    video_url,
+            'caption':      caption,
+            'access_token': TOKEN,
+        }
+    ))
+    container_id = data['id']
+    print(f'  reel container created: {container_id}')
+
+    for attempt in range(30):          # 30 × 10s = 5 minutes
+        time.sleep(10)
+        status = _check(requests.get(
+            f'{GRAPH}/{container_id}',
+            params={'fields': 'status_code', 'access_token': TOKEN}
+        ))
+        code = status.get('status_code')
+        if code == 'FINISHED':
+            break
+        print(f'  encoding… ({code}) attempt {attempt + 1}/30')
+    else:
+        raise TimeoutError('Reel container did not finish processing within 5 minutes')
+
+    result = _check(requests.post(
+        f'{GRAPH}/{IG_ID}/media_publish',
+        params={
+            'creation_id':  container_id,
+            'access_token': TOKEN,
+        }
+    ))
+    post_id = result['id']
+    print(f'  reel published: {post_id}')
+    return post_id
