@@ -92,7 +92,7 @@ No emotional decisions. No manual overrides. No hiding losses.
 
 
 def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
-    cta = _CTA_TELEGRAM
+    cta = _CTA_IB
 
     if edu_type == 'risk':
         return (
@@ -177,7 +177,7 @@ Open positions right now:
 
 Running record: {win_rate:.0f}% win rate · PF {pf:.2f} · +{pips:,} pips · {trades:,} trades
 Every trade visible on Myfxbook — zero manipulation.
-{_CTA_TELEGRAM}{_tamil_line('daily', lang)}
+{_CTA_VERIFY}{_tamil_line('daily', lang)}
 
 {TAGS}"""
 
@@ -236,7 +236,7 @@ This is what real trading looks like. The recovery starts now.
 💰 Current balance: ${bal:,.0f}
 📉 Max drawdown: {dd:.1f}%
 🔍 Full history: Myfxbook #12044019
-{_CTA_TELEGRAM}{_tamil_line('trust', lang)}
+{_CTA_VERIFY}{_tamil_line('trust', lang)}
 
 {TAGS}"""
 
@@ -271,6 +271,6 @@ But it gives a real target to work towards — and you will see every step live.
 
 Every top-up, every trade, every result will be on Myfxbook. Nothing hidden.
 
-Follow the full journey:{_CTA_TELEGRAM}{tamil}
+Open your IC Markets account — same broker I use:{_CTA_IB}{tamil}
 
 {TAGS}"""
