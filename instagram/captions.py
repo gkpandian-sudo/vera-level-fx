@@ -36,19 +36,24 @@ def _tamil_line(key: str, lang: str) -> str:
     return ''
 
 
-def weekly(account: dict, lang: str = 'en') -> str:
-    bal    = account.get('balance', 0)
-    gain   = account.get('gain', 0)
-    wr     = account.get('winRate', 0)
-    pf     = account.get('profitFactor', 0)
-    pips   = int(account.get('pips', 0))
-    trades = int(account.get('trades', 0))
+def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
+    bal    = account.get('balance') or 0
+    gain   = account.get('gain') or 0
+    wr     = account.get('winRate') or 0
+    pf     = account.get('profitFactor') or 0
+    pips   = int(account.get('pips') or 0)
+    trades = int(account.get('trades') or 0)
     date   = datetime.now().strftime('%d %b %Y')
     sign   = '+' if gain >= 0 else ''
 
+    recovery_line = (
+        f"Recovery Day {recovery_day}. The rebuild is live and fully visible.\n\n"
+        if recovery_day > 0 and gain < 0 else ''
+    )
+
     return f"""📊 Weekly Performance — {date}
 
-{sign}{gain:.1f}% total gain. {trades:,} trades. {wr:.0f}% win rate.
+{recovery_line}{sign}{gain:.1f}% total gain. {trades:,} trades. {wr:.0f}% win rate.
 Every single one verified on Myfxbook. Nothing hidden.
 
 This is a live IC Markets account — not a demo, not a backtest.
@@ -132,14 +137,14 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
     )
 
 
-def daily_status(account: dict, open_trades: list, lang: str = 'en') -> str:
-    balance   = account.get('balance', 0)
-    equity    = account.get('equity', balance)
-    daily_pct = account.get('daily', 0)
-    win_rate  = account.get('winRate', 0)
-    pf        = account.get('profitFactor', 0)
-    pips      = int(account.get('pips', 0))
-    trades    = int(account.get('trades', 0))
+def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_day: int = 0) -> str:
+    balance   = account.get('balance') or 0
+    equity    = account.get('equity') or balance
+    daily_pct = account.get('daily') or 0
+    win_rate  = account.get('winRate') or 0
+    pf        = account.get('profitFactor') or 0
+    pips      = int(account.get('pips') or 0)
+    trades    = int(account.get('trades') or 0)
     date      = datetime.now().strftime('%d %b %Y')
 
     direction_emoji = '📈' if daily_pct >= 0 else '📉'
@@ -154,9 +159,14 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en') -> str:
         open_lines.append(f"  {icon} {pair} {action}  ${profit:+.2f}")
     positions_block = '\n'.join(open_lines) if open_lines else '  No open positions'
 
+    recovery_line = (
+        f"Recovery Day {recovery_day}.\n\n"
+        if recovery_day > 0 else ''
+    )
+
     return f"""{direction_emoji} Live Position Update — {date}
 
-Real trades. Real P&L. Nothing hidden.
+{recovery_line}Real trades. Real P&L. Nothing hidden.
 
 💰 Balance: ${balance:,.0f}
 ⚖️ Equity: ${equity:,.0f}
@@ -173,11 +183,11 @@ Every trade visible on Myfxbook — zero manipulation.
 
 
 def trust(account: dict, lang: str = 'en') -> str:
-    wr     = account.get('winRate', 0)
-    pf     = account.get('profitFactor', 0)
-    gain   = account.get('gain', 0)
-    trades = int(account.get('trades', 0))
-    pips   = int(account.get('pips', 0))
+    wr     = account.get('winRate') or 0
+    pf     = account.get('profitFactor') or 0
+    gain   = account.get('gain') or 0
+    trades = int(account.get('trades') or 0)
+    pips   = int(account.get('pips') or 0)
     sign   = '+' if gain >= 0 else ''
 
     return f"""✅ Live Track Record — Vera Level FX

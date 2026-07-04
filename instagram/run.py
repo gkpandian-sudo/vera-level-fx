@@ -161,8 +161,20 @@ def main():
     account    = data.get('account', {})
     today      = date.today()
     post_type  = os.environ.get('POST_TYPE') or decide_post_type(today)
+    lang       = os.environ.get('POST_LANG', 'en')
 
-    print(f'Generating post: {post_type} ({today})')
+    # Recovery day counter: set RECOVERY_START=YYYY-MM-DD in repo secrets
+    recovery_day = 0
+    recovery_start_str = os.environ.get('RECOVERY_START', '')
+    if recovery_start_str and account.get('gain', 0) < 0:
+        try:
+            from datetime import datetime as _dt
+            _start = _dt.strptime(recovery_start_str, '%Y-%m-%d').date()
+            recovery_day = max(1, (today - _start).days + 1)
+        except Exception:
+            pass
+
+    print(f'Generating post: {post_type} ({today}) lang={lang} recovery_day={recovery_day}')
 
     if post_type == 'edu':
         from edu_content  import get_edu_content
@@ -173,7 +185,7 @@ def main():
         edu_type, content = get_edu_content(idx)
         next_idx          = (idx + 1) % 12
 
-        caption    = edu_caption(edu_type, content)
+        caption    = edu_caption(edu_type, content, lang=lang)
         image_path = pop_buffer('edu', edu_type)   # use buffered image if available
 
         if image_path is None:
@@ -206,11 +218,11 @@ def main():
 
     if post_type == 'daily':
         open_trades = data.get('openTrades', [])
-        caption     = daily_status(account, open_trades)
+        caption     = daily_status(account, open_trades, lang=lang, recovery_day=recovery_day)
         if image_path is None:
             fig = make_daily_card(data)
     elif post_type == 'weekly':
-        caption = weekly(account)
+        caption = weekly(account, lang=lang, recovery_day=recovery_day)
         if image_path is None:
             fig = make_weekly_card(data)
     elif post_type == 'monthly':
@@ -225,15 +237,15 @@ def main():
                 monthly_pnl[key] = monthly_pnl.get(key, 0) + float(val)
             except Exception:
                 pass
-        caption = monthly(account, monthly_pnl)
+        caption = monthly(account, monthly_pnl, lang=lang)
         if image_path is None:
             fig = make_monthly_chart(data)
     elif post_type == 'transparency':
-        caption = transparency(account)
+        caption = transparency(account, lang=lang)
         if image_path is None:
             fig = make_transparency_card(data)
     else:
-        caption = trust(account)
+        caption = trust(account, lang=lang)
         if image_path is None:
             fig = make_winrate_card(data)
 

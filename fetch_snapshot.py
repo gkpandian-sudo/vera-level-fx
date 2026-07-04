@@ -85,6 +85,14 @@ def main():
     except Exception:
         pass
 
+    # ── Backfill trades + winRate from history if API omits them ──
+    if not acct.get('trades') and history:
+        closed  = [t for t in history if t.get('profit') is not None]
+        winners = [t for t in closed if float(t.get('profit', 0)) > 0]
+        acct['trades']  = len(closed)
+        acct['winRate'] = round(100 * len(winners) / len(closed), 1) if closed else 0
+        print(f"  Computed trades={acct['trades']} winRate={acct['winRate']}% from history")
+
     # ── Save snapshot ─────────────────────────────────────────────
     snapshot = {
         'fetchedAt':  datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),

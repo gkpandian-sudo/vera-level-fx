@@ -11,6 +11,10 @@ on:
         description: 'Post type (weekly | monthly | daily | trust | edu | transparency)'
         required: false
         default: 'weekly'
+      post_lang:
+        description: 'Caption language (en | tamil)'
+        required: false
+        default: 'en'
 
 permissions:
   contents: write   # needed to commit the generated image
@@ -45,6 +49,8 @@ jobs:
           GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           POST_TYPE:         ${{ github.event.inputs.post_type }}
+          POST_LANG:         ${{ github.event.inputs.post_lang }}
+          RECOVERY_START:    ${{ secrets.RECOVERY_START }}
           BRAND_TELEGRAM:    ${{ secrets.BRAND_TELEGRAM }}
           BRAND_WEBSITE:     ${{ secrets.BRAND_WEBSITE }}
           BRAND_IB_URL:      ${{ secrets.BRAND_IB_URL }}
