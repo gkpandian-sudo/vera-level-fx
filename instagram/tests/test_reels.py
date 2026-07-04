@@ -56,3 +56,23 @@ def test_typewriter_frame_grows():
                           color=(255, 255, 255), fontsize=60, center=(540, 960))
     assert f0.shape == (1920, 1080, 3)
     assert f1.sum() >= f0.sum()
+
+
+# ── audio.py tests ────────────────────────────────────────────────────────────
+
+def test_audio_get_track_returns_path_or_none():
+    from reels.audio import get_track
+    path = get_track('daily')
+    # Returns None when file doesn't exist — graceful fallback
+    assert path is None or str(path).endswith('.mp3')
+
+
+def test_audio_unknown_type_returns_none():
+    from reels.audio import get_track
+    assert get_track('unknown_type') is None
+
+
+def test_audio_build_clip_none_when_no_file():
+    from reels.audio import build_audio_clip
+    result = build_audio_clip(None, 10.0)
+    assert result is None
