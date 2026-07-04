@@ -41,7 +41,6 @@ def build_audio_clip(track_path: 'Path | None', duration: float):
                 .audio_fadein(0.5)
                 .audio_fadeout(1.0)
                 .set_duration(duration))
-        source.close()
         return clip
     except Exception:
         return None

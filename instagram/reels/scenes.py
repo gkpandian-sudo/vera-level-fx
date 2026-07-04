@@ -6,8 +6,8 @@ from moviepy.editor import VideoClip
 from reels.animator import (
     W, H, GOLD, WHITE, GREEN, RED, MUTED, AMBER,
     logo_fade_frame, countup_frame, cascade_text_frame,
-    fade_in_frame, cta_fade_frame, _ease_out,
-    _bg_frame, _draw_alpha_text, _load_font,
+    fade_in_frame, cta_fade_frame, ease_out,
+    bg_frame, draw_alpha_text, load_font,
 )
 
 FPS = 30
@@ -49,9 +49,9 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
         img = Image.fromarray(f)
         if t > 1.5:
             alp = min((t - 1.5) / 0.5, 1.0)  # float 0.0–1.0
-            img = _draw_alpha_text(img, (cx, cy + 80),
+            img = draw_alpha_text(img, (cx, cy + 80),
                                    f'{sign}{daily_pct:.2f}%',
-                                   _load_font(72, bold=True), pnl_color, alp)
+                                   load_font(72, bold=True), pnl_color, alp)
         return np.array(img)
 
     hero = _clip(hero_frame, DUR_HERO)
@@ -207,10 +207,10 @@ def make_monthly_reel(data: dict) -> list:
     bar_spacing = bar_h_px + 40
 
     def data_frame(t):
-        img  = _bg_frame(t)
+        img  = bg_frame(t)
         draw = ImageDraw.Draw(img)
-        font_label = _load_font(34)
-        font_val   = _load_font(32, bold=True)
+        font_label = load_font(34)
+        font_val   = load_font(32, bold=True)
 
         for i, (month, val) in enumerate(months):
             bar_start_t = i * bar_gap
@@ -229,16 +229,16 @@ def make_monthly_reel(data: dict) -> list:
             if progress > 0.9:
                 val_alpha = min((progress - 0.9) / 0.1, 1.0)
                 val_sign  = '+' if val >= 0 else ''
-                img = _draw_alpha_text(img, (180 + max_bw + 90, y_top + bar_h_px // 2),
+                img = draw_alpha_text(img, (180 + max_bw + 90, y_top + bar_h_px // 2),
                                        f'{val_sign}{val:.1f}%', font_val, color, val_alpha)
                 draw = ImageDraw.Draw(img)  # rebind so subsequent iterations draw on updated img
 
         end_t = len(months) * bar_gap + bar_dur
         if t > end_t:
             total_alpha = min((t - end_t) / 1.0, 1.0)
-            img = _draw_alpha_text(img, (W // 2, start_y + len(months) * bar_spacing + 60),
+            img = draw_alpha_text(img, (W // 2, start_y + len(months) * bar_spacing + 60),
                                    f'Total: {sign}{gain:.1f}%',
-                                   _load_font(48, bold=True), GOLD, total_alpha)
+                                   load_font(48, bold=True), GOLD, total_alpha)
 
         return np.array(img)
 
@@ -283,23 +283,23 @@ def make_transparency_reel(data: dict) -> list:
     ]
 
     def data_frame(t):
-        img = _bg_frame(t)
+        img = bg_frame(t)
         for i, line in enumerate(happened_lines):
             bold  = (line == 'WHAT HAPPENED')
             color = AMBER if bold else WHITE
             fs    = 44 if bold else 36
             s_t   = i * 0.6
             alp   = min(max(t - s_t, 0) / 0.4, 1.0)
-            img   = _draw_alpha_text(img, (W // 2, 600 + i * 70), line,
-                                     _load_font(fs, bold=bold), color, alp)
+            img   = draw_alpha_text(img, (W // 2, 600 + i * 70), line,
+                                     load_font(fs, bold=bold), color, alp)
         for i, line in enumerate(changed_lines):
             bold  = (line == 'WHAT CHANGED')
             color = GOLD if bold else WHITE
             fs    = 44 if bold else 36
             s_t   = 9.0 + i * 0.6
             alp   = min(max(t - s_t, 0) / 0.4, 1.0)
-            img   = _draw_alpha_text(img, (W // 2, 1150 + i * 70), line,
-                                     _load_font(fs, bold=bold), color, alp)
+            img   = draw_alpha_text(img, (W // 2, 1150 + i * 70), line,
+                                     load_font(fs, bold=bold), color, alp)
         return np.array(img)
 
     data_clip = _clip(data_frame, 17.5)
@@ -338,13 +338,13 @@ def make_recovery_plan_reel() -> list:
     DUR_DATA = len(_RECOVERY_MONTHS) * (ROW_DUR + GAP) + 2.5
 
     def data_frame(t):
-        img   = _bg_frame(t)
-        font  = _load_font(36)
-        fontb = _load_font(36, bold=True)
+        img   = bg_frame(t)
+        font  = load_font(36)
+        fontb = load_font(36, bold=True)
         start_y = 460
 
         header_alp = min(t / 0.5, 1.0)
-        img = _draw_alpha_text(img, (W // 2, start_y - 60),
+        img = draw_alpha_text(img, (W // 2, start_y - 60),
                                'Month  +$1,000  Balance', font, MUTED, header_alp)
 
         for i, (month, topup, end_bal) in enumerate(_RECOVERY_MONTHS):
@@ -357,20 +357,20 @@ def make_recovery_plan_reel() -> list:
             is_now = (month == now_month)
             prefix = '> ' if is_now else '  '
             color  = GOLD if is_now else WHITE
-            current_bal = end_bal * _ease_out(elapsed, ROW_DUR)
+            current_bal = end_bal * ease_out(elapsed, ROW_DUR)
             row_text = f'{prefix}{month}  +${topup:,}  ->  ${current_bal:,.0f}'
             y = start_y + i * 70
 
             alp = min(elapsed / 0.3, 1.0)
-            img = _draw_alpha_text(img, (W // 2, y), row_text,
+            img = draw_alpha_text(img, (W // 2, y), row_text,
                                    fontb if is_now else font, color, alp)
 
         end_t = len(_RECOVERY_MONTHS) * (ROW_DUR + GAP) + 0.5
         if t > end_t:
             proj_alp = min((t - end_t) / 0.5, 1.0)
-            img = _draw_alpha_text(img, (W // 2, start_y + len(_RECOVERY_MONTHS) * 70 + 60),
+            img = draw_alpha_text(img, (W // 2, start_y + len(_RECOVERY_MONTHS) * 70 + 60),
                                    'Projected: $31,171',
-                                   _load_font(48, bold=True), GOLD, proj_alp)
+                                   load_font(48, bold=True), GOLD, proj_alp)
         return np.array(img)
 
     data_clip = _clip(data_frame, DUR_DATA)

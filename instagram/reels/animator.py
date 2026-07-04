@@ -26,7 +26,7 @@ AMBER = (255, 160, 64)
 _FONT_DIR = Path(__file__).parent.parent / 'assets' / 'fonts'
 
 
-def _load_font(size: int, bold: bool = False):
+def load_font(size: int, bold: bool = False):
     candidates = []
     if bold:
         candidates += [
@@ -73,7 +73,7 @@ def radial_bg() -> np.ndarray:
 
 # ── Easing ────────────────────────────────────────────────────────────────────
 
-def _ease_out(t: float, dur: float) -> float:
+def ease_out(t: float, dur: float) -> float:
     """Ease-out cubic: smooth deceleration from 0 → 1 over dur seconds."""
     if dur <= 0:
         return 1.0
@@ -108,7 +108,7 @@ def _particle_overlay(t: float, n: int = 8, opacity: float = 0.08,
 
 # ── Base frame ────────────────────────────────────────────────────────────────
 
-def _bg_frame(t: float) -> Image.Image:
+def bg_frame(t: float) -> Image.Image:
     """PIL RGB Image: radial background + particle overlay."""
     bg_arr = radial_bg()
     img = Image.fromarray(bg_arr, 'RGB').convert('RGBA')
@@ -119,7 +119,7 @@ def _bg_frame(t: float) -> Image.Image:
 
 # ── Text drawing primitive ────────────────────────────────────────────────────
 
-def _draw_alpha_text(img: Image.Image, pos, text: str, font,
+def draw_alpha_text(img: Image.Image, pos, text: str, font,
                      color, alpha: float) -> Image.Image:
     """
     Draw centre-anchored text with alpha onto an RGB PIL Image.
@@ -159,11 +159,11 @@ def _draw_alpha_text(img: Image.Image, pos, text: str, font,
 def countup_frame(t: float, start: float, end: float, dur: float,
                   fmt: str, color, fontsize: int, center) -> np.ndarray:
     """Ease-out animated number from start → end over dur seconds."""
-    value = start + (end - start) * _ease_out(t, dur)
+    value = start + (end - start) * ease_out(t, dur)
     text  = fmt.format(value)
-    img   = _bg_frame(t)
-    font  = _load_font(fontsize, bold=True)
-    img   = _draw_alpha_text(img, center, text, font, color, 1.0)
+    img   = bg_frame(t)
+    font  = load_font(fontsize, bold=True)
+    img   = draw_alpha_text(img, center, text, font, color, 1.0)
     return np.array(img)
 
 
@@ -175,19 +175,19 @@ def cascade_text_frame(t: float, lines, dur: float, stagger: float,
     Line i starts animating at t = i * stagger.
     Line height = fontsize + 20. All lines centred at W//2.
     """
-    img = _bg_frame(t)
-    font = _load_font(fontsize)
+    img = bg_frame(t)
+    font = load_font(fontsize)
     line_height = fontsize + 20
 
     for i, line in enumerate(lines):
         line_t = t - i * stagger
         if line_t <= 0:
             continue
-        progress = _ease_out(line_t, dur)
+        progress = ease_out(line_t, dur)
         alpha    = progress
         y_offset = int(20 * (1.0 - progress))   # 20 px below → final position
         y = top_y + i * line_height + y_offset
-        img = _draw_alpha_text(img, (W // 2, y), line, font, color, alpha)
+        img = draw_alpha_text(img, (W // 2, y), line, font, color, alpha)
 
     return np.array(img)
 
@@ -195,30 +195,30 @@ def cascade_text_frame(t: float, lines, dur: float, stagger: float,
 def fade_in_frame(t: float, text: str, dur: float,
                   color, fontsize: int, center) -> np.ndarray:
     """Simple opacity 0 → 1 over dur seconds."""
-    img   = _bg_frame(t)
-    font  = _load_font(fontsize)
-    alpha = _ease_out(t, dur)
-    img   = _draw_alpha_text(img, center, text, font, color, alpha)
+    img   = bg_frame(t)
+    font  = load_font(fontsize)
+    alpha = ease_out(t, dur)
+    img   = draw_alpha_text(img, center, text, font, color, alpha)
     return np.array(img)
 
 
 def typewriter_frame(t: float, text: str, dur: float,
                      color, fontsize: int, center) -> np.ndarray:
-    """Characters appear one-by-one; count driven by _ease_out."""
-    n_chars = int(len(text) * _ease_out(t, dur))
+    """Characters appear one-by-one; count driven by ease_out."""
+    n_chars = int(len(text) * ease_out(t, dur))
     visible = text[:n_chars]
-    img = _bg_frame(t)
+    img = bg_frame(t)
     if visible:
-        font = _load_font(fontsize)
-        img  = _draw_alpha_text(img, center, visible, font, color, 1.0)
+        font = load_font(fontsize)
+        img  = draw_alpha_text(img, center, visible, font, color, 1.0)
     return np.array(img)
 
 
 def slide_bar_frame(t: float, dur: float, y: int,
                     thickness: int = 8) -> np.ndarray:
     """Gold horizontal bar sweeps left → right over dur seconds."""
-    img   = _bg_frame(t)
-    bar_w = int(W * _ease_out(t, dur))
+    img   = bg_frame(t)
+    bar_w = int(W * ease_out(t, dur))
     draw  = ImageDraw.Draw(img)
     draw.rectangle([0, y, bar_w, y + thickness], fill=GOLD)
     return np.array(img)
@@ -232,26 +232,26 @@ def logo_fade_frame(t: float, brand: str = 'VERA LEVEL FX') -> np.ndarray:
     0.4 s  — brand name fades in (56 pt bold GOLD, centred at W//2, H//2-80)
     0.7 s  — subtitle 'Live IC Markets Account' fades in (30 pt MUTED)
     """
-    img = _bg_frame(t)
+    img = bg_frame(t)
 
     # Gold sweep bar
-    bar_w = int(W * _ease_out(t, 0.8))
+    bar_w = int(W * ease_out(t, 0.8))
     bar_y = H // 2 - 10
     draw  = ImageDraw.Draw(img)
     draw.rectangle([0, bar_y, bar_w, bar_y + 8], fill=GOLD)
 
     # Brand name
     if t > 0.4:
-        brand_alpha = _ease_out(t - 0.4, 0.8)   # full by ~1.2 s
-        font_brand  = _load_font(56, bold=True)
-        img = _draw_alpha_text(img, (W // 2, H // 2 - 80),
+        brand_alpha = ease_out(t - 0.4, 0.8)   # full by ~1.2 s
+        font_brand  = load_font(56, bold=True)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 80),
                                brand, font_brand, GOLD, brand_alpha)
 
     # Subtitle
     if t > 0.7:
-        sub_alpha = _ease_out(t - 0.7, 0.8)
-        font_sub  = _load_font(30)
-        img = _draw_alpha_text(img, (W // 2, H // 2 + 50),
+        sub_alpha = ease_out(t - 0.7, 0.8)
+        font_sub  = load_font(30)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 50),
                                'Live IC Markets Account', font_sub, MUTED, sub_alpha)
 
     return np.array(img)
@@ -265,19 +265,19 @@ def cta_fade_frame(t: float, line1: str, line2: str = '') -> np.ndarray:
     line2 — starts at t=0.4, 30 pt MUTED, centred at H//2+40
     Both ease-out over 1.0 s.
     """
-    img = _bg_frame(t)
+    img = bg_frame(t)
 
     # line1
-    alpha1 = _ease_out(t, 1.0)
-    font1  = _load_font(36, bold=True)
-    img    = _draw_alpha_text(img, (W // 2, H // 2 - 40),
+    alpha1 = ease_out(t, 1.0)
+    font1  = load_font(36, bold=True)
+    img    = draw_alpha_text(img, (W // 2, H // 2 - 40),
                               line1, font1, GOLD, alpha1)
 
     # line2
     if line2 and t > 0.4:
-        alpha2 = _ease_out(t - 0.4, 1.0)
-        font2  = _load_font(30)
-        img    = _draw_alpha_text(img, (W // 2, H // 2 + 40),
+        alpha2 = ease_out(t - 0.4, 1.0)
+        font2  = load_font(30)
+        img    = draw_alpha_text(img, (W // 2, H // 2 + 40),
                                   line2, font2, MUTED, alpha2)
 
     return np.array(img)
