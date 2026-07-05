@@ -2,9 +2,14 @@ name: Fetch Vera Snapshot
 
 on:
   schedule:
-    # Mon–Fri 05:30 SGT = 21:30 UTC Sun–Thu (30 min before the 06:00 AM post)
-    - cron: '30 21 * * 0-4'
+    # Every day 05:30 SGT = 21:30 UTC (1.5h before the reel post at 23:00 UTC)
+    - cron: '30 21 * * *'
   workflow_dispatch:
+
+# One fetch at a time — avoids concurrent git pushes to data/vera-snapshot.json
+concurrency:
+  group: fetch-snapshot
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -18,12 +23,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
         with:
           python-version: '3.11'
 

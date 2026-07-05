@@ -6,12 +6,12 @@ Run locally to diagnose Meta API permission state.
   python instagram/diagnose_meta.py
 """
 
-import os, requests, json
+import os, requests, json, sys
 
 GRAPH = 'https://graph.facebook.com/v19.0'
 TOKEN = os.environ['META_ACCESS_TOKEN']
-IG_ID = os.environ.get('IG_USER_ID', '17841423399956054')
-APP_ID = '892472283114928'
+IG_ID = os.environ['IG_USER_ID']           # no fallback — must be set explicitly
+APP_ID = os.environ['META_APP_ID']         # set: $env:META_APP_ID = "your-app-id"
 APP_SECRET = os.environ.get('APP_SECRET', '')
 
 
