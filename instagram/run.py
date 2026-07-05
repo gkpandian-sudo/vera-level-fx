@@ -245,7 +245,8 @@ def main():
         if image_path is None:
             fig = make_transparency_card(data)
     elif post_type == 'recovery-plan':
-        caption = recovery_plan(lang=lang)
+        caption = recovery_plan(lang=lang, recovery_day=recovery_day,
+                                recovery_start_str=recovery_start_str)
         if image_path is None:
             fig = make_recovery_plan_card(data)
     else:

@@ -115,7 +115,8 @@ def main():
 
     elif post_type == 'recovery-plan':
         clips   = make_recovery_plan_reel()
-        caption = recovery_plan(lang=lang)
+        caption = recovery_plan(lang=lang, recovery_day=recovery_day,
+                                recovery_start_str=rs)
 
     elif post_type == 'edu':
         from edu_content import get_edu_content

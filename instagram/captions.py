@@ -7,9 +7,15 @@ _WEBSITE  = os.environ.get('BRAND_WEBSITE', 'vera-level-forex.vercel.app')
 _IB_URL   = os.environ.get('BRAND_IB_URL', 'icmarkets.com/?camp=91936')
 
 _CTA_TELEGRAM = f"\n📲 Live trade alerts → {_TELEGRAM}"
-_CTA_IB       = f"\n🏦 Open IC Markets (raw ECN, ASIC regulated) → {_IB_URL}"
+_CTA_IB       = f"\n🏦 Open IC Markets (Raw Spread, ASIC + CySEC regulated) → {_IB_URL}"
 _CTA_VERIFY   = f"\n🔍 Verify my full track record → Myfxbook #12044019"
 _CTA_ALL      = f"\n📲 {_TELEGRAM}  |  🌐 {_WEBSITE}  |  🏦 {_IB_URL}"
+
+# Required on all posts citing live cumulative P&L (trust, transparency, monthly, recovery-plan)
+_RISK_DISCLAIMER = (
+    "Trading FX on margin carries high risk. "
+    "Past performance is not indicative of future results. IB #91936."
+)
 
 # --- Hashtags (3-tier, no guru-signal tags) ---
 _TAGS_BRAND  = "#veralevelFX #icmarkets #myfxbook"
@@ -21,6 +27,8 @@ TAGS         = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_BROAD}"
 TAGS_EDU     = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_EDU}"
 
 # Tamil summary lines (appended when lang='tamil')
+# Translation note: "Recovery Day", "PF", and metric labels may need transliteration
+# rather than direct translation — flag for native speaker review before going live.
 _TAMIL = {
     'daily':   "📊 இன்றைய live positions — எல்லாம் IC Markets real account, Myfxbook-ல் verify பண்ணலாம்.",
     'weekly':  "📈 இந்த வார P&L — live account, எல்லாம் Myfxbook-ல் verify பண்ணலாம்.",
@@ -43,27 +51,35 @@ def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     pf     = account.get('profitFactor') or 0
     pips   = int(account.get('pips') or 0)
     trades = int(account.get('trades') or 0)
-    date   = datetime.now().strftime('%d %b %Y')
-    sign   = '+' if gain >= 0 else ''
+    now    = datetime.now().strftime('%d %b %Y')
+
+    gain_label = 'total gain' if gain >= 0 else 'total return'
+    sign       = '+' if gain >= 0 else ''
+    wr_str     = f'{wr:.0f}% win rate' if wr > 0 else 'win rate on Myfxbook'
+    trades_part = f'. {trades:,} trades' if trades > 0 else ''
+    wr_line     = (f'🎯 Win Rate: {wr:.0f}% across {trades:,} trades'
+                   if wr > 0 else '🎯 Win Rate: Myfxbook #12044019')
 
     recovery_line = (
-        f"Recovery Day {recovery_day}. The rebuild is live and fully visible.\n\n"
+        f"Recovery Day {recovery_day}. Account is live, positions visible below.\n\n"
         if recovery_day > 0 and gain < 0 else ''
     )
 
-    return f"""📊 Weekly Performance — {date}
+    return f"""📊 Weekly Performance — {now}
 
-{recovery_line}{sign}{gain:.1f}% total gain. {trades:,} trades. {wr:.0f}% win rate.
-Every single one verified on Myfxbook. Nothing hidden.
+{recovery_line}{sign}{gain:.1f}% {gain_label}{trades_part}. {wr_str}.
+Every figure verified on Myfxbook. Account #12044019.
 
-This is a live IC Markets account — not a demo, not a backtest.
-ASIC regulated. Same oversight as Australian financial institutions.
+IC Markets Raw Spread — ASIC and CySEC regulated.
+Max 1% risk per trade. Target 1:2.5+ RR.
 
 💰 Balance: ${bal:,.0f}
-🎯 Win Rate: {wr:.0f}% across {trades:,} trades
+{wr_line}
 ⚡ Profit Factor: {pf:.2f}
 💹 Total Pips: +{pips:,}
 {_CTA_VERIFY}{_tamil_line('weekly', lang)}
+
+{_RISK_DISCLAIMER}
 
 {TAGS}"""
 
@@ -74,19 +90,24 @@ def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
         f"{'🟢' if v >= 0 else '🔴'} {k}: {v:+.1f}%"
         for k, v in last_months
     )
-    gain = account.get('gain', 0)
-    sign = '+' if gain >= 0 else ''
+    gain      = account.get('gain', 0)
+    sign      = '+' if gain >= 0 else ''
+    month_now = datetime.now().strftime('%B %Y')
 
-    return f"""📅 Monthly P&L — {datetime.now().strftime('%B %Y')}
+    return f"""📅 Monthly P&L — {month_now}
 
-Full breakdown above. Every trade visible on Myfxbook.
+Six months of real P&L. Nothing aggregated, nothing smoothed.
+Drawdown months included. Every one of them.
 
 {lines}
 
-{sign}{gain:.1f}% total since inception.
+{sign}{gain:.1f}% total return since inception.
 
-No emotional decisions. No manual overrides. No hiding losses.
+Pre-defined entry conditions. No news-event overrides.
+All data from IC Markets live account, updated via authenticated API.
 {_CTA_IB}{_tamil_line('monthly', lang)}
+
+{_RISK_DISCLAIMER}
 
 {TAGS}"""
 
@@ -101,8 +122,8 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
             f"Example: ${content['example_account']:,} account → "
             f"max ${content['example_risk']:,} at risk per trade.\n"
             f"At {content['example_rr']} — that is how professionals protect capital.\n\n"
-            f"Save this post. Refer to it before your next trade.\n"
-            f"I use this rule on every position in my live IC Markets account."
+            f"Save this post. Apply it before your next trade.\n"
+            f"Every position in my live IC Markets account follows this rule."
             f"{cta}{_tamil_line('edu', lang)}\n\n{TAGS_EDU}"
         )
 
@@ -129,7 +150,7 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
         f"({content['setup_type']})\n\n"
         f"Timeframe: {content['timeframe']}\n"
         f"Risk:Reward: {content['rr']}\n"
-        f"Max risk: 1% of account\n\n"
+        f"Max risk: 1% of account, sized by ATR\n\n"
         f"{steps_text}\n\n"
         f"Save this post — use it as a checklist before your next {content['pair']} trade.\n\n"
         f"This is the exact logic behind every position in my verified IC Markets account."
@@ -145,7 +166,7 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
     pf        = account.get('profitFactor') or 0
     pips      = int(account.get('pips') or 0)
     trades    = int(account.get('trades') or 0)
-    date      = datetime.now().strftime('%d %b %Y')
+    now       = datetime.now().strftime('%d %b %Y')
 
     direction_emoji = '📈' if daily_pct >= 0 else '📉'
     daily_sign      = '+' if daily_pct >= 0 else ''
@@ -159,14 +180,17 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
         open_lines.append(f"  {icon} {pair} {action}  ${profit:+.2f}")
     positions_block = '\n'.join(open_lines) if open_lines else '  No open positions'
 
+    wr_line = (f'{win_rate:.0f}% win rate · PF {pf:.2f} · +{pips:,} pips · {trades:,} trades'
+               if win_rate > 0 else f'PF {pf:.2f} · +{pips:,} pips · Myfxbook #12044019')
+
     recovery_line = (
-        f"Recovery Day {recovery_day}.\n\n"
+        f"Recovery Day {recovery_day}. Every position sized at max 1% account risk.\n\n"
         if recovery_day > 0 else ''
     )
 
-    return f"""{direction_emoji} Live Position Update — {date}
+    return f"""{direction_emoji} Live Position Update — {now}
 
-{recovery_line}Real trades. Real P&L. Nothing hidden.
+{recovery_line}Myfxbook #12044019 — open right now to verify every row.
 
 💰 Balance: ${balance:,.0f}
 ⚖️ Equity: ${equity:,.0f}
@@ -175,8 +199,7 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
 Open positions right now:
 {positions_block}
 
-Running record: {win_rate:.0f}% win rate · PF {pf:.2f} · +{pips:,} pips · {trades:,} trades
-Every trade visible on Myfxbook — zero manipulation.
+Running record: {wr_line}
 {_CTA_VERIFY}{_tamil_line('daily', lang)}
 
 {TAGS}"""
@@ -190,70 +213,83 @@ def trust(account: dict, lang: str = 'en') -> str:
     pips   = int(account.get('pips') or 0)
     sign   = '+' if gain >= 0 else ''
 
+    wr_str    = f'{wr:.0f}% win rate across {trades:,} trades.' if wr > 0 else 'Full trade history on Myfxbook.'
+    gain_note = ' (deep drawdown — fully disclosed)' if gain < -50 else ''
+    wr_line   = f'🎯 Win Rate: {wr:.0f}%' if wr > 0 else '🎯 Win Rate: Myfxbook #12044019'
+
     return f"""✅ Live Track Record — Vera Level FX
 
-{wr:.0f}% win rate across {trades:,} trades.
-Every single one is on Myfxbook. Go check.
+{wr_str}
+Every trade on Myfxbook. Go check.
 
-I am not a signal seller. I am not showing you screenshots.
-I am showing you a live, ASIC-regulated IC Markets account
-that anyone can verify in 30 seconds.
+No screenshots. No cherry-picked months. One live account, one public link.
+Account type: Raw Spread. Broker: IC Markets. Regulation: ASIC + CySEC.
 
-🎯 Win Rate: {wr:.0f}%
+{wr_line}
 ⚡ Profit Factor: {pf:.2f}
-📈 Total Gain: {sign}{gain:.1f}%
+📈 Total Return: {sign}{gain:.1f}%{gain_note}
 💹 Pips: +{pips:,}
 
-Verify yourself: search "Vera Level" on Myfxbook.com
+Verify: search "Vera Level" on Myfxbook.com
 {_CTA_VERIFY}{_tamil_line('trust', lang)}
+
+{_RISK_DISCLAIMER}
 
 {TAGS}"""
 
 
 def transparency(account: dict, lang: str = 'en') -> str:
-    """One-time recovery/drawdown transparency post."""
     bal  = account.get('balance') or 0
     gain = account.get('gain') or 0
     dd   = account.get('drawdown') or 0
 
-    return f"""📉 Down {gain:.1f}%. Here's the full story.
+    return f"""📉 Down {gain:.1f}%. The full account.
 
-Most accounts hide drawdowns. I don't.
+Most accounts hide drawdown months. This one does not.
+Every number is on Myfxbook for anyone to verify.
 
-This live IC Markets account has gone through the hardest stretch I have had as a trader. \
-The numbers are ugly. They are also all there on Myfxbook for anyone to verify.
+WHAT HAPPENED
+Position sizing errors compounded during volatile XAUUSD sessions.
+Entry frequency exceeded system parameters.
+Capital eroded faster than wins could recover.
 
-What happened: position sizing errors compounded during a volatile XAUUSD run. \
-Max 1% rule was followed — but entry frequency was too high. \
-Capital eroded faster than wins recovered.
+WHAT CHANGED
+Trade frequency reduced.
+London and NY overlap sessions only.
+Position sizing now ATR-based.
+Hard daily drawdown limit enforced.
 
-What changed: reduced trade frequency, tightened session filters, \
-no trading outside London/NY overlap.
-
-Why I am showing you this: any account showing only winning months is lying to you. \
-This is what real trading looks like. The recovery starts now.
+The rebuild is live on Myfxbook.
 
 💰 Current balance: ${bal:,.0f}
 📉 Max drawdown: {dd:.1f}%
 🔍 Full history: Myfxbook #12044019
 {_CTA_VERIFY}{_tamil_line('trust', lang)}
 
+{_RISK_DISCLAIMER}
+
 {TAGS}"""
 
 
-def recovery_plan(lang: str = 'en') -> str:
-    """Recovery plan simulation post — fixed numbers, not live account data."""
+def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_start_str: str = '') -> str:
     tamil = (
         "\n\n📈 Recovery Plan — $1,000/மாதம் top-up, December வரை. "
         "இது simulation மட்டும் — guarantee இல்லை. Follow பண்ணுங்க journey-ஐ."
     ) if lang == 'tamil' else ''
 
-    return f"""📈 Recovery Plan — ETF Medium Risk
+    if recovery_day > 0 and recovery_start_str:
+        day_line = f"Day {recovery_day} since {recovery_start_str}. Every top-up and trade visible on Myfxbook #12044019.\n\n"
+    elif recovery_day > 0:
+        day_line = f"Recovery Day {recovery_day}. Every top-up and trade visible on Myfxbook #12044019.\n\n"
+    else:
+        day_line = ''
 
-Here is the plan. No hype, just numbers.
+    return f"""📈 Recovery Plan — Structured Rebuild
+
+{day_line}No hype, just numbers.
 
 $1,000 added every month. 50% monthly target. July to December.
-At the same time, the GRID EA runs at much lower risk until December.
+GRID EA runs at reduced risk until December.
 
 💰 July: +$1,000 → $1,500
 💰 August: +$1,000 → $3,750
@@ -266,11 +302,11 @@ At the same time, the GRID EA runs at much lower risk until December.
 📌 Projected balance: $31,171
 📌 Projected profit: $25,171
 
-This is a simulation. Nobody guarantees 50% every month. \
-But it gives a real target to work towards — and you will see every step live.
-
-Every top-up, every trade, every result will be on Myfxbook. Nothing hidden.
+This is a simulation. 50% monthly returns are not guaranteed.
+Every actual top-up and trade result will be on Myfxbook. Nothing hidden.
 
 Open your IC Markets account — same broker I use:{_CTA_IB}{tamil}
+
+{_RISK_DISCLAIMER}
 
 {TAGS}"""

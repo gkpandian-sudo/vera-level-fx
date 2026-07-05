@@ -12,15 +12,15 @@ from PIL import Image, ImageDraw, ImageFont
 # ── Canvas dimensions ──────────────────────────────────────────────────────────
 W, H = 1080, 1920
 
-# ── Brand palette ─────────────────────────────────────────────────────────────
-NAVY  = (1,   14,  31)
-GOLD  = (240, 192, 64)
-WHITE = (255, 255, 255)
-CREAM = (240, 238, 232)
-MUTED = (184, 207, 234)
-GREEN = (0,   224, 150)
-RED   = (255, 107, 107)
-AMBER = (255, 160, 64)
+# ── Brand palette — aligned with vera-level-forex.vercel.app ─────────────────
+NAVY    = (0,   24,  53)   # site --primary #001835
+EMERALD = (5,   150, 105)  # site bg-success #059669 — replaces gold
+WHITE   = (255, 255, 255)
+CREAM   = (240, 238, 232)
+MUTED   = (107, 114, 128)  # site secondary text #6B7280
+GREEN   = (5,   150, 105)  # positive P&L — matches EMERALD
+RED     = (239, 68,  68)   # site error #EF4444
+AMBER   = (251, 146, 60)   # warning — no direct site equiv, kept for transparency scenes
 
 # ── Font helpers ──────────────────────────────────────────────────────────────
 _FONT_DIR = Path(__file__).parent.parent / 'assets' / 'fonts'
@@ -63,8 +63,8 @@ def radial_bg() -> np.ndarray:
     max_dist = np.sqrt(cx ** 2 + cy ** 2)
     t = np.clip(dist / max_dist, 0.0, 1.0)  # 0 = centre, 1 = corner
 
-    core = np.array(NAVY, dtype=np.float32)        # (1, 14, 31)
-    edge = np.array((0, 4, 12), dtype=np.float32)  # near-black edges
+    core = np.array(NAVY, dtype=np.float32)
+    edge = np.array((0, 8, 20), dtype=np.float32)  # near-black edges, proportional to NAVY
 
     img = (core * (1.0 - t[:, :, None]) + edge * t[:, :, None]).astype(np.uint8)
     _BG_CACHE = img
@@ -101,7 +101,7 @@ def _particle_overlay(t: float, n: int = 8, opacity: float = 0.08,
         py = int((y_starts[i] - speeds[i] * t) % H)
         r  = int(sizes[i])
         draw.ellipse([px - r, py - r, px + r, py + r],
-                     fill=(GOLD[0], GOLD[1], GOLD[2], alpha_val))
+                     fill=(EMERALD[0], EMERALD[1], EMERALD[2], alpha_val))
 
     return overlay
 
@@ -220,7 +220,7 @@ def slide_bar_frame(t: float, dur: float, y: int,
     img   = bg_frame(t)
     bar_w = int(W * ease_out(t, dur))
     draw  = ImageDraw.Draw(img)
-    draw.rectangle([0, y, bar_w, y + thickness], fill=GOLD)
+    draw.rectangle([0, y, bar_w, y + thickness], fill=EMERALD)
     return np.array(img)
 
 
@@ -234,18 +234,18 @@ def logo_fade_frame(t: float, brand: str = 'VERA LEVEL FX') -> np.ndarray:
     """
     img = bg_frame(t)
 
-    # Gold sweep bar
+    # Emerald sweep bar
     bar_w = int(W * ease_out(t, 0.8))
     bar_y = H // 2 - 10
     draw  = ImageDraw.Draw(img)
-    draw.rectangle([0, bar_y, bar_w, bar_y + 8], fill=GOLD)
+    draw.rectangle([0, bar_y, bar_w, bar_y + 8], fill=EMERALD)
 
     # Brand name
     if t > 0.4:
         brand_alpha = ease_out(t - 0.4, 0.8)   # full by ~1.2 s
         font_brand  = load_font(56, bold=True)
         img = draw_alpha_text(img, (W // 2, H // 2 - 80),
-                               brand, font_brand, GOLD, brand_alpha)
+                               brand, font_brand, EMERALD, brand_alpha)
 
     # Subtitle
     if t > 0.7:
@@ -271,7 +271,7 @@ def cta_fade_frame(t: float, line1: str, line2: str = '') -> np.ndarray:
     alpha1 = ease_out(t, 1.0)
     font1  = load_font(36, bold=True)
     img    = draw_alpha_text(img, (W // 2, H // 2 - 40),
-                              line1, font1, GOLD, alpha1)
+                              line1, font1, EMERALD, alpha1)
 
     # line2
     if line2 and t > 0.4:

@@ -1,7 +1,7 @@
 # instagram/edu_content.py
 # Educational content for rotating Instagram posts — Vera Level FX
-# Methodology: quantitative multi-pair algorithmic system on IC Markets
-# Source inspiration: LQS engine concepts (liquidity, quantitative sizing, structure)
+# Methodology: multi-timeframe confluence, ATR-based sizing, max 1% risk per trade
+# H4/H1/M15 timeframes, 1:2.5+ avg RR, London/NY overlap sessions
 # DO NOT reference external system names in captions
 
 RISK_RULES = [
@@ -11,12 +11,16 @@ RISK_RULES = [
         "body": (
             "Professional algos never risk a fixed dollar amount — they risk a fixed "
             "percentage of current balance. At 0.01 lots per $333, your position "
-            "scales with your account, so drawdowns shrink in real terms as balance drops."
+            "scales with your account, so drawdowns shrink in real terms as balance drops. "
+            "On XAUUSD at 0.01 lots, a 30-pip stop costs $3. At $1,000 balance that is "
+            "0.3% risk — inside the 1% hard cap with room for recovery positions. "
+            "This system sizes by ATR, not fixed lots, so position size adjusts as "
+            "XAUUSD volatility expands."
         ),
-        "example_account": 3000,
-        "example_risk": 90,
-        "example_rr": "1:2.5 RR",
-        "example_target": 225,
+        "example_account": 1000,
+        "example_risk": 10,
+        "example_rr": "1% max risk, ATR-sized per trade",
+        "example_target": 25,
         "tag": "SIZING",
     },
     {
@@ -24,12 +28,15 @@ RISK_RULES = [
         "title": "Grid Spacing Discipline",
         "body": (
             "In a multi-position system, each additional level must have minimum 100-pip "
-            "spacing. Tighter grids stack exposure too fast — you don't survive the "
-            "recovery. Wide spacing buys time for the market to breathe and reverse."
+            "spacing. Tighter grids stack exposure too fast — you do not survive the "
+            "recovery. Wide spacing buys time for the market to breathe and reverse. "
+            "XAUUSD printed a 1,500+ pip move in a single session during the March 2025 "
+            "US payrolls release. A 100-pip grid gave 15 levels of room before margin "
+            "pressure. A 50-pip grid would have hit margin in 7."
         ),
         "example_account": 3000,
         "example_risk": 30,
-        "example_rr": "Per grid level",
+        "example_rr": "100-pip min spacing per grid level",
         "example_target": 0,
         "tag": "GRID CONTROL",
     },
@@ -38,13 +45,16 @@ RISK_RULES = [
         "title": "Balance vs Equity Drawdown",
         "body": (
             "Balance drawdown = realised closed losses. Equity drawdown = floating "
-            "open positions. A 50% equity drawdown with 2% balance drawdown means the "
-            "system is in recovery — not dead. Most retail traders panic-close right "
-            "before the reversal."
+            "open positions. During XAUUSD's extended uptrend, the algo held 6 floating "
+            "positions for 4 weeks before reversal. Equity floated at 30-40% drawdown. "
+            "Balance drawdown stayed under 10% because no positions were force-closed. "
+            "Most retail traders panic-close at maximum pain — right before the reversal. "
+            "This is why the system has a hard daily drawdown limit: not to avoid losses, "
+            "but to prevent a single session from forcing irrational closes."
         ),
         "example_account": 3000,
         "example_risk": 60,
-        "example_rr": "Equity vs Balance",
+        "example_rr": "Equity vs Balance — know the difference",
         "example_target": 0,
         "tag": "PSYCHOLOGY",
     },
@@ -54,12 +64,14 @@ RISK_RULES = [
         "body": (
             "Never concentrate all positions in one pair. Running 4+ uncorrelated "
             "instruments means one pair's drawdown gets offset by others trending "
-            "profitably. EURUSD, GBPJPY, XAUUSD and USDJPY each react differently to "
-            "the same macro event."
+            "profitably. EURUSD and XAUUSD both fall on USD strength because they share "
+            "dollar exposure. AUDCAD is driven by commodity prices and the RBA rate "
+            "differential, not the DXY. That makes it a genuine diversification pair "
+            "alongside the major USD crosses."
         ),
         "example_account": 3000,
         "example_risk": 75,
-        "example_rr": "Cross-pair hedge",
+        "example_rr": "Cross-pair hedge — uncorrelated drivers",
         "example_target": 0,
         "tag": "DIVERSIFICATION",
     },
@@ -67,14 +79,15 @@ RISK_RULES = [
         "rule_num": "05",
         "title": "Win Rate vs Profit Factor",
         "body": (
-            "A 76% win rate sounds great — but it means nothing without profit factor. "
-            "Our system's 673 trades show that the 24% of losses are small and the 76% "
-            "of wins are large. Profit Factor > 1.5 is institutional. Below 1.0 means "
-            "you're bleeding slowly."
+            "Profit Factor below 1.0 means the account pays out more in losses than "
+            "it collects in wins. The Vera Level live account is currently at PF 0.75. "
+            "That is the number being rebuilt. The target is PF 1.2+ before lot sizes "
+            "scale up again. Win rate tells you how often you win. Profit Factor tells "
+            "you whether it matters. A 70% win rate with PF 0.8 still loses money."
         ),
         "example_account": 3000,
         "example_risk": 100,
-        "example_rr": "PF > 1.5 target",
+        "example_rr": "current PF 0.75 — rebuild target 1.2+",
         "example_target": 0,
         "tag": "METRICS",
     },
@@ -88,9 +101,11 @@ PAIRS = [
         "avg_spread": "0.0–0.2 pips (IC Raw)",
         "volatility": "Medium — 60–90 pips/day",
         "my_edge": (
-            "Cleanest structure of all pairs. Algo reads the 4H trend and stacks "
+            "Cleanest structure of all pairs. The algo reads the 4H trend and stacks "
             "positions in the direction of the dominant cycle. Best pair for "
-            "trend-continuation grid entries."
+            "trend-continuation entries during London and NY overlap. "
+            "Asian session excluded. Spreads widen and false breaks are frequent "
+            "when institutional flow is absent."
         ),
         "quote": (
             "The most liquid instrument on earth. Institutional flow is visible in the "
@@ -100,13 +115,15 @@ PAIRS = [
     {
         "pair": "GBPJPY",
         "full_name": "British Pound / Japanese Yen",
-        "best_session": "London Open 1500–1800",
+        "best_session": "London Open 1500–1800 SGT",
         "avg_spread": "1.0–1.5 pips (IC Raw)",
-        "volatility": "Very High — 150–200 pip",
+        "volatility": "Very High — 150–200 pips/day",
         "my_edge": (
-            "Wide daily range creates fast recovery windows for grid systems. "
-            "When the trend is confirmed on H4, even a 3-level grid closes at "
-            "breakeven or better within hours — not days."
+            "The London open (1500–1800 SGT) regularly prints 80–100 pip directional "
+            "moves. The Asia session range (0100–0800) acts as the reference zone. "
+            "Breakout above or below the range at London open defines the day's "
+            "directional bias. When the trend is confirmed on H4, even a 3-level "
+            "grid closes at breakeven or better within hours."
         ),
         "quote": (
             "The Dragon moves fast and hard. It punishes indecision but rewards "
@@ -118,11 +135,13 @@ PAIRS = [
         "full_name": "Gold / US Dollar",
         "best_session": "NY Open 2130–0000 SGT",
         "avg_spread": "0.2–0.5 pips (IC Raw)",
-        "volatility": "High — 15–30 USD/session",
+        "volatility": "High — $15–30 USD/session",
         "my_edge": (
             "Gold reacts sharply to DXY and macro news. The algo avoids major news "
-            "windows and targets the post-news continuation leg — where institutional "
-            "flow completes its move without retail chasing it."
+            "windows and targets the post-news continuation leg. Institutional flow "
+            "completes its move after retail chasing has exhausted. "
+            "Gold's ATR per session runs $15–30. At 0.01 lots that is $15–30 P&L "
+            "per position per session. No news-event overrides, by design."
         ),
         "quote": (
             "Gold tells you what institutions think before equities do. Follow the "
@@ -136,9 +155,11 @@ PAIRS = [
         "avg_spread": "0.0–0.3 pips (IC Raw)",
         "volatility": "Low–Med 50–80 pips/day",
         "my_edge": (
-            "Tight Asian ranges create high-probability mean-reversion zones. "
-            "The algo identifies the session boundary, waits for a false break, "
-            "then fades the spike back into range — clean, systematic, repeatable."
+            "The Tokyo session holds USDJPY in a 30–60 pip range from 0100–0800 SGT. "
+            "False breaks above or below this range before London open are "
+            "high-probability mean-reversion setups. The algo identifies the session "
+            "boundary, waits for the false break, then fades the spike back into range. "
+            "Clean, systematic, repeatable."
         ),
         "quote": (
             "In Tokyo hours, USDJPY is the most predictable pair on the board. "
@@ -173,7 +194,8 @@ SETUPS = [
             (
                 "Entry + Risk Parameters",
                 "Long entry on M15 BOS candle close. SL below liquidity sweep wick. "
-                "TP at next H4 resistance level — minimum 1:2.5 RR required."
+                "TP at next H4 resistance level. Max risk: 1% of account, sized by "
+                "ATR on M15, not fixed lots. Minimum 1:2.5 RR required to take the trade."
             ),
         ],
     },
@@ -202,7 +224,8 @@ SETUPS = [
             (
                 "M15 Short Entry",
                 "Short on break of H1 rejection candle low. SL above supply zone. "
-                "TP at next H4 demand zone — 1:2 minimum."
+                "TP at next H4 demand zone. Max risk: 1% of account, sized by ATR "
+                "on M15. Minimum 1:2 RR required."
             ),
         ],
     },
@@ -231,7 +254,8 @@ SETUPS = [
             (
                 "Entry + Management",
                 "Long at retest. SL below Asia range high (now support). "
-                "TP = 2× the Asia range height projected upward. Trail stop at 1:1."
+                "TP = 2x the Asia range height projected upward. Trail stop at 1:1. "
+                "Max risk: 1% of account, sized by ATR. No entry if spread exceeds 2 pips."
             ),
         ],
     },
@@ -255,12 +279,13 @@ SETUPS = [
             (
                 "M15 Bearish Confirmation",
                 "After the false break, wait for M15 to form a lower high below the "
-                "range high. This confirms reversal and smart money direction."
+                "range high. This confirms reversal and institutional direction."
             ),
             (
                 "Short Entry + Parameters",
                 "Short at M15 lower high. SL above the false break wick. "
-                "TP at Asia range low — or extend to next H1 support for 1:2+."
+                "TP at Asia range low or next H1 support for 1:2+. "
+                "Max risk: 1% of account, sized by ATR on M15."
             ),
         ],
     },

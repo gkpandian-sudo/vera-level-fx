@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from moviepy.editor import VideoClip
 from reels.animator import (
-    W, H, GOLD, WHITE, GREEN, RED, MUTED, AMBER,
+    W, H, EMERALD, WHITE, GREEN, RED, MUTED, AMBER,
     logo_fade_frame, countup_frame, cascade_text_frame,
     fade_in_frame, cta_fade_frame, ease_out,
     bg_frame, draw_alpha_text, load_font,
@@ -68,7 +68,8 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
         lines.append(f'{sym}  {action}  {icon}${abs(profit):.2f}')
     if not open_trades and recovery_day == 0:
         lines.append('No open positions')
-    lines.append(f'Win Rate: {win_rate:.0f}%  PF: {pf:.2f}  Pips: +{pips:,}')
+    wr_str = f'{win_rate:.0f}%' if win_rate > 0 else 'see Myfxbook'
+    lines.append(f'Win Rate: {wr_str}  PF: {pf:.2f}  Pips: +{pips:,}')
 
     def data_frame(t):
         return cascade_text_frame(t, lines, 3.5, 0.3, WHITE, 38, 700)
@@ -107,9 +108,11 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
     lines = []
     if recovery_day > 0:
         lines.append(f'Recovery Day {recovery_day}  |  Rebuild is live')
+    wr_line = (f'Win Rate: {wr:.0f}%  across {trades:,} trades'
+               if wr > 0 else 'Win Rate: Myfxbook #12044019')
     lines += [
         f'Balance:  ${bal:,.0f}',
-        f'Win Rate: {wr:.0f}%  across {trades:,} trades',
+        wr_line,
         f'Profit Factor:  {pf:.2f}',
         f'Total Pips:     +{pips:,}',
         'All verified on Myfxbook',
@@ -140,19 +143,25 @@ def make_trust_reel(data: dict) -> list:
 
     intro = _intro_clip()
 
-    def hero_frame(t):
-        return countup_frame(t, 0, wr, 4.0, '{:.0f}%', GOLD, 160, (W // 2, H // 2 - 40))
+    if wr > 0:
+        def hero_frame(t):
+            return countup_frame(t, 0, wr, 4.0, '{:.0f}%', EMERALD, 160, (W // 2, H // 2 - 40))
+    else:
+        def hero_frame(t):
+            return fade_in_frame(t, 'Verified', 4.0, EMERALD, 120, (W // 2, H // 2 - 40))
 
     hero = _clip(hero_frame, 4.0)
 
+    trades_str = f'{trades:,} trades' if trades > 0 else 'Myfxbook #12044019'
+    wr_header  = 'Win Rate — verified' if wr > 0 else 'Full history — verified'
     lines = [
-        'Win Rate — verified',
-        f'{trades:,} trades  |  Myfxbook #12044019',
+        wr_header,
+        f'{trades_str}  |  Myfxbook #12044019',
         f'Profit Factor: {pf:.2f}',
         f'Total Pips:    +{pips:,}',
-        f'Total Gain:    {sign}{gain:.1f}%',
-        'Not a screenshot. Not a demo.',
-        'Live IC Markets. ASIC regulated.',
+        f'Total Return:  {sign}{gain:.1f}%',
+        'No screenshots. No cherry-picked months.',
+        'Raw Spread  |  IC Markets  |  ASIC + CySEC',
     ]
 
     def data_frame(t):
@@ -194,7 +203,7 @@ def make_monthly_reel(data: dict) -> list:
 
     # Hero (3s): "Monthly P&L / {month_name}" fades in
     def hero_frame(t):
-        return fade_in_frame(t, f'Monthly P&L\n{month_name}', 3.0, GOLD, 72, (W // 2, H // 2))
+        return fade_in_frame(t, f'Monthly P&L\n{month_name}', 3.0, EMERALD, 72, (W // 2, H // 2))
 
     hero = _clip(hero_frame, 3.0)
 
@@ -238,7 +247,7 @@ def make_monthly_reel(data: dict) -> list:
             total_alpha = min((t - end_t) / 1.0, 1.0)
             img = draw_alpha_text(img, (W // 2, start_y + len(months) * bar_spacing + 60),
                                    f'Total: {sign}{gain:.1f}%',
-                                   load_font(48, bold=True), GOLD, total_alpha)
+                                   load_font(48, bold=True), EMERALD, total_alpha)
 
         return np.array(img)
 
@@ -294,7 +303,7 @@ def make_transparency_reel(data: dict) -> list:
                                      load_font(fs, bold=bold), color, alp)
         for i, line in enumerate(changed_lines):
             bold  = (line == 'WHAT CHANGED')
-            color = GOLD if bold else WHITE
+            color = EMERALD if bold else WHITE
             fs    = 44 if bold else 36
             s_t   = 9.0 + i * 0.6
             alp   = min(max(t - s_t, 0) / 0.4, 1.0)
@@ -329,7 +338,7 @@ def make_recovery_plan_reel() -> list:
     intro = _intro_clip()
 
     def hero_frame(t):
-        return fade_in_frame(t, '$1,000/month  50% target', 3.0, GOLD, 56, (W // 2, H // 2))
+        return fade_in_frame(t, '$1,000/month  50% target', 3.0, EMERALD, 56, (W // 2, H // 2))
 
     hero = _clip(hero_frame, 3.0)
 
@@ -356,7 +365,7 @@ def make_recovery_plan_reel() -> list:
 
             is_now = (month == now_month)
             prefix = '> ' if is_now else '  '
-            color  = GOLD if is_now else WHITE
+            color  = EMERALD if is_now else WHITE
             current_bal = end_bal * ease_out(elapsed, ROW_DUR)
             row_text = f'{prefix}{month}  +${topup:,}  ->  ${current_bal:,.0f}'
             y = start_y + i * 70
@@ -370,7 +379,7 @@ def make_recovery_plan_reel() -> list:
             proj_alp = min((t - end_t) / 0.5, 1.0)
             img = draw_alpha_text(img, (W // 2, start_y + len(_RECOVERY_MONTHS) * 70 + 60),
                                    'Projected: $31,171',
-                                   load_font(48, bold=True), GOLD, proj_alp)
+                                   load_font(48, bold=True), EMERALD, proj_alp)
         return np.array(img)
 
     data_clip = _clip(data_frame, DUR_DATA)
@@ -392,7 +401,7 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         title = f"Rule #{content['rule_num']} - {content['title']}"
 
         def hero_frame(t):
-            return _typewriter_frame(t, title, 5.0, GOLD, 56, (W // 2, H // 2))
+            return _typewriter_frame(t, title, 5.0, EMERALD, 56, (W // 2, H // 2))
 
         hero = _clip(hero_frame, 5.0)
 
@@ -414,7 +423,7 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         title = f'Pair Spotlight - {pair}'
 
         def hero_frame(t):  # noqa: F811
-            return _typewriter_frame(t, title, 5.0, GOLD, 60, (W // 2, H // 2))
+            return _typewriter_frame(t, title, 5.0, EMERALD, 60, (W // 2, H // 2))
 
         hero = _clip(hero_frame, 5.0)
 
@@ -436,7 +445,7 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         title = f"{pair} {content.get('direction', 'LONG')} Setup"
 
         def hero_frame(t):  # noqa: F811
-            return _typewriter_frame(t, title, 5.0, GOLD, 58, (W // 2, H // 2))
+            return _typewriter_frame(t, title, 5.0, EMERALD, 58, (W // 2, H // 2))
 
         hero = _clip(hero_frame, 5.0)
 
