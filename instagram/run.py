@@ -154,7 +154,7 @@ def main():
     sys.path.insert(0, str(ROOT / 'instagram'))
     from generate        import make_weekly_card, make_monthly_chart, make_winrate_card, make_transparency_card, make_recovery_plan_card
     from generate_status import make_daily_card
-    from captions        import weekly, monthly, trust, daily_status, transparency, recovery_plan
+    from captions        import weekly, monthly, trust, daily_status, transparency, recovery_plan, monthly_pnl_from_daily
     from post            import publish
 
     data       = load_data()
@@ -226,17 +226,8 @@ def main():
         if image_path is None:
             fig = make_weekly_card(data)
     elif post_type == 'monthly':
-        # rebuild monthly_pnl for caption
-        monthly_pnl = {}
-        for item in data.get('dailyGain', []):
-            ds  = item[0] if isinstance(item, list) else item.get('date', '')
-            val = item[1] if isinstance(item, list) else item.get('value', 0)
-            try:
-                from datetime import datetime as dt
-                key = dt.fromisoformat(str(ds)[:10]).strftime('%b %y')
-                monthly_pnl[key] = monthly_pnl.get(key, 0) + float(val)
-            except Exception:
-                pass
+        # rebuild monthly_pnl for caption (Myfxbook MM/DD/YYYY dates)
+        monthly_pnl = monthly_pnl_from_daily(data.get('dailyGain', []))
         caption = monthly(account, monthly_pnl, lang=lang)
         if image_path is None:
             fig = make_monthly_chart(data)

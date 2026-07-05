@@ -11,7 +11,7 @@ _CTA_IB       = f"\n🏦 Open IC Markets (Raw Spread, ASIC + CySEC regulated) �
 _CTA_VERIFY   = f"\n🔍 Verify my full track record → Myfxbook #12044019"
 _CTA_ALL      = f"\n📲 {_TELEGRAM}  |  🌐 {_WEBSITE}  |  🏦 {_IB_URL}"
 
-# Required on all posts citing live cumulative P&L (trust, transparency, monthly, recovery-plan)
+# Required on all posts citing live P&L (daily, weekly, trust, transparency, monthly, recovery-plan)
 _RISK_DISCLAIMER = (
     "Trading FX on margin carries high risk. "
     "Past performance is not indicative of future results. IB #91936."
@@ -30,10 +30,10 @@ TAGS_EDU     = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_EDU}"
 # Translation note: "Recovery Day", "PF", and metric labels may need transliteration
 # rather than direct translation — flag for native speaker review before going live.
 _TAMIL = {
-    'daily':   "📊 இன்றைய live positions — எல்லாம் IC Markets real account, Myfxbook-ல் verify பண்ணலாம்.",
-    'weekly':  "📈 இந்த வார P&L — live account, எல்லாம் Myfxbook-ல் verify பண்ணலாம்.",
-    'monthly': "📅 இந்த மாத P&L முழு breakdown — Myfxbook-ல் நேரடியா பாருங்க.",
-    'trust':   "✅ Real track record — Myfxbook-ல் search பண்ணுங்க 'Vera Level'.",
+    'daily':   "📊 இன்றைய live positions. எல்லாம் IC Markets real account, Myfxbook-ல் verify பண்ணலாம்.",
+    'weekly':  "📈 இந்த வார P&L. Live account, எல்லாம் Myfxbook-ல் verify பண்ணலாம்.",
+    'monthly': "📅 இந்த மாத P&L முழு breakdown. Myfxbook-ல் நேரடியா பாருங்க.",
+    'trust':   "✅ Real track record. Myfxbook-ல் search பண்ணுங்க 'Vera Level'.",
     'edu':     "📚 இந்த rule follow பண்ணா உங்க capital safe-ஆ இருக்கும்.",
 }
 
@@ -42,6 +42,40 @@ def _tamil_line(key: str, lang: str) -> str:
     if lang == 'tamil':
         return f"\n\n{_TAMIL.get(key, '')}"
     return ''
+
+
+def monthly_pnl_from_daily(daily_gain: list) -> dict:
+    """Myfxbook dailyGain rows -> ordered {'%b %y': monthly gain %}.
+
+    Each dailyGain row is [date, cumulative_total_gain_%, daily_profit_$].
+    Dates come from Myfxbook as MM/DD/YYYY (ISO also accepted).
+    Monthly gain is the time-weighted change in cumulative gain over the
+    month: ((100 + end) / (100 + prev_month_end) - 1) * 100, so every
+    figure traces directly to the Myfxbook cumulative gain series.
+    """
+    month_end: dict = {}
+    for item in daily_gain:
+        ds  = item[0] if isinstance(item, list) else item.get('date', '')
+        val = item[1] if isinstance(item, list) else item.get('value', 0)
+        d = None
+        for fmt in ('%m/%d/%Y', '%Y-%m-%d'):
+            try:
+                d = datetime.strptime(str(ds)[:10], fmt)
+                break
+            except ValueError:
+                continue
+        if d is None:
+            continue
+        # rows are chronological; last row seen for a month is month-end
+        month_end[d.strftime('%b %y')] = float(val)
+
+    result: dict = {}
+    prev = 0.0
+    for month, cum in month_end.items():
+        base = 100.0 + prev
+        result[month] = ((100.0 + cum) / base - 1.0) * 100.0 if base > 0 else 0.0
+        prev = cum
+    return result
 
 
 def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
@@ -65,12 +99,12 @@ def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
         if recovery_day > 0 and gain < 0 else ''
     )
 
-    return f"""📊 Weekly Performance — {now}
+    return f"""📊 Weekly Performance · {now}
 
 {recovery_line}{sign}{gain:.1f}% {gain_label}{trades_part}. {wr_str}.
 Every figure verified on Myfxbook. Account #12044019.
 
-IC Markets Raw Spread — ASIC and CySEC regulated.
+IC Markets Raw Spread. ASIC and CySEC regulated.
 Max 1% risk per trade. Target 1:2.5+ RR.
 
 💰 Balance: ${bal:,.0f}
@@ -94,7 +128,7 @@ def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
     sign      = '+' if gain >= 0 else ''
     month_now = datetime.now().strftime('%B %Y')
 
-    return f"""📅 Monthly P&L — {month_now}
+    return f"""📅 Monthly P&L · {month_now}
 
 Six months of real P&L. Nothing aggregated, nothing smoothed.
 Drawdown months included. Every one of them.
@@ -117,11 +151,11 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
 
     if edu_type == 'risk':
         return (
-            f"⚠️ Risk Rule #{content['rule_num']} — {content['title']}\n\n"
+            f"⚠️ Risk Rule #{content['rule_num']} · {content['title']}\n\n"
             f"{content['body']}\n\n"
             f"Example: ${content['example_account']:,} account → "
             f"max ${content['example_risk']:,} at risk per trade.\n"
-            f"At {content['example_rr']} — that is how professionals protect capital.\n\n"
+            f"At {content['example_rr']}. That is how professionals protect capital.\n\n"
             f"Save this post. Apply it before your next trade.\n"
             f"Every position in my live IC Markets account follows this rule."
             f"{cta}{_tamil_line('edu', lang)}\n\n{TAGS_EDU}"
@@ -129,7 +163,7 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
 
     if edu_type == 'pairs':
         return (
-            f"📊 Pair Spotlight — {content['pair']} ({content['full_name']})\n\n"
+            f"📊 Pair Spotlight · {content['pair']} ({content['full_name']})\n\n"
             f"Best session: {content['best_session']}\n"
             f"Avg spread on IC Markets Raw: {content['avg_spread']}\n"
             f"Daily volatility: {content['volatility']}\n"
@@ -142,17 +176,17 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
 
     # setup
     steps_text = '\n'.join(
-        f"{i+1}. {title} — {desc}"
+        f"{i+1}. {title}: {desc}"
         for i, (title, desc) in enumerate(content['steps'])
     )
     return (
-        f"📈 Setup Breakdown — {content['pair']} {content['direction']} "
+        f"📈 Setup Breakdown · {content['pair']} {content['direction']} "
         f"({content['setup_type']})\n\n"
         f"Timeframe: {content['timeframe']}\n"
         f"Risk:Reward: {content['rr']}\n"
         f"Max risk: 1% of account, sized by ATR\n\n"
         f"{steps_text}\n\n"
-        f"Save this post — use it as a checklist before your next {content['pair']} trade.\n\n"
+        f"Save this post. Use it as a checklist before your next {content['pair']} trade.\n\n"
         f"This is the exact logic behind every position in my verified IC Markets account."
         f"{cta}{_tamil_line('edu', lang)}\n\n{TAGS_EDU}"
     )
@@ -188,9 +222,9 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
         if recovery_day > 0 else ''
     )
 
-    return f"""{direction_emoji} Live Position Update — {now}
+    return f"""{direction_emoji} Live Position Update · {now}
 
-{recovery_line}Myfxbook #12044019 — open right now to verify every row.
+{recovery_line}Myfxbook #12044019. Open now to verify every row.
 
 💰 Balance: ${balance:,.0f}
 ⚖️ Equity: ${equity:,.0f}
@@ -201,6 +235,8 @@ Open positions right now:
 
 Running record: {wr_line}
 {_CTA_VERIFY}{_tamil_line('daily', lang)}
+
+{_RISK_DISCLAIMER}
 
 {TAGS}"""
 
@@ -214,10 +250,10 @@ def trust(account: dict, lang: str = 'en') -> str:
     sign   = '+' if gain >= 0 else ''
 
     wr_str    = f'{wr:.0f}% win rate across {trades:,} trades.' if wr > 0 else 'Full trade history on Myfxbook.'
-    gain_note = ' (deep drawdown — fully disclosed)' if gain < -50 else ''
+    gain_note = ' (deep drawdown, fully disclosed)' if gain < -50 else ''
     wr_line   = f'🎯 Win Rate: {wr:.0f}%' if wr > 0 else '🎯 Win Rate: Myfxbook #12044019'
 
-    return f"""✅ Live Track Record — Vera Level FX
+    return f"""✅ Live Track Record · Vera Level FX
 
 {wr_str}
 Every trade on Myfxbook. Go check.
@@ -273,8 +309,8 @@ The rebuild is live on Myfxbook.
 
 def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_start_str: str = '') -> str:
     tamil = (
-        "\n\n📈 Recovery Plan — $1,000/மாதம் top-up, December வரை. "
-        "இது simulation மட்டும் — guarantee இல்லை. Follow பண்ணுங்க journey-ஐ."
+        "\n\n📈 Recovery Plan · $1,000/மாதம் top-up, December வரை. "
+        "இது simulation மட்டும், guarantee இல்லை. Follow பண்ணுங்க journey-ஐ."
     ) if lang == 'tamil' else ''
 
     if recovery_day > 0 and recovery_start_str:
@@ -284,7 +320,7 @@ def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_start_str: s
     else:
         day_line = ''
 
-    return f"""📈 Recovery Plan — Structured Rebuild
+    return f"""📈 Recovery Plan · Structured Rebuild
 
 {day_line}No hype, just numbers.
 
@@ -305,7 +341,7 @@ GRID EA runs at reduced risk until December.
 This is a simulation. 50% monthly returns are not guaranteed.
 Every actual top-up and trade result will be on Myfxbook. Nothing hidden.
 
-Open your IC Markets account — same broker I use:{_CTA_IB}{tamil}
+Open your IC Markets account. Same broker I use:{_CTA_IB}{tamil}
 
 {_RISK_DISCLAIMER}
 

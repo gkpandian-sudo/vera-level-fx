@@ -62,7 +62,8 @@ def main():
     from reels.audio  import get_track
     from reels.render import render
     from captions     import (weekly, monthly, trust, daily_status,
-                              transparency, recovery_plan, edu as edu_caption)
+                              transparency, recovery_plan, edu as edu_caption,
+                              monthly_pnl_from_daily)
     from post         import publish_reel
 
     data      = load_data()
@@ -97,17 +98,9 @@ def main():
         caption = weekly(account, lang=lang, recovery_day=recovery_day)
 
     elif post_type == 'monthly':
-        clips = make_monthly_reel(data)
-        monthly_pnl: dict = {}
-        for item in data.get('dailyGain', []):
-            ds  = item[0] if isinstance(item, list) else item.get('date', '')
-            val = item[1] if isinstance(item, list) else item.get('value', 0)
-            try:
-                key = datetime.fromisoformat(str(ds)[:10]).strftime('%b %y')
-                monthly_pnl[key] = monthly_pnl.get(key, 0) + float(val)
-            except Exception:
-                pass
-        caption = monthly(account, monthly_pnl, lang=lang)
+        clips       = make_monthly_reel(data)
+        monthly_pnl = monthly_pnl_from_daily(data.get('dailyGain', []))
+        caption     = monthly(account, monthly_pnl, lang=lang)
 
     elif post_type == 'transparency':
         clips   = make_transparency_reel(data)

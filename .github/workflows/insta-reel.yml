@@ -42,13 +42,29 @@ jobs:
       - name: Install dependencies
         run: pip install -r instagram/requirements.txt
 
+      # Scheduled runs rotate by day so the cron never repeats one post type.
+      # Cron fires 23:00 UTC Sun/Tue/Thu = 07:00 SGT Mon/Wed/Fri.
+      - name: Resolve post type
+        id: post_type
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            case "$(date -u +%u)" in
+              7) echo "type=weekly" >> "$GITHUB_OUTPUT" ;;  # Sun UTC -> Mon SGT
+              2) echo "type=daily"  >> "$GITHUB_OUTPUT" ;;  # Tue UTC -> Wed SGT
+              4) echo "type=trust"  >> "$GITHUB_OUTPUT" ;;  # Thu UTC -> Fri SGT
+              *) echo "type=weekly" >> "$GITHUB_OUTPUT" ;;
+            esac
+          else
+            echo "type=${{ github.event.inputs.post_type || 'weekly' }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Generate Reel & post to Instagram
         env:
           IG_USER_ID:        ${{ secrets.IG_USER_ID }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          POST_TYPE:         ${{ github.event.inputs.post_type || 'weekly' }}
+          POST_TYPE:         ${{ steps.post_type.outputs.type }}
           POST_LANG:         ${{ github.event.inputs.post_lang || 'en' }}
           RECOVERY_START:    ${{ secrets.RECOVERY_START }}
           BRAND_IB_URL:      ${{ secrets.BRAND_IB_URL }}

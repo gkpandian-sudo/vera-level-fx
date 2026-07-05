@@ -1,0 +1,445 @@
+<!-- @dsCard group="Instagram" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Carousel · Vera Level FX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #001835;
+    --emerald: #059669;
+    --white:   #FFFFFF;
+    --muted:   #6B7280;
+    --red:     #EF4444;
+    --hairline: rgba(255,255,255,0.08);
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #0A0A0A;
+    display: flex;
+    gap: 24px;
+    padding: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .ms {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1080px;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 72px;
+  }
+
+  /* SVG grain, 2.5% opacity, keeps the navy from feeling flat */
+  .slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.025;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .slide > * { position: relative; z-index: 1; }
+
+  /* ── Shared chrome ── */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(5,150,105,0.14);
+    border: 1px solid rgba(5,150,105,0.5);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 9px 20px 9px 16px;
+    border-radius: 100px;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--emerald);
+    border-radius: 50%;
+    animation: livepulse 1.8s ease-out infinite;
+  }
+
+  @keyframes livepulse {
+    0%   { box-shadow: 0 0 0 0 rgba(5,150,105,0.7); }
+    70%  { box-shadow: 0 0 0 9px rgba(5,150,105,0); }
+    100% { box-shadow: 0 0 0 0 rgba(5,150,105,0); }
+  }
+
+  .page-index {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--muted);
+  }
+
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .wordmark {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .masthead .context {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .cred {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+
+  .cred .ms { font-size: 20px; color: var(--emerald); }
+
+  .risk {
+    font-size: 13px;
+    color: rgba(107,114,128,0.75);
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+
+  /* ══ SLIDE 1 · Hero metric ══ */
+  .hero {
+    margin-top: 56px;
+  }
+
+  .hero-label {
+    font-size: 120px;
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -3px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .hero-value {
+    font-size: 160px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -4px;
+    color: var(--red);
+    margin-top: 20px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Diagonal cut, full bleed */
+  .cut {
+    position: relative;
+    height: 48px;
+    margin: 24px -72px 8px;
+  }
+
+  .cut::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    right: -24px;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg,
+      rgba(5,150,105,0.9) 0%,
+      rgba(255,255,255,0.12) 45%,
+      rgba(255,255,255,0.03) 100%);
+    transform: rotate(-2.4deg);
+  }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .mini + .mini { border-left: 1px solid var(--hairline); padding-left: 48px; margin-left: -24px; }
+
+  .mini-label {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .mini-value {
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ══ SLIDE 2 · Metric wall ══ */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .metric {
+    position: relative;
+    background: rgba(255,255,255,0.03);
+    padding: 48px 40px 48px 52px;
+  }
+
+  /* Angled left border, skewX(-5deg) */
+  .metric::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 16px;
+    bottom: 16px;
+    width: 3px;
+    background: rgba(255,255,255,0.18);
+    transform: skewX(-5deg);
+  }
+
+  .metric.key::before { background: var(--emerald); }
+
+  .m-label {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .m-value {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .m-value.down { color: var(--red); }
+
+  .m-value .target-arrow {
+    font-size: 40px;
+    color: var(--emerald);
+    align-self: center;
+  }
+
+  .m-value .target {
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--emerald);
+  }
+
+  .m-sub {
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+
+  /* ══ SLIDE 3 · CTA ══ */
+  .s3 { align-items: center; text-align: center; }
+
+  .cta-eyebrow {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    color: var(--emerald);
+    text-transform: uppercase;
+    margin-top: 72px;
+  }
+
+  .cta-title {
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -1px;
+    color: var(--white);
+    margin-top: 24px;
+  }
+
+  .qr {
+    width: 300px;
+    height: 300px;
+    margin-top: 56px;
+    border-radius: 28px;
+    border: 2px solid var(--emerald);
+    background: rgba(5,150,105,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr .ms {
+    font-size: 140px;
+    color: var(--emerald);
+  }
+
+  .qr-caption {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 24px;
+  }
+
+  .s3 .footer { width: 100%; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 · Hero metric -->
+<div class="slide s1">
+  <div class="topbar">
+    <div class="live-pill"><span class="live-dot"></span>LIVE</div>
+    <div class="page-index">01 / 03</div>
+  </div>
+
+  <div class="masthead">
+    <span class="wordmark">Vera Level FX</span>
+    <span class="context">Weekly · 05 Jul 2026</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-label">Total<br>Return</div>
+    <div class="hero-value">-96.82%</div>
+  </div>
+
+  <div class="cut"></div>
+
+  <div class="mini-grid">
+    <div class="mini">
+      <div class="mini-label">Max Drawdown</div>
+      <div class="mini-value">98.1%</div>
+    </div>
+    <div class="mini">
+      <div class="mini-label">Live Balance</div>
+      <div class="mini-value">$1,042</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="cred"><span class="ms">verified</span>Myfxbook #12044019 · IC Markets Raw Spread · ASIC + CySEC</div>
+    <div class="risk">Past performance is not indicative of future results.</div>
+  </div>
+</div>
+
+<!-- SLIDE 2 · Metric wall -->
+<div class="slide s2">
+  <div class="topbar">
+    <div class="live-pill"><span class="live-dot"></span>LIVE</div>
+    <div class="page-index">02 / 03</div>
+  </div>
+
+  <div class="masthead">
+    <span class="wordmark">Vera Level FX</span>
+    <span class="context">Performance Metrics</span>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric">
+      <div class="m-label">Monthly P&amp;L</div>
+      <div class="m-value down">-53.1%</div>
+      <div class="m-sub">June 2026</div>
+    </div>
+    <div class="metric key">
+      <div class="m-label">Profit Factor</div>
+      <div class="m-value">0.75<span class="ms target-arrow">arrow_forward</span><span class="target">1.2+</span></div>
+      <div class="m-sub">Rebuild target</div>
+    </div>
+    <div class="metric">
+      <div class="m-label">Win Rate</div>
+      <div class="m-value">52.5%</div>
+      <div class="m-sub">40 verified trades</div>
+    </div>
+    <div class="metric">
+      <div class="m-label">Total Pips</div>
+      <div class="m-value">+19,011</div>
+      <div class="m-sub">Since inception</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="cred"><span class="ms">verified</span>Myfxbook #12044019 · IC Markets Raw Spread · ASIC + CySEC</div>
+    <div class="risk">Max 1% risk per trade · Target 1:2.5+ RR · H4 / H1 / M15 timeframes.</div>
+  </div>
+</div>
+
+<!-- SLIDE 3 · CTA -->
+<div class="slide s3">
+  <div class="topbar" style="width:100%">
+    <div class="live-pill"><span class="live-dot"></span>LIVE</div>
+    <div class="page-index">03 / 03</div>
+  </div>
+
+  <div class="cta-eyebrow">Verify the numbers</div>
+  <h1 class="cta-title">Search "Vera Level"<br>on Myfxbook</h1>
+
+  <div class="qr"><span class="ms">qr_code_scanner</span></div>
+  <div class="qr-caption">Account #12044019</div>
+
+  <div class="footer">
+    <div class="cred"><span class="ms">verified</span>Myfxbook #12044019 · IC Markets Raw Spread · ASIC + CySEC</div>
+    <div class="risk">Trading FX on margin carries high risk. Past performance is not indicative of future results.</div>
+  </div>
+</div>
+
+</body>
+</html>

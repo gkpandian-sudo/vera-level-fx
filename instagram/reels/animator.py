@@ -14,13 +14,11 @@ W, H = 1080, 1920
 
 # ── Brand palette — aligned with vera-level-forex.vercel.app ─────────────────
 NAVY    = (0,   24,  53)   # site --primary #001835
-EMERALD = (5,   150, 105)  # site bg-success #059669 — replaces gold
+EMERALD = (5,   150, 105)  # site bg-success #059669, sole accent
 WHITE   = (255, 255, 255)
-CREAM   = (240, 238, 232)
 MUTED   = (107, 114, 128)  # site secondary text #6B7280
-GREEN   = (5,   150, 105)  # positive P&L — matches EMERALD
+GREEN   = (5,   150, 105)  # positive P&L, matches EMERALD
 RED     = (239, 68,  68)   # site error #EF4444
-AMBER   = (251, 146, 60)   # warning — no direct site equiv, kept for transparency scenes
 
 # ── Font helpers ──────────────────────────────────────────────────────────────
 _FONT_DIR = Path(__file__).parent.parent / 'assets' / 'fonts'
@@ -85,7 +83,7 @@ def ease_out(t: float, dur: float) -> float:
 
 def _particle_overlay(t: float, n: int = 8, opacity: float = 0.08,
                       seed: int = 42) -> Image.Image:
-    """RGBA PIL image with n gold ellipses drifting upward."""
+    """RGBA PIL image with n emerald ellipses drifting upward."""
     rng = np.random.default_rng(seed)
     x_positions = rng.integers(50, W - 50, n)
     y_starts    = rng.integers(0, H, n)
@@ -216,7 +214,7 @@ def typewriter_frame(t: float, text: str, dur: float,
 
 def slide_bar_frame(t: float, dur: float, y: int,
                     thickness: int = 8) -> np.ndarray:
-    """Gold horizontal bar sweeps left → right over dur seconds."""
+    """Emerald horizontal bar sweeps left → right over dur seconds."""
     img   = bg_frame(t)
     bar_w = int(W * ease_out(t, dur))
     draw  = ImageDraw.Draw(img)
@@ -228,8 +226,8 @@ def logo_fade_frame(t: float, brand: str = 'VERA LEVEL FX') -> np.ndarray:
     """
     1.5 s branded intro frame.
 
-    0.0 s  — gold sweep bar animates L→R (completes at 0.8 s)
-    0.4 s  — brand name fades in (56 pt bold GOLD, centred at W//2, H//2-80)
+    0.0 s  — emerald sweep bar animates L→R (completes at 0.8 s)
+    0.4 s  — brand name fades in (56 pt bold EMERALD, centred at W//2, H//2-80)
     0.7 s  — subtitle 'Live IC Markets Account' fades in (30 pt MUTED)
     """
     img = bg_frame(t)
@@ -261,7 +259,7 @@ def cta_fade_frame(t: float, line1: str, line2: str = '') -> np.ndarray:
     """
     Two-line call-to-action fade-in.
 
-    line1 — starts at t=0, 36 pt bold GOLD,  centred at H//2-40
+    line1 — starts at t=0, 36 pt bold EMERALD,  centred at H//2-40
     line2 — starts at t=0.4, 30 pt MUTED, centred at H//2+40
     Both ease-out over 1.0 s.
     """

@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from moviepy.editor import VideoClip
 from reels.animator import (
-    W, H, EMERALD, WHITE, GREEN, RED, MUTED, AMBER,
+    W, H, EMERALD, WHITE, GREEN, RED, MUTED,
     logo_fade_frame, countup_frame, cascade_text_frame,
     fade_in_frame, cta_fade_frame, ease_out,
     bg_frame, draw_alpha_text, load_font,
@@ -21,7 +21,7 @@ def _clip(make_frame_fn, duration: float) -> VideoClip:
 
 
 def _intro_clip() -> VideoClip:
-    """1.5s branded intro — logo + gold bar sweep."""
+    """1.5s branded intro — logo + emerald bar sweep."""
     return _clip(logo_fade_frame, 1.5)
 
 
@@ -153,7 +153,7 @@ def make_trust_reel(data: dict) -> list:
     hero = _clip(hero_frame, 4.0)
 
     trades_str = f'{trades:,} trades' if trades > 0 else 'Myfxbook #12044019'
-    wr_header  = 'Win Rate — verified' if wr > 0 else 'Full history — verified'
+    wr_header  = 'Win Rate, verified' if wr > 0 else 'Full history, verified'
     lines = [
         wr_header,
         f'{trades_str}  |  Myfxbook #12044019',
@@ -180,20 +180,13 @@ def make_trust_reel(data: dict) -> list:
 def make_monthly_reel(data: dict) -> list:
     """Returns [intro, hero, data, cta] for monthly post (~28s)."""
     from datetime import datetime as _dt
+    from captions import monthly_pnl_from_daily
 
     acct = data.get('account', {})
     gain = float(acct.get('gain') or 0)
 
-    # Build last-6-month P&L from dailyGain
-    monthly_pnl: dict[str, float] = {}
-    for item in data.get('dailyGain', []):
-        ds  = item[0] if isinstance(item, list) else item.get('date', '')
-        val = item[1] if isinstance(item, list) else item.get('value', 0)
-        try:
-            key = _dt.fromisoformat(str(ds)[:10]).strftime('%b %y')
-            monthly_pnl[key] = monthly_pnl.get(key, 0) + float(val)
-        except Exception:
-            pass
+    # Build last-6-month P&L from dailyGain (Myfxbook MM/DD/YYYY dates)
+    monthly_pnl: dict[str, float] = monthly_pnl_from_daily(data.get('dailyGain', []))
 
     months = list(monthly_pnl.items())[-6:]
     sign   = '+' if gain >= 0 else ''
@@ -295,7 +288,7 @@ def make_transparency_reel(data: dict) -> list:
         img = bg_frame(t)
         for i, line in enumerate(happened_lines):
             bold  = (line == 'WHAT HAPPENED')
-            color = AMBER if bold else WHITE
+            color = RED if bold else WHITE
             fs    = 44 if bold else 36
             s_t   = i * 0.6
             alp   = min(max(t - s_t, 0) / 0.4, 1.0)

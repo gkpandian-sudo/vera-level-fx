@@ -1,0 +1,284 @@
+<!-- @dsCard group="Instagram" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Recovery Plan Thumbnail · Vera Level FX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #001835;
+    --emerald: #059669;
+    --white:   #FFFFFF;
+    --muted:   #6B7280;
+    --hairline: rgba(255,255,255,0.08);
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #0A0A0A;
+    display: flex;
+    padding: 32px;
+    justify-content: center;
+  }
+
+  .ms {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .card {
+    width: 1080px;
+    height: 1350px;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 64px 72px 56px;
+  }
+
+  /* SVG grain */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.025;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .card > * { position: relative; z-index: 1; }
+
+  /* Top tag */
+  .tag {
+    align-self: flex-start;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    border: 1px solid rgba(5,150,105,0.5);
+    padding: 9px 20px;
+    border-radius: 100px;
+  }
+
+  /* Compact hero, the table is the real hero */
+  .hero {
+    margin-top: 36px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .hero h1 {
+    font-size: 80px;
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -2px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .hero .sub {
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+
+  /* Recovery table, 55% of card height */
+  .table {
+    height: 742px;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 1fr 180px 1fr;
+    padding: 0 28px 14px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .table-header span:nth-child(2) { text-align: center; }
+  .table-header span:last-child { text-align: right; }
+
+  .row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 180px 1fr;
+    align-items: center;
+    padding: 0 28px;
+    margin-top: 8px;
+    border-left: 1px solid rgba(107,114,128,0.35);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .row.current {
+    border-left: 4px solid var(--emerald);
+    background: rgba(5,150,105,0.12);
+    padding-left: 25px;
+  }
+
+  .row .month {
+    font-size: 27px;
+    font-weight: 600;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .row.current .month { color: var(--emerald); }
+
+  .row.current .month .ms {
+    font-size: 22px;
+    color: var(--emerald);
+  }
+
+  .row .topup {
+    font-size: 21px;
+    font-weight: 400;
+    color: var(--muted);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row .balance {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--white);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row.current .balance { color: var(--emerald); }
+
+  /* Disclaimer */
+  .disclaimer {
+    margin-top: 28px;
+    font-size: 14px;
+    color: rgba(107,114,128,0.75);
+    line-height: 1.6;
+  }
+
+  /* Credibility strip */
+  .cred-row {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cred-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--emerald);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 11px 24px 11px 18px;
+    border-radius: 100px;
+  }
+
+  .cred-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--white);
+    border-radius: 50%;
+    animation: livepulse 1.8s ease-out infinite;
+  }
+
+  @keyframes livepulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
+    70%  { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  }
+
+  .cred-brand {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="tag">Structured Rebuild</div>
+
+  <div class="hero">
+    <h1>Recovery Plan</h1>
+    <div class="sub">July &#8594; December 2026 · Monthly top-ups, compounded</div>
+  </div>
+
+  <div class="table">
+    <div class="table-header">
+      <span>Month</span>
+      <span>Top-up</span>
+      <span>Balance</span>
+    </div>
+
+    <div class="row current">
+      <div class="month"><span class="ms">arrow_right</span>July</div>
+      <div class="topup">+$1,000</div>
+      <div class="balance">$1,500</div>
+    </div>
+    <div class="row">
+      <div class="month">August</div>
+      <div class="topup">+$1,000</div>
+      <div class="balance">$3,750</div>
+    </div>
+    <div class="row">
+      <div class="month">September</div>
+      <div class="topup">+$1,000</div>
+      <div class="balance">$7,125</div>
+    </div>
+    <div class="row">
+      <div class="month">October</div>
+      <div class="topup">+$1,000</div>
+      <div class="balance">$12,187</div>
+    </div>
+    <div class="row">
+      <div class="month">November</div>
+      <div class="topup">+$1,000</div>
+      <div class="balance">$19,781</div>
+    </div>
+    <div class="row">
+      <div class="month">December</div>
+      <div class="topup">+$1,000</div>
+      <div class="balance">$31,171</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    This is a projection, not a promise. 50% monthly returns are not guaranteed.<br>
+    Trading FX on margin carries high risk. Past performance is not indicative of future results. IC Markets IB #91936.
+  </div>
+
+  <div class="cred-row">
+    <div class="cred-pill"><span class="cred-dot"></span>LIVE · MYFXBOOK #12044019</div>
+    <div class="cred-brand">Vera Level FX</div>
+  </div>
+</div>
+
+</body>
+</html>
