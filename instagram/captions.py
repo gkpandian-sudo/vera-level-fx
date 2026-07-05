@@ -8,6 +8,7 @@ _IB_URL   = os.environ.get('BRAND_IB_URL', 'icmarkets.com/?camp=91936')
 
 _CTA_TELEGRAM = f"\n📲 Live trade alerts → {_TELEGRAM}"
 _CTA_IB       = f"\n🏦 Open IC Markets (Raw Spread, ASIC + CySEC regulated) → {_IB_URL}"
+_CTA_IB_SOFT  = f"\n🏦 I trade on IC Markets Raw Spread · {_IB_URL} · ASIC + CySEC"
 _CTA_VERIFY   = f"\n🔍 Verify my full track record → Myfxbook #12044019"
 _CTA_ALL      = f"\n📲 {_TELEGRAM}  |  🌐 {_WEBSITE}  |  🏦 {_IB_URL}"
 
@@ -111,7 +112,7 @@ Max 1% risk per trade. Target 1:2.5+ RR.
 {wr_line}
 ⚡ Profit Factor: {pf:.2f}
 💹 Total Pips: +{pips:,}
-{_CTA_VERIFY}{_tamil_line('weekly', lang)}
+{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('weekly', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -234,7 +235,7 @@ Open positions right now:
 {positions_block}
 
 Running record: {wr_line}
-{_CTA_VERIFY}{_tamil_line('daily', lang)}
+{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('daily', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -267,7 +268,7 @@ Account type: Raw Spread. Broker: IC Markets. Regulation: ASIC + CySEC.
 💹 Pips: +{pips:,}
 
 Verify: search "Vera Level" on Myfxbook.com
-{_CTA_VERIFY}{_tamil_line('trust', lang)}
+{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('trust', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -300,7 +301,7 @@ The rebuild is live on Myfxbook.
 💰 Current balance: ${bal:,.0f}
 📉 Max drawdown: {dd:.1f}%
 🔍 Full history: Myfxbook #12044019
-{_CTA_VERIFY}{_tamil_line('trust', lang)}
+{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('trust', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -346,3 +347,46 @@ Open your IC Markets account. Same broker I use:{_CTA_IB}{tamil}
 {_RISK_DISCLAIMER}
 
 {TAGS}"""
+
+
+def broker(lang: str = 'en') -> str:
+    _TAGS_BROKER = (f"{_TAGS_BRAND} {_TAGS_NICHE} "
+                    "#icmarkets #rawspread #forexbroker #asicregulated #forexindia #tradeindia")
+
+    body = f"""🏦 Why I trade on IC Markets
+
+Raw Spread account. No requotes. ASIC + CySEC regulated.
+Same broker I have used since day one.
+
+WHAT YOU GET
+Raw interbank spreads from 0.0 pips
+No dealing desk
+ECN/STP execution
+ASIC regulated (Australia)
+CySEC regulated (Europe)
+
+Every verified trade on Myfxbook #12044019 runs through this account.
+That is not marketing. That is my live setup.
+
+Open your account:
+🔗 {_IB_URL}
+
+IB #91936. Referral link. I earn a small commission at no cost to you.
+
+{_RISK_DISCLAIMER}
+
+{_TAGS_BROKER}"""
+
+    tamil = (
+        f"\n\n📊 நான் IC Markets Raw Spread account-ல் தான் trade பண்றேன். "
+        f"ASIC + CySEC regulated. Every single trade. "
+        f"Account open பண்ண: {_IB_URL} (IB #91936)"
+    ) if lang == 'tamil' else ''
+
+    hindi = (
+        f"\n\n📊 मैं IC Markets Raw Spread account पर trade करता हूं। "
+        f"ASIC + CySEC regulated. Every single trade. "
+        f"Account open करें: {_IB_URL} (IB #91936)"
+    ) if lang == 'hindi' else ''
+
+    return body + tamil + hindi

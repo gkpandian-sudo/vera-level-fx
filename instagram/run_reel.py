@@ -57,13 +57,13 @@ def main():
     from reels.scenes import (
         make_daily_reel, make_weekly_reel, make_trust_reel,
         make_monthly_reel, make_transparency_reel,
-        make_recovery_plan_reel, make_edu_reel,
+        make_recovery_plan_reel, make_edu_reel, make_broker_reel,
     )
     from reels.audio  import get_track
     from reels.render import render
     from captions     import (weekly, monthly, trust, daily_status,
                               transparency, recovery_plan, edu as edu_caption,
-                              monthly_pnl_from_daily)
+                              broker as broker_caption, monthly_pnl_from_daily)
     from post         import publish_reel
 
     data      = load_data()
@@ -125,9 +125,13 @@ def main():
         clips   = make_trust_reel(data)
         caption = trust(account, lang=lang)
 
+    elif post_type == 'broker':
+        clips   = make_broker_reel()
+        caption = broker_caption(lang=lang)
+
     else:
         raise ValueError(f'Unknown POST_TYPE: {post_type!r}. '
-                         f'Expected: daily|weekly|monthly|trust|edu|transparency|recovery-plan')
+                         f'Expected: daily|weekly|monthly|trust|edu|transparency|recovery-plan|broker')
 
     # ── Render ────────────────────────────────────────────────────────────────
     audio_path = get_track(post_type)

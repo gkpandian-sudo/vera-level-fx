@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       post_type:
-        description: 'weekly|monthly|daily|trust|edu|transparency|recovery-plan'
+        description: 'weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker'
         required: false
         default: 'weekly'
       post_lang:
-        description: 'Caption language (en|tamil)'
+        description: 'Caption language (en|tamil|hindi)'
         required: false
         default: 'en'
 

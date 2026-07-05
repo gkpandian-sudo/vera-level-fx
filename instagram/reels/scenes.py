@@ -15,6 +15,36 @@ _VERIFY_CTA = 'Myfxbook #12044019'
 _IB_CTA     = 'icmarkets.com/?camp=91936'
 
 
+def make_broker_card_clip() -> VideoClip:
+    """3s IC Markets broker card — appended as final slide to every reel."""
+    DUR = 3.0
+
+    def frame(t):
+        img = bg_frame(t)
+        alp = min(t / 0.5, 1.0)
+
+        img = draw_alpha_text(img, (W // 2, H // 2 - 220),
+                               'IC MARKETS', load_font(80, bold=True), WHITE, alp)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 110),
+                               'Raw Spread  ·  ASIC + CySEC', load_font(40), EMERALD, alp)
+
+        draw = ImageDraw.Draw(img)
+        lx0, lx1, ly = W // 2 - 280, W // 2 + 280, H // 2 - 40
+        draw.line([(lx0, ly), (lx1, ly)], fill=EMERALD, width=2)
+
+        img = draw_alpha_text(img, (W // 2, H // 2 + 40),
+                               'Same broker I trade with every day', load_font(34), MUTED, alp)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 150),
+                               _IB_CTA, load_font(36, bold=True), EMERALD, alp)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 240),
+                               'IB #91936  ·  Referral link', load_font(28), MUTED,
+                               alp * 0.7)
+
+        return np.array(img)
+
+    return _clip(frame, DUR)
+
+
 def _clip(make_frame_fn, duration: float) -> VideoClip:
     """Wrap a make_frame function as a MoviePy VideoClip at 30 FPS."""
     return VideoClip(make_frame_fn, duration=duration).set_fps(FPS)
@@ -81,7 +111,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
 
     cta = _clip(cta_frame, 2.0)
 
-    return [intro, hero, data_clip, cta]
+    return [intro, hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
@@ -128,7 +158,7 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
 
     cta = _clip(cta_frame, 2.0)
 
-    return [intro, hero, data_clip, cta]
+    return [intro, hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_trust_reel(data: dict) -> list:
@@ -174,7 +204,7 @@ def make_trust_reel(data: dict) -> list:
 
     cta = _clip(cta_frame, 2.0)
 
-    return [intro, hero, data_clip, cta]
+    return [intro, hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_monthly_reel(data: dict) -> list:
@@ -250,7 +280,7 @@ def make_monthly_reel(data: dict) -> list:
         return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta]
+    return [intro, hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_transparency_reel(data: dict) -> list:
@@ -310,7 +340,7 @@ def make_transparency_reel(data: dict) -> list:
         return cta_fade_frame(t, 'Full history on Myfxbook', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta]
+    return [intro, hero, data_clip, cta, make_broker_card_clip()]
 
 
 _RECOVERY_MONTHS = [
@@ -381,7 +411,7 @@ def make_recovery_plan_reel() -> list:
         return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta]
+    return [intro, hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_edu_reel(edu_type: str, content: dict) -> list:
@@ -452,6 +482,40 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
 
     def cta_frame(t):
         return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
+
+    cta = _clip(cta_frame, 2.0)
+    return [intro, hero, data_clip, cta, make_broker_card_clip()]
+
+
+def make_broker_reel() -> list:
+    """Standalone IC Markets broker spotlight reel (~16s)."""
+    from reels.animator import typewriter_frame as _typewriter_frame
+
+    intro = _intro_clip()
+
+    def hero_frame(t):
+        return _typewriter_frame(t, 'IC Markets', 4.0, EMERALD, 90, (W // 2, H // 2))
+
+    hero = _clip(hero_frame, 4.0)
+
+    lines = [
+        'Raw Spread  ·  No requotes',
+        'ECN / STP execution',
+        'Spreads from 0.0 pips',
+        'ASIC regulated  ·  CySEC regulated',
+        '',
+        'Every Vera Level trade runs here.',
+        'Open your account:',
+        _IB_CTA,
+    ]
+
+    def data_frame(t):
+        return cascade_text_frame(t, lines, 7.5, 0.6, WHITE, 40, 640)
+
+    data_clip = _clip(data_frame, 7.5)
+
+    def cta_frame(t):
+        return cta_fade_frame(t, 'Open IC Markets Raw Spread', _IB_CTA)
 
     cta = _clip(cta_frame, 2.0)
     return [intro, hero, data_clip, cta]
