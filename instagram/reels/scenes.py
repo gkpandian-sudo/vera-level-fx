@@ -11,33 +11,77 @@ from reels.animator import (
 )
 
 FPS = 30
-_VERIFY_CTA = 'Myfxbook #12044019'
-_IB_CTA     = 'icmarkets.com/?camp=91936'
+_VERIFY_CTA  = 'Myfxbook #12044019'
+_IB_CTA      = 'icmarkets.com/?camp=91936'
+_BANNER_URL  = ('https://promo.icmarkets.com/Banners/2021/English/'
+                'EN_300x600_Cellphon_FSA.jpg')
+
+_IB_BANNER_CACHE: dict = {}
+
+
+def _get_ib_banner(width: int, height: int) -> 'np.ndarray | None':
+    """Download IC Markets IB banner once, resize to (width, height), cache as float32."""
+    key = (width, height)
+    if key in _IB_BANNER_CACHE:
+        return _IB_BANNER_CACHE[key]
+    if 'original' not in _IB_BANNER_CACHE:
+        try:
+            import requests
+            from io import BytesIO
+            r = requests.get(_BANNER_URL, timeout=10)
+            r.raise_for_status()
+            _IB_BANNER_CACHE['original'] = Image.open(BytesIO(r.content)).convert('RGB')
+        except Exception as e:
+            print(f'[broker] IB banner fetch failed: {e}')
+            _IB_BANNER_CACHE['original'] = None
+    orig = _IB_BANNER_CACHE.get('original')
+    if orig is None:
+        _IB_BANNER_CACHE[key] = None
+        return None
+    arr = np.array(orig.resize((width, height), Image.LANCZOS), dtype=np.float32)
+    _IB_BANNER_CACHE[key] = arr
+    return arr
 
 
 def make_broker_card_clip() -> VideoClip:
-    """3s IC Markets broker card — appended as final slide to every reel."""
+    """3s IC Markets broker card — official IB banner right, brand text left."""
     DUR = 3.0
+    BW, BH = 480, 960
+    BX = W - BW - 40          # 560 — right column
+    BY = (H - BH) // 2        # 480 — vertically centred
+    TCX = BX // 2             # 280 — centre of left column
+    banner_arr = _get_ib_banner(BW, BH)
 
     def frame(t):
         img = bg_frame(t)
+        img_arr = np.array(img, dtype=np.float32)
         alp = min(t / 0.5, 1.0)
 
-        img = draw_alpha_text(img, (W // 2, H // 2 - 220),
-                               'IC MARKETS', load_font(80, bold=True), WHITE, alp)
-        img = draw_alpha_text(img, (W // 2, H // 2 - 110),
-                               'Raw Spread  ·  ASIC + CySEC', load_font(40), EMERALD, alp)
+        if banner_arr is not None:
+            img_arr[BY:BY + BH, BX:BX + BW] = (
+                img_arr[BY:BY + BH, BX:BX + BW] * (1.0 - alp) + banner_arr * alp
+            )
+
+        img = Image.fromarray(img_arr.astype(np.uint8))
+
+        img = draw_alpha_text(img, (TCX, H // 2 - 220),
+                               'IC MARKETS', load_font(60, bold=True), WHITE, alp)
+        img = draw_alpha_text(img, (TCX, H // 2 - 120),
+                               'Raw Spread', load_font(34), EMERALD, alp)
+        img = draw_alpha_text(img, (TCX, H // 2 - 72),
+                               'ASIC + CySEC', load_font(34), EMERALD, alp)
 
         draw = ImageDraw.Draw(img)
-        lx0, lx1, ly = W // 2 - 280, W // 2 + 280, H // 2 - 40
-        draw.line([(lx0, ly), (lx1, ly)], fill=EMERALD, width=2)
+        draw.line([(40, H // 2 - 20), (BX - 40, H // 2 - 20)], fill=EMERALD, width=2)
 
-        img = draw_alpha_text(img, (W // 2, H // 2 + 40),
-                               'Same broker I trade with every day', load_font(34), MUTED, alp)
-        img = draw_alpha_text(img, (W // 2, H // 2 + 150),
-                               _IB_CTA, load_font(36, bold=True), EMERALD, alp)
-        img = draw_alpha_text(img, (W // 2, H // 2 + 240),
-                               'IB #91936  ·  Referral link', load_font(28), MUTED,
+        img = draw_alpha_text(img, (TCX, H // 2 + 50),
+                               'Same broker I trade', load_font(30), MUTED, alp)
+        img = draw_alpha_text(img, (TCX, H // 2 + 95),
+                               'with every day', load_font(30), MUTED, alp)
+        img = draw_alpha_text(img, (TCX, H // 2 + 190),
+                               _IB_CTA, load_font(24, bold=True), EMERALD, alp)
+        img = draw_alpha_text(img, (TCX, H // 2 + 250),
+                               'IB #91936  ·  Referral link', load_font(22), MUTED,
                                alp * 0.7)
 
         return np.array(img)
@@ -488,8 +532,14 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
 
 
 def make_broker_reel() -> list:
-    """Standalone IC Markets broker spotlight reel (~16s)."""
+    """Standalone IC Markets broker spotlight reel (~17s)."""
     from reels.animator import typewriter_frame as _typewriter_frame
+
+    # Pre-fetch banner at full-reel size (downloaded once, cached)
+    BW_F, BH_F = 660, 1320
+    BX_F = (W - BW_F) // 2   # 210 — horizontally centred
+    BY_F = 60
+    banner_arr_full = _get_ib_banner(BW_F, BH_F)
 
     intro = _intro_clip()
 
@@ -505,17 +555,34 @@ def make_broker_reel() -> list:
         'ASIC regulated  ·  CySEC regulated',
         '',
         'Every Vera Level trade runs here.',
-        'Open your account:',
-        _IB_CTA,
     ]
 
     def data_frame(t):
-        return cascade_text_frame(t, lines, 7.5, 0.6, WHITE, 40, 640)
+        return cascade_text_frame(t, lines, 6.0, 0.6, WHITE, 42, 680)
 
-    data_clip = _clip(data_frame, 7.5)
+    data_clip = _clip(data_frame, 6.0)
 
-    def cta_frame(t):
-        return cta_fade_frame(t, 'Open IC Markets Raw Spread', _IB_CTA)
+    # Banner scene — official IB promo image fills most of the canvas
+    text_y = BY_F + BH_F + 55  # 1435
 
-    cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta]
+    def banner_frame(t):
+        img = bg_frame(t)
+        img_arr = np.array(img, dtype=np.float32)
+        alp = min(t / 0.5, 1.0)
+
+        if banner_arr_full is not None:
+            img_arr[BY_F:BY_F + BH_F, BX_F:BX_F + BW_F] = (
+                img_arr[BY_F:BY_F + BH_F, BX_F:BX_F + BW_F] * (1.0 - alp)
+                + banner_arr_full * alp
+            )
+
+        img = Image.fromarray(img_arr.astype(np.uint8))
+        img = draw_alpha_text(img, (W // 2, text_y),
+                               _IB_CTA, load_font(34, bold=True), EMERALD, alp)
+        img = draw_alpha_text(img, (W // 2, text_y + 60),
+                               'IB #91936  ·  Referral link', load_font(26), MUTED,
+                               alp * 0.7)
+        return np.array(img)
+
+    banner_scene = _clip(banner_frame, 3.5)
+    return [intro, hero, data_clip, banner_scene]
