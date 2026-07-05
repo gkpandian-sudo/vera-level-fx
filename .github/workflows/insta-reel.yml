@@ -2,8 +2,8 @@ name: Instagram Reel Auto-Post
 
 on:
   schedule:
-    # Mon/Wed/Fri 07:00 SGT = 23:00 UTC Sun/Tue/Thu
-    - cron: '0 23 * * 0,2,4'
+    # Every day 07:00 SGT = 23:00 UTC previous day
+    - cron: '0 23 * * *'
   workflow_dispatch:
     inputs:
       post_type:
@@ -42,17 +42,21 @@ jobs:
       - name: Install dependencies
         run: pip install -r instagram/requirements.txt
 
-      # Scheduled runs rotate by day so the cron never repeats one post type.
-      # Cron fires 23:00 UTC Sun/Tue/Thu = 07:00 SGT Mon/Wed/Fri.
+      # Scheduled runs rotate by day — one post type per day of the week.
+      # Cron fires 23:00 UTC = 07:00 SGT next day.
       - name: Resolve post type
         id: post_type
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
             case "$(date -u +%u)" in
-              7) echo "type=weekly" >> "$GITHUB_OUTPUT" ;;  # Sun UTC -> Mon SGT
-              2) echo "type=daily"  >> "$GITHUB_OUTPUT" ;;  # Tue UTC -> Wed SGT
-              4) echo "type=trust"  >> "$GITHUB_OUTPUT" ;;  # Thu UTC -> Fri SGT
-              *) echo "type=weekly" >> "$GITHUB_OUTPUT" ;;
+              7) echo "type=weekly"        >> "$GITHUB_OUTPUT" ;;  # Sun UTC -> Mon SGT
+              1) echo "type=monthly"       >> "$GITHUB_OUTPUT" ;;  # Mon UTC -> Tue SGT
+              2) echo "type=daily"         >> "$GITHUB_OUTPUT" ;;  # Tue UTC -> Wed SGT
+              3) echo "type=edu"           >> "$GITHUB_OUTPUT" ;;  # Wed UTC -> Thu SGT
+              4) echo "type=trust"         >> "$GITHUB_OUTPUT" ;;  # Thu UTC -> Fri SGT
+              5) echo "type=transparency"  >> "$GITHUB_OUTPUT" ;;  # Fri UTC -> Sat SGT
+              6) echo "type=recovery-plan" >> "$GITHUB_OUTPUT" ;;  # Sat UTC -> Sun SGT
+              *) echo "type=weekly"        >> "$GITHUB_OUTPUT" ;;
             esac
           else
             echo "type=${{ github.event.inputs.post_type || 'weekly' }}" >> "$GITHUB_OUTPUT"
