@@ -12,18 +12,16 @@ import numpy as np
 from datetime import datetime
 
 # ── Brand palette ─────────────────────────────────────────────────
-NAVY   = '#010E1F'
-NAVY_S = '#051830'
-NAVY_L = '#0A2545'
-GOLD   = '#F0C040'
-GOLD_B = '#FFD060'
-WHITE  = '#FFFFFF'
-CREAM  = '#F0EEE8'
-MUTED  = '#B8CFEA'
-DIM    = '#6A8EB8'
-GREEN  = '#00E096'
-RED    = '#FF6B6B'
-AMBER  = '#FFA040'
+NAVY    = '#010E1F'
+NAVY_S  = '#051830'
+NAVY_L  = '#0A2545'
+EMERALD = '#059669'
+WHITE   = '#FFFFFF'
+CREAM   = '#F0EEE8'
+MUTED   = '#B8CFEA'
+DIM     = '#6A8EB8'
+GREEN   = '#059669'
+RED     = '#EF4444'
 
 SIZE = (10.8, 10.8)
 DPI  = 100
@@ -37,17 +35,17 @@ def _base(nrows=1, ncols=1):
     return fig, ax
 
 
-def _hline(ax, y, x0=0.06, x1=0.94, color=GOLD, alpha=0.45, lw=1.5):
+def _hline(ax, y, x0=0.06, x1=0.94, color=EMERALD, alpha=0.45, lw=1.5):
     ax.plot([x0, x1], [y, y], color=color, linewidth=lw,
             alpha=alpha, transform=ax.transAxes)
 
 
 def _header(ax):
     ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+        (0, 0.974), 1, 0.026, facecolor=EMERALD, transform=ax.transAxes, zorder=5
     ))
     ax.text(0.5, 0.946, 'VERA LEVEL FX',
-            fontsize=22, fontweight='bold', color=GOLD, ha='center', va='center',
+            fontsize=22, fontweight='bold', color=EMERALD, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
     ax.text(0.5, 0.916, 'ALGORITHMIC FOREX  ·  IC MARKETS  ·  MYFXBOOK VERIFIED',
             fontsize=15, color=MUTED, ha='center', va='center',
@@ -58,7 +56,7 @@ def _header(ax):
 def _footer(ax):
     _hline(ax, 0.095, alpha=0.4)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
-            fontsize=15, color=GOLD, va='center',
+            fontsize=15, color=EMERALD, va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
     ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
             fontsize=15, color=MUTED, va='center', ha='right',
@@ -122,7 +120,7 @@ def make_weekly_card(data):
     ax.add_patch(patches.Circle((0.075, 0.960), 0.007,
         facecolor=GREEN, transform=ax.transAxes, zorder=6))
     ax.text(0.090, 0.960, 'IC Markets Verified  ·  ASIC Regulated',
-            fontsize=14, color=GOLD, ha='left', va='center',
+            fontsize=14, color=EMERALD, ha='left', va='center',
             transform=ax.transAxes, zorder=6)
 
     # Post type label
@@ -144,7 +142,7 @@ def make_weekly_card(data):
 
     # 4-stat row
     stats = [
-        (f'${balance:,.0f}',   'BALANCE',   GOLD),
+        (f'${balance:,.0f}',   'BALANCE',   EMERALD),
         (f'{win_rate:.0f}%',   'WIN RATE',  WHITE),
         (f'+{pips:,}',         'PIPS',      GREEN),
         (f'{trades:,}',        'TRADES',    MUTED),
@@ -167,17 +165,17 @@ def make_weekly_card(data):
 
     # CTA
     _hline(ax, 0.595, alpha=0.25)
-    ax.text(0.06, 0.568, 'Open your IC Markets account — same broker I use:',
+    ax.text(0.06, 0.568, 'Verify every trade on Myfxbook',
             fontsize=17, color=MUTED, ha='left', va='center',
             transform=ax.transAxes, zorder=6)
-    ax.text(0.06, 0.542, 'icmarkets.com/?camp=91936',
-            fontsize=19, fontweight='bold', color=GOLD,
+    ax.text(0.06, 0.542, 'Account #12044019',
+            fontsize=19, fontweight='bold', color=EMERALD,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
 
     # Footer
     _hline(ax, 0.095, alpha=0.3)
     ax.text(0.94, 0.065, '@veralevel.fx',
-            fontsize=15, color=GOLD, va='center', ha='right',
+            fontsize=15, color=EMERALD, va='center', ha='right',
             transform=ax.transAxes, fontweight='bold', zorder=6)
     ax.text(0.94, 0.030, 'Not financial advice',
             fontsize=14, color=DIM, ha='right', va='center',
@@ -218,7 +216,7 @@ def make_monthly_chart(data):
         (0.36, 0.960), 0.007, facecolor=GREEN, transform=ax_bg.transAxes, zorder=6
     ))
     ax_bg.text(0.5, 0.960, 'IC Markets Verified  ·  ASIC Regulated',
-               fontsize=13, color=GOLD, ha='center', va='center',
+               fontsize=13, color=EMERALD, ha='center', va='center',
                transform=ax_bg.transAxes, zorder=6)
     ax_bg.text(0.5, 0.912, 'Monthly P&L',
                fontsize=48, fontweight='bold', color=WHITE,
@@ -226,15 +224,15 @@ def make_monthly_chart(data):
     ax_bg.text(0.5, 0.874, '12-MONTH ROLLING BREAKDOWN',
                fontsize=18, color=MUTED, ha='center', va='center',
                transform=ax_bg.transAxes, fontfamily='monospace')
-    ax_bg.plot([0.06, 0.94], [0.854, 0.854], color=GOLD, linewidth=1.5,
+    ax_bg.plot([0.06, 0.94], [0.854, 0.854], color=EMERALD, linewidth=1.5,
                alpha=0.4, transform=ax_bg.transAxes)
 
     ax = fig.add_axes([0.06, 0.130, 0.88, 0.700], facecolor=NAVY_L)
     for spine in ax.spines.values():
-        spine.set_color(GOLD); spine.set_alpha(0.3)
+        spine.set_color(EMERALD); spine.set_alpha(0.3)
     ax.tick_params(colors=MUTED, labelsize=16)
     ax.set_axisbelow(True)
-    ax.yaxis.grid(True, color=GOLD, alpha=0.08, linewidth=0.6)
+    ax.yaxis.grid(True, color=EMERALD, alpha=0.08, linewidth=0.6)
     ax.xaxis.grid(False)
 
     x      = np.arange(len(keys))
@@ -244,7 +242,7 @@ def make_monthly_chart(data):
     ax.set_xticks(x)
     ax.set_xticklabels(keys, fontsize=15, color=MUTED, fontfamily='monospace')
     ax.tick_params(axis='y', labelcolor=MUTED, labelsize=15)
-    ax.axhline(y=0, color=GOLD, linewidth=1.0, alpha=0.5)
+    ax.axhline(y=0, color=EMERALD, linewidth=1.0, alpha=0.5)
 
     vmax = max(abs(v) for v in vals) if vals else 1
     for bar_r, val in zip(bars, vals):
@@ -256,10 +254,10 @@ def make_monthly_chart(data):
                 fontsize=13, color=GREEN if val >= 0 else RED,
                 fontweight='bold', fontfamily='monospace')
 
-    ax_bg.plot([0.06, 0.94], [0.095, 0.095], color=GOLD, linewidth=1.2,
+    ax_bg.plot([0.06, 0.94], [0.095, 0.095], color=EMERALD, linewidth=1.2,
                alpha=0.3, transform=ax_bg.transAxes, zorder=5)
     ax_bg.text(0.94, 0.065, '@veralevel.fx',
-               fontsize=15, color=GOLD, va='center', ha='right',
+               fontsize=15, color=EMERALD, va='center', ha='right',
                transform=ax_bg.transAxes, fontweight='bold', zorder=5)
     ax_bg.text(0.5, 0.065, 'icmarkets.com/?camp=91936',
                fontsize=14, color=MUTED, ha='center', va='center',
@@ -300,12 +298,12 @@ def make_winrate_card(data):
         facecolor=GREEN, transform=ax.transAxes, zorder=6
     ))
     ax.text(0.5, 0.932, 'IC Markets Verified  ·  ASIC Regulated',
-            fontsize=16, color=GOLD, fontweight='bold',
+            fontsize=16, color=EMERALD, fontweight='bold',
             ha='center', va='center', transform=ax.transAxes, zorder=7)
 
     # Post type label (no box)
     ax.text(0.5, 0.875, 'LIVE TRACK RECORD',
-            fontsize=14, fontweight='black', color=GOLD,
+            fontsize=14, fontweight='black', color=EMERALD,
             ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
@@ -319,7 +317,7 @@ def make_winrate_card(data):
 
     # Stats row (no boxes — plain labeled text like weekly card)
     stats_row = [
-        (f'${balance:,.0f}',        'BALANCE', GOLD,                        0.20),
+        (f'${balance:,.0f}',        'BALANCE', EMERALD,                        0.20),
         (f'{gain_sign}{gain:.1f}%', 'GAIN',    GREEN if gain >= 0 else RED, 0.50),
         (f'+{pips:,}',              'PIPS',    WHITE,                       0.78),
     ]
@@ -344,8 +342,8 @@ def make_winrate_card(data):
             fontsize=17, color=CREAM, ha='center', va='center',
             transform=ax.transAxes, zorder=6)
     ax.text(0.5, 0.355,
-            'Open IC Markets  →  icmarkets.com/?camp=91936',
-            fontsize=18, fontweight='bold', color=GOLD,
+            'Myfxbook account #12044019  ·  All trades verified',
+            fontsize=18, fontweight='bold', color=EMERALD,
             ha='center', va='center', transform=ax.transAxes, zorder=6)
 
     # Footer
@@ -373,12 +371,12 @@ def make_transparency_card(data):
 
     # Top gold bar
     ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+        (0, 0.974), 1, 0.026, facecolor=EMERALD, transform=ax.transAxes, zorder=5
     ))
 
     # Brand name
     ax.text(0.5, 0.946, 'VERA LEVEL FX',
-            fontsize=22, fontweight='bold', color=GOLD, ha='center', va='center',
+            fontsize=22, fontweight='bold', color=EMERALD, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
     ax.text(0.5, 0.916, 'FULL TRANSPARENCY  ·  NOTHING HIDDEN',
             fontsize=15, color=MUTED, ha='center', va='center',
@@ -399,7 +397,7 @@ def make_transparency_card(data):
 
     # What changed section
     ax.text(0.06, 0.672, 'WHAT HAPPENED',
-            fontsize=14, color=AMBER, ha='left', va='center',
+            fontsize=14, color=RED, ha='left', va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
     ax.text(0.06, 0.642,
             'Entry frequency too high during volatile XAUUSD run.',
@@ -428,7 +426,7 @@ def make_transparency_card(data):
 
     # Stats row: balance · drawdown · trades · win rate
     stats = [
-        (f'${balance:,.0f}',  'BALANCE',   GOLD,  0.14),
+        (f'${balance:,.0f}',  'BALANCE',   EMERALD,  0.14),
         (f'{dd:.1f}%',        'DRAWDOWN',  RED,   0.38),
         (f'{trades:,}',       'TRADES',    WHITE, 0.62),
         (f'{win_rate:.0f}%',  'WIN RATE',  GREEN, 0.86),
@@ -445,19 +443,19 @@ def make_transparency_card(data):
 
     # CTA
     ax.text(0.5, 0.348,
-            'Verify every trade — Myfxbook account #12044019',
+            'Verify every trade · Myfxbook account #12044019',
             fontsize=17, color=MUTED, ha='center', va='center',
             transform=ax.transAxes)
     ax.text(0.5, 0.316,
             'Live alerts as recovery unfolds  →  t.me/pandiangk',
-            fontsize=19, fontweight='bold', color=GOLD,
+            fontsize=19, fontweight='bold', color=EMERALD,
             ha='center', va='center', transform=ax.transAxes)
 
     # Recovery journey callout box
     ax.add_patch(patches.FancyBboxPatch(
         (0.06, 0.200), 0.88, 0.096,
         boxstyle='round,pad=0.006',
-        facecolor=NAVY_S, edgecolor=AMBER, linewidth=1.4,
+        facecolor=NAVY_S, edgecolor=RED, linewidth=1.4,
         transform=ax.transAxes, zorder=2
     ))
     ax.text(0.5, 0.260,
@@ -466,13 +464,13 @@ def make_transparency_card(data):
             transform=ax.transAxes, zorder=3)
     ax.text(0.5, 0.224,
             'This is what real trading looks like. The recovery starts now.',
-            fontsize=17, color=AMBER, ha='center', va='center',
+            fontsize=17, color=RED, ha='center', va='center',
             transform=ax.transAxes, fontweight='bold', zorder=3)
 
     # Footer
     _hline(ax, 0.095, alpha=0.35)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  IC MARKETS  ·  ASIC REGULATED',
-            fontsize=14, color=GOLD, va='center',
+            fontsize=14, color=EMERALD, va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
     ax.text(0.94, 0.030, 'Not financial advice',
             fontsize=14, color=DIM, ha='right', va='center',
@@ -504,12 +502,12 @@ def make_recovery_plan_card(data=None):
 
     # Top gold bar
     ax.add_patch(patches.Rectangle(
-        (0, 0.974), 1, 0.026, facecolor=GOLD, transform=ax.transAxes, zorder=5
+        (0, 0.974), 1, 0.026, facecolor=EMERALD, transform=ax.transAxes, zorder=5
     ))
 
     # Header
     ax.text(0.5, 0.946, 'VERA LEVEL FX  ·  RECOVERY PLAN',
-            fontsize=20, fontweight='bold', color=GOLD, ha='center', va='center',
+            fontsize=20, fontweight='bold', color=EMERALD, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
     ax.text(0.5, 0.916, 'ETF MEDIUM RISK  ·  JULY – DECEMBER 2026',
             fontsize=14, color=MUTED, ha='center', va='center',
@@ -532,7 +530,7 @@ def make_recovery_plan_card(data=None):
                 fontsize=12, color=DIM, ha='left', va='center',
                 transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
 
-    _hline(ax, 0.814, color=GOLD, alpha=0.25, lw=1.0)
+    _hline(ax, 0.814, color=EMERALD, alpha=0.25, lw=1.0)
 
     # Table rows
     row_h   = 0.092
@@ -542,7 +540,7 @@ def make_recovery_plan_card(data=None):
     for i, (month, topup, end_bal) in enumerate(_RECOVERY_MONTHS):
         y       = start_y - i * row_h
         is_now  = month == current_month
-        m_color = GOLD if is_now else CREAM
+        m_color = EMERALD if is_now else CREAM
         b_color = GREEN
 
         if is_now:
@@ -570,7 +568,7 @@ def make_recovery_plan_card(data=None):
             fontsize=14, color=MUTED, ha='left', va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
     ax.text(0.50, 0.210, f'${_RECOVERY_INVESTED:,.0f}',
-            fontsize=22, color=AMBER, ha='center', va='center',
+            fontsize=22, color=EMERALD, ha='center', va='center',
             transform=ax.transAxes, fontweight='black')
 
     ax.text(0.06, 0.170, 'PROJECTED DEC',
@@ -584,7 +582,7 @@ def make_recovery_plan_card(data=None):
     ax.add_patch(patches.FancyBboxPatch(
         (0.06, 0.108), 0.88, 0.044,
         boxstyle='round,pad=0.005',
-        facecolor=NAVY_S, edgecolor=AMBER, linewidth=1.0,
+        facecolor=NAVY_S, edgecolor=EMERALD, linewidth=1.0,
         transform=ax.transAxes, zorder=2
     ))
     ax.text(0.5, 0.130,
@@ -595,7 +593,7 @@ def make_recovery_plan_card(data=None):
     # Footer
     _hline(ax, 0.095, alpha=0.35)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  IC MARKETS  ·  ASIC REGULATED',
-            fontsize=13, color=GOLD, va='center',
+            fontsize=13, color=EMERALD, va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
     ax.text(0.94, 0.030, 't.me/pandiangk',
             fontsize=13, color=MUTED, ha='right', va='center',

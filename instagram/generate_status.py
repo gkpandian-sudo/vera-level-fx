@@ -17,18 +17,17 @@ _ROT      = 0.0
 _ROT_TAN  = 0.0
 _X_REF    = 0.05    # left edge of table area
 
-NAVY   = '#010E1F'
-NAVY_S = '#051830'
-NAVY_L = '#0A2545'
-GOLD   = '#F0C040'
-WHITE  = '#FFFFFF'
-CREAM  = '#F0EEE8'
-MUTED  = '#B8CFEA'
-DIM    = '#6A8EB8'
-GREEN  = '#00E096'
-RED    = '#FF6B6B'
-AMBER  = '#FFA040'
-INK    = '#0A1628'
+NAVY    = '#010E1F'
+NAVY_S  = '#051830'
+NAVY_L  = '#0A2545'
+EMERALD = '#059669'
+WHITE   = '#FFFFFF'
+CREAM   = '#F0EEE8'
+MUTED   = '#B8CFEA'
+DIM     = '#6A8EB8'
+GREEN   = '#059669'
+RED     = '#EF4444'
+INK     = '#0A1628'
 
 SIZE = (10.8, 10.8)
 DPI  = 100
@@ -66,7 +65,7 @@ def _fmt_pips(p: float) -> str:
 def _fmt_price(p: float) -> str:
     """Format entry price: 2dp for instruments >= 10 (gold, JPY), 4dp otherwise."""
     if p == 0:
-        return '—'
+        return '-'
     return f'{p:.2f}' if p >= 10 else f'{p:.4f}'
 
 
@@ -110,7 +109,7 @@ def make_daily_card(data: dict):
 
     # Equity / Balance / Daily metrics
     metrics = [
-        ('EQUITY',  f'USD {equity:,.0f}',   GOLD),
+        ('EQUITY',  f'USD {equity:,.0f}',   EMERALD),
         ('BALANCE', f'USD {balance:,.0f}',  WHITE),
         ('DAILY',   f'{daily_pct:+.2f}%',   d_color),
     ]
@@ -123,7 +122,7 @@ def make_daily_card(data: dict):
                 fontsize=26, color=color, ha='center', va='center',
                 transform=ax.transAxes, fontweight='bold', zorder=6)
 
-    ax.plot([0.06, 0.94], [0.822, 0.822], color=GOLD, linewidth=0.8, alpha=0.3,
+    ax.plot([0.06, 0.94], [0.822, 0.822], color=EMERALD, linewidth=0.8, alpha=0.3,
             transform=ax.transAxes, zorder=6)
 
     # LIVE indicator
@@ -144,13 +143,13 @@ def make_daily_card(data: dict):
                ('P&L', 'pnl', 'center'), ('PIPS', 'pips', 'center'),
                ('ENTRY', 'entry', 'center')]
 
-    ax.plot([0.06, 0.94], [0.752, 0.752], color=GOLD, linewidth=0.8, alpha=0.25,
+    ax.plot([0.06, 0.94], [0.752, 0.752], color=EMERALD, linewidth=0.8, alpha=0.25,
             transform=ax.transAxes, zorder=6)
     for label, key, ha in headers:
         ax.text(col_x[key], 0.737, label,
                 fontsize=15, color=WHITE, fontweight='bold', ha=ha, va='center',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
-    ax.plot([0.06, 0.94], [0.718, 0.718], color=GOLD, linewidth=0.8, alpha=0.18,
+    ax.plot([0.06, 0.94], [0.718, 0.718], color=EMERALD, linewidth=0.8, alpha=0.18,
             transform=ax.transAxes, zorder=6)
 
     row_gap = 0.062
@@ -173,7 +172,7 @@ def make_daily_card(data: dict):
             ax.text(col_x['entry'], ry, _fmt_price(entry), fontsize=16, color=MUTED,        ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=6)
             if r < len(rows) - 1:
                 ax.plot([0.06, 0.94], [ry - 0.026, ry - 0.026],
-                        color=GOLD, linewidth=0.5, alpha=0.15,
+                        color=EMERALD, linewidth=0.5, alpha=0.15,
                         transform=ax.transAxes, zorder=6)
     else:
         ax.text(0.5, 0.630, 'No open positions',
@@ -183,15 +182,15 @@ def make_daily_card(data: dict):
     # Stats bar
     bottom_y = max(0.270, 0.700 - len(rows) * row_gap - 0.050)
     ax.plot([0.06, 0.94], [bottom_y + 0.026, bottom_y + 0.026],
-            color=GOLD, linewidth=0.8, alpha=0.2, transform=ax.transAxes, zorder=6)
+            color=EMERALD, linewidth=0.8, alpha=0.2, transform=ax.transAxes, zorder=6)
     ax.text(0.5, bottom_y,
-            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips  —  verified on Myfxbook',
+            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips  ·  verified on Myfxbook',
             fontsize=15, fontweight='bold', color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # CTA
-    ax.text(0.5, 0.148, 'Trade with my broker  ·  icmarkets.com/?camp=91936',
-            fontsize=15, fontweight='bold', color=GOLD,
+    ax.text(0.5, 0.148, 'Verify every position  ·  Myfxbook #12044019',
+            fontsize=15, fontweight='bold', color=EMERALD,
             ha='center', va='center', transform=ax.transAxes,
             fontfamily='monospace', zorder=6)
 

@@ -22,17 +22,16 @@ from matplotlib.colors import LinearSegmentedColormap
 from pathlib import Path
 
 # ── Brand palette ─────────────────────────────────────────────────
-NAVY   = '#010E1F'   # deepened for better contrast
-NAVY_S = '#051830'
-NAVY_L = '#0A2545'
-GOLD   = '#F0C040'   # brighter gold — more visible on mobile
-WHITE  = '#FFFFFF'
-CREAM  = '#F0EEE8'
-MUTED  = '#B8CFEA'   # lightened — was too dim at 8BADD4
-DIM    = '#6A8EB8'
-GREEN  = '#00E096'   # vivid green
-RED    = '#FF6B6B'   # vivid red
-AMBER  = '#FFA040'
+NAVY    = '#010E1F'
+NAVY_S  = '#051830'
+NAVY_L  = '#0A2545'
+EMERALD = '#059669'
+WHITE   = '#FFFFFF'
+CREAM   = '#F0EEE8'
+MUTED   = '#B8CFEA'
+DIM     = '#6A8EB8'
+GREEN   = '#059669'
+RED     = '#EF4444'
 
 SIZE = (10.8, 10.8)
 DPI  = 100
@@ -95,8 +94,8 @@ def _base_fig(post_type: str):
 
     # Fine grid lines (barely visible — adds depth)
     for v in np.arange(0.1, 1.0, 0.1):
-        ax_bg.plot([0, 1], [v, v], color=GOLD, alpha=0.018, linewidth=0.5, zorder=2)
-        ax_bg.plot([v, v], [0, 1], color=GOLD, alpha=0.018, linewidth=0.5, zorder=2)
+        ax_bg.plot([0, 1], [v, v], color=EMERALD, alpha=0.018, linewidth=0.5, zorder=2)
+        ax_bg.plot([v, v], [0, 1], color=EMERALD, alpha=0.018, linewidth=0.5, zorder=2)
 
     # Content axes
     ax = fig.add_axes([0, 0, 1, 1])
@@ -105,7 +104,7 @@ def _base_fig(post_type: str):
     return fig, ax
 
 
-def _hline(ax, y, x0=0.06, x1=0.94, color=GOLD, alpha=0.45, lw=1.2):
+def _hline(ax, y, x0=0.06, x1=0.94, color=EMERALD, alpha=0.45, lw=1.2):
     ax.plot([x0, x1], [y, y], color=color, linewidth=lw,
             alpha=alpha, transform=ax.transAxes, zorder=4)
 
@@ -113,7 +112,7 @@ def _hline(ax, y, x0=0.06, x1=0.94, color=GOLD, alpha=0.45, lw=1.2):
 def _brand_header(ax):
     """Brand strip just below the gold bar."""
     ax.text(0.5, 0.946, 'VERA LEVEL FX',
-            fontsize=22, fontweight='bold', color=GOLD,
+            fontsize=22, fontweight='bold', color=EMERALD,
             ha='center', va='center', transform=ax.transAxes,
             fontfamily='monospace', zorder=6)
     ax.text(0.5, 0.916, 'ALGORITHMIC FOREX  ·  IC MARKETS  ·  MYFXBOOK VERIFIED',
@@ -125,7 +124,7 @@ def _brand_header(ax):
 def _footer(ax):
     _hline(ax, 0.095, alpha=0.4)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  VERA LEVEL FX',
-            fontsize=15, color=GOLD, va='center',
+            fontsize=15, color=EMERALD, va='center',
             transform=ax.transAxes, fontfamily='monospace',
             fontweight='bold', zorder=5)
     ax.text(0.94, 0.065, 'IC MARKETS · ASIC',
@@ -233,7 +232,7 @@ def make_risk_post(content: dict):
             fontsize=14, color=MUTED, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
     ax.text(0.06, 0.258, f'${content["example_account"]:,}',
-            fontsize=36, fontweight='bold', color=GOLD, va='center',
+            fontsize=36, fontweight='bold', color=EMERALD, va='center',
             transform=ax.transAxes, zorder=5)
 
     ax.text(0.52, 0.292, 'MAX RISK / TRADE',
@@ -257,7 +256,7 @@ def make_risk_post(content: dict):
     # Footer
     _hline(ax, 0.098, alpha=0.3)
     ax.text(0.94, 0.065, '@veralevel.fx',
-            fontsize=15, color=GOLD, va='center', ha='right',
+            fontsize=15, color=EMERALD, va='center', ha='right',
             transform=ax.transAxes, fontweight='bold', zorder=5)
     ax.text(0.94, 0.030, 'Not financial advice  ·  IC MARKETS · ASIC',
             fontsize=12, color=MUTED, ha='right', va='center',
@@ -292,7 +291,7 @@ def make_pairs_post(content: dict):
     full_name = content.get('full_name', '').upper()
     ax.text(0.06, split_y - 0.028,
             f'PAIR SPOTLIGHT  ·  {full_name}',
-            fontsize=13, color=GOLD, fontweight='bold',
+            fontsize=13, color=EMERALD, fontweight='bold',
             ha='left', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
@@ -305,9 +304,9 @@ def make_pairs_post(content: dict):
 
     # Stat 2x2 grid — pushed well below the pair name
     stats = [
-        ('BEST SESSION', content.get('best_session', ''),  GOLD),
+        ('BEST SESSION', content.get('best_session', ''),  EMERALD),
         ('AVG SPREAD',   content.get('avg_spread', ''),    GREEN),
-        ('VOLATILITY',   content.get('volatility', ''),    AMBER),
+        ('VOLATILITY',   content.get('volatility', ''),    RED),
         ('MY EDGE',      content.get('my_edge', ''),       WHITE),
     ]
     grid_top = split_y - 0.185
@@ -332,7 +331,7 @@ def make_pairs_post(content: dict):
     cta_y = ys[1] - 0.050
     _hline(ax, cta_y + 0.022, alpha=0.2)
     ax.text(0.06, cta_y, 'Trade with raw spreads  →  icmarkets.com/?camp=91936',
-            fontsize=15, fontweight='bold', color=GOLD,
+            fontsize=15, fontweight='bold', color=EMERALD,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
 
     # Footer
@@ -391,19 +390,19 @@ def make_setup_post(content: dict):
         circ = plt.Circle(
             (0.088, cy + 0.010), 0.030,
             facecolor=(0.04, 0.14, 0.28, 0.85),
-            edgecolor=GOLD, linewidth=1.4,
+            edgecolor=EMERALD, linewidth=1.4,
             transform=ax.transAxes, zorder=6
         )
         ax.add_patch(circ)
         ax.text(0.088, cy + 0.010, str(i + 1),
-                fontsize=22, fontweight='bold', color=GOLD,
+                fontsize=22, fontweight='bold', color=EMERALD,
                 ha='center', va='center', transform=ax.transAxes, zorder=7)
 
         # Connector line
         if i < len(steps) - 1:
             ax.plot([0.088, 0.088],
                     [cy + 0.010 - 0.030, cy + 0.010 - step_h + 0.030],
-                    color=GOLD, alpha=0.20, linewidth=1.2,
+                    color=EMERALD, alpha=0.20, linewidth=1.2,
                     transform=ax.transAxes, zorder=5)
 
         # Title + description
@@ -425,12 +424,12 @@ def make_setup_post(content: dict):
             fontsize=16, fontweight='bold', color=dir_color,
             va='center', transform=ax.transAxes, fontfamily='monospace', zorder=5)
     ax.text(0.42, 0.078, 'IC MARKETS',
-            fontsize=16, fontweight='bold', color=GOLD,
+            fontsize=16, fontweight='bold', color=EMERALD,
             va='center', transform=ax.transAxes, fontfamily='monospace', zorder=5)
 
     # CTA
     ax.text(0.66, 0.078, '@veralevel.fx',
-            fontsize=16, fontweight='bold', color=GOLD,
+            fontsize=16, fontweight='bold', color=EMERALD,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
 
     # Footer
