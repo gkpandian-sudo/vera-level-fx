@@ -12,7 +12,7 @@ from reels.animator import (
 
 FPS = 30
 _VERIFY_CTA  = 'Myfxbook #12044019'
-_IB_CTA      = 'icmarkets.com/?camp=91936'
+_IB_CTA      = 'https://www.icmarkets.com/global/en/?camp=91936'
 _BANNER_URL  = ('https://promo.icmarkets.com/Banners/2021/English/'
                 'EN_300x600_Cellphon_FSA.jpg')
 

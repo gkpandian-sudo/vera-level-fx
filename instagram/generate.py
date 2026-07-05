@@ -259,7 +259,7 @@ def make_monthly_chart(data):
     ax_bg.text(0.94, 0.065, '@veralevel.fx',
                fontsize=15, color=EMERALD, va='center', ha='right',
                transform=ax_bg.transAxes, fontweight='bold', zorder=5)
-    ax_bg.text(0.5, 0.065, 'icmarkets.com/?camp=91936',
+    ax_bg.text(0.5, 0.065, 'icmarkets.com/global/en/?camp=91936',
                fontsize=14, color=MUTED, ha='center', va='center',
                transform=ax_bg.transAxes, zorder=5)
     ax_bg.text(0.5, 0.030, 'Not financial advice  ·  vera-level-forex.vercel.app',

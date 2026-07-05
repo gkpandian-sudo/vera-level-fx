@@ -4,7 +4,7 @@ from datetime import datetime
 # --- CTAs ---
 _TELEGRAM = os.environ.get('BRAND_TELEGRAM', 't.me/pandiangk')
 _WEBSITE  = os.environ.get('BRAND_WEBSITE', 'vera-level-forex.vercel.app')
-_IB_URL   = os.environ.get('BRAND_IB_URL', 'icmarkets.com/?camp=91936')
+_IB_URL   = os.environ.get('BRAND_IB_URL', 'https://www.icmarkets.com/global/en/?camp=91936')
 
 _CTA_TELEGRAM = f"\n📲 Live trade alerts → {_TELEGRAM}"
 _CTA_IB       = f"\n🏦 Open IC Markets (Raw Spread, ASIC + CySEC regulated) → {_IB_URL}"

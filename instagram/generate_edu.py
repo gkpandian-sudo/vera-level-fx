@@ -330,7 +330,7 @@ def make_pairs_post(content: dict):
     # CTA
     cta_y = ys[1] - 0.050
     _hline(ax, cta_y + 0.022, alpha=0.2)
-    ax.text(0.06, cta_y, 'Trade with raw spreads  →  icmarkets.com/?camp=91936',
+    ax.text(0.06, cta_y, 'Trade with raw spreads  →  icmarkets.com/global/en/?camp=91936',
             fontsize=15, fontweight='bold', color=EMERALD,
             ha='left', va='center', transform=ax.transAxes, zorder=6)
 
