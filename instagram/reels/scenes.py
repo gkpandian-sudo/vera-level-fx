@@ -586,3 +586,117 @@ def make_broker_reel() -> list:
 
     banner_scene = _clip(banner_frame, 3.5)
     return [intro, hero, data_clip, banner_scene]
+
+
+def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.Image:
+    """Static 1080x1920 PIL Image thumbnail for the given post type."""
+    acct = data.get('account', {})
+    img  = bg_frame(0.0)
+
+    # Top emerald accent bar
+    draw = ImageDraw.Draw(img)
+    draw.rectangle([0, 0, W, 8], fill=EMERALD)
+
+    # Brand label
+    img = draw_alpha_text(img, (W // 2, 80),
+                           'VERA LEVEL FX', load_font(36, bold=True), EMERALD, 1.0)
+
+    if post_type == 'weekly':
+        gain  = float(acct.get('gain') or 0)
+        gc    = GREEN if gain >= 0 else RED
+        sign  = '+' if gain >= 0 else ''
+        wr    = float(acct.get('winRate') or 0)
+        pips  = int(acct.get('pips') or 0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 160),
+                               'WEEKLY P&L', load_font(52), MUTED, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 40),
+                               f'{sign}{gain:.1f}%', load_font(160, bold=True), gc, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 230),
+                               f'WR {wr:.0f}%  ·  +{pips:,} pips', load_font(40), WHITE, 1.0)
+
+    elif post_type == 'daily':
+        balance   = float(acct.get('balance') or 0)
+        daily_pct = float(acct.get('daily')   or 0)
+        pc        = GREEN if daily_pct >= 0 else RED
+        sign      = '+' if daily_pct >= 0 else ''
+        img = draw_alpha_text(img, (W // 2, H // 2 - 220),
+                               '● LIVE', load_font(52, bold=True), RED, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2),
+                               f'${balance:,.0f}', load_font(120, bold=True), WHITE, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 170),
+                               f'{sign}{daily_pct:.2f}% today', load_font(60), pc, 1.0)
+
+    elif post_type == 'monthly':
+        from captions import monthly_pnl_from_daily as _mpd
+        from datetime import datetime as _dt
+        monthly_pnl = _mpd(data.get('dailyGain', []))
+        months = list(monthly_pnl.items())[-3:]
+        month_name = _dt.now().strftime('%B %Y')
+        img = draw_alpha_text(img, (W // 2, H // 2 - 320),
+                               'MONTHLY P&L', load_font(52), MUTED, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 220),
+                               month_name, load_font(60, bold=True), EMERALD, 1.0)
+        for i, (month, val) in enumerate(months):
+            color = GREEN if val >= 0 else RED
+            s = '+' if val >= 0 else ''
+            img = draw_alpha_text(img, (W // 2, H // 2 - 60 + i * 100),
+                                   f'{month}  {s}{val:.1f}%',
+                                   load_font(52, bold=True), color, 1.0)
+
+    elif post_type == 'trust':
+        wr     = float(acct.get('winRate') or 0)
+        trades = int(acct.get('trades') or 0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 180),
+                               'WIN RATE', load_font(56), MUTED, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 40),
+                               f'{wr:.0f}%', load_font(180, bold=True), EMERALD, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 230),
+                               f'{trades:,} trades verified', load_font(40), WHITE, 1.0)
+
+    elif post_type == 'transparency':
+        gain = float(acct.get('gain') or 0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 220),
+                               'FULL DISCLOSURE', load_font(52, bold=True), WHITE, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 20),
+                               f'{gain:.1f}%', load_font(160, bold=True), RED, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 230),
+                               'Nothing hidden', load_font(44), MUTED, 1.0)
+
+    elif post_type == 'recovery-plan':
+        img = draw_alpha_text(img, (W // 2, H // 2 - 230),
+                               'RECOVERY PLAN', load_font(56, bold=True), EMERALD, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 80),
+                               '$1,000 / month', load_font(80, bold=True), WHITE, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 110),
+                               'Target: $31,171', load_font(56), EMERALD, 1.0)
+        if recovery_day > 0:
+            img = draw_alpha_text(img, (W // 2, H // 2 + 250),
+                                   f'Day {recovery_day}', load_font(48), MUTED, 1.0)
+
+    elif post_type == 'edu':
+        img = draw_alpha_text(img, (W // 2, H // 2 - 120),
+                               'RISK MANAGEMENT', load_font(56, bold=True), EMERALD, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 80),
+                               'Education', load_font(72), WHITE, 1.0)
+
+    elif post_type == 'broker':
+        banner_arr = _get_ib_banner(600, 1200)
+        if banner_arr is not None:
+            img_arr = np.array(img, dtype=np.float32)
+            bx = (W - 600) // 2   # 240
+            by = (H - 1200) // 2  # 360
+            img_arr[by:by + 1200, bx:bx + 600] = banner_arr
+            img = Image.fromarray(img_arr.astype(np.uint8))
+        img = draw_alpha_text(img, (W // 2, 180),
+                               'IC MARKETS', load_font(64, bold=True), WHITE, 1.0)
+        img = draw_alpha_text(img, (W // 2, H - 130),
+                               'Raw Spread  ·  ASIC + CySEC', load_font(40), EMERALD, 1.0)
+        img = draw_alpha_text(img, (W // 2, H - 65),
+                               _IB_CTA, load_font(32, bold=True), EMERALD, 1.0)
+
+    # Footer handle (skip for broker where IB URL is at bottom)
+    if post_type != 'broker':
+        img = draw_alpha_text(img, (W // 2, H - 50),
+                               '@veralevel.fx', load_font(30), MUTED, 0.7)
+
+    return img

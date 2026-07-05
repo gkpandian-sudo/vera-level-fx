@@ -52,21 +52,22 @@ def publish(image_url: str, caption: str) -> str:
     return post_id
 
 
-def publish_reel(video_url: str, caption: str) -> str:
+def publish_reel(video_url: str, caption: str, cover_url: str = '') -> str:
     """Publish a video as an Instagram Reel.
 
     Two-step Meta Graph API: create container → poll until FINISHED → publish.
     Poll timeout is 5 minutes (30 × 10s — video encoding is slower than images).
+    cover_url — optional public JPEG URL used as the reel cover/thumbnail.
     """
-    data = _check(requests.post(
-        f'{GRAPH}/{IG_ID}/media',
-        params={
-            'media_type':   'REELS',
-            'video_url':    video_url,
-            'caption':      caption,
-            'access_token': TOKEN,
-        }
-    ))
+    params = {
+        'media_type':   'REELS',
+        'video_url':    video_url,
+        'caption':      caption,
+        'access_token': TOKEN,
+    }
+    if cover_url:
+        params['cover_url'] = cover_url
+    data = _check(requests.post(f'{GRAPH}/{IG_ID}/media', params=params))
     container_id = data['id']
     print(f'  reel container created: {container_id}')
 

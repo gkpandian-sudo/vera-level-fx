@@ -8,7 +8,8 @@ _IB_URL   = os.environ.get('BRAND_IB_URL', 'icmarkets.com/?camp=91936')
 
 _CTA_TELEGRAM = f"\n📲 Live trade alerts → {_TELEGRAM}"
 _CTA_IB       = f"\n🏦 Open IC Markets (Raw Spread, ASIC + CySEC regulated) → {_IB_URL}"
-_CTA_IB_SOFT  = f"\n🏦 I trade on IC Markets Raw Spread · {_IB_URL} · ASIC + CySEC"
+_CTA_IB_SOFT  = (f"\n🏦 I trade on IC Markets Raw Spread · ASIC + CySEC"
+                 f"\n👉 Open your account: {_IB_URL}")
 _CTA_VERIFY   = f"\n🔍 Verify my full track record → Myfxbook #12044019"
 _CTA_ALL      = f"\n📲 {_TELEGRAM}  |  🌐 {_WEBSITE}  |  🏦 {_IB_URL}"
 

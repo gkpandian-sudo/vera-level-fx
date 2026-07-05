@@ -25,16 +25,15 @@ def load_data() -> dict:
         return json.load(f)
 
 
-def commit_and_push(video_path: Path) -> str:
-    """Commit MP4 and return its raw GitHub URL."""
+def commit_and_push(*paths: Path) -> list:
+    """Commit one or more files and return their raw GitHub URLs."""
     repo   = os.environ.get('GITHUB_REPOSITORY', '')
     branch = 'master'
-    rel    = video_path.relative_to(ROOT).as_posix()
 
     cmds = [
         ['git', 'config', 'user.email', 'github-actions[bot]@users.noreply.github.com'],
         ['git', 'config', 'user.name',  'github-actions[bot]'],
-        ['git', 'add',    str(video_path)],
+        ['git', 'add'] + [str(p) for p in paths],
         ['git', 'commit', '-m', f'auto: instagram reel {date.today()} [skip ci]'],
         ['git', 'pull',   '--rebase', 'origin', branch],
         ['git', 'push',   'origin', branch],
@@ -47,7 +46,8 @@ def commit_and_push(video_path: Path) -> str:
             print(r.stderr, file=sys.stderr)
             raise RuntimeError(f'git command failed: {cmd[1]}')
 
-    return f'https://raw.githubusercontent.com/{repo}/{branch}/{rel}'
+    base = f'https://raw.githubusercontent.com/{repo}/{branch}'
+    return [f'{base}/{p.relative_to(ROOT).as_posix()}' for p in paths]
 
 
 def main():
@@ -58,6 +58,7 @@ def main():
         make_daily_reel, make_weekly_reel, make_trust_reel,
         make_monthly_reel, make_transparency_reel,
         make_recovery_plan_reel, make_edu_reel, make_broker_reel,
+        make_thumbnail,
     )
     from reels.audio  import get_track
     from reels.render import render
@@ -138,14 +139,21 @@ def main():
     render(clips, audio_path, str(out_path))
     print(f'  rendered: {out_path}  ({out_path.stat().st_size // 1024} KB)')
 
+    # ── Thumbnail ─────────────────────────────────────────────────────────────
+    thumb_path = REEL_DIR / f'{today.isoformat()}-{post_type}-thumb.jpg'
+    thumb_img  = make_thumbnail(post_type, data, recovery_day=recovery_day)
+    thumb_img.save(str(thumb_path), 'JPEG', quality=92)
+    print(f'  thumbnail: {thumb_path}  ({thumb_path.stat().st_size // 1024} KB)')
+
     # ── Commit + publish ──────────────────────────────────────────────────────
-    video_url = commit_and_push(out_path)
+    video_url, thumb_url = commit_and_push(out_path, thumb_path)
     print(f'  url: {video_url}')
+    print(f'  thumb: {thumb_url}')
 
     print('  waiting 60s for GitHub CDN...')
     time.sleep(60)
 
-    publish_reel(video_url, caption)
+    publish_reel(video_url, caption, cover_url=thumb_url)
     print(f'Done — {post_type} Reel published.')
 
 
