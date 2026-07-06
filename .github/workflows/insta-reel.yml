@@ -4,9 +4,9 @@ on:
   schedule:
     # Daily rotation 07:00 SGT = 23:00 UTC previous day
     - cron: '0 23 * * *'
-    # Broker spotlight: 1st of each month 07:00 SGT = 23:00 UTC last day of prev month
+    # Broker spotlight: fires 07:00 SGT on the 2nd of each month (23:00 UTC 1st)
     - cron: '0 23 1 * *'
-    # Monthly P&L: 2nd of each month 06:00 SGT = 22:00 UTC 1st
+    # Monthly P&L: fires 06:00 SGT on the 3rd of each month (22:00 UTC 2nd)
     - cron: '0 22 2 * *'
     # Daily reel every day 20:00 SGT = 12:00 UTC
     - cron: '0 12 * * *'
