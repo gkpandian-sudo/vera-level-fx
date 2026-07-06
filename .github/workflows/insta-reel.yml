@@ -6,12 +6,14 @@ on:
     - cron: '0 23 * * *'
     # Broker spotlight: 1st of each month 07:00 SGT = 23:00 UTC last day of prev month
     - cron: '0 23 1 * *'
-    # Daily reel every day 09:00 SGT = 01:00 UTC (overlaps intentionally with rotation)
-    - cron: '0 1 * * *'
+    # Monthly P&L: 2nd of each month 06:00 SGT = 22:00 UTC 1st
+    - cron: '0 22 2 * *'
+    # Daily reel every day 20:00 SGT = 12:00 UTC
+    - cron: '0 12 * * *'
   workflow_dispatch:
     inputs:
       post_type:
-        description: 'weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker'
+        description: 'weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker|signup|milestone'
         required: false
         default: 'weekly'
       post_lang:
@@ -62,28 +64,27 @@ jobs:
           EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
           if [ "$EVENT_NAME" = "schedule" ]; then
-            # Monthly broker cron fires on the 1st — separate from daily rotation
             if [ "$EVENT_SCHEDULE" = "0 23 1 * *" ]; then
               echo "type=broker" >> "$GITHUB_OUTPUT"
-            # Daily reel cron — always posts daily type regardless of weekday
-            elif [ "$EVENT_SCHEDULE" = "0 1 * * *" ]; then
+            elif [ "$EVENT_SCHEDULE" = "0 22 2 * *" ]; then
+              echo "type=monthly" >> "$GITHUB_OUTPUT"
+            elif [ "$EVENT_SCHEDULE" = "0 12 * * *" ]; then
               echo "type=daily" >> "$GITHUB_OUTPUT"
             else
               case "$(date -u +%u)" in
-                7) echo "type=weekly"        >> "$GITHUB_OUTPUT" ;;  # Sun UTC -> Mon SGT
-                1) echo "type=monthly"       >> "$GITHUB_OUTPUT" ;;  # Mon UTC -> Tue SGT
-                2) echo "type=daily"         >> "$GITHUB_OUTPUT" ;;  # Tue UTC -> Wed SGT
-                3) echo "type=edu"           >> "$GITHUB_OUTPUT" ;;  # Wed UTC -> Thu SGT
-                4) echo "type=trust"         >> "$GITHUB_OUTPUT" ;;  # Thu UTC -> Fri SGT
-                5) echo "type=transparency"  >> "$GITHUB_OUTPUT" ;;  # Fri UTC -> Sat SGT
-                6) echo "type=recovery-plan" >> "$GITHUB_OUTPUT" ;;  # Sat UTC -> Sun SGT
-                *) echo "type=weekly"        >> "$GITHUB_OUTPUT" ;;
+                7) echo "type=weekly"  >> "$GITHUB_OUTPUT" ;;  # Sun UTC -> Mon SGT
+                1) echo "type=edu"     >> "$GITHUB_OUTPUT" ;;  # Mon UTC -> Tue SGT
+                2) echo "type=trust"   >> "$GITHUB_OUTPUT" ;;  # Tue UTC -> Wed SGT
+                3) echo "type=edu"     >> "$GITHUB_OUTPUT" ;;  # Wed UTC -> Thu SGT
+                4) echo "type=trust"   >> "$GITHUB_OUTPUT" ;;  # Thu UTC -> Fri SGT
+                5) echo "type=edu"     >> "$GITHUB_OUTPUT" ;;  # Fri UTC -> Sat SGT
+                6) echo "type=trust"   >> "$GITHUB_OUTPUT" ;;  # Sat UTC -> Sun SGT
+                *) echo "type=weekly"  >> "$GITHUB_OUTPUT" ;;
               esac
             fi
           else
-            # Validate allowed values; reject anything else to block injection attempts
             case "$INPUT_POST_TYPE" in
-              weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker)
+              weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker|signup|milestone)
                 echo "type=$INPUT_POST_TYPE" >> "$GITHUB_OUTPUT"
                 ;;
               *)
