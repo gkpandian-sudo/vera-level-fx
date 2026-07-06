@@ -30,3 +30,19 @@ def test_recovery_plan_shows_pf_when_provided():
 def test_recovery_plan_has_myfxbook_verify():
     cap = recovery_plan()
     assert 'Myfxbook' in cap
+
+def test_broker_no_india_tags():
+    cap = broker()
+    assert '#forexindia' not in cap
+    assert '#tradeindia' not in cap
+
+def test_broker_no_hindi_any_lang():
+    cap_en    = broker(lang='en')
+    cap_hindi = broker(lang='hindi')
+    assert 'करता' not in cap_en
+    assert 'करता' not in cap_hindi
+
+def test_broker_has_attribution_warning():
+    cap = broker()
+    assert 'credited' in cap.lower() or 'referral' in cap.lower()
+    assert 'nothing extra' in cap.lower() or 'no cost' in cap.lower()

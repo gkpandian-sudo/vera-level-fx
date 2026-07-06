@@ -351,42 +351,33 @@ Milestones: reported when reached — not before.
 
 def broker(lang: str = 'en') -> str:
     _TAGS_BROKER = (f"{_TAGS_BRAND} {_TAGS_NICHE} "
-                    "#icmarkets #rawspread #forexbroker #asicregulated #forexindia #tradeindia")
+                    "#icmarkets #rawspread #forexbroker #asicregulated #forexsg #sgforex")
 
-    body = f"""🏦 Why I trade on IC Markets
+    tamil = (
+        f"\n\n📊 நான் IC Markets Raw Spread account-ல் தான் trade பண்றேன். "
+        f"ASIC + CySEC regulated. Every single trade. "
+        f"Open: link in bio (IB #91936)"
+    ) if lang == 'tamil' else ''
 
-Raw Spread account. No requotes. ASIC + CySEC regulated.
-Same broker I have used since day one.
+    return f"""Every trade I've made for 18+ months runs through one broker.
+
+🏦 IC Markets — Raw Spread
 
 WHAT YOU GET
 Raw interbank spreads from 0.0 pips
-No dealing desk
-ECN/STP execution
+No dealing desk  ·  ECN/STP execution
 ASIC regulated (Australia)
 CySEC regulated (Europe)
 
 Every verified trade on Myfxbook #12044019 runs through this account.
 That is not marketing. That is my live setup.
 
-Open your account:
-🔗 {_IB_URL}
+Open your account via the link in bio.
+Important: you must use my link — opening icmarkets.com directly won't link us.
+Costs you nothing extra. Spreads are identical either way.
 
 IB #91936. Referral link. I earn a small commission at no cost to you.
 
 {_RISK_DISCLAIMER}
 
-{_TAGS_BROKER}"""
-
-    tamil = (
-        f"\n\n📊 நான் IC Markets Raw Spread account-ல் தான் trade பண்றேன். "
-        f"ASIC + CySEC regulated. Every single trade. "
-        f"Account open பண்ண: {_IB_URL} (IB #91936)"
-    ) if lang == 'tamil' else ''
-
-    hindi = (
-        f"\n\n📊 मैं IC Markets Raw Spread account पर trade करता हूं। "
-        f"ASIC + CySEC regulated. Every single trade. "
-        f"Account open करें: {_IB_URL} (IB #91936)"
-    ) if lang == 'hindi' else ''
-
-    return body + tamil + hindi
+{_TAGS_BROKER}{tamil}"""
