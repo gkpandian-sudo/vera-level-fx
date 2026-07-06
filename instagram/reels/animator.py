@@ -47,6 +47,7 @@ def load_font(size: int, bold: bool = False):
 
 # ── Background cache ──────────────────────────────────────────────────────────
 _BG_CACHE: np.ndarray | None = None
+_SCANLINE_CACHE: 'Image.Image | None' = None
 
 
 def radial_bg() -> np.ndarray:
@@ -67,6 +68,20 @@ def radial_bg() -> np.ndarray:
     img = (core * (1.0 - t[:, :, None]) + edge * t[:, :, None]).astype(np.uint8)
     _BG_CACHE = img
     return _BG_CACHE
+
+
+def scanline_overlay() -> Image.Image:
+    """Cached RGBA PIL image: black horizontal lines every 4 px at 6% opacity."""
+    global _SCANLINE_CACHE
+    if _SCANLINE_CACHE is not None:
+        return _SCANLINE_CACHE
+    overlay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    draw    = ImageDraw.Draw(overlay)
+    alpha   = int(0.06 * 255)
+    for y in range(0, H, 4):
+        draw.line([(0, y), (W, y)], fill=(0, 0, 0, alpha))
+    _SCANLINE_CACHE = overlay
+    return _SCANLINE_CACHE
 
 
 # ── Easing ────────────────────────────────────────────────────────────────────
@@ -115,13 +130,23 @@ def _particle_overlay(t: float, n: int = 8, opacity: float = 0.08,
 
 # ── Base frame ────────────────────────────────────────────────────────────────
 
-def bg_frame(t: float) -> Image.Image:
-    """PIL RGB Image: radial background + particle overlay."""
-    bg_arr = radial_bg()
-    img = Image.fromarray(bg_arr, 'RGB').convert('RGBA')
-    particles = _particle_overlay(t)
-    img = Image.alpha_composite(img, particles)
+def animated_bg_frame(t: float) -> Image.Image:
+    """PIL RGB Image: pulsing radial bg + particles + scanlines.
+
+    Centre brightness pulses gently on a 4s sine cycle.
+    """
+    bg_arr = radial_bg().astype(np.float32).copy()
+    pulse  = 1.0 + 0.08 * np.sin(2 * np.pi * t / 4.0)
+    bg_arr = np.clip(bg_arr * pulse, 0, 255).astype(np.uint8)
+    img    = Image.fromarray(bg_arr, 'RGB').convert('RGBA')
+    img    = Image.alpha_composite(img, _particle_overlay(t))
+    img    = Image.alpha_composite(img, scanline_overlay())
     return img.convert('RGB')
+
+
+def bg_frame(t: float) -> Image.Image:
+    """Alias kept for backward compat — delegates to animated_bg_frame."""
+    return animated_bg_frame(t)
 
 
 # ── Text drawing primitive ────────────────────────────────────────────────────
@@ -184,6 +209,57 @@ def draw_glow_text(img: Image.Image, pos, text: str, fontsize: int,
     base = Image.alpha_composite(base, glow)
     base = Image.alpha_composite(base, layer)
     return base.convert('RGB')
+
+
+def draw_pulsing_dot(img: Image.Image, pos, t: float,
+                     positive: bool = True) -> Image.Image:
+    """Draw a pulsing circle (GREEN if positive, RED if not) at pos.
+
+    Radius oscillates between 8 and 16 px on a 1.2 s cycle.
+    An outer ring fades out (sonar ping effect).
+    """
+    color   = GREEN if positive else RED
+    r_inner = int(8 + 4 * np.sin(2 * np.pi * t / 1.2) ** 2)
+    r_outer = int(r_inner + 10 + 14 * ((t * 0.8) % 1.0))
+    ping_alp = int(180 * (1.0 - (t * 0.8) % 1.0))
+
+    overlay = Image.new('RGBA', img.size, (0, 0, 0, 0))
+    draw    = ImageDraw.Draw(overlay)
+    cx, cy  = pos
+    draw.ellipse([cx - r_outer, cy - r_outer, cx + r_outer, cy + r_outer],
+                 outline=(*color, ping_alp), width=2)
+    draw.ellipse([cx - r_inner, cy - r_inner, cx + r_inner, cy + r_inner],
+                 fill=(*color, 230))
+    base = img.convert('RGBA')
+    return Image.alpha_composite(base, overlay).convert('RGB')
+
+
+def odometer_frame(t: float, value: float, dur: float, fmt: str,
+                   color, fontsize: int, center) -> np.ndarray:
+    """Digits roll through 0-9 before snapping to the final value."""
+    img      = bg_frame(t)
+    progress = ease_out(t, dur)
+    text     = fmt.format(value)
+
+    result_chars = []
+    digit_idx    = 0
+    for ch in text:
+        if ch.isdigit():
+            target        = int(ch)
+            digit_progress = min(progress * (1.0 + digit_idx * 0.15), 1.0)
+            if digit_progress < 0.95:
+                rolled = int((digit_progress * 10 * (digit_idx + 1)) % 10)
+            else:
+                rolled = target
+            result_chars.append(str(rolled))
+            digit_idx += 1
+        else:
+            result_chars.append(ch)
+
+    display = ''.join(result_chars)
+    img = draw_glow_text(img, center, display, fontsize, color,
+                         glow_radius=20, alpha=min(progress * 2, 1.0))
+    return np.array(img)
 
 
 # ── Public animation primitives ───────────────────────────────────────────────

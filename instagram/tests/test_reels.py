@@ -212,3 +212,66 @@ def test_draw_glow_text_shape():
     result = draw_glow_text(img, (540, 960), '+12.4%', 120, (5, 150, 105))
     assert result.size == (1080, 1920)
     assert result.mode == 'RGB'
+
+
+# ── Task 2: Animated background + scanlines ───────────────────────────────────
+
+def test_scanline_overlay_shape():
+    from reels.animator import scanline_overlay
+    ov = scanline_overlay()
+    assert ov.size == (1080, 1920)
+    assert ov.mode == 'RGBA'
+
+def test_animated_bg_frame_differs_over_time():
+    from reels.animator import animated_bg_frame
+    import numpy as np
+    f0 = np.array(animated_bg_frame(t=0.0))
+    f2 = np.array(animated_bg_frame(t=2.0))
+    assert not np.array_equal(f0, f2)
+
+def test_animated_bg_frame_shape():
+    from reels.animator import animated_bg_frame
+    import numpy as np
+    frame = np.array(animated_bg_frame(t=0.5))
+    assert frame.shape == (1920, 1080, 3)
+
+
+# ── Task 3: Pulsing live dot + odometer ──────────────────────────────────────
+
+def test_draw_pulsing_dot_returns_image():
+    from PIL import Image
+    from reels.animator import draw_pulsing_dot
+    img = Image.new('RGB', (1080, 1920), (0, 24, 53))
+    result = draw_pulsing_dot(img, pos=(540, 200), t=0.5, positive=True)
+    assert result.size == (1080, 1920)
+
+def test_odometer_frame_shape():
+    from reels.animator import odometer_frame
+    import numpy as np
+    frame = odometer_frame(t=1.0, value=1234.5, dur=2.0,
+                           fmt='{:.1f}', color=(255, 255, 255),
+                           fontsize=100, center=(540, 960))
+    assert frame.shape == (1920, 1080, 3)
+
+
+# ── Task 6: Flash-cut transitions ────────────────────────────────────────────
+
+def test_render_with_flash_creates_mp4(tmp_path):
+    """Flash=True adds flash frames between clips."""
+    import numpy as np
+    from moviepy.editor import VideoClip
+    from reels.render import render
+
+    def make_frame(t):
+        return np.full((1920, 1080, 3), 40, dtype=np.uint8)
+
+    clips     = [VideoClip(make_frame, duration=1.0).set_fps(30),
+                 VideoClip(make_frame, duration=1.0).set_fps(30)]
+    out_plain = tmp_path / 'plain.mp4'
+    out_flash = tmp_path / 'flash.mp4'
+
+    render(clips, audio_path=None, out_path=str(out_plain), fps=30, flash=False)
+    render(clips, audio_path=None, out_path=str(out_flash), fps=30, flash=True)
+
+    assert out_plain.exists() and out_flash.exists()
+    assert out_flash.stat().st_size > 0
