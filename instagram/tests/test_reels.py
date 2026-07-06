@@ -303,3 +303,26 @@ def test_progress_ring_clip_zero():
     from reels.effects import progress_ring_clip
     clip = progress_ring_clip(win_rate=0.0, duration=2.0)
     assert clip.duration == 2.0
+
+
+def test_ticker_tape_overlay_shape():
+    from reels.effects import ticker_tape_overlay
+    from PIL import Image
+    img = Image.new('RGB', (1080, 1920), (0, 24, 53))
+    result = ticker_tape_overlay(img, t=1.0)
+    assert result.size == (1080, 1920)
+    assert result.mode == 'RGB'
+
+def test_candlestick_bg_overlay_shape():
+    from reels.effects import candlestick_bg_overlay
+    from PIL import Image
+    img = Image.new('RGB', (1080, 1920), (0, 24, 53))
+    result = candlestick_bg_overlay(img)
+    assert result.size == (1080, 1920)
+
+def test_glow_border_overlay_shape():
+    from reels.effects import glow_border_overlay
+    from PIL import Image
+    img = Image.new('RGB', (1080, 1920), (0, 24, 53))
+    result = glow_border_overlay(img, t=0.5)
+    assert result.size == (1080, 1920)

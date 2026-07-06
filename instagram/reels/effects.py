@@ -136,3 +136,111 @@ def progress_ring_clip(win_rate: float, duration: float,
         return np.array(result)
 
     return VideoClip(make_frame, duration=duration).set_fps(FPS)
+
+
+# ── Ticker tape ───────────────────────────────────────────────────────────────
+
+_TICKER_TEXT = (
+    'EURUSD  ·  XAUUSD  ·  GBPJPY  ·  USDJPY  ·  GBPUSD  ·  '
+    'AUDUSD  ·  USDCAD  ·  NZDUSD  ·  EURJPY  ·  XAGUSD  ·  '
+)
+_TICKER_SPEED = 120   # px/second
+_TICKER_H     = 52    # strip height px
+_TICKER_Y     = H - _TICKER_H - 10   # vertical position
+
+_TICKER_BG_CACHE: 'Image.Image | None' = None
+
+
+def ticker_tape_overlay(img: Image.Image, t: float) -> Image.Image:
+    """Render a scrolling currency-pair ticker at the bottom of img."""
+    font   = load_font(28)
+    text   = _TICKER_TEXT * 4
+    offset = int(t * _TICKER_SPEED) % (W * 2)
+
+    strip = Image.new('RGBA', (W, _TICKER_H), (0, 10, 25, 200))
+    draw  = ImageDraw.Draw(strip)
+    draw.line([(0, 0), (W, 0)], fill=(*EMERALD, 120), width=1)
+
+    x = -offset
+    while x < W + 20:
+        draw.text((x, _TICKER_H // 2), text,
+                  font=font, fill=(*MUTED, 200), anchor='lm')
+        try:
+            tw = draw.textlength(text, font=font)
+        except AttributeError:
+            bbox = draw.textbbox((0, 0), text, font=font)
+            tw   = bbox[2] - bbox[0]
+        x += max(int(tw), W)
+
+    base = img.convert('RGBA')
+    base.paste(strip, (0, _TICKER_Y), strip)
+    return base.convert('RGB')
+
+
+# ── Candlestick background ────────────────────────────────────────────────────
+
+_CANDLE_CACHE: 'Image.Image | None' = None
+
+
+def candlestick_bg_overlay(img: Image.Image) -> Image.Image:
+    """Stamp a ghost candlestick chart pattern at 5% opacity (cached)."""
+    global _CANDLE_CACHE
+
+    if _CANDLE_CACHE is None:
+        overlay   = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        draw      = ImageDraw.Draw(overlay)
+        rng       = np.random.default_rng(7)
+        n_candles = 22
+        candle_w  = 36
+        gap       = (W - n_candles * candle_w) // (n_candles + 1)
+        base_y    = int(H * 0.72)
+        price     = 100.0
+        alpha     = int(0.05 * 255)
+
+        for i in range(n_candles):
+            x     = gap + i * (candle_w + gap)
+            chg   = rng.uniform(-4, 4)
+            open_ = price
+            close = price + chg
+            high  = max(open_, close) + rng.uniform(1, 3)
+            low   = min(open_, close) - rng.uniform(1, 3)
+            price = close
+
+            scale  = 6.0
+            cy_mid = base_y - int(price * scale * 0.1)
+
+            top_body = cy_mid - int(abs(chg) * scale)
+            bot_body = cy_mid + int(abs(chg) * scale)
+            top_wick = cy_mid - int((high - min(open_, close)) * scale)
+            bot_wick = cy_mid + int((max(open_, close) - low) * scale)
+            color    = GREEN if chg >= 0 else RED
+
+            draw.line([(x + candle_w // 2, top_wick),
+                       (x + candle_w // 2, bot_wick)],
+                      fill=(*color, alpha), width=2)
+            draw.rectangle([x + 4, top_body, x + candle_w - 4, bot_body],
+                           fill=(*color, alpha))
+
+        _CANDLE_CACHE = overlay
+
+    base = img.convert('RGBA')
+    return Image.alpha_composite(base, _CANDLE_CACHE).convert('RGB')
+
+
+# ── Glowing border ────────────────────────────────────────────────────────────
+
+def glow_border_overlay(img: Image.Image, t: float,
+                        rect: tuple = (40, 200, W - 40, H - 200),
+                        pulse_period: float = 2.0) -> Image.Image:
+    """Draw a pulsing emerald neon rectangle border."""
+    x0, y0, x1, y1 = rect
+    pulse   = 0.6 + 0.4 * math.sin(2 * math.pi * t / pulse_period) ** 2
+    alpha   = int(180 * pulse)
+    overlay = Image.new('RGBA', img.size, (0, 0, 0, 0))
+    draw    = ImageDraw.Draw(overlay)
+    draw.rectangle([x0, y0, x1, y1], outline=(*EMERALD, alpha), width=3)
+    glow  = overlay.filter(ImageFilter.GaussianBlur(radius=6))
+    base  = img.convert('RGBA')
+    base  = Image.alpha_composite(base, glow)
+    base  = Image.alpha_composite(base, overlay)
+    return base.convert('RGB')
