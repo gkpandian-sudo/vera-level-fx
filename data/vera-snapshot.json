@@ -1,5 +1,4 @@
 {
-  "fetchedAt": "2026-07-06T22:45:51Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
@@ -31,10 +30,27 @@
     "server": {
       "name": "IC Markets"
     },
-    "trades": 40,
-    "winRate": 57.5
+    "trades": 922,
+    "winRate": 70,
+    "avgWin": 15.75,
+    "avgLoss": 49.35
   },
   "openTrades": [],
+  "openOrders": [
+    {
+      "openTime": "07/06/2026 02:00",
+      "symbol": "XAUUSD",
+      "action": "Sell Stop",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 3962.24,
+      "tp": 3947.16,
+      "sl": 3969.7,
+      "comment": "TOL LANGIT ETF - VII GS"
+    }
+  ],
   "history": [
     {
       "openTime": "07/06/2026 04:34",
@@ -1228,5 +1244,29 @@
       -96.65,
       -14.32
     ]
-  ]
+  ],
+  "fetchedAt": "2026-07-06T23:11:18.013Z",
+  "icMarkets": {
+    "date": "2026-07-05",
+    "accountNo": "7916030",
+    "balance": 1042.08,
+    "equity": 1042.08,
+    "floatingPL": 0,
+    "closedPL": 0,
+    "totalSwap": 0,
+    "totalComm": 0,
+    "netDay": 0,
+    "totalPips": 0,
+    "tradeCount": 0,
+    "winners": 0,
+    "losers": 0,
+    "winRate": 0,
+    "mtdProfit": 0,
+    "trades": [],
+    "positions": [],
+    "workingOrders": [],
+    "eaLoops": [],
+    "noActivity": true,
+    "generatedAt": "2026-07-06T13:53:20.974Z"
+  }
 }
