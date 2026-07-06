@@ -272,7 +272,6 @@ def trust(account: dict, lang: str = 'en') -> str:
 {wr_str}
 Every trade on Myfxbook. Go check.
 
-No screenshots. No cherry-picked months. One live account, one public link.
 Account type: Raw Spread. Broker: IC Markets. Regulation: ASIC + CySEC.
 
 {wr_line}
