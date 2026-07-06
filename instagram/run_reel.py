@@ -108,9 +108,11 @@ def main():
         caption = transparency(account, lang=lang)
 
     elif post_type == 'recovery-plan':
-        clips   = make_recovery_plan_reel()
+        clips   = make_recovery_plan_reel(recovery_day=recovery_day)
         caption = recovery_plan(lang=lang, recovery_day=recovery_day,
-                                recovery_start_str=rs)
+                                recovery_start_str=rs,
+                                balance=float(account.get('balance') or 0),
+                                pf=float(account.get('profitFactor') or 0))
 
     elif post_type == 'edu':
         from edu_content import get_edu_content

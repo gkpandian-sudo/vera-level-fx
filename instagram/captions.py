@@ -309,45 +309,44 @@ The rebuild is live on Myfxbook.
 {TAGS}"""
 
 
-def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_start_str: str = '') -> str:
+def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_start_str: str = '',
+                  balance: float = 0.0, pf: float = 0.0) -> str:
+    """Actuals-only rebuild report. No projections, no targets."""
     tamil = (
-        "\n\n📈 Recovery Plan · $1,000/மாதம் top-up, December வரை. "
-        "இது simulation மட்டும், guarantee இல்லை. Follow பண்ணுங்க journey-ஐ."
+        "\n\n📈 Rebuild live இருக்கு. "
+        "Every trade Myfxbook-ல் verify பண்ணலாம். #12044019"
     ) if lang == 'tamil' else ''
 
     if recovery_day > 0 and recovery_start_str:
-        day_line = f"Day {recovery_day} since {recovery_start_str}. Every top-up and trade visible on Myfxbook #12044019.\n\n"
+        day_line = f"Day {recovery_day} since {recovery_start_str}.\n"
     elif recovery_day > 0:
-        day_line = f"Recovery Day {recovery_day}. Every top-up and trade visible on Myfxbook #12044019.\n\n"
+        day_line = f"Recovery Day {recovery_day}.\n"
     else:
         day_line = ''
 
-    return f"""📈 Recovery Plan · Structured Rebuild
+    bal_str = f"\n💰 Current balance: ${balance:,.0f}" if balance > 0 else ''
+    if pf > 0:
+        pf_note = ('  ← improving' if 0 < pf < 1.0
+                   else '  ← target reached' if pf >= 1.2 else '')
+        pf_str  = f"\n⚡ Profit Factor: {pf:.2f}  (target: 1.2+){pf_note}"
+    else:
+        pf_str = ''
 
-{day_line}No hype, just numbers.
+    return f"""📈 Rebuild · Vera Level FX
 
-$1,000 added every month. 50% monthly target. July to December.
-GRID EA runs at reduced risk until December.
+{day_line}Every top-up and trade is live on Myfxbook. Nothing projected. Nothing hidden.
 
-💰 July: +$1,000 → $1,500
-💰 August: +$1,000 → $3,750
-💰 September: +$1,000 → $7,125
-💰 October: +$1,000 → $12,187
-💰 November: +$1,000 → $19,781
-💰 December: +$1,000 → $31,171
-
-📌 Total invested: $6,000
-📌 Projected balance: $31,171
-📌 Projected profit: $25,171
-
-This is a simulation. 50% monthly returns are not guaranteed.
-Every actual top-up and trade result will be on Myfxbook. Nothing hidden.
-
-Open your IC Markets account. Same broker I use:{_CTA_IB}{tamil}
+WHAT THE REBUILD LOOKS LIKE
+Trade frequency: London/NY overlap sessions only.
+Position sizing: ATR-based, max 1% per trade.
+Monthly top-ups: documented on Myfxbook as they happen.
+Milestones: reported when reached — not before.
+{bal_str}{pf_str}
+{_CTA_VERIFY}
 
 {_RISK_DISCLAIMER}
 
-{TAGS}"""
+{TAGS}{tamil}"""
 
 
 def broker(lang: str = 'en') -> str:
