@@ -13,6 +13,13 @@ _CTA_IB_SOFT  = (f"\n🏦 I trade on IC Markets Raw Spread · ASIC + CySEC"
 _CTA_VERIFY   = f"\n🔍 Verify my full track record → Myfxbook #12044019"
 _CTA_ALL      = f"\n📲 {_TELEGRAM}  |  🌐 {_WEBSITE}  |  🏦 {_IB_URL}"
 
+_CTA_IB_BIO  = (
+    f"\n🏦 IC Markets Raw Spread (ASIC + CySEC)"
+    f"\n👉 Link in bio — use my link or I don't get credited (same cost to you)"
+    f"\n💬 Comment BROKER and I'll DM you the 4-step setup"
+)
+_CTA_ALERTS  = f"\n📲 Live trade alerts → {_TELEGRAM}  ·  DM me anytime"
+
 # Required on all posts citing live P&L (daily, weekly, trust, transparency, monthly, recovery-plan)
 _RISK_DISCLAIMER = (
     "Trading FX on margin carries high risk. "
@@ -115,7 +122,7 @@ Max 1% risk per trade. Target 1:2.5+ RR.
 {wr_line}
 ⚡ Profit Factor: {pf:.2f}
 💹 Total Pips: +{pips:,}
-{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('weekly', lang)}
+{_CTA_IB_BIO}{_CTA_VERIFY}{_tamil_line('weekly', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -246,7 +253,7 @@ Open positions right now:
 {positions_block}
 
 Running record: {wr_line}
-{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('daily', lang)}
+{_CTA_IB_BIO}{_CTA_VERIFY}{_CTA_ALERTS}{_tamil_line('daily', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -280,7 +287,7 @@ Account type: Raw Spread. Broker: IC Markets. Regulation: ASIC + CySEC.
 💹 Pips: +{pips:,}
 
 Verify: search "Vera Level" on Myfxbook.com
-{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('trust', lang)}
+{_CTA_IB_BIO}{_CTA_VERIFY}{_tamil_line('trust', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -313,7 +320,7 @@ The rebuild is live on Myfxbook.
 💰 Current balance: ${bal:,.0f}
 📉 Max drawdown: {dd:.1f}%
 🔍 Full history: Myfxbook #12044019
-{_CTA_IB_SOFT}{_CTA_VERIFY}{_tamil_line('trust', lang)}
+{_CTA_IB_BIO}{_CTA_VERIFY}{_tamil_line('trust', lang)}
 
 {_RISK_DISCLAIMER}
 

@@ -81,3 +81,19 @@ def test_trust_hook_not_label():
     cap = trust(SAMPLE_ACCOUNT)
     first_line = cap.strip().split('\n')[0]
     assert 'Live Track Record ·' not in first_line
+
+def test_daily_has_telegram_cta():
+    cap = daily_status(SAMPLE_ACCOUNT, [])
+    assert 't.me/' in cap or 'telegram' in cap.lower()
+
+def test_weekly_has_link_in_bio():
+    cap = weekly(SAMPLE_ACCOUNT)
+    assert 'link in bio' in cap.lower() or 'bio' in cap.lower()
+
+def test_trust_has_link_in_bio():
+    cap = trust(SAMPLE_ACCOUNT)
+    assert 'link in bio' in cap.lower() or 'bio' in cap.lower()
+
+def test_daily_ib_cta_has_attribution_warning():
+    cap = daily_status(SAMPLE_ACCOUNT, [])
+    assert 'credited' in cap.lower() or 'referral' in cap.lower()
