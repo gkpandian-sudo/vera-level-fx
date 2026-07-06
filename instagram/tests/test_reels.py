@@ -189,3 +189,25 @@ def test_publish_reel_function_exists():
     sig = inspect.signature(publish_reel)
     assert 'video_url' in sig.parameters
     assert 'caption' in sig.parameters
+
+
+# ── Task 1: Spring easing + glow text ────────────────────────────────────────
+
+def test_ease_spring_reaches_one():
+    from reels.animator import ease_spring
+    assert abs(ease_spring(10.0, 1.0) - 1.0) < 0.01   # fully settled
+
+
+def test_ease_spring_overshoots():
+    from reels.animator import ease_spring
+    peak = max(ease_spring(t * 0.1, 1.0) for t in range(1, 30))
+    assert peak > 1.0   # must overshoot
+
+
+def test_draw_glow_text_shape():
+    from PIL import Image
+    from reels.animator import draw_glow_text
+    img = Image.new('RGB', (1080, 1920), (0, 24, 53))
+    result = draw_glow_text(img, (540, 960), '+12.4%', 120, (5, 150, 105))
+    assert result.size == (1080, 1920)
+    assert result.mode == 'RGB'

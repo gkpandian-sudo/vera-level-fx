@@ -79,6 +79,15 @@ def ease_out(t: float, dur: float) -> float:
     return 1 - (1 - x) ** 3
 
 
+def ease_spring(t: float, dur: float, stiffness: float = 12.0,
+                damping: float = 0.5) -> float:
+    """Damped spring: overshoots ~10% then settles at 1.0."""
+    if dur <= 0:
+        return 1.0
+    x = min(t / dur, 10.0)
+    return 1.0 - (1.0 - x / 10.0) ** 3 * np.cos(stiffness * x) * np.exp(-damping * x)
+
+
 # ── Particle overlay ──────────────────────────────────────────────────────────
 
 def _particle_overlay(t: float, n: int = 8, opacity: float = 0.08,
@@ -150,6 +159,32 @@ def draw_alpha_text(img: Image.Image, pos, text: str, font,
     base = img.convert('RGBA')
     result = Image.alpha_composite(base, overlay)
     return result.convert('RGB')
+
+
+def draw_glow_text(img: Image.Image, pos, text: str, fontsize: int,
+                   color, glow_radius: int = 18, alpha: float = 1.0) -> Image.Image:
+    """Render text with a soft outer glow of the same colour."""
+    from PIL import ImageFilter
+    font = load_font(fontsize, bold=True)
+    # 1. Draw text on transparent layer
+    layer = Image.new('RGBA', img.size, (0, 0, 0, 0))
+    draw  = ImageDraw.Draw(layer)
+    r, g, b = int(color[0]), int(color[1]), int(color[2])
+    a = int(alpha * 255)
+    try:
+        draw.text(pos, text, font=font, fill=(r, g, b, a), anchor='mm')
+    except (TypeError, ValueError):
+        bbox = draw.textbbox((0, 0), text, font=font)
+        tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        draw.text((pos[0] - tw // 2, pos[1] - th // 2), text,
+                  font=font, fill=(r, g, b, a))
+    # 2. Blur a copy for glow
+    glow = layer.filter(ImageFilter.GaussianBlur(radius=glow_radius))
+    # 3. Composite: glow first, sharp text on top
+    base = img.convert('RGBA')
+    base = Image.alpha_composite(base, glow)
+    base = Image.alpha_composite(base, layer)
+    return base.convert('RGB')
 
 
 # ── Public animation primitives ───────────────────────────────────────────────
