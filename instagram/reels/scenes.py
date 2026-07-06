@@ -44,7 +44,8 @@ def _get_ib_banner(width: int, height: int) -> 'np.ndarray | None':
 
 
 def make_broker_card_clip() -> VideoClip:
-    """3s IC Markets broker card — full-screen dark theme."""
+    """3s IC Markets broker card — full-screen dark theme + ticker tape."""
+    from reels.effects import ticker_tape_overlay
     DUR = 3.0
     banner_arr = _get_ib_banner(W, H)  # full 1080×1920
 
@@ -79,6 +80,7 @@ def make_broker_card_clip() -> VideoClip:
                                'IB #91936  ·  Referral link', load_font(26), MUTED,
                                alp * 0.7)
 
+        img = ticker_tape_overlay(img, t)
         return np.array(img)
 
     return _clip(frame, DUR)
@@ -90,8 +92,13 @@ def _clip(make_frame_fn, duration: float) -> VideoClip:
 
 
 def _intro_clip() -> VideoClip:
-    """1.5s branded intro — logo + emerald bar sweep."""
-    return _clip(logo_fade_frame, 1.5)
+    """1.5s branded intro — logo + emerald bar sweep + pulsing glow border."""
+    from reels.effects import glow_border_overlay
+    def intro_frame(t):
+        img = Image.fromarray(logo_fade_frame(t))
+        img = glow_border_overlay(img, t)
+        return np.array(img)
+    return _clip(intro_frame, 1.5)
 
 
 def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
@@ -273,9 +280,10 @@ def make_trust_reel(data: dict) -> list:
 
 
 def make_monthly_reel(data: dict) -> list:
-    """Returns [intro, hero, data, cta] for monthly post (~28s)."""
+    """Returns [intro, hero, data, cta, broker] for monthly post."""
     from datetime import datetime as _dt
     from captions import monthly_pnl_from_daily
+    from reels.effects import candlestick_bg_overlay
 
     acct = data.get('account', {})
     gain = float(acct.get('gain') or 0)
@@ -295,16 +303,17 @@ def make_monthly_reel(data: dict) -> list:
 
     hero = _clip(hero_frame, 3.0)
 
-    # Data (21.5s): bars draw L→R one per ~3s, value label appears after
-    DUR_DATA   = 21.5
+    # Data: bars draw L→R one per bar_gap, value label appears after
     bar_dur    = 2.0
     bar_gap    = 1.5
+    DUR_DATA   = len(months) * bar_gap + bar_dur + 1.0  # dynamic, fits within 22s total
     start_y    = 550
     bar_h_px   = 60
     bar_spacing = bar_h_px + 40
 
     def data_frame(t):
         img  = bg_frame(t)
+        img  = candlestick_bg_overlay(img)
         draw = ImageDraw.Draw(img)
         font_label = load_font(34)
         font_val   = load_font(32, bold=True)
@@ -349,7 +358,9 @@ def make_monthly_reel(data: dict) -> list:
 
 
 def make_transparency_reel(data: dict) -> list:
-    """Returns [intro, hero, data, cta] for transparency post (~25s)."""
+    """Returns [intro, hero, data, cta, broker] for transparency post."""
+    from reels.effects import candlestick_bg_overlay
+
     acct = data.get('account', {})
     gain = float(acct.get('gain') or 0)
     dd   = float(acct.get('drawdown') or 0)
@@ -363,7 +374,7 @@ def make_transparency_reel(data: dict) -> list:
 
     hero = _clip(hero_frame, 4.0)
 
-    # Data (17.5s): two-section cascade
+    # Data (9.5s): two-section cascade
     happened_lines = [
         'WHAT HAPPENED',
         'Position sizing errors compounded',
@@ -381,6 +392,7 @@ def make_transparency_reel(data: dict) -> list:
 
     def data_frame(t):
         img = bg_frame(t)
+        img = candlestick_bg_overlay(img)
         for i, line in enumerate(happened_lines):
             bold  = (line == 'WHAT HAPPENED')
             color = RED if bold else WHITE
@@ -393,13 +405,13 @@ def make_transparency_reel(data: dict) -> list:
             bold  = (line == 'WHAT CHANGED')
             color = EMERALD if bold else WHITE
             fs    = 44 if bold else 36
-            s_t   = 9.0 + i * 0.6
+            s_t   = 5.0 + i * 0.5
             alp   = min(max(t - s_t, 0) / 0.4, 1.0)
             img   = draw_alpha_text(img, (W // 2, 1150 + i * 70), line,
                                      load_font(fs, bold=bold), color, alp)
         return np.array(img)
 
-    data_clip = _clip(data_frame, 17.5)
+    data_clip = _clip(data_frame, 9.5)
 
     def cta_frame(t):
         return cta_fade_frame(t, 'Full history on Myfxbook', _VERIFY_CTA)
@@ -418,9 +430,10 @@ _RECOVERY_MONTHS = [
 ]
 
 
-def make_recovery_plan_reel() -> list:
-    """Returns [intro, hero, data, cta] for recovery-plan post (~28s)."""
+def make_recovery_plan_reel(recovery_day: int = 0) -> list:
+    """Returns [intro, hero, data, cta, broker] for recovery-plan post."""
     from datetime import datetime as _dt
+    from reels.effects import candlestick_bg_overlay
     now_month = _dt.now().strftime('%B')
 
     intro = _intro_clip()
@@ -430,12 +443,13 @@ def make_recovery_plan_reel() -> list:
 
     hero = _clip(hero_frame, 3.0)
 
-    ROW_DUR  = 3.0
-    GAP      = 0.4
-    DUR_DATA = len(_RECOVERY_MONTHS) * (ROW_DUR + GAP) + 2.5
+    ROW_DUR  = 1.2
+    GAP      = 0.2
+    DUR_DATA = len(_RECOVERY_MONTHS) * (ROW_DUR + GAP) + 2.0
 
     def data_frame(t):
         img   = bg_frame(t)
+        img   = candlestick_bg_overlay(img)
         font  = load_font(36)
         fontb = load_font(36, bold=True)
         start_y = 460
@@ -480,31 +494,39 @@ def make_recovery_plan_reel() -> list:
 
 
 def make_edu_reel(edu_type: str, content: dict) -> list:
-    """Returns [intro, hero, data, cta] for edu post (~22s)."""
+    """Returns [intro, hero, data, cta, broker] for edu post."""
     from reels.animator import typewriter_frame as _typewriter_frame
+    from reels.effects import candlestick_bg_overlay
 
     intro = _intro_clip()
 
     if edu_type == 'risk':
-        title = f"Rule #{content['rule_num']} - {content['title']}"
+        rule_num = content.get('rule_num', '')
+        title = (f"Rule #{rule_num} - {content['title']}" if rule_num
+                 else content['title'])
 
         def hero_frame(t):
             return _typewriter_frame(t, title, 5.0, EMERALD, 56, (W // 2, H // 2))
 
         hero = _clip(hero_frame, 5.0)
 
-        body  = content.get('body', '')
+        body       = content.get('body', '')
         body_lines = textwrap.wrap(body, width=42)
-        ex_text = (f"${content['example_account']:,} account\n"
-                   f"-> max ${content['example_risk']:,} per trade\n"
-                   f"at {content['example_rr']}")
-        ex_lines = ex_text.split('\n')
+        ex_lines: list = []
+        if 'example_account' in content:
+            ex_text = (f"${content['example_account']:,} account\n"
+                       f"-> max ${content['example_risk']:,} per trade\n"
+                       f"at {content['example_rr']}")
+            ex_lines = ex_text.split('\n')
+
+        all_lines = body_lines + ([''] + ex_lines if ex_lines else [])
 
         def data_frame(t):
-            return cascade_text_frame(t, body_lines + [''] + ex_lines,
-                                      13.5, 0.8, WHITE, 38, 620)
+            img = Image.fromarray(cascade_text_frame(t, all_lines, 8.0, 0.8, WHITE, 38, 620))
+            img = candlestick_bg_overlay(img)
+            return np.array(img)
 
-        data_clip = _clip(data_frame, 13.5)
+        data_clip = _clip(data_frame, 8.0)
 
     elif edu_type == 'pairs':
         pair  = content.get('pair', 'XAUUSD')
@@ -524,9 +546,11 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         ]
 
         def data_frame(t):  # noqa: F811
-            return cascade_text_frame(t, info_lines, 13.5, 0.8, WHITE, 36, 640)
+            img = Image.fromarray(cascade_text_frame(t, info_lines, 8.0, 0.8, WHITE, 36, 640))
+            img = candlestick_bg_overlay(img)
+            return np.array(img)
 
-        data_clip = _clip(data_frame, 13.5)
+        data_clip = _clip(data_frame, 8.0)
 
     else:  # setup
         pair  = content.get('pair', 'XAUUSD')
@@ -541,9 +565,11 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         step_lines = [f'{i+1}. {s[0]} - {s[1]}' for i, s in enumerate(steps)]
 
         def data_frame(t):  # noqa: F811
-            return cascade_text_frame(t, step_lines, 13.5, 0.6, WHITE, 36, 640)
+            img = Image.fromarray(cascade_text_frame(t, step_lines, 8.0, 0.6, WHITE, 36, 640))
+            img = candlestick_bg_overlay(img)
+            return np.array(img)
 
-        data_clip = _clip(data_frame, 13.5)
+        data_clip = _clip(data_frame, 8.0)
 
     def cta_frame(t):
         return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
