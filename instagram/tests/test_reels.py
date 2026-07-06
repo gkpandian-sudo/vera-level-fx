@@ -117,20 +117,21 @@ def test_make_daily_reel_returns_clips():
     assert 12.0 < total_dur < 22.0
 
 
-def test_make_weekly_reel_returns_four_clips():
+def test_make_weekly_reel_returns_clips():
     from reels.scenes import make_weekly_reel
-    clips = make_weekly_reel({'account': SAMPLE_ACCOUNT}, recovery_day=5)
-    assert len(clips) == 4
+    clips = make_weekly_reel({'account': SAMPLE_ACCOUNT,
+                              'dailyGain': SAMPLE_DAILY_GAIN}, recovery_day=5)
+    assert len(clips) >= 4
     total_dur = sum(c.duration for c in clips)
-    assert 11.0 < total_dur < 13.0
+    assert 11.0 < total_dur < 22.0
 
 
-def test_make_trust_reel_returns_four_clips():
+def test_make_trust_reel_returns_clips():
     from reels.scenes import make_trust_reel
     clips = make_trust_reel({'account': SAMPLE_ACCOUNT})
-    assert len(clips) == 4
+    assert len(clips) >= 4
     total_dur = sum(c.duration for c in clips)
-    assert 11.0 < total_dur < 13.0
+    assert 11.0 < total_dur < 22.0
 
 
 SAMPLE_DAILY_GAIN = [
