@@ -275,3 +275,31 @@ def test_render_with_flash_creates_mp4(tmp_path):
 
     assert out_plain.exists() and out_flash.exists()
     assert out_flash.stat().st_size > 0
+
+
+# ── Task 4: Equity curve + win-rate ring ─────────────────────────────────────
+
+def test_equity_curve_clip_shape():
+    from reels.effects import equity_curve_clip
+    daily_gain = [
+        ['02/20/2026', 0.0, 0], ['03/01/2026', 2.1, 210],
+        ['04/01/2026', -1.5, -150], ['05/01/2026', 3.2, 320],
+        ['06/01/2026', -0.8, -80], ['07/01/2026', 1.9, 190],
+    ]
+    clip = equity_curve_clip(daily_gain, duration=4.0)
+    import numpy as np
+    frame = clip.get_frame(2.0)
+    assert frame.shape == (1920, 1080, 3)
+    assert clip.duration == 4.0
+
+def test_progress_ring_clip_shape():
+    from reels.effects import progress_ring_clip
+    clip = progress_ring_clip(win_rate=71.0, duration=4.0)
+    import numpy as np
+    frame = clip.get_frame(2.0)
+    assert frame.shape == (1920, 1080, 3)
+
+def test_progress_ring_clip_zero():
+    from reels.effects import progress_ring_clip
+    clip = progress_ring_clip(win_rate=0.0, duration=2.0)
+    assert clip.duration == 2.0

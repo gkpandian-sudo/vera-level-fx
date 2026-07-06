@@ -11,6 +11,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 # ── Canvas dimensions ──────────────────────────────────────────────────────────
 W, H = 1080, 1920
+FPS = 30
 
 # ── Brand palette — aligned with vera-level-forex.vercel.app ─────────────────
 NAVY    = (0,   24,  53)   # site --primary #001835
