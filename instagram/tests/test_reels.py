@@ -108,12 +108,13 @@ SAMPLE_OPEN = [
 ]
 
 
-def test_make_daily_reel_returns_four_clips():
+def test_make_daily_reel_returns_clips():
     from reels.scenes import make_daily_reel
-    clips = make_daily_reel({'account': SAMPLE_ACCOUNT, 'openTrades': SAMPLE_OPEN})
-    assert len(clips) == 4
+    clips = make_daily_reel({'account': SAMPLE_ACCOUNT, 'openTrades': SAMPLE_OPEN,
+                             'dailyGain': SAMPLE_DAILY_GAIN})
+    assert len(clips) == 6
     total_dur = sum(c.duration for c in clips)
-    assert 9.0 < total_dur < 11.0
+    assert 12.0 < total_dur < 22.0
 
 
 def test_make_weekly_reel_returns_four_clips():

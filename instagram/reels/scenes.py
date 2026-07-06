@@ -44,13 +44,9 @@ def _get_ib_banner(width: int, height: int) -> 'np.ndarray | None':
 
 
 def make_broker_card_clip() -> VideoClip:
-    """3s IC Markets broker card — official IB banner right, brand text left."""
+    """3s IC Markets broker card — full-screen dark theme."""
     DUR = 3.0
-    BW, BH = 480, 960
-    BX = W - BW - 40          # 560 — right column
-    BY = (H - BH) // 2        # 480 — vertically centred
-    TCX = BX // 2             # 280 — centre of left column
-    banner_arr = _get_ib_banner(BW, BH)
+    banner_arr = _get_ib_banner(W, H)  # full 1080×1920
 
     def frame(t):
         img = bg_frame(t)
@@ -58,30 +54,29 @@ def make_broker_card_clip() -> VideoClip:
         alp = min(t / 0.5, 1.0)
 
         if banner_arr is not None:
-            img_arr[BY:BY + BH, BX:BX + BW] = (
-                img_arr[BY:BY + BH, BX:BX + BW] * (1.0 - alp) + banner_arr * alp
-            )
+            # Dark theme: banner at 30% over dark bg keeps colours readable without washing out
+            img_arr = img_arr * (1.0 - alp * 0.30) + banner_arr * (alp * 0.30)
 
         img = Image.fromarray(img_arr.astype(np.uint8))
 
-        img = draw_alpha_text(img, (TCX, H // 2 - 220),
-                               'IC MARKETS', load_font(60, bold=True), WHITE, alp)
-        img = draw_alpha_text(img, (TCX, H // 2 - 120),
-                               'Raw Spread', load_font(34), EMERALD, alp)
-        img = draw_alpha_text(img, (TCX, H // 2 - 72),
-                               'ASIC + CySEC', load_font(34), EMERALD, alp)
+        cx, cy = W // 2, H // 2
+
+        img = draw_alpha_text(img, (cx, cy - 240),
+                               'IC MARKETS', load_font(80, bold=True), WHITE, alp)
+        img = draw_alpha_text(img, (cx, cy - 130),
+                               'Raw Spread · No requotes', load_font(40), EMERALD, alp)
+        img = draw_alpha_text(img, (cx, cy - 68),
+                               'ASIC regulated · CySEC regulated', load_font(36), EMERALD, alp)
 
         draw = ImageDraw.Draw(img)
-        draw.line([(40, H // 2 - 20), (BX - 40, H // 2 - 20)], fill=EMERALD, width=2)
+        draw.line([(80, cy), (W - 80, cy)], fill=EMERALD, width=2)
 
-        img = draw_alpha_text(img, (TCX, H // 2 + 50),
-                               'Same broker I trade', load_font(30), MUTED, alp)
-        img = draw_alpha_text(img, (TCX, H // 2 + 95),
-                               'with every day', load_font(30), MUTED, alp)
-        img = draw_alpha_text(img, (TCX, H // 2 + 190),
-                               _IB_CTA, load_font(24, bold=True), EMERALD, alp)
-        img = draw_alpha_text(img, (TCX, H // 2 + 250),
-                               'IB #91936  ·  Referral link', load_font(22), MUTED,
+        img = draw_alpha_text(img, (cx, cy + 70),
+                               'Same broker I trade with every day', load_font(36), MUTED, alp)
+        img = draw_alpha_text(img, (cx, cy + 200),
+                               _IB_CTA, load_font(30, bold=True), EMERALD, alp)
+        img = draw_alpha_text(img, (cx, cy + 262),
+                               'IB #91936  ·  Referral link', load_font(26), MUTED,
                                alp * 0.7)
 
         return np.array(img)
@@ -100,37 +95,50 @@ def _intro_clip() -> VideoClip:
 
 
 def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
-    """Daily reel — ~10s: 1.5s intro + 3s hero + 3.5s data + 2s cta."""
+    """Daily reel — intro + hero (odometer) + equity curve + data + cta + broker."""
+    from reels.effects import equity_curve_clip, ticker_tape_overlay, candlestick_bg_overlay
+    from reels.animator import odometer_frame, draw_pulsing_dot, draw_glow_text
+
     acct        = data.get('account', {})
     open_trades = data.get('openTrades', [])[:5]
+    daily_gain  = data.get('dailyGain', [])
 
     balance   = float(acct.get('balance') or 0)
     daily_pct = float(acct.get('daily')   or 0)
     win_rate  = float(acct.get('winRate') or 0)
-    pips      = int(acct.get('pips')   or 0)
+    pips      = int(acct.get('pips')      or 0)
     pf        = float(acct.get('profitFactor') or 0)
     pnl_color = GREEN if daily_pct >= 0 else RED
     sign      = '+' if daily_pct >= 0 else ''
 
     intro = _intro_clip()
 
-    # Hero (3s): balance counts up + daily P&L fades in after 1.5s
-    DUR_HERO = 3.0
+    # Hero (4s): odometer balance + pulsing live dot + glow daily %
+    DUR_HERO = 4.0
     cx, cy   = W // 2, H // 2
 
     def hero_frame(t):
-        f   = countup_frame(t, 0, balance, 2.0, '${:,.0f}', WHITE, 110, (cx, cy - 80))
-        img = Image.fromarray(f)
+        img = Image.fromarray(
+            odometer_frame(t, balance, DUR_HERO, '${:,.0f}', WHITE, 110, (cx, cy - 80))
+        )
+        img = draw_pulsing_dot(img, pos=(cx - 300, cy - 200), t=t,
+                               positive=daily_pct >= 0)
+        img = draw_alpha_text(img, (cx - 240, cy - 200), '● LIVE',
+                              load_font(32, bold=True), RED, min(t * 2, 1.0))
         if t > 1.5:
-            alp = min((t - 1.5) / 0.5, 1.0)  # float 0.0–1.0
-            img = draw_alpha_text(img, (cx, cy + 80),
-                                   f'{sign}{daily_pct:.2f}%',
-                                   load_font(72, bold=True), pnl_color, alp)
+            alp = min((t - 1.5) / 0.5, 1.0)
+            img = draw_glow_text(img, (cx, cy + 80),
+                                 f'{sign}{daily_pct:.2f}%', 72, pnl_color,
+                                 glow_radius=20, alpha=alp)
         return np.array(img)
 
     hero = _clip(hero_frame, DUR_HERO)
 
-    # Data (3.5s): open positions + stats cascade up
+    # Equity curve (3s)
+    eq_clip = equity_curve_clip(daily_gain, duration=3.0,
+                                plot_rect=(80, 1050, 1000, 1700))
+
+    # Data (3.5s): open positions cascade + candlestick bg + ticker
     lines = []
     if recovery_day > 0:
         lines.append(f'Recovery Day {recovery_day}')
@@ -146,7 +154,10 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     lines.append(f'Win Rate: {wr_str}  PF: {pf:.2f}  Pips: +{pips:,}')
 
     def data_frame(t):
-        return cascade_text_frame(t, lines, 3.5, 0.3, WHITE, 38, 700)
+        img = Image.fromarray(cascade_text_frame(t, lines, 3.5, 0.3, WHITE, 38, 700))
+        img = candlestick_bg_overlay(img)
+        img = ticker_tape_overlay(img, t)
+        return np.array(img)
 
     data_clip = _clip(data_frame, 3.5)
 
@@ -155,7 +166,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
 
     cta = _clip(cta_frame, 2.0)
 
-    return [intro, hero, data_clip, cta, make_broker_card_clip()]
+    return [intro, hero, eq_clip, data_clip, cta, make_broker_card_clip()]
 
 
 def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
@@ -536,10 +547,7 @@ def make_broker_reel() -> list:
     from reels.animator import typewriter_frame as _typewriter_frame
 
     # Pre-fetch banner at full-reel size (downloaded once, cached)
-    BW_F, BH_F = 660, 1320
-    BX_F = (W - BW_F) // 2   # 210 — horizontally centred
-    BY_F = 60
-    banner_arr_full = _get_ib_banner(BW_F, BH_F)
+    banner_arr_full = _get_ib_banner(W, H)  # full 1080×1920
 
     intro = _intro_clip()
 
@@ -562,24 +570,18 @@ def make_broker_reel() -> list:
 
     data_clip = _clip(data_frame, 6.0)
 
-    # Banner scene — official IB promo image fills most of the canvas
-    text_y = BY_F + BH_F + 55  # 1435
-
     def banner_frame(t):
         img = bg_frame(t)
         img_arr = np.array(img, dtype=np.float32)
         alp = min(t / 0.5, 1.0)
 
         if banner_arr_full is not None:
-            img_arr[BY_F:BY_F + BH_F, BX_F:BX_F + BW_F] = (
-                img_arr[BY_F:BY_F + BH_F, BX_F:BX_F + BW_F] * (1.0 - alp)
-                + banner_arr_full * alp
-            )
+            img_arr = img_arr * (1.0 - alp * 0.30) + banner_arr_full * (alp * 0.30)
 
         img = Image.fromarray(img_arr.astype(np.uint8))
-        img = draw_alpha_text(img, (W // 2, text_y),
+        img = draw_alpha_text(img, (W // 2, H // 2 + 200),
                                _IB_CTA, load_font(34, bold=True), EMERALD, alp)
-        img = draw_alpha_text(img, (W // 2, text_y + 60),
+        img = draw_alpha_text(img, (W // 2, H // 2 + 265),
                                'IB #91936  ·  Referral link', load_font(26), MUTED,
                                alp * 0.7)
         return np.array(img)
@@ -625,6 +627,9 @@ def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.I
                                f'${balance:,.0f}', load_font(120, bold=True), WHITE, 1.0)
         img = draw_alpha_text(img, (W // 2, H // 2 + 170),
                                f'{sign}{daily_pct:.2f}% today', load_font(60), pc, 1.0)
+        if recovery_day > 0:
+            img = draw_alpha_text(img, (W // 2, H // 2 + 280),
+                                   f'Recovery Day {recovery_day}', load_font(40), MUTED, 1.0)
 
     elif post_type == 'monthly':
         from captions import monthly_pnl_from_daily as _mpd
@@ -680,19 +685,17 @@ def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.I
                                'Education', load_font(72), WHITE, 1.0)
 
     elif post_type == 'broker':
-        banner_arr = _get_ib_banner(600, 1200)
+        banner_arr = _get_ib_banner(W, H)  # full 1080×1920
         if banner_arr is not None:
             img_arr = np.array(img, dtype=np.float32)
-            bx = (W - 600) // 2   # 240
-            by = (H - 1200) // 2  # 360
-            img_arr[by:by + 1200, bx:bx + 600] = banner_arr
+            img_arr = img_arr * 0.70 + banner_arr * 0.30  # dark theme blend
             img = Image.fromarray(img_arr.astype(np.uint8))
-        img = draw_alpha_text(img, (W // 2, 180),
-                               'IC MARKETS', load_font(64, bold=True), WHITE, 1.0)
-        img = draw_alpha_text(img, (W // 2, H - 130),
-                               'Raw Spread  ·  ASIC + CySEC', load_font(40), EMERALD, 1.0)
-        img = draw_alpha_text(img, (W // 2, H - 65),
-                               _IB_CTA, load_font(32, bold=True), EMERALD, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 240),
+                               'IC MARKETS', load_font(80, bold=True), WHITE, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 120),
+                               'Raw Spread  ·  ASIC + CySEC', load_font(44), EMERALD, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 60),
+                               _IB_CTA, load_font(34, bold=True), EMERALD, 1.0)
 
     # Footer handle (skip for broker where IB URL is at bottom)
     if post_type != 'broker':
