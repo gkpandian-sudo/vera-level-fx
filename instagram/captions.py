@@ -89,19 +89,21 @@ def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     trades = int(account.get('trades') or 0)
     now    = datetime.now().strftime('%d %b %Y')
 
-    gain_label = 'total gain' if gain >= 0 else 'total return'
+    gain_label = 'total gain' if gain >= 0 else 'total loss'
     sign       = '+' if gain >= 0 else ''
     wr_str     = f'{wr:.0f}% win rate' if wr > 0 else 'win rate on Myfxbook'
     trades_part = f'. {trades:,} trades' if trades > 0 else ''
     wr_line     = (f'🎯 Win Rate: {wr:.0f}% across {trades:,} trades'
                    if wr > 0 else '🎯 Win Rate: Myfxbook #12044019')
-
     recovery_line = (
         f"Recovery Day {recovery_day}. Account is live, positions visible below.\n\n"
-        if recovery_day > 0 and gain < 0 else ''
+        if recovery_day > 0 else ''
     )
+    hook = f"{sign}{gain:.1f}% this week — {trades:,} trades. Every one is public."
 
-    return f"""📊 Weekly Performance · {now}
+    return f"""{hook}
+
+📊 {now}
 
 {recovery_line}{sign}{gain:.1f}% {gain_label}{trades_part}. {wr_str}.
 Every figure verified on Myfxbook. Account #12044019.
@@ -130,10 +132,9 @@ def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
     sign      = '+' if gain >= 0 else ''
     month_now = datetime.now().strftime('%B %Y')
 
-    return f"""📅 Monthly P&L · {month_now}
+    return f"""Six months of real P&L. Red months included. Every one of them.
 
-Six months of real P&L. Nothing aggregated, nothing smoothed.
-Drawdown months included. Every one of them.
+📅 {month_now}
 
 {lines}
 
@@ -141,7 +142,7 @@ Drawdown months included. Every one of them.
 
 Pre-defined entry conditions. No news-event overrides.
 All data from IC Markets live account, updated via authenticated API.
-{_CTA_IB}{_tamil_line('monthly', lang)}
+{_CTA_IB}{_CTA_VERIFY}{_tamil_line('monthly', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -224,7 +225,16 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
         if recovery_day > 0 else ''
     )
 
-    return f"""{direction_emoji} Live Position Update · {now}
+    if open_trades:
+        first  = open_trades[0]
+        pair   = first.get('symbol', 'XAUUSD')
+        action = first.get('action', '').upper()
+        profit = float(first.get('profit') or 0)
+        hook   = f"🔴 LIVE: {pair} {action}  ${profit:+.2f} floating right now."
+    else:
+        hook = f"🔵 Flat right now — no open positions. {direction_emoji} {daily_sign}{daily_pct:.2f}% today."
+
+    return f"""{hook}
 
 {recovery_line}Myfxbook #12044019. Open now to verify every row.
 
@@ -255,7 +265,9 @@ def trust(account: dict, lang: str = 'en') -> str:
     gain_note = ' (deep drawdown, fully disclosed)' if gain < -50 else ''
     wr_line   = f'🎯 Win Rate: {wr:.0f}%' if wr > 0 else '🎯 Win Rate: Myfxbook #12044019'
 
-    return f"""✅ Live Track Record · Vera Level FX
+    return f"""No screenshots. No cherry-picked months. One live account, one public link. Go break it.
+
+✅ Vera Level FX  ·  IC Markets  ·  Myfxbook #12044019
 
 {wr_str}
 Every trade on Myfxbook. Go check.
