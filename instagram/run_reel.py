@@ -73,10 +73,10 @@ def main():
     post_type = os.environ.get('POST_TYPE', 'weekly')
     lang      = os.environ.get('POST_LANG', 'en')
 
-    # Recovery day counter
+    # Recovery day counter — shown whenever RECOVERY_START is set, regardless of current gain
     recovery_day = 0
     rs = os.environ.get('RECOVERY_START', '')
-    if rs and account.get('gain', 0) < 0:
+    if rs:
         try:
             _start       = datetime.strptime(rs, '%Y-%m-%d').date()
             recovery_day = max(1, (today - _start).days + 1)

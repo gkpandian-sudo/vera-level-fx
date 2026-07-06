@@ -163,10 +163,10 @@ def main():
     post_type  = os.environ.get('POST_TYPE') or decide_post_type(today)
     lang       = os.environ.get('POST_LANG', 'en')
 
-    # Recovery day counter: set RECOVERY_START=YYYY-MM-DD in repo secrets
+    # Recovery day counter — shown whenever RECOVERY_START is set, regardless of current gain
     recovery_day = 0
     recovery_start_str = os.environ.get('RECOVERY_START', '')
-    if recovery_start_str and account.get('gain', 0) < 0:
+    if recovery_start_str:
         try:
             from datetime import datetime as _dt
             _start = _dt.strptime(recovery_start_str, '%Y-%m-%d').date()

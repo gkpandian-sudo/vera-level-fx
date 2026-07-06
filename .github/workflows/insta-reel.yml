@@ -6,6 +6,8 @@ on:
     - cron: '0 23 * * *'
     # Broker spotlight: 1st of each month 07:00 SGT = 23:00 UTC last day of prev month
     - cron: '0 23 1 * *'
+    # Daily reel every day 09:00 SGT = 01:00 UTC (overlaps intentionally with rotation)
+    - cron: '0 1 * * *'
   workflow_dispatch:
     inputs:
       post_type:
@@ -63,6 +65,9 @@ jobs:
             # Monthly broker cron fires on the 1st — separate from daily rotation
             if [ "$EVENT_SCHEDULE" = "0 23 1 * *" ]; then
               echo "type=broker" >> "$GITHUB_OUTPUT"
+            # Daily reel cron — always posts daily type regardless of weekday
+            elif [ "$EVENT_SCHEDULE" = "0 1 * * *" ]; then
+              echo "type=daily" >> "$GITHUB_OUTPUT"
             else
               case "$(date -u +%u)" in
                 7) echo "type=weekly"        >> "$GITHUB_OUTPUT" ;;  # Sun UTC -> Mon SGT
