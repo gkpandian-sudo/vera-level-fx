@@ -195,7 +195,8 @@ def test_publish_reel_function_exists():
 
 def test_ease_spring_reaches_one():
     from reels.animator import ease_spring
-    assert abs(ease_spring(10.0, 1.0) - 1.0) < 0.01   # fully settled
+    # At t=dur, spring should be fully settled (within 1%)
+    assert abs(ease_spring(1.0, 1.0) - 1.0) < 0.01
 
 
 def test_ease_spring_overshoots():

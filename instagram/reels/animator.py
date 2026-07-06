@@ -7,7 +7,7 @@ All public functions return np.ndarray of shape (1920, 1080, 3) uint8.
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 # ── Canvas dimensions ──────────────────────────────────────────────────────────
 W, H = 1080, 1920
@@ -79,12 +79,12 @@ def ease_out(t: float, dur: float) -> float:
     return 1 - (1 - x) ** 3
 
 
-def ease_spring(t: float, dur: float, stiffness: float = 12.0,
-                damping: float = 0.5) -> float:
-    """Damped spring: overshoots ~10% then settles at 1.0."""
+def ease_spring(t: float, dur: float, stiffness: float = 2.5,
+                damping: float = 1.5) -> float:
+    """Damped spring: overshoots ~10-15% then settles at 1.0."""
     if dur <= 0:
         return 1.0
-    x = min(t / dur, 10.0)
+    x = min(10.0 * t / dur, 10.0)
     return 1.0 - (1.0 - x / 10.0) ** 3 * np.cos(stiffness * x) * np.exp(-damping * x)
 
 
@@ -164,7 +164,6 @@ def draw_alpha_text(img: Image.Image, pos, text: str, font,
 def draw_glow_text(img: Image.Image, pos, text: str, fontsize: int,
                    color, glow_radius: int = 18, alpha: float = 1.0) -> Image.Image:
     """Render text with a soft outer glow of the same colour."""
-    from PIL import ImageFilter
     font = load_font(fontsize, bold=True)
     # 1. Draw text on transparent layer
     layer = Image.new('RGBA', img.size, (0, 0, 0, 0))
@@ -173,7 +172,7 @@ def draw_glow_text(img: Image.Image, pos, text: str, fontsize: int,
     a = int(alpha * 255)
     try:
         draw.text(pos, text, font=font, fill=(r, g, b, a), anchor='mm')
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, AttributeError):
         bbox = draw.textbbox((0, 0), text, font=font)
         tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
         draw.text((pos[0] - tw // 2, pos[1] - th // 2), text,
