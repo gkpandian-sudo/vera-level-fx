@@ -168,7 +168,6 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
             f"Example: ${content['example_account']:,} account → "
             f"max ${content['example_risk']:,} at risk per trade.\n"
             f"At {content['example_rr']}. That is how professionals protect capital.\n\n"
-            f"Save this post. Apply it before your next trade.\n"
             f"Every position in my live IC Markets account follows this rule."
             f"{cta}{_tamil_line('edu', lang)}\n\n{TAGS_EDU}"
         )
@@ -198,7 +197,6 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
         f"Risk:Reward: {content['rr']}\n"
         f"Max risk: 1% of account, sized by ATR\n\n"
         f"{steps_text}\n\n"
-        f"Save this post. Use it as a checklist before your next {content['pair']} trade.\n\n"
         f"This is the exact logic behind every position in my verified IC Markets account."
         f"{cta}{_tamil_line('edu', lang)}\n\n{TAGS_EDU}"
     )
