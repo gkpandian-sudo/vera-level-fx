@@ -79,14 +79,14 @@ RISK_RULES = [
         "title": "Win Rate vs Profit Factor",
         "body": (
             "Profit Factor below 1.0 means the account pays out more in losses than "
-            "it collects in wins. The Vera Level live account is currently at PF 0.75. "
-            "That is the number being rebuilt. The target is PF 1.2+ before lot sizes "
-            "scale up again. Win rate tells you how often you win. Profit Factor tells "
-            "you whether it matters. A 70% win rate with PF 0.8 still loses money."
+            "it collects in wins. Check the current PF on Myfxbook #12044019 — that "
+            "live number is the benchmark. Win rate tells you how often you win. "
+            "Profit Factor tells you whether it matters. A 70% win rate with PF 0.8 "
+            "still loses money."
         ),
         "example_account": 3000,
         "example_risk": 100,
-        "example_rr": "current PF 0.75, rebuild target 1.2+",
+        "example_rr": "Win Rate vs PF — see live account on Myfxbook #12044019",
         "example_target": 0,
         "tag": "METRICS",
     },

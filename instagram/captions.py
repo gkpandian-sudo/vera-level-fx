@@ -8,8 +8,6 @@ _IB_URL   = os.environ.get('BRAND_IB_URL', 'https://www.icmarkets.com/global/en/
 
 _CTA_TELEGRAM = f"\n📲 Live trade alerts → {_TELEGRAM}"
 _CTA_IB       = f"\n🏦 Open IC Markets (Raw Spread, ASIC + CySEC regulated) → {_IB_URL}"
-_CTA_IB_SOFT  = (f"\n🏦 I trade on IC Markets Raw Spread · ASIC + CySEC"
-                 f"\n👉 Open your account: {_IB_URL}")
 _CTA_VERIFY   = f"\n🔍 Verify my full track record → Myfxbook #12044019"
 _CTA_ALL      = f"\n📲 {_TELEGRAM}  |  🌐 {_WEBSITE}  |  🏦 {_IB_URL}"
 
@@ -19,6 +17,10 @@ _CTA_IB_BIO  = (
     f"\n💬 Comment BROKER and I'll DM you the 4-step setup"
 )
 _CTA_ALERTS  = f"\n📲 Live trade alerts → {_TELEGRAM}  ·  DM me anytime"
+_CTA_EDU_SOFT = (
+    f"\n\n💾 Save this. Comment RULES and I'll DM you the full library.\n"
+    f"📲 Live trades → {_TELEGRAM}  ·  DM me anytime"
+)
 
 # Required on all posts citing live P&L (daily, weekly, trust, transparency, monthly, recovery-plan)
 _RISK_DISCLAIMER = (
@@ -157,7 +159,7 @@ All data from IC Markets live account, updated via authenticated API.
 
 
 def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
-    cta = _CTA_IB
+    cta = _CTA_EDU_SOFT
 
     if edu_type == 'risk':
         return (

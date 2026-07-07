@@ -97,3 +97,22 @@ def test_trust_has_link_in_bio():
 def test_daily_ib_cta_has_attribution_warning():
     cap = daily_status(SAMPLE_ACCOUNT, [])
     assert 'credited' in cap.lower() or 'referral' in cap.lower()
+
+def test_edu_risk_cta_is_save_not_open_broker():
+    from edu_content import RISK_RULES
+    caption = edu('risk', RISK_RULES[0])
+    assert 'Open IC Markets' not in caption
+    assert 'Save this' in caption or 'RULES' in caption
+
+def test_edu_pairs_cta_is_save_not_open_broker():
+    from edu_content import PAIRS
+    caption = edu('pairs', PAIRS[0])
+    assert 'Open IC Markets' not in caption
+    assert 'Save this' in caption or 'RULES' in caption
+
+def test_edu_rule05_no_hardcoded_pf():
+    from edu_content import RISK_RULES
+    rule05 = next(r for r in RISK_RULES if r['rule_num'] == '05')
+    assert 'PF 0.75' not in rule05['body']
+    assert 'PF 0.75' not in rule05.get('example_rr', '')
+    assert 'Myfxbook' in rule05['body']
