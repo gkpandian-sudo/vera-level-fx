@@ -97,18 +97,8 @@ def _brand_watermark(img: 'Image.Image', alpha: float = 0.5) -> 'Image.Image':
                            '@veralevel.fx', load_font(28), MUTED, alpha)
 
 
-def _intro_clip() -> VideoClip:
-    """1.5s branded intro — logo + emerald bar sweep + pulsing glow border."""
-    from reels.effects import glow_border_overlay
-    def intro_frame(t):
-        img = Image.fromarray(logo_fade_frame(t))
-        img = glow_border_overlay(img, t)
-        return np.array(img)
-    return _clip(intro_frame, 1.5)
-
-
 def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
-    """Daily reel — intro + hero (odometer) + equity curve + data + cta + broker."""
+    """Daily reel — hero (odometer) + equity curve + data + cta + broker."""
     from reels.effects import equity_curve_clip, ticker_tape_overlay, candlestick_bg_overlay
     from reels.animator import odometer_frame, draw_pulsing_dot, draw_glow_text
 
@@ -182,7 +172,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
 
 
 def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
-    """Weekly reel — intro + hero (spring gain) + equity curve + data + cta + broker."""
+    """Weekly reel — hero (spring gain) + equity curve + data + cta + broker."""
     from reels.effects import equity_curve_clip, candlestick_bg_overlay
     from reels.animator import ease_spring, draw_glow_text
 
@@ -240,7 +230,7 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
 
 
 def make_trust_reel(data: dict) -> list:
-    """Trust reel — intro + progress ring hero + data + cta + broker."""
+    """Trust reel — progress ring hero + data + cta + broker."""
     from reels.effects import progress_ring_clip, candlestick_bg_overlay
     from reels.animator import draw_glow_text
 
@@ -282,7 +272,7 @@ def make_trust_reel(data: dict) -> list:
 
 
 def make_monthly_reel(data: dict) -> list:
-    """Returns [intro, hero, data, cta, broker] for monthly post."""
+    """Returns [hero, data, cta, broker] for monthly post."""
     from datetime import datetime as _dt
     from captions import monthly_pnl_from_daily
     from reels.effects import candlestick_bg_overlay
@@ -358,7 +348,7 @@ def make_monthly_reel(data: dict) -> list:
 
 
 def make_transparency_reel(data: dict) -> list:
-    """Returns [intro, hero, data, cta, broker] for transparency post."""
+    """Returns [hero, data, cta, broker] for transparency post."""
     from reels.effects import candlestick_bg_overlay
 
     acct = data.get('account', {})
@@ -429,7 +419,7 @@ _RECOVERY_MONTHS = [
 
 
 def make_recovery_plan_reel(recovery_day: int = 0) -> list:
-    """Returns [intro, hero, data, cta, broker] for recovery-plan post."""
+    """Returns [hero, data, cta, broker] for recovery-plan post."""
     from datetime import datetime as _dt
     from reels.effects import candlestick_bg_overlay
     now_month = _dt.now().strftime('%B')
@@ -490,7 +480,7 @@ def make_recovery_plan_reel(recovery_day: int = 0) -> list:
 
 
 def make_edu_reel(edu_type: str, content: dict) -> list:
-    """Returns [intro, hero, data, cta, broker] for edu post."""
+    """Returns [hero, data, cta, broker] for edu post."""
     from reels.animator import typewriter_frame as _typewriter_frame
     from reels.effects import candlestick_bg_overlay
 

@@ -327,12 +327,14 @@ def test_daily_reel_no_intro_clip():
     from reels.scenes import make_daily_reel
     clips = make_daily_reel({'account': SAMPLE_ACCOUNT, 'openTrades': SAMPLE_OPEN,
                              'dailyGain': SAMPLE_DAILY_GAIN})
-    durations = [c.duration for c in clips]
-    assert 1.5 not in durations, f"Intro clip still present: {durations}"
+    assert len(clips) == 5
+    # Hero (odometer, 4s) must be first — intro would have bumped it to index 1
+    assert clips[0].duration == 4.0, f"Expected hero at index 0 (4s), got: {[c.duration for c in clips]}"
 
 
 def test_weekly_reel_no_intro_clip():
     from reels.scenes import make_weekly_reel
     clips = make_weekly_reel({'account': SAMPLE_ACCOUNT, 'dailyGain': SAMPLE_DAILY_GAIN})
-    durations = [c.duration for c in clips]
-    assert 1.5 not in durations, f"Intro clip still present: {durations}"
+    assert len(clips) == 5
+    # Hero (spring gain, 4s) must be first
+    assert clips[0].duration == 4.0, f"Expected hero at index 0 (4s), got: {[c.duration for c in clips]}"
