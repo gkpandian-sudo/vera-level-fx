@@ -419,78 +419,58 @@ def make_transparency_reel(data: dict) -> list:
     data_clip = _clip(data_frame, 9.5)
 
     def cta_frame(t):
-        return cta_fade_frame(t, 'Full history on Myfxbook', _VERIFY_CTA)
+        return cta_fade_frame(t, 'The rebuild is live.', 'Follow @veralevel.fx')
 
-    cta = _clip(cta_frame, 2.0)
-    return [hero, data_clip, cta, make_broker_card_clip()]
-
-
-_RECOVERY_MONTHS = [
-    ('July',      1000, 1500.00),
-    ('August',    1000, 3750.00),
-    ('September', 1000, 7125.00),
-    ('October',   1000, 12187.50),
-    ('November',  1000, 19781.25),
-    ('December',  1000, 31171.88),
-]
+    cta = _clip(cta_frame, 2.5)
+    return [hero, data_clip, cta]
 
 
-def make_recovery_plan_reel(recovery_day: int = 0) -> list:
-    """Returns [hero, data, cta, broker] for recovery-plan post."""
-    from datetime import datetime as _dt
+def make_recovery_plan_reel(recovery_day: int = 0, balance: float = 0.0,
+                             pf: float = 0.0) -> list:
+    """Actuals-only rebuild reel — no projection table, no targets."""
     from reels.effects import candlestick_bg_overlay
-    now_month = _dt.now().strftime('%B')
+    from reels.animator import draw_glow_text, ease_spring
 
     def hero_frame(t):
-        return fade_in_frame(t, '$1,000/month  50% target', 3.0, EMERALD, 56, (W // 2, H // 2))
+        img = bg_frame(t)
+        alp = min(t * 1.5, 1.0)
+        if recovery_day > 0:
+            progress = ease_spring(t, 2.5)
+            disp_day = int(recovery_day * min(progress, 1.0))
+            label    = f'Day {disp_day}'
+        else:
+            label    = 'Rebuild Live'
+        img = draw_glow_text(img, (W // 2, H // 2 - 60),
+                             label, 120, EMERALD, glow_radius=26, alpha=alp)
+        img = _brand_watermark(img)
+        return np.array(img)
 
     hero = _clip(hero_frame, 3.0)
 
-    ROW_DUR  = 1.2
-    GAP      = 0.2
-    DUR_DATA = len(_RECOVERY_MONTHS) * (ROW_DUR + GAP) + 2.0
+    lines = [
+        'WHAT THE REBUILD LOOKS LIKE',
+        'London/NY overlap sessions only.',
+        'ATR-based sizing  |  Max 1% per trade.',
+        'Hard daily drawdown limit enforced.',
+        '',
+    ]
+    if balance > 0:
+        lines.append(f'Balance: ${balance:,.0f}')
+    if pf > 0:
+        pf_note = '  <- improving' if 0 < pf < 1.0 else ('  <- target reached'
+                                                           if pf >= 1.2 else '')
+        lines.append(f'Profit Factor: {pf:.2f}  (target: 1.2+){pf_note}')
+    lines.append('All trades: Myfxbook #12044019')
 
     def data_frame(t):
-        img   = bg_frame(t)
-        img   = candlestick_bg_overlay(img)
-        font  = load_font(36)
-        fontb = load_font(36, bold=True)
-        start_y = 460
-
-        header_alp = min(t / 0.5, 1.0)
-        img = draw_alpha_text(img, (W // 2, start_y - 60),
-                               'Month  +$1,000  Balance', font, MUTED, header_alp)
-
-        for i, (month, topup, end_bal) in enumerate(_RECOVERY_MONTHS):
-            row_start = i * (ROW_DUR + GAP)
-            elapsed   = max(t - row_start, 0)
-            progress  = min(elapsed / ROW_DUR, 1.0)
-            if progress <= 0:
-                continue
-
-            is_now = (month == now_month)
-            prefix = '> ' if is_now else '  '
-            color  = EMERALD if is_now else WHITE
-            current_bal = end_bal * ease_out(elapsed, ROW_DUR)
-            row_text = f'{prefix}{month}  +${topup:,}  ->  ${current_bal:,.0f}'
-            y = start_y + i * 70
-
-            alp = min(elapsed / 0.3, 1.0)
-            img = draw_alpha_text(img, (W // 2, y), row_text,
-                                   fontb if is_now else font, color, alp)
-
-        end_t = len(_RECOVERY_MONTHS) * (ROW_DUR + GAP) + 0.5
-        if t > end_t:
-            proj_alp = min((t - end_t) / 0.5, 1.0)
-            img = draw_alpha_text(img, (W // 2, start_y + len(_RECOVERY_MONTHS) * 70 + 60),
-                                   'Projected: $31,171',
-                                   load_font(48, bold=True), EMERALD, proj_alp)
+        img = Image.fromarray(cascade_text_frame(t, lines, 4.5, 0.35, WHITE, 38, 580))
+        img = candlestick_bg_overlay(img)
         return np.array(img)
 
-    data_clip = _clip(data_frame, DUR_DATA)
+    data_clip = _clip(data_frame, 4.5)
 
     def cta_frame(t):
-        return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
+        return cta_fade_frame(t, 'Every trade is public.', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
     return [hero, data_clip, cta, make_broker_card_clip()]
@@ -704,14 +684,12 @@ def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.I
 
     elif post_type == 'recovery-plan':
         img = draw_alpha_text(img, (W // 2, H // 2 - 230),
-                               'RECOVERY PLAN', load_font(56, bold=True), EMERALD, 1.0)
-        img = draw_alpha_text(img, (W // 2, H // 2 - 80),
-                               '$1,000 / month', load_font(80, bold=True), WHITE, 1.0)
-        img = draw_alpha_text(img, (W // 2, H // 2 + 110),
-                               'Target: $31,171', load_font(56), EMERALD, 1.0)
+                               'REBUILD LIVE', load_font(56, bold=True), EMERALD, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 60),
+                               'All trades on Myfxbook', load_font(52), WHITE, 1.0)
         if recovery_day > 0:
-            img = draw_alpha_text(img, (W // 2, H // 2 + 250),
-                                   f'Day {recovery_day}', load_font(48), MUTED, 1.0)
+            img = draw_alpha_text(img, (W // 2, H // 2 + 120),
+                                   f'Day {recovery_day}', load_font(80, bold=True), EMERALD, 1.0)
 
     elif post_type == 'edu':
         img = draw_alpha_text(img, (W // 2, H // 2 - 120),

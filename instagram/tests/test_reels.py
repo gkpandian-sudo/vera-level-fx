@@ -154,9 +154,9 @@ def test_make_transparency_reel_returns_clips():
     from reels.scenes import make_transparency_reel
     clips = make_transparency_reel({'account': SAMPLE_ACCOUNT,
                                     'dailyGain': SAMPLE_DAILY_GAIN})
-    assert len(clips) >= 4
+    assert len(clips) >= 3
     total_dur = sum(c.duration for c in clips)
-    assert 11.0 < total_dur < 22.0
+    assert 8.0 < total_dur < 22.0
 
 
 def test_make_recovery_plan_reel_returns_clips():
@@ -355,3 +355,19 @@ def test_monthly_reel_total_duration_under_14s():
                                'dailyGain': SAMPLE_DAILY_GAIN})
     total = sum(c.duration for c in clips)
     assert total < 14.0, f"Monthly reel too long: {total}s (should be <14s)"
+
+
+def test_transparency_reel_ends_without_broker_card():
+    from reels.scenes import make_transparency_reel
+    clips = make_transparency_reel({'account': SAMPLE_ACCOUNT, 'dailyGain': SAMPLE_DAILY_GAIN})
+    # Broker card is 3.0s — last clip must NOT be 3.0s
+    assert clips[-1].duration != 3.0, "Broker card still in transparency reel"
+    assert len(clips) == 3
+
+
+def test_recovery_plan_reel_accepts_balance_pf():
+    from reels.scenes import make_recovery_plan_reel
+    clips = make_recovery_plan_reel(recovery_day=5, balance=1500.0, pf=0.9)
+    assert len(clips) >= 3
+    total = sum(c.duration for c in clips)
+    assert 8.0 < total < 18.0

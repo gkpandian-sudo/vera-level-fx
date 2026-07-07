@@ -108,7 +108,11 @@ def main():
         caption = transparency(account, lang=lang)
 
     elif post_type == 'recovery-plan':
-        clips   = make_recovery_plan_reel(recovery_day=recovery_day)
+        clips = make_recovery_plan_reel(
+            recovery_day=recovery_day,
+            balance=float(account.get('balance') or 0),
+            pf=float(account.get('profitFactor') or 0),
+        )
         caption = recovery_plan(lang=lang, recovery_day=recovery_day,
                                 recovery_start_str=rs,
                                 balance=float(account.get('balance') or 0),
