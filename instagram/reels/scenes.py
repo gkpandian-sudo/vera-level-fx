@@ -242,8 +242,22 @@ def make_trust_reel(data: dict) -> list:
     pips   = int(acct.get('pips')           or 0)
     sign   = '+' if gain >= 0 else ''
 
-    # Hero: animated win-rate ring (5s)
-    ring_clip = progress_ring_clip(win_rate=wr if wr > 0 else 50.0, duration=5.0)
+    # Hero: animated win-rate ring (5s) — only if we have real data
+    if wr > 0:
+        ring_clip = progress_ring_clip(win_rate=wr, duration=5.0)
+    else:
+        def verify_frame(t):
+            img = bg_frame(t)
+            alp = min(t * 1.5, 1.0)
+            img = draw_alpha_text(img, (W // 2, H // 2 - 120),
+                                   'WIN RATE', load_font(72, bold=True), EMERALD, alp)
+            img = draw_alpha_text(img, (W // 2, H // 2 + 20),
+                                   'Myfxbook #12044019', load_font(52), WHITE, alp)
+            img = draw_alpha_text(img, (W // 2, H // 2 + 130),
+                                   'Search "Vera Level" to verify', load_font(36), MUTED, alp)
+            img = _brand_watermark(img)
+            return np.array(img)
+        ring_clip = _clip(verify_frame, 5.0)
 
     # Data (4.5s): cascade + candlestick bg
     trades_str = f'{trades:,} trades' if trades > 0 else 'Myfxbook #12044019'

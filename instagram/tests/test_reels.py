@@ -338,3 +338,12 @@ def test_weekly_reel_no_intro_clip():
     assert len(clips) == 5
     # Hero (spring gain, 4s) must be first
     assert clips[0].duration == 4.0, f"Expected hero at index 0 (4s), got: {[c.duration for c in clips]}"
+
+
+def test_trust_reel_no_fake_ring_when_wr_zero():
+    from reels.scenes import make_trust_reel
+    clips = make_trust_reel({'account': {'winRate': 0, 'profitFactor': 1.0,
+                                          'gain': 5.0, 'trades': 100, 'pips': 500}})
+    assert len(clips) >= 4
+    # Hero clip (index 0) should be 5s duration whether ring or verify card
+    assert clips[0].duration == 5.0
