@@ -58,13 +58,13 @@ def main():
         make_daily_reel, make_weekly_reel, make_trust_reel,
         make_monthly_reel, make_transparency_reel,
         make_recovery_plan_reel, make_edu_reel, make_broker_reel,
-        make_signup_reel, make_thumbnail,
+        make_signup_reel, make_milestone_reel, make_thumbnail,
     )
     from reels.audio  import get_track
     from reels.render import render
     from captions     import (weekly, monthly, trust, daily_status,
                               transparency, recovery_plan, edu as edu_caption,
-                              broker as broker_caption, ib_signup,
+                              broker as broker_caption, ib_signup, milestone,
                               monthly_pnl_from_daily)
     from post         import publish_reel
 
@@ -137,13 +137,18 @@ def main():
         clips   = make_signup_reel()
         caption = ib_signup(lang=lang)
 
+    elif post_type == 'milestone':
+        milestone_label = os.environ.get('MILESTONE_LABEL', 'Milestone reached.')
+        clips   = make_milestone_reel(data, milestone_label)
+        caption = milestone(account, milestone_label, lang=lang)
+
     elif post_type == 'broker':
         clips   = make_broker_reel()
         caption = broker_caption(lang=lang)
 
     else:
         raise ValueError(f'Unknown POST_TYPE: {post_type!r}. '
-                         f'Expected: daily|weekly|monthly|trust|edu|transparency|recovery-plan|signup|broker')
+                         f'Expected: daily|weekly|monthly|trust|edu|transparency|recovery-plan|broker|signup|milestone')
 
     # ── Render ────────────────────────────────────────────────────────────────
     audio_path = get_track(post_type)

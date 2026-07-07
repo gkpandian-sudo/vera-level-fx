@@ -132,3 +132,19 @@ def test_ib_signup_has_risk_disclaimer():
     from captions import ib_signup
     cap = ib_signup()
     assert 'IB #91936' in cap
+
+def test_milestone_has_verify_link():
+    from captions import milestone
+    cap = milestone(SAMPLE_ACCOUNT, 'PF crossed 1.0')
+    assert 'Myfxbook' in cap
+
+def test_milestone_has_label_in_caption():
+    from captions import milestone
+    cap = milestone(SAMPLE_ACCOUNT, 'First green month post-rebuild')
+    assert 'First green month' in cap
+
+def test_milestone_no_projection():
+    from captions import milestone
+    cap = milestone(SAMPLE_ACCOUNT, 'Balance hit $2,000')
+    assert 'projected' not in cap.lower()
+    assert 'guaranteed' not in cap.lower()

@@ -378,3 +378,10 @@ def test_make_signup_reel_returns_clips():
     assert len(clips) >= 3
     total = sum(c.duration for c in clips)
     assert 10.0 < total < 20.0
+
+def test_make_milestone_reel_returns_clips():
+    from reels.scenes import make_milestone_reel
+    clips = make_milestone_reel({'account': SAMPLE_ACCOUNT}, 'PF crossed 1.0')
+    assert len(clips) >= 3
+    total = sum(c.duration for c in clips)
+    assert 9.0 < total < 18.0

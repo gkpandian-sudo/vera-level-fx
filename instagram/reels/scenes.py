@@ -647,6 +647,51 @@ def make_signup_reel() -> list:
     return [hero, data_clip, cta, make_broker_card_clip()]
 
 
+def make_milestone_reel(data: dict, milestone_label: str) -> list:
+    """Event-driven milestone reel — label + actuals + verify CTA."""
+    from reels.effects import candlestick_bg_overlay
+    from reels.animator import draw_glow_text, ease_spring
+
+    acct = data.get('account', {})
+    pf   = float(acct.get('profitFactor') or 0)
+    gain = float(acct.get('gain') or 0)
+    sign = '+' if gain >= 0 else ''
+
+    def hero_frame(t):
+        img = bg_frame(t)
+        alp = min(t * 1.2, 1.0)
+        img = draw_glow_text(img, (W // 2, H // 2),
+                             milestone_label, 64, EMERALD,
+                             glow_radius=22, alpha=alp)
+        img = _brand_watermark(img)
+        return np.array(img)
+
+    hero = _clip(hero_frame, 4.0)
+
+    lines = [
+        f'{sign}{gain:.1f}% total return',
+        f'Profit Factor: {pf:.2f}',
+        '',
+        'Verified on Myfxbook #12044019',
+        'Not projections.',
+        'Milestones are real.',
+        'Follow to watch the next one live.',
+    ]
+
+    def data_frame(t):
+        img = Image.fromarray(cascade_text_frame(t, lines, 4.5, 0.4, WHITE, 42, 580))
+        img = candlestick_bg_overlay(img)
+        return np.array(img)
+
+    data_clip = _clip(data_frame, 4.5)
+
+    def cta_frame(t):
+        return cta_fade_frame(t, 'Verify this now:', _VERIFY_CTA)
+
+    cta = _clip(cta_frame, 2.0)
+    return [hero, data_clip, cta, make_broker_card_clip()]
+
+
 def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.Image:
     """Static 1080x1920 PIL Image thumbnail for the given post type."""
     acct = data.get('account', {})

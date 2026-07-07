@@ -428,3 +428,31 @@ Same broker every trade on Myfxbook #12044019 runs through.{tamil}
 {_RISK_DISCLAIMER}
 
 {TAGS}"""
+
+
+def milestone(account: dict, milestone_label: str, lang: str = 'en') -> str:
+    """Event-driven milestone post. Report actuals; never project."""
+    pf     = account.get('profitFactor', 0)
+    gain   = account.get('gain', 0)
+    trades = int(account.get('trades') or 0)
+    sign   = '+' if gain >= 0 else ''
+
+    tamil = (
+        f"\n\n🏆 Milestone: {milestone_label}\n"
+        f"Myfxbook #12044019-ல் verify பண்ணலாம்."
+    ) if lang == 'tamil' else ''
+
+    return f"""{milestone_label}
+
+{sign}{gain:.1f}% total return  ·  {trades:,} trades  ·  PF {pf:.2f}
+Every figure live on Myfxbook #12044019.
+
+Not projections. Milestones are reported when they happen — verified on Myfxbook, not in a caption.
+The next milestone will be posted the same way: when it is reached, where it is verifiable.
+
+Follow to watch it live.
+{_CTA_VERIFY}{tamil}
+
+{_RISK_DISCLAIMER}
+
+{TAGS}"""
