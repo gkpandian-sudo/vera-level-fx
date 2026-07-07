@@ -365,7 +365,7 @@ def make_monthly_reel(data: dict) -> list:
 
 
 def make_transparency_reel(data: dict) -> list:
-    """Returns [hero, data, cta, broker] for transparency post."""
+    """Transparency reel — hero (loss %) + data (what changed) + follow CTA."""
     from reels.effects import candlestick_bg_overlay
 
     acct = data.get('account', {})
