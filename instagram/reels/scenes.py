@@ -650,7 +650,7 @@ def make_signup_reel() -> list:
 def make_milestone_reel(data: dict, milestone_label: str) -> list:
     """Event-driven milestone reel — label + actuals + verify CTA."""
     from reels.effects import candlestick_bg_overlay
-    from reels.animator import draw_glow_text, ease_spring
+    from reels.animator import draw_glow_text
 
     acct = data.get('account', {})
     pf   = float(acct.get('profitFactor') or 0)
