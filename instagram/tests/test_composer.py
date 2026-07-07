@@ -53,7 +53,7 @@ def test_split_layout_bottom_is_black():
     assert 0.0 < split_y < 1.0
     split_px = int(1080 * (1 - split_y))
     bottom = result[split_px + 5:]
-    assert bottom.mean() < 0.05
+    assert bottom.mean() < 0.10  # brand navy #000E1F normalises to ~0.060
 
 
 def test_vignette_dims_edges():
