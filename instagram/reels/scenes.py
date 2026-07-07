@@ -605,6 +605,48 @@ def make_broker_reel() -> list:
     return [hero, data_clip, banner_scene]
 
 
+def make_signup_reel() -> list:
+    """IB sign-up walkthrough reel — 4 steps, high-conversion."""
+    from reels.effects import candlestick_bg_overlay
+    from reels.animator import draw_glow_text
+
+    def hero_frame(t):
+        img = bg_frame(t)
+        alp = min(t * 1.5, 1.0)
+        img = draw_glow_text(img, (W // 2, H // 2 - 100),
+                             'Open your account', 68, EMERALD,
+                             glow_radius=20, alpha=alp)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 60),
+                               'Same broker. Same setup.', load_font(40), WHITE, alp)
+        img = _brand_watermark(img)
+        return np.array(img)
+
+    hero = _clip(hero_frame, 3.0)
+
+    step_lines = [
+        '1.  Link in bio  (not icmarkets.com direct)',
+        '2.  Choose: Raw Spread account',
+        '3.  Verify ID — 10 min  (ASIC + CySEC)',
+        '4.  DM me "DONE" — I will walk you through',
+        '',
+        'Referral link  ·  IB #91936',
+        'I earn commission  ·  zero extra cost to you',
+    ]
+
+    def data_frame(t):
+        img = Image.fromarray(cascade_text_frame(t, step_lines, 6.0, 0.5, WHITE, 38, 520))
+        img = candlestick_bg_overlay(img)
+        return np.array(img)
+
+    data_clip = _clip(data_frame, 6.0)
+
+    def cta_frame(t):
+        return cta_fade_frame(t, 'Link is in bio.', 'DM me DONE after you open.')
+
+    cta = _clip(cta_frame, 2.5)
+    return [hero, data_clip, cta, make_broker_card_clip()]
+
+
 def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.Image:
     """Static 1080x1920 PIL Image thumbnail for the given post type."""
     acct = data.get('account', {})

@@ -116,3 +116,19 @@ def test_edu_rule05_no_hardcoded_pf():
     assert 'PF 0.75' not in rule05['body']
     assert 'PF 0.75' not in rule05.get('example_rr', '')
     assert 'Myfxbook' in rule05['body']
+
+def test_ib_signup_has_4_steps():
+    from captions import ib_signup
+    cap = ib_signup()
+    assert '1' in cap and '2' in cap and '3' in cap and '4' in cap
+
+def test_ib_signup_has_attribution_warning():
+    from captions import ib_signup
+    cap = ib_signup()
+    assert 'my link' in cap.lower() or "referral" in cap.lower()
+    assert 'credited' in cap.lower() or 'bio' in cap.lower()
+
+def test_ib_signup_has_risk_disclaimer():
+    from captions import ib_signup
+    cap = ib_signup()
+    assert 'IB #91936' in cap

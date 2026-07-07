@@ -371,3 +371,10 @@ def test_recovery_plan_reel_accepts_balance_pf():
     assert len(clips) >= 3
     total = sum(c.duration for c in clips)
     assert 8.0 < total < 18.0
+
+def test_make_signup_reel_returns_clips():
+    from reels.scenes import make_signup_reel
+    clips = make_signup_reel()
+    assert len(clips) >= 3
+    total = sum(c.duration for c in clips)
+    assert 10.0 < total < 20.0

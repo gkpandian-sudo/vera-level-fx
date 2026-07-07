@@ -399,3 +399,32 @@ IB #91936. Referral link. I earn a small commission at no cost to you.
 {_RISK_DISCLAIMER}
 
 {_TAGS_BROKER}{tamil}"""
+
+
+def ib_signup(lang: str = 'en') -> str:
+    """4-step IC Markets IB sign-up walkthrough. Highest-converting post type."""
+    tamil = (
+        f"\n\n📲 IC Markets account open பண்ண:\n"
+        f"Link in bio-ல் இருக்கு. அந்த link மூலமா open பண்ணுங்க.\n"
+        f"IB #91936"
+    ) if lang == 'tamil' else ''
+
+    return f"""Want to trade on the same setup I use?
+
+Here is the exact process — takes 10 minutes.
+
+1️⃣  Go to the link in my bio
+     (important — opening icmarkets.com directly won't link us)
+2️⃣  Choose Raw Spread account
+3️⃣  Verify your identity (10 min, ASIC + CySEC regulated)
+4️⃣  DM me "DONE" and I will walk you through what happens next
+
+Full disclosure: it is my referral link. IC Markets pays me a small commission.
+You pay nothing extra — spreads are identical either way.
+IB #91936.
+
+Same broker every trade on Myfxbook #12044019 runs through.{tamil}
+
+{_RISK_DISCLAIMER}
+
+{TAGS}"""
