@@ -91,6 +91,12 @@ def _clip(make_frame_fn, duration: float) -> VideoClip:
     return VideoClip(make_frame_fn, duration=duration).set_fps(FPS)
 
 
+def _brand_watermark(img: 'Image.Image', alpha: float = 0.5) -> 'Image.Image':
+    """Stamp @veralevel.fx handle as persistent lower-third on any frame."""
+    return draw_alpha_text(img, (W // 2, H - 55),
+                           '@veralevel.fx', load_font(28), MUTED, alpha)
+
+
 def _intro_clip() -> VideoClip:
     """1.5s branded intro — logo + emerald bar sweep + pulsing glow border."""
     from reels.effects import glow_border_overlay
@@ -118,8 +124,6 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     pnl_color = GREEN if daily_pct >= 0 else RED
     sign      = '+' if daily_pct >= 0 else ''
 
-    intro = _intro_clip()
-
     # Hero (4s): odometer balance + pulsing live dot + glow daily %
     DUR_HERO = 4.0
     cx, cy   = W // 2, H // 2
@@ -137,6 +141,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
             img = draw_glow_text(img, (cx, cy + 80),
                                  f'{sign}{daily_pct:.2f}%', 72, pnl_color,
                                  glow_radius=20, alpha=alp)
+        img = _brand_watermark(img)
         return np.array(img)
 
     hero = _clip(hero_frame, DUR_HERO)
@@ -173,7 +178,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
 
     cta = _clip(cta_frame, 2.0)
 
-    return [intro, hero, eq_clip, data_clip, cta, make_broker_card_clip()]
+    return [hero, eq_clip, data_clip, cta, make_broker_card_clip()]
 
 
 def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
@@ -193,8 +198,6 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
     gain_color = GREEN if gain >= 0 else RED
     sign       = '+' if gain >= 0 else ''
 
-    intro = _intro_clip()
-
     # Hero (4s): gain % with spring bounce + glow
     def hero_frame(t):
         progress = ease_spring(t, 3.5)
@@ -204,6 +207,7 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
         img      = draw_glow_text(img, (W // 2, H // 2), text, 130,
                                   gain_color, glow_radius=28,
                                   alpha=min(t * 1.5, 1.0))
+        img = _brand_watermark(img)
         return np.array(img)
 
     hero = _clip(hero_frame, 4.0)
@@ -232,7 +236,7 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
         return cta_fade_frame(t, 'Full track record:', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, eq_clip, data_clip, cta, make_broker_card_clip()]
+    return [hero, eq_clip, data_clip, cta, make_broker_card_clip()]
 
 
 def make_trust_reel(data: dict) -> list:
@@ -247,8 +251,6 @@ def make_trust_reel(data: dict) -> list:
     trades = int(acct.get('trades')         or 0)
     pips   = int(acct.get('pips')           or 0)
     sign   = '+' if gain >= 0 else ''
-
-    intro = _intro_clip()
 
     # Hero: animated win-rate ring (5s)
     ring_clip = progress_ring_clip(win_rate=wr if wr > 0 else 50.0, duration=5.0)
@@ -276,7 +278,7 @@ def make_trust_reel(data: dict) -> list:
         return cta_fade_frame(t, 'Search "Vera Level" on Myfxbook', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, ring_clip, data_clip, cta, make_broker_card_clip()]
+    return [ring_clip, data_clip, cta, make_broker_card_clip()]
 
 
 def make_monthly_reel(data: dict) -> list:
@@ -294,8 +296,6 @@ def make_monthly_reel(data: dict) -> list:
     months = list(monthly_pnl.items())[-6:]
     sign   = '+' if gain >= 0 else ''
     month_name = _dt.now().strftime('%B %Y')
-
-    intro = _intro_clip()
 
     # Hero (3s): "Monthly P&L / {month_name}" fades in
     def hero_frame(t):
@@ -354,7 +354,7 @@ def make_monthly_reel(data: dict) -> list:
         return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta, make_broker_card_clip()]
+    return [hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_transparency_reel(data: dict) -> list:
@@ -365,8 +365,6 @@ def make_transparency_reel(data: dict) -> list:
     gain = float(acct.get('gain') or 0)
     dd   = float(acct.get('drawdown') or 0)
     bal  = float(acct.get('balance') or 0)
-
-    intro = _intro_clip()
 
     # Hero (4s): loss % slams in red
     def hero_frame(t):
@@ -417,7 +415,7 @@ def make_transparency_reel(data: dict) -> list:
         return cta_fade_frame(t, 'Full history on Myfxbook', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta, make_broker_card_clip()]
+    return [hero, data_clip, cta, make_broker_card_clip()]
 
 
 _RECOVERY_MONTHS = [
@@ -435,8 +433,6 @@ def make_recovery_plan_reel(recovery_day: int = 0) -> list:
     from datetime import datetime as _dt
     from reels.effects import candlestick_bg_overlay
     now_month = _dt.now().strftime('%B')
-
-    intro = _intro_clip()
 
     def hero_frame(t):
         return fade_in_frame(t, '$1,000/month  50% target', 3.0, EMERALD, 56, (W // 2, H // 2))
@@ -490,15 +486,13 @@ def make_recovery_plan_reel(recovery_day: int = 0) -> list:
         return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta, make_broker_card_clip()]
+    return [hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_edu_reel(edu_type: str, content: dict) -> list:
     """Returns [intro, hero, data, cta, broker] for edu post."""
     from reels.animator import typewriter_frame as _typewriter_frame
     from reels.effects import candlestick_bg_overlay
-
-    intro = _intro_clip()
 
     if edu_type == 'risk':
         rule_num = content.get('rule_num', '')
@@ -575,7 +569,7 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [intro, hero, data_clip, cta, make_broker_card_clip()]
+    return [hero, data_clip, cta, make_broker_card_clip()]
 
 
 def make_broker_reel() -> list:
@@ -584,8 +578,6 @@ def make_broker_reel() -> list:
 
     # Pre-fetch banner at full-reel size (downloaded once, cached)
     banner_arr_full = _get_ib_banner(W, H)  # full 1080×1920
-
-    intro = _intro_clip()
 
     def hero_frame(t):
         return _typewriter_frame(t, 'IC Markets', 4.0, EMERALD, 90, (W // 2, H // 2))
@@ -623,7 +615,7 @@ def make_broker_reel() -> list:
         return np.array(img)
 
     banner_scene = _clip(banner_frame, 3.5)
-    return [intro, hero, data_clip, banner_scene]
+    return [hero, data_clip, banner_scene]
 
 
 def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.Image:

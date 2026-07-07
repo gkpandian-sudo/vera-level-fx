@@ -112,9 +112,9 @@ def test_make_daily_reel_returns_clips():
     from reels.scenes import make_daily_reel
     clips = make_daily_reel({'account': SAMPLE_ACCOUNT, 'openTrades': SAMPLE_OPEN,
                              'dailyGain': SAMPLE_DAILY_GAIN})
-    assert len(clips) == 6
+    assert len(clips) == 5
     total_dur = sum(c.duration for c in clips)
-    assert 12.0 < total_dur < 22.0
+    assert 11.0 < total_dur < 22.0
 
 
 def test_make_weekly_reel_returns_clips():
@@ -321,3 +321,18 @@ def test_glow_border_overlay_shape():
     img = Image.new('RGB', (1080, 1920), (0, 24, 53))
     result = glow_border_overlay(img, t=0.5)
     assert result.size == (1080, 1920)
+
+
+def test_daily_reel_no_intro_clip():
+    from reels.scenes import make_daily_reel
+    clips = make_daily_reel({'account': SAMPLE_ACCOUNT, 'openTrades': SAMPLE_OPEN,
+                             'dailyGain': SAMPLE_DAILY_GAIN})
+    durations = [c.duration for c in clips]
+    assert 1.5 not in durations, f"Intro clip still present: {durations}"
+
+
+def test_weekly_reel_no_intro_clip():
+    from reels.scenes import make_weekly_reel
+    clips = make_weekly_reel({'account': SAMPLE_ACCOUNT, 'dailyGain': SAMPLE_DAILY_GAIN})
+    durations = [c.duration for c in clips]
+    assert 1.5 not in durations, f"Intro clip still present: {durations}"
