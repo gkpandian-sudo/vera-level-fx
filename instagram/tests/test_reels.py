@@ -347,3 +347,11 @@ def test_trust_reel_no_fake_ring_when_wr_zero():
     assert len(clips) >= 4
     # Hero clip (index 0) should be 5s duration whether ring or verify card
     assert clips[0].duration == 5.0
+
+
+def test_monthly_reel_total_duration_under_14s():
+    from reels.scenes import make_monthly_reel
+    clips = make_monthly_reel({'account': SAMPLE_ACCOUNT,
+                               'dailyGain': SAMPLE_DAILY_GAIN})
+    total = sum(c.duration for c in clips)
+    assert total < 14.0, f"Monthly reel too long: {total}s (should be <14s)"

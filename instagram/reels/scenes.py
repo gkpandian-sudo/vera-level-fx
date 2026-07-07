@@ -190,7 +190,10 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
 
     # Hero (4s): gain % with spring bounce + glow
     def hero_frame(t):
-        progress = ease_spring(t, 3.5)
+        if gain >= 0:
+            progress = ease_spring(t, 3.5)     # spring bounce for gains
+        else:
+            progress = ease_out(t, 1.5)         # fast hard settle for losses — no bounce
         value    = gain * progress
         text     = f'{sign}{value:.1f}%'
         img      = bg_frame(t)
@@ -308,9 +311,9 @@ def make_monthly_reel(data: dict) -> list:
     hero = _clip(hero_frame, 3.0)
 
     # Data: bars draw L→R one per bar_gap, value label appears after
-    bar_dur    = 2.0
-    bar_gap    = 1.5
-    DUR_DATA   = len(months) * bar_gap + bar_dur + 1.0  # dynamic, fits within 22s total
+    bar_dur    = 1.0
+    bar_gap    = 0.5
+    DUR_DATA   = len(months) * bar_gap + bar_dur + 1.5  # 6*0.5 + 1.0 + 1.5 = 5.5s
     start_y    = 550
     bar_h_px   = 60
     bar_spacing = bar_h_px + 40
@@ -355,7 +358,7 @@ def make_monthly_reel(data: dict) -> list:
     data_clip = _clip(data_frame, DUR_DATA)
 
     def cta_frame(t):
-        return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
+        return cta_fade_frame(t, 'Verify every month yourself:', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
     return [hero, data_clip, cta, make_broker_card_clip()]
