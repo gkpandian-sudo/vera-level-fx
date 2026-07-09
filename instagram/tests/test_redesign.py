@@ -172,3 +172,18 @@ def test_daily_card_with_recovery_day():
     img = _fig_to_pil(fig)
     assert img.size[0] == img.size[1]
     assert img.size[0] >= 900
+
+
+def test_recovery_plan_card_accepts_recovery_day():
+    from instagram.generate import make_recovery_plan_card
+    fig = make_recovery_plan_card(DUMMY_DATA, recovery_day=45, recovery_total=180,
+                                   recovery_start_str='2026-05-25')
+    img = _fig_to_pil(fig)
+    assert img.size[0] == img.size[1]
+    assert img.size[0] >= 900
+
+def test_recovery_plan_card_zero_day_still_renders():
+    from instagram.generate import make_recovery_plan_card
+    fig = make_recovery_plan_card(DUMMY_DATA, recovery_day=0, recovery_total=180)
+    img = _fig_to_pil(fig)
+    assert img.size[0] >= 900

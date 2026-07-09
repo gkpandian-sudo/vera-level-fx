@@ -485,28 +485,22 @@ def make_transparency_card(data):
     return fig
 
 
-# ── Recovery Plan Card ───────────────────────────────────────────
+# ── Recovery Plan Card (actuals-based) ───────────────────────────
 
-# Fixed 6-month simulation: (month, topup, end_balance)
-_RECOVERY_MONTHS = [
-    ('July',      1_000,  1_500.00),
-    ('August',    1_000,  3_750.00),
-    ('September', 1_000,  7_125.00),
-    ('October',   1_000, 12_187.50),
-    ('November',  1_000, 19_781.25),
-    ('December',  1_000, 31_171.88),
-]
-_RECOVERY_INVESTED  = 6_000
-_RECOVERY_PROJECTED = 31_171.88
+def make_recovery_plan_card(data=None, recovery_day: int = 0, recovery_total: int = 180,
+                             recovery_start_str: str = ''):
+    account = (data or {}).get('account', {})
+    balance = account.get('balance', 0)
+    pf      = account.get('profitFactor', 0)
+    gain    = account.get('gain', 0)
+    daily   = account.get('daily', 0)
 
-
-def make_recovery_plan_card(data=None):
     fig = plt.figure(figsize=SIZE, facecolor=NAVY)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
     ax.set_facecolor(NAVY)
 
-    # Top gold bar
+    # Top emerald bar
     ax.add_patch(patches.Rectangle(
         (0, 0.974), 1, 0.026, facecolor=EMERALD, transform=ax.transAxes, zorder=5
     ))
@@ -515,94 +509,115 @@ def make_recovery_plan_card(data=None):
     ax.text(0.5, 0.946, 'VERA LEVEL FX  ·  RECOVERY PLAN',
             fontsize=20, fontweight='bold', color=EMERALD, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
-    ax.text(0.5, 0.916, 'ETF MEDIUM RISK  ·  JULY – DECEMBER 2026',
-            fontsize=14, color=MUTED, ha='center', va='center',
+    ax.text(0.5, 0.916, '180-DAY PUBLIC REBUILD  ·  EVERY TRADE VERIFIED',
+            fontsize=13, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace')
     _hline(ax, 0.898, alpha=0.35)
 
-    # Strategy summary line
-    ax.text(0.5, 0.868,
-            '$1,000/month top-up  ·  50% monthly target  ·  GRID EA low-risk mode',
-            fontsize=14, color=CREAM, ha='center', va='center',
-            transform=ax.transAxes)
+    # Day counter hero
+    if recovery_day > 0:
+        ax.text(0.5, 0.842,
+                f'DAY {recovery_day} / {recovery_total}',
+                fontsize=64, fontweight='black', color=RED,
+                ha='center', va='center', transform=ax.transAxes, linespacing=1.0)
 
-    _hline(ax, 0.848, alpha=0.20)
-
-    # Table header
-    col_x = [0.06, 0.32, 0.58, 0.82]
-    headers = ['MONTH', 'TOP-UP', 'END BALANCE', '']
-    for hdr, x in zip(headers, col_x):
-        ax.text(x, 0.826, hdr,
-                fontsize=12, color=DIM, ha='left', va='center',
-                transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
-
-    _hline(ax, 0.814, color=EMERALD, alpha=0.25, lw=1.0)
-
-    # Table rows
-    row_h   = 0.092
-    start_y = 0.790
-    current_month = datetime.now().strftime('%B')
-
-    for i, (month, topup, end_bal) in enumerate(_RECOVERY_MONTHS):
-        y       = start_y - i * row_h
-        is_now  = month == current_month
-        m_color = EMERALD if is_now else CREAM
-        b_color = GREEN
-
-        if is_now:
-            ax.add_patch(patches.Rectangle(
-                (0.04, y - 0.028), 0.92, 0.054,
-                facecolor=NAVY_S, transform=ax.transAxes, zorder=1
-            ))
-
-        prefix = '> ' if is_now else ''
-        ax.text(col_x[0], y, f'{prefix}{month}',
-                fontsize=14 if is_now else 13, color=m_color, ha='left', va='center',
-                transform=ax.transAxes, fontweight='bold' if is_now else 'normal')
-        ax.text(col_x[1], y, f'+${topup:,.0f}',
-                fontsize=13, color=MUTED, ha='left', va='center',
+        filled   = round((recovery_day / recovery_total) * 24)
+        bar_text = '▓' * filled + '░' * (24 - filled)
+        pct      = recovery_day / recovery_total * 100
+        ax.text(0.5, 0.790, f'{bar_text}  {pct:.0f}%',
+                fontsize=13, color=EMERALD, ha='center', va='center',
                 transform=ax.transAxes, fontfamily='monospace')
-        ax.text(col_x[2], y, f'${end_bal:,.0f}',
-                fontsize=14 if is_now else 13, color=b_color, ha='left', va='center',
-                transform=ax.transAxes, fontweight='bold' if is_now else 'normal',
-                fontfamily='monospace')
+    else:
+        ax.text(0.5, 0.836, 'RECOVERY PLAN · 180 DAYS',
+                fontsize=36, fontweight='black', color=RED,
+                ha='center', va='center', transform=ax.transAxes)
 
-    _hline(ax, 0.240, alpha=0.25)
+    _hline(ax, 0.765, alpha=0.25)
 
-    # Totals row
-    ax.text(0.06, 0.210, 'TOTAL INVESTED',
-            fontsize=14, color=MUTED, ha='left', va='center',
+    # Actuals row: Balance · Total Return · Profit Factor
+    gain_sign = '+' if gain >= 0 else ''
+    actuals = [
+        (f'${balance:,.0f}',             'BALANCE',      EMERALD, 0.18),
+        (f'{gain_sign}{gain:.1f}%',       'TOTAL RTN',   RED if gain < 0 else GREEN, 0.50),
+        (f'{pf:.2f}',                     'PROF.FACTOR', WHITE, 0.82),
+    ]
+    for val, lbl, color, px in actuals:
+        ax.text(px, 0.730, val,
+                fontsize=26, fontweight='black', color=color,
+                ha='center', va='center', transform=ax.transAxes, zorder=6)
+        ax.text(px, 0.696, lbl,
+                fontsize=12, color=DIM, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    _hline(ax, 0.672, alpha=0.20)
+
+    # Milestone checklist — auto-computed from live data
+    def _ms(done: bool, label: str) -> str:
+        return f"{'☑' if done else '☐'} {label}"
+
+    milestones = [
+        _ms(pf >= 1.0,  'Profit Factor above 1.0'),
+        _ms(pf >= 1.2,  'Profit Factor 1.2+ (target)'),
+        _ms(gain >= 0,  'Total return back to breakeven'),
+        _ms(gain > 5,   'New equity high'),
+    ]
+
+    ax.text(0.06, 0.648, 'MILESTONES (reported when hit — not before)',
+            fontsize=12, color=DIM, ha='left', va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
-    ax.text(0.50, 0.210, f'${_RECOVERY_INVESTED:,.0f}',
-            fontsize=22, color=EMERALD, ha='center', va='center',
-            transform=ax.transAxes, fontweight='black')
 
-    ax.text(0.06, 0.170, 'PROJECTED DEC',
-            fontsize=14, color=MUTED, ha='left', va='center',
-            transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
-    ax.text(0.50, 0.170, f'${_RECOVERY_PROJECTED:,.0f}',
-            fontsize=22, color=GREEN, ha='center', va='center',
-            transform=ax.transAxes, fontweight='black')
+    for i, ms in enumerate(milestones):
+        done  = ms.startswith('☑')
+        color = EMERALD if done else MUTED
+        ax.text(0.06, 0.618 - i * 0.044, ms,
+                fontsize=14, color=color, ha='left', va='center',
+                transform=ax.transAxes, fontfamily='monospace')
 
-    # Disclaimer box
+    _hline(ax, 0.430, alpha=0.20)
+
+    # End-date commitment line
+    if recovery_start_str and recovery_total > 0:
+        try:
+            from datetime import timedelta as _td
+            end_dt  = datetime.strptime(recovery_start_str, '%Y-%m-%d') + _td(days=recovery_total - 1)
+            end_str = end_dt.strftime('%d %b %Y')
+            commit  = f'Day 180 is {end_str}. Final result posted — green or not.'
+        except Exception:
+            commit = f'Day {recovery_total} · Final result posted — green or not.'
+    else:
+        commit = f'Day {recovery_total} · Final result posted — green or not.'
+
     ax.add_patch(patches.FancyBboxPatch(
-        (0.06, 0.108), 0.88, 0.044,
+        (0.06, 0.370), 0.88, 0.046,
         boxstyle='round,pad=0.005',
-        facecolor=NAVY_S, edgecolor=EMERALD, linewidth=1.0,
+        facecolor=NAVY_S, edgecolor=RED, linewidth=1.2,
         transform=ax.transAxes, zorder=2
     ))
-    ax.text(0.5, 0.130,
-            'Simulation only. 50% monthly is a target, not a guarantee. Not financial advice.',
-            fontsize=11, color=DIM, ha='center', va='center',
-            transform=ax.transAxes, zorder=3, fontfamily='monospace')
+    ax.text(0.5, 0.393, commit,
+            fontsize=14, fontweight='bold', color=RED,
+            ha='center', va='center', transform=ax.transAxes, zorder=3)
+
+    # CTA
+    ax.text(0.5, 0.326,
+            'Every trade · Myfxbook account #12044019',
+            fontsize=15, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes)
+    ax.text(0.5, 0.292,
+            'Live alerts as rebuild unfolds  →  t.me/pandiangk',
+            fontsize=17, fontweight='bold', color=EMERALD,
+            ha='center', va='center', transform=ax.transAxes)
 
     # Footer
+    _hline(ax, 0.248, alpha=0.20)
+    ax.text(0.5, 0.218, '#180dayrebuild  ·  Nothing projected. Nothing hidden.',
+            fontsize=13, color=MUTED, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace')
     _hline(ax, 0.095, alpha=0.35)
     ax.text(0.06, 0.065, '@veralevel.fx  ·  IC MARKETS  ·  ASIC REGULATED',
             fontsize=13, color=EMERALD, va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold')
-    ax.text(0.94, 0.030, 't.me/pandiangk',
-            fontsize=13, color=MUTED, ha='right', va='center',
+    ax.text(0.94, 0.030, 'Not financial advice',
+            fontsize=13, color=DIM, ha='right', va='center',
             transform=ax.transAxes, fontfamily='monospace')
 
     return fig

@@ -246,7 +246,9 @@ def main():
                                 balance=float(account.get('balance') or 0),
                                 pf=float(account.get('profitFactor') or 0))
         if image_path is None:
-            fig = make_recovery_plan_card(data)
+            fig = make_recovery_plan_card(data, recovery_day=recovery_day,
+                                          recovery_total=recovery_total,
+                                          recovery_start_str=recovery_start_str)
     else:
         caption = trust(account, lang=lang)
         if image_path is None:
