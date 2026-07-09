@@ -183,8 +183,9 @@ def make_daily_card(data: dict):
     bottom_y = max(0.270, 0.700 - len(rows) * row_gap - 0.050)
     ax.plot([0.06, 0.94], [bottom_y + 0.026, bottom_y + 0.026],
             color=EMERALD, linewidth=0.8, alpha=0.2, transform=ax.transAxes, zorder=6)
+    pips_fmt = f'+{pips:,}' if pips >= 0 else f'{pips:,}'
     ax.text(0.5, bottom_y,
-            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  +{pips:,} pips  ·  verified on Myfxbook',
+            f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  {pips_fmt} pips  ·  verified on Myfxbook',
             fontsize=15, fontweight='bold', color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 

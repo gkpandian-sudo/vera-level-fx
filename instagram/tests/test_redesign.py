@@ -140,3 +140,19 @@ def test_monthly_chart_size():
     w, h = img.size
     assert w == h, f"Expected square image, got {img.size}"
     assert w >= 900
+
+
+def test_weekly_card_renders_negative_pips_without_error():
+    from instagram.generate import make_weekly_card
+    data = {**DUMMY_DATA, 'account': {**DUMMY_ACCOUNT, 'pips': -500}}
+    fig = make_weekly_card(data)
+    img = _fig_to_pil(fig)
+    assert img.size[0] == img.size[1]
+
+
+def test_daily_card_renders_negative_pips_without_error():
+    from instagram.generate_status import make_daily_card
+    data = {**DUMMY_DATA, 'account': {**DUMMY_ACCOUNT, 'pips': -200}}
+    fig = make_daily_card(data)
+    img = _fig_to_pil(fig)
+    assert img.size[0] == img.size[1]

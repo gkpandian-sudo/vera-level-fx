@@ -141,11 +141,14 @@ def make_weekly_card(data):
     _hline(ax, 0.740, alpha=0.3)
 
     # 4-stat row
+    pips_sign  = '+' if pips >= 0 else ''
+    pips_color = GREEN if pips >= 0 else RED
+
     stats = [
-        (f'${balance:,.0f}',   'BALANCE',   EMERALD),
-        (f'{win_rate:.0f}%',   'WIN RATE',  WHITE),
-        (f'+{pips:,}',         'PIPS',      GREEN),
-        (f'{trades:,}',        'TRADES',    MUTED),
+        (f'${balance:,.0f}',        'BALANCE',  EMERALD),
+        (f'{win_rate:.0f}%',        'WIN RATE', WHITE),
+        (f'{pips_sign}{pips:,}',    'PIPS',     pips_color),
+        (f'{trades:,}',             'TRADES',   MUTED),
     ]
     col_w = 0.22
     for i, (val, lbl, color) in enumerate(stats):
