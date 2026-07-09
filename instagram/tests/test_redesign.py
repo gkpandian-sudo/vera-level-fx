@@ -171,3 +171,4 @@ def test_daily_card_with_recovery_day():
     fig = make_daily_card(DUMMY_DATA, recovery_day=45, recovery_total=180)
     img = _fig_to_pil(fig)
     assert img.size[0] == img.size[1]
+    assert img.size[0] >= 900
