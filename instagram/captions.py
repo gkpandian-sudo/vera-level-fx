@@ -129,7 +129,7 @@ def weekly_gain_from_daily(daily_gain: list, today=None) -> float | None:
     return ((100.0 + latest_cum) / base - 1.0) * 100.0
 
 
-def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
+def weekly(account: dict, lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180) -> str:
     bal    = account.get('balance') or 0
     gain   = account.get('gain') or 0
     wr     = account.get('winRate') or 0
@@ -145,7 +145,7 @@ def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     wr_line     = (f'🎯 Win Rate: {wr:.0f}% across {trades:,} trades'
                    if wr > 0 else '🎯 Win Rate: Myfxbook #12044019')
     recovery_line = (
-        f"Recovery Day {recovery_day}. Account is live, positions visible below.\n\n"
+        f"Day {recovery_day}/{recovery_total} · Account is live, positions visible below.\n\n"
         if recovery_day > 0 else ''
     )
     hook = f"{sign}{gain:.1f}% this week — {trades:,} trades. Every one is public."
@@ -242,7 +242,7 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
     )
 
 
-def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_day: int = 0) -> str:
+def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180) -> str:
     balance   = account.get('balance') or 0
     equity    = account.get('equity') or balance
     daily_pct = account.get('daily') or 0
@@ -268,7 +268,7 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
                if win_rate > 0 else f'PF {pf:.2f} · +{pips:,} pips · Myfxbook #12044019')
 
     recovery_line = (
-        f"Recovery Day {recovery_day}. Every position sized at max 1% account risk.\n\n"
+        f"Day {recovery_day}/{recovery_total}. Every position sized at max 1% account risk.\n\n"
         if recovery_day > 0 else ''
     )
 
@@ -367,8 +367,8 @@ The rebuild is live on Myfxbook.
 {TAGS}"""
 
 
-def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_start_str: str = '',
-                  balance: float = 0.0, pf: float = 0.0) -> str:
+def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180,
+                  recovery_start_str: str = '', balance: float = 0.0, pf: float = 0.0) -> str:
     """Actuals-only rebuild report. No projections, no targets."""
     tamil = (
         "\n\n📈 Rebuild live இருக்கு. "
@@ -376,9 +376,9 @@ def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_start_str: s
     ) if lang == 'tamil' else ''
 
     if recovery_day > 0 and recovery_start_str:
-        day_line = f"Day {recovery_day} since {recovery_start_str}.\n"
+        day_line = f"Day {recovery_day}/{recovery_total} since {recovery_start_str}.\n"
     elif recovery_day > 0:
-        day_line = f"Recovery Day {recovery_day}.\n"
+        day_line = f"Day {recovery_day}/{recovery_total}.\n"
     else:
         day_line = ''
 

@@ -202,3 +202,21 @@ def test_weekly_gain_returns_none_when_only_this_week_data():
     daily_gain = [['07/07/2026', -61.0, 30]]  # only Monday — no Sunday baseline
     result = weekly_gain_from_daily(daily_gain, today=today)
     assert result is None
+
+
+def test_weekly_recovery_line_has_of_180():
+    cap = weekly(SAMPLE_ACCOUNT, recovery_day=45, recovery_total=180)
+    assert '45/180' in cap
+
+def test_daily_recovery_line_has_of_180():
+    cap = daily_status(SAMPLE_ACCOUNT, [], recovery_day=45, recovery_total=180)
+    assert '45/180' in cap
+
+def test_recovery_plan_has_of_180():
+    cap = recovery_plan(recovery_day=45, recovery_total=180)
+    assert '45/180' in cap
+
+def test_no_recovery_line_when_day_zero():
+    cap = weekly(SAMPLE_ACCOUNT, recovery_day=0, recovery_total=180)
+    assert '0/180' not in cap
+    assert 'Day 0' not in cap
