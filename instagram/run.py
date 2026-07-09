@@ -154,7 +154,7 @@ def main():
     sys.path.insert(0, str(ROOT / 'instagram'))
     from generate        import make_weekly_card, make_monthly_chart, make_winrate_card, make_transparency_card, make_recovery_plan_card
     from generate_status import make_daily_card
-    from captions        import weekly, monthly, trust, daily_status, transparency, recovery_plan, monthly_pnl_from_daily
+    from captions        import weekly, monthly, trust, daily_status, transparency, recovery_plan, monthly_pnl_from_daily, weekly_gain_from_daily
     from post            import publish
 
     data       = load_data()
@@ -174,6 +174,7 @@ def main():
         except Exception:
             pass
     recovery_total = int(os.environ.get('RECOVERY_TOTAL', '180'))
+    weekly_gain = weekly_gain_from_daily(data.get('dailyGain', [])) if post_type == 'weekly' else None
 
     print(f'Generating post: {post_type} ({today}) lang={lang} recovery_day={recovery_day}')
 
@@ -219,11 +220,13 @@ def main():
 
     if post_type == 'daily':
         open_trades = data.get('openTrades', [])
-        caption     = daily_status(account, open_trades, lang=lang, recovery_day=recovery_day)
+        caption     = daily_status(account, open_trades, lang=lang,
+                                   recovery_day=recovery_day, recovery_total=recovery_total)
         if image_path is None:
             fig = make_daily_card(data)
     elif post_type == 'weekly':
-        caption = weekly(account, lang=lang, recovery_day=recovery_day)
+        caption = weekly(account, lang=lang, recovery_day=recovery_day,
+                         recovery_total=recovery_total, weekly_gain=weekly_gain)
         if image_path is None:
             fig = make_weekly_card(data)
     elif post_type == 'monthly':
@@ -238,6 +241,7 @@ def main():
             fig = make_transparency_card(data)
     elif post_type == 'recovery-plan':
         caption = recovery_plan(lang=lang, recovery_day=recovery_day,
+                                recovery_total=recovery_total,
                                 recovery_start_str=recovery_start_str,
                                 balance=float(account.get('balance') or 0),
                                 pf=float(account.get('profitFactor') or 0))
