@@ -129,7 +129,8 @@ def weekly_gain_from_daily(daily_gain: list, today=None) -> float | None:
     return ((100.0 + latest_cum) / base - 1.0) * 100.0
 
 
-def weekly(account: dict, lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180) -> str:
+def weekly(account: dict, lang: str = 'en', recovery_day: int = 0,
+           recovery_total: int = 180, weekly_gain: float | None = None) -> str:
     bal    = account.get('balance') or 0
     gain   = account.get('gain') or 0
     wr     = account.get('winRate') or 0
@@ -148,7 +149,18 @@ def weekly(account: dict, lang: str = 'en', recovery_day: int = 0, recovery_tota
         f"Day {recovery_day}/{recovery_total} · Account is live, positions visible below.\n\n"
         if recovery_day > 0 else ''
     )
-    hook = f"{sign}{gain:.1f}% this week — {trades:,} trades. Every one is public."
+    if recovery_day > 0 and weekly_gain is not None:
+        wg_sign = '+' if weekly_gain >= 0 else ''
+        hook = (f"Day {recovery_day}/{recovery_total} · "
+                f"{wg_sign}{weekly_gain:.1f}% this week. Built in public.")
+    elif recovery_day > 0:
+        hook = (f"Day {recovery_day}/{recovery_total} · "
+                f"{sign}{gain:.1f}% {gain_label}. Built in public.")
+    elif weekly_gain is not None:
+        wg_sign = '+' if weekly_gain >= 0 else ''
+        hook = f"{wg_sign}{weekly_gain:.1f}% this week — {trades:,} trades. Every one is public."
+    else:
+        hook = f"{sign}{gain:.1f}% {gain_label} — {trades:,} trades. Every one is public."
 
     return f"""{hook}
 

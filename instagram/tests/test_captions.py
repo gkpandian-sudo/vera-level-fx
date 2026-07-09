@@ -220,3 +220,32 @@ def test_no_recovery_line_when_day_zero():
     cap = weekly(SAMPLE_ACCOUNT, recovery_day=0, recovery_total=180)
     assert '0/180' not in cap
     assert 'Day 0' not in cap
+
+
+def test_weekly_hook_does_not_say_this_week_for_total_gain():
+    """Total gain must never be labeled 'this week'."""
+    cap = weekly(SAMPLE_ACCOUNT)
+    first_line = cap.strip().split('\n')[0]
+    # With no weekly_gain and no recovery: hook should NOT say 'this week' for total gain
+    # SAMPLE_ACCOUNT has gain=-62.0 which is total gain — it's not a weekly figure
+    assert 'this week' not in first_line.lower()
+
+
+def test_weekly_hook_recovery_leads_with_day_counter():
+    cap = weekly(SAMPLE_ACCOUNT, recovery_day=45, recovery_total=180)
+    first_line = cap.strip().split('\n')[0]
+    assert '45/180' in first_line
+
+
+def test_weekly_hook_uses_weekly_gain_when_provided():
+    cap = weekly(SAMPLE_ACCOUNT, weekly_gain=1.4)
+    first_line = cap.strip().split('\n')[0]
+    assert '1.4%' in first_line
+    assert 'this week' in first_line.lower()
+
+
+def test_weekly_hook_recovery_with_weekly_gain():
+    cap = weekly(SAMPLE_ACCOUNT, recovery_day=45, recovery_total=180, weekly_gain=-0.6)
+    first_line = cap.strip().split('\n')[0]
+    assert '45/180' in first_line
+    assert '-0.6%' in first_line
