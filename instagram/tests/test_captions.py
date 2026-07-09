@@ -163,3 +163,42 @@ def test_monthly_pnl_time_weighted_not_cumulative_sum():
     assert abs(result['Jan 26'] - 10.0) < 0.01
     assert abs(result['Feb 26'] - 4.545) < 0.01
     assert result['Feb 26'] < result['Jan 26']   # 4.5% not 15%
+
+
+from datetime import date
+
+def test_weekly_gain_positive_week():
+    """Cumulative moves from -62 (Sun) to -61 (Tue) → small positive week."""
+    from captions import weekly_gain_from_daily
+    today = date(2026, 7, 7)   # Tuesday
+    daily_gain = [
+        ['07/05/2026', -62.0, -10],   # Sunday — last row before Monday
+        ['07/07/2026', -61.0,  30],   # Tuesday (today)
+    ]
+    gain = weekly_gain_from_daily(daily_gain, today=today)
+    assert gain is not None
+    # ((100 + -61) / (100 + -62) - 1) * 100 = (39/38 - 1)*100 ≈ 2.63%
+    assert abs(gain - 2.631) < 0.01
+
+def test_weekly_gain_negative_week():
+    from captions import weekly_gain_from_daily
+    today = date(2026, 7, 9)
+    daily_gain = [
+        ['07/05/2026', -60.0, 10],
+        ['07/09/2026', -62.0, -30],
+    ]
+    gain = weekly_gain_from_daily(daily_gain, today=today)
+    assert gain is not None
+    assert gain < 0
+
+def test_weekly_gain_returns_none_when_no_data():
+    from captions import weekly_gain_from_daily
+    assert weekly_gain_from_daily([], today=date(2026, 7, 9)) is None
+
+def test_weekly_gain_returns_none_when_only_this_week_data():
+    """No pre-Monday baseline means we can't compute a delta."""
+    from captions import weekly_gain_from_daily
+    today = date(2026, 7, 9)   # Thursday
+    daily_gain = [['07/07/2026', -61.0, 30]]  # only Monday — no Sunday baseline
+    result = weekly_gain_from_daily(daily_gain, today=today)
+    assert result is None

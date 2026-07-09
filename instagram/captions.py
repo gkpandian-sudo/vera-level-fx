@@ -89,6 +89,46 @@ def monthly_pnl_from_daily(daily_gain: list) -> dict:
     return result
 
 
+def weekly_gain_from_daily(daily_gain: list, today=None) -> float | None:
+    """Compute week-to-date gain % from the cumulative dailyGain series.
+
+    Finds the last cumulative value strictly before this week's Monday (Sunday
+    close) and the last cumulative value on or before today, then returns the
+    time-weighted change. Returns None when either baseline is missing.
+    """
+    from datetime import date as _date, timedelta
+    if today is None:
+        today = _date.today()
+    last_monday = today - timedelta(days=today.weekday())
+
+    pre_monday_cum: float | None = None
+    latest_cum: float | None = None
+
+    for item in daily_gain:
+        ds  = item[0] if isinstance(item, list) else item.get('date', '')
+        val = item[1] if isinstance(item, list) else item.get('value', 0)
+        d   = None
+        for fmt in ('%m/%d/%Y', '%Y-%m-%d'):
+            try:
+                d = datetime.strptime(str(ds)[:10], fmt).date()
+                break
+            except ValueError:
+                continue
+        if d is None:
+            continue
+        if d < last_monday:
+            pre_monday_cum = float(val)
+        elif d <= today:
+            latest_cum = float(val)
+
+    if pre_monday_cum is None or latest_cum is None:
+        return None
+    base = 100.0 + pre_monday_cum
+    if base <= 0:
+        return None
+    return ((100.0 + latest_cum) / base - 1.0) * 100.0
+
+
 def weekly(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     bal    = account.get('balance') or 0
     gain   = account.get('gain') or 0

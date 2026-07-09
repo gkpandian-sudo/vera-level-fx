@@ -173,6 +173,7 @@ def main():
             recovery_day = max(1, (today - _start).days + 1)
         except Exception:
             pass
+    recovery_total = int(os.environ.get('RECOVERY_TOTAL', '180'))
 
     print(f'Generating post: {post_type} ({today}) lang={lang} recovery_day={recovery_day}')
 
