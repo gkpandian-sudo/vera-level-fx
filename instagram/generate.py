@@ -190,9 +190,6 @@ def make_monthly_chart(data):
     daily = data.get('dailyGain', [])
 
     # Use the same time-weighted formula as captions.py to keep image and caption consistent
-    import sys as _sys
-    from pathlib import Path as _Path
-    _sys.path.insert(0, str(_Path(__file__).parent.parent))
     from captions import monthly_pnl_from_daily
 
     monthly_pnl = monthly_pnl_from_daily(daily)
