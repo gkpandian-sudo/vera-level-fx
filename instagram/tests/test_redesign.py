@@ -156,3 +156,18 @@ def test_daily_card_renders_negative_pips_without_error():
     fig = make_daily_card(data)
     img = _fig_to_pil(fig)
     assert img.size[0] == img.size[1]
+
+
+def test_weekly_card_with_recovery_day():
+    from instagram.generate import make_weekly_card
+    fig = make_weekly_card(DUMMY_DATA, recovery_day=45, recovery_total=180)
+    img = _fig_to_pil(fig)
+    assert img.size[0] == img.size[1]
+    assert img.size[0] >= 900
+
+
+def test_daily_card_with_recovery_day():
+    from instagram.generate_status import make_daily_card
+    fig = make_daily_card(DUMMY_DATA, recovery_day=45, recovery_total=180)
+    img = _fig_to_pil(fig)
+    assert img.size[0] == img.size[1]

@@ -91,7 +91,7 @@ def _metric_card(ax, x, y, w, h, label, value, color, sub=''):
 
 # ── Weekly Performance Card ──────────────────────────────────────
 
-def make_weekly_card(data):
+def make_weekly_card(data, recovery_day: int = 0, recovery_total: int = 180):
     from instagram.composer import load_background, gradient_panel
     from pathlib import Path
 
@@ -128,6 +128,19 @@ def make_weekly_card(data):
             f'WEEKLY PERFORMANCE  ·  {datetime.now().strftime("%d %B %Y").upper()}',
             fontsize=16, color=MUTED, ha='left', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    # Recovery day badge — only when active
+    if recovery_day > 0:
+        badge_text = f'DAY {recovery_day}/{recovery_total}'
+        ax.add_patch(patches.FancyBboxPatch(
+            (0.64, 0.906), 0.30, 0.032,
+            boxstyle='round,pad=0.005',
+            facecolor=NAVY_S, edgecolor=RED, linewidth=1.2,
+            transform=ax.transAxes, zorder=7
+        ))
+        ax.text(0.79, 0.922, badge_text,
+                fontsize=14, fontweight='bold', color=RED, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=8)
 
     # Hero: gain %
     ax.text(0.06, 0.810, f'{gain_sign}{gain:.1f}%',

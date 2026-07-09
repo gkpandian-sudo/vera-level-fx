@@ -223,12 +223,12 @@ def main():
         caption     = daily_status(account, open_trades, lang=lang,
                                    recovery_day=recovery_day, recovery_total=recovery_total)
         if image_path is None:
-            fig = make_daily_card(data)
+            fig = make_daily_card(data, recovery_day=recovery_day, recovery_total=recovery_total)
     elif post_type == 'weekly':
         caption = weekly(account, lang=lang, recovery_day=recovery_day,
                          recovery_total=recovery_total, weekly_gain=weekly_gain)
         if image_path is None:
-            fig = make_weekly_card(data)
+            fig = make_weekly_card(data, recovery_day=recovery_day, recovery_total=recovery_total)
     elif post_type == 'monthly':
         # rebuild monthly_pnl for caption (Myfxbook MM/DD/YYYY dates)
         monthly_pnl = monthly_pnl_from_daily(data.get('dailyGain', []))

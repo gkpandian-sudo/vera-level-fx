@@ -69,7 +69,7 @@ def _fmt_price(p: float) -> str:
     return f'{p:.2f}' if p >= 10 else f'{p:.4f}'
 
 
-def make_daily_card(data: dict):
+def make_daily_card(data: dict, recovery_day: int = 0, recovery_total: int = 180):
     from instagram.composer import load_background, gradient_panel
     from pathlib import Path
 
@@ -188,6 +188,13 @@ def make_daily_card(data: dict):
             f'WR {win_rate:.0f}%  ·  PF {pf:.2f}  ·  {pips_fmt} pips  ·  verified on Myfxbook',
             fontsize=15, fontweight='bold', color=WHITE, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
+
+    if recovery_day > 0:
+        ax.text(0.5, bottom_y - 0.040,
+                f'DAY {recovery_day}/{recovery_total} REBUILD  ·  #180dayrebuild',
+                fontsize=13, color=RED, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6,
+                fontweight='bold')
 
     # CTA
     ax.text(0.5, 0.148, 'Verify every position  ·  Myfxbook #12044019',
