@@ -189,20 +189,13 @@ def make_weekly_card(data):
 def make_monthly_chart(data):
     daily = data.get('dailyGain', [])
 
-    monthly_pnl = {}
-    for item in daily:
-        date_s = item[0] if isinstance(item, list) else item.get('date', '')
-        val    = item[1] if isinstance(item, list) else item.get('value', 0)
-        try:
-            ds = str(date_s)
-            try:
-                dt = datetime.fromisoformat(ds[:10])
-            except ValueError:
-                dt = datetime.strptime(ds, '%m/%d/%Y')
-            key = dt.strftime('%b %y')
-            monthly_pnl[key] = monthly_pnl.get(key, 0) + float(val)
-        except Exception:
-            pass
+    # Use the same time-weighted formula as captions.py to keep image and caption consistent
+    import sys as _sys
+    from pathlib import Path as _Path
+    _sys.path.insert(0, str(_Path(__file__).parent.parent))
+    from captions import monthly_pnl_from_daily
+
+    monthly_pnl = monthly_pnl_from_daily(daily)
 
     keys = list(monthly_pnl.keys())[-12:]
     vals = [monthly_pnl[k] for k in keys]

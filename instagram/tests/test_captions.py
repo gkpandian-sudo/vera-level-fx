@@ -148,3 +148,18 @@ def test_milestone_no_projection():
     cap = milestone(SAMPLE_ACCOUNT, 'Balance hit $2,000')
     assert 'projected' not in cap.lower()
     assert 'guaranteed' not in cap.lower()
+
+def test_monthly_pnl_time_weighted_not_cumulative_sum():
+    """monthly_pnl_from_daily must produce time-weighted deltas, not cumulative sums."""
+    from captions import monthly_pnl_from_daily
+    # Jan end cumulative = 10%, Feb end cumulative = 15%
+    # Correct: Jan=10%, Feb=((115)/(110)-1)*100 ≈ 4.545%
+    # Wrong (old chart): Jan=10, Feb=15 (raw cumulative values)
+    data = [
+        ['01/31/2026', 10.0, 50],
+        ['02/28/2026', 15.0, 30],
+    ]
+    result = monthly_pnl_from_daily(data)
+    assert abs(result['Jan 26'] - 10.0) < 0.01
+    assert abs(result['Feb 26'] - 4.545) < 0.01
+    assert result['Feb 26'] < result['Jan 26']   # 4.5% not 15%
