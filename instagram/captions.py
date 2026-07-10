@@ -181,7 +181,8 @@ Max 1% risk per trade. Target 1:2.5+ RR.
 {wr_line}
 ⚡ Profit Factor: {pf:.2f}
 💹 Total Pips: +{pips:,}
-{_CTA_IB_BIO}{_CTA_VERIFY}{_tamil_line('weekly', lang)}
+{_CTA_IB_BIO}{_CTA_VERIFY}
+Green or red this week? Comment G or R — I pin the correct calls next Monday.{_tamil_line('weekly', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -208,6 +209,8 @@ def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
 
 Pre-defined entry conditions. No news-event overrides.
 All data from IC Markets live account, updated via authenticated API.
+
+Save this post. Next month adds one more row — green or red, it goes up on the 1st. Hold me to it.
 {_CTA_IB}{_CTA_VERIFY}{_tamil_line('monthly', lang)}
 
 {_RISK_DISCLAIMER}

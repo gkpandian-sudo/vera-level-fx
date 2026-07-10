@@ -280,3 +280,12 @@ def test_trust_explains_win_rate_with_rr():
     """Win rate without RR context is a scam metric — caption must pair them."""
     cap = trust(SAMPLE_ACCOUNT)
     assert '1:' in cap or 'RR' in cap or 'risk' in cap.lower()
+
+def test_weekly_has_prediction_cta():
+    cap = weekly(SAMPLE_ACCOUNT)
+    assert 'Comment G' in cap or 'Green or red' in cap.lower() or 'G or R' in cap
+
+def test_monthly_has_save_cta():
+    pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
+    cap = monthly(SAMPLE_ACCOUNT, pnl)
+    assert 'Save' in cap or 'save' in cap
