@@ -249,3 +249,23 @@ def test_weekly_hook_recovery_with_weekly_gain():
     first_line = cap.strip().split('\n')[0]
     assert '45/180' in first_line
     assert '-0.6%' in first_line
+
+
+def test_tags_has_campaign_hashtag_during_recovery():
+    cap = weekly(SAMPLE_ACCOUNT, recovery_day=45)
+    assert '#180dayrebuild' in cap
+
+def test_tags_no_campaign_when_no_recovery():
+    cap = weekly(SAMPLE_ACCOUNT, recovery_day=0)
+    assert '#180dayrebuild' not in cap
+
+def test_total_hashtag_count_weekly_no_recovery():
+    cap = weekly(SAMPLE_ACCOUNT, recovery_day=0)
+    tags_line = [l for l in cap.split('\n') if '#veralevelFX' in l][0]
+    count = tags_line.count('#')
+    assert count <= 9, f"Expected ≤9 hashtags, got {count}: {tags_line}"
+
+def test_edu_has_separate_edu_tags():
+    from edu_content import RISK_RULES
+    cap = edu('risk', RISK_RULES[0])
+    assert '#forexeducation' in cap or '#learnforex' in cap

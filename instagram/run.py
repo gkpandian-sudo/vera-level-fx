@@ -236,7 +236,7 @@ def main():
         if image_path is None:
             fig = make_monthly_chart(data)
     elif post_type == 'transparency':
-        caption = transparency(account, lang=lang)
+        caption = transparency(account, lang=lang, recovery_day=recovery_day)
         if image_path is None:
             fig = make_transparency_card(data)
     elif post_type == 'recovery-plan':
@@ -250,7 +250,7 @@ def main():
                                           recovery_total=recovery_total,
                                           recovery_start_str=recovery_start_str)
     else:
-        caption = trust(account, lang=lang)
+        caption = trust(account, lang=lang, recovery_day=recovery_day)
         if image_path is None:
             fig = make_winrate_card(data)
 

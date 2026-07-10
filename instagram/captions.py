@@ -28,14 +28,19 @@ _RISK_DISCLAIMER = (
     "Past performance is not indicative of future results. IB #91936."
 )
 
-# --- Hashtags (3-tier, no guru-signal tags) ---
-_TAGS_BRAND  = "#veralevelFX #icmarkets #myfxbook"
-_TAGS_NICHE  = "#xauusd #gold #eurusd #forexsingapore #sgtrader #forextrading"
-_TAGS_BROAD  = "#forex #forextrader #priceaction #tradingstrategy #algotrading"
-_TAGS_EDU    = "#forexeducation #riskmanagement #tradingpsychology #learnforex"
+# --- Hashtags (consolidated: 8 core + edu variant + campaign) ---
+_TAGS_BRAND    = "#veralevelFX #icmarkets #myfxbook"
+_TAGS_NICHE    = "#xauusd #gold #eurusd #forexsingapore #sgtrader"
+_TAGS_EDU_ONLY = "#forexeducation #riskmanagement #tradingpsychology #learnforex"
+_TAGS_REBUILD  = "#180dayrebuild"
 
-TAGS         = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_BROAD}"
-TAGS_EDU     = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_EDU}"
+TAGS      = f"{_TAGS_BRAND} {_TAGS_NICHE}"         # 8 tags: core posts
+TAGS_EDU  = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_EDU_ONLY}"  # 12 tags: edu posts
+
+
+def _rebuild_tag(recovery_day: int) -> str:
+    """Append campaign tag when account is in recovery mode."""
+    return f" {_TAGS_REBUILD}" if recovery_day > 0 else ""
 
 # Tamil summary lines (appended when lang='tamil')
 # Translation note: "Recovery Day", "PF", and metric labels may need transliteration
@@ -180,7 +185,7 @@ Max 1% risk per trade. Target 1:2.5+ RR.
 
 {_RISK_DISCLAIMER}
 
-{TAGS}"""
+{TAGS}{_rebuild_tag(recovery_day)}"""
 
 
 def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
@@ -309,10 +314,10 @@ Running record: {wr_line}
 
 {_RISK_DISCLAIMER}
 
-{TAGS}"""
+{TAGS}{_rebuild_tag(recovery_day)}"""
 
 
-def trust(account: dict, lang: str = 'en') -> str:
+def trust(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     wr     = account.get('winRate') or 0
     pf     = account.get('profitFactor') or 0
     gain   = account.get('gain') or 0
@@ -343,10 +348,10 @@ Verify: search "Vera Level" on Myfxbook.com
 
 {_RISK_DISCLAIMER}
 
-{TAGS}"""
+{TAGS}{_rebuild_tag(recovery_day)}"""
 
 
-def transparency(account: dict, lang: str = 'en') -> str:
+def transparency(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     bal  = account.get('balance') or 0
     gain = account.get('gain') or 0
     dd   = account.get('drawdown') or 0
@@ -376,7 +381,7 @@ The rebuild is live on Myfxbook.
 
 {_RISK_DISCLAIMER}
 
-{TAGS}"""
+{TAGS}{_rebuild_tag(recovery_day)}"""
 
 
 def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180,
@@ -416,7 +421,7 @@ Milestones: reported when reached — not before.
 
 {_RISK_DISCLAIMER}
 
-{TAGS}{tamil}"""
+{TAGS} {_TAGS_REBUILD}{tamil}"""
 
 
 def broker(lang: str = 'en') -> str:
