@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-07-09T22:50:00Z",
+  "fetchedAt": "2026-07-10T22:32:10Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
-    "gain": -96.42,
-    "absGain": -53.79,
-    "daily": -2.37,
-    "monthly": -51.01,
+    "gain": -96.4,
+    "absGain": -53.67,
+    "daily": -2.35,
+    "monthly": -50.77,
     "withdrawals": 1765,
     "deposits": 6201.08,
     "interest": -243.82,
-    "profit": -3333.53,
-    "balance": 1098.7,
+    "profit": -3326.36,
+    "balance": 1105.87,
     "drawdown": 98.27,
-    "equity": 1098.7,
+    "equity": 1105.87,
     "equityPercent": 100,
     "demo": false,
-    "lastUpdateDate": "07/09/2026 21:40",
+    "lastUpdateDate": "07/10/2026 20:04",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -347.26,
+    "commission": -347.94,
     "currency": "USD",
     "profitFactor": 0.76,
-    "pips": 25722,
+    "pips": 26223,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -36,6 +36,101 @@
   },
   "openTrades": [],
   "history": [
+    {
+      "openTime": "07/10/2026 17:52",
+      "closeTime": "07/10/2026 17:52",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 4103.19,
+      "closePrice": 4101.98,
+      "tp": 0,
+      "sl": 0,
+      "pips": 121,
+      "profit": 3.41,
+      "comment": "#4085714434|TOL LANGIT ETF - IV",
+      "interest": 0,
+      "commission": -0.22
+    },
+    {
+      "openTime": "07/10/2026 13:40",
+      "closeTime": "07/10/2026 13:41",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 4108.03,
+      "closePrice": 4107.82,
+      "tp": 0,
+      "sl": 0,
+      "pips": 21,
+      "profit": 0.41,
+      "comment": "#4085636720|TOL LANGIT ETF - IV",
+      "interest": 0,
+      "commission": -0.22
+    },
+    {
+      "openTime": "07/10/2026 07:10",
+      "closeTime": "07/10/2026 07:18",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4117.34,
+      "closePrice": 4120.79,
+      "tp": 0,
+      "sl": 4120.79,
+      "pips": 345,
+      "profit": 3.37,
+      "comment": "TOL LANGIT ETF - IX [S01][sl 4120.79]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "07/10/2026 06:57",
+      "closeTime": "07/10/2026 07:18",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4119.58,
+      "closePrice": 4120.79,
+      "tp": 0,
+      "sl": 4120.79,
+      "pips": 121,
+      "profit": 1.13,
+      "comment": "TOL LANGIT ETF - IX [S01][sl 4120.79]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "07/10/2026 06:48",
+      "closeTime": "07/10/2026 07:18",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4121.86,
+      "closePrice": 4120.79,
+      "tp": 0,
+      "sl": 4120.79,
+      "pips": -107,
+      "profit": -1.15,
+      "comment": "TOL LANGIT ETF - IX [S01][sl 4120.79]",
+      "interest": 0,
+      "commission": -0.08
+    },
     {
       "openTime": "07/09/2026 23:03",
       "closeTime": "07/09/2026 23:35",
@@ -700,101 +795,6 @@
       "comment": "#4084601574|TOL LANGIT ETF - IV",
       "interest": 0,
       "commission": -0.22
-    },
-    {
-      "openTime": "07/07/2026 04:27",
-      "closeTime": "07/07/2026 04:30",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.03"
-      },
-      "openPrice": 4130.31,
-      "closePrice": 4134.6,
-      "tp": 0,
-      "sl": 4134.57,
-      "pips": -429,
-      "profit": -13.09,
-      "comment": "TOL LANGIT ETF - VII_PendingE[sl 4134.57]",
-      "interest": 0,
-      "commission": -0.22
-    },
-    {
-      "openTime": "07/06/2026 23:00",
-      "closeTime": "07/07/2026 01:00",
-      "symbol": "CHFJPY",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 201.241,
-      "closePrice": 201.312,
-      "tp": 201.315,
-      "sl": 0,
-      "pips": 7.1,
-      "profit": 0.3,
-      "comment": "TOL LANGIT ETF - XI[tp 201.315]",
-      "interest": -0.06,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/06/2026 23:04",
-      "closeTime": "07/06/2026 23:30",
-      "symbol": "GBPAUD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 1.92534,
-      "closePrice": 1.92515,
-      "tp": 0,
-      "sl": 0,
-      "pips": 1.9,
-      "profit": 0.12,
-      "comment": "TOL LANGIT ETF - XI",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "07/06/2026 20:02",
-      "closeTime": "07/06/2026 20:17",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.03"
-      },
-      "openPrice": 4153.15,
-      "closePrice": 4151.97,
-      "tp": 0,
-      "sl": 0,
-      "pips": 118,
-      "profit": 3.32,
-      "comment": "#4084394986|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.22
-    },
-    {
-      "openTime": "07/06/2026 18:12",
-      "closeTime": "07/06/2026 18:13",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.03"
-      },
-      "openPrice": 4140.73,
-      "closePrice": 4140.23,
-      "tp": 0,
-      "sl": 0,
-      "pips": 50,
-      "profit": 1.28,
-      "comment": "#4084347836|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.22
     }
   ],
   "dailyGain": [
@@ -1242,6 +1242,11 @@
       "07/09/2026",
       -96.42,
       -23.85
+    ],
+    [
+      "07/10/2026",
+      -96.4,
+      7.17
     ]
   ]
 }
