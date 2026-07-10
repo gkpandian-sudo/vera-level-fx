@@ -244,7 +244,8 @@ def main():
                                 recovery_total=recovery_total,
                                 recovery_start_str=recovery_start_str,
                                 balance=float(account.get('balance') or 0),
-                                pf=float(account.get('profitFactor') or 0))
+                                pf=float(account.get('profitFactor') or 0),
+                                gain=float(account.get('gain') or -999.0))
         if image_path is None:
             fig = make_recovery_plan_card(data, recovery_day=recovery_day,
                                           recovery_total=recovery_total,

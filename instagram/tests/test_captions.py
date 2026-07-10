@@ -289,3 +289,25 @@ def test_monthly_has_save_cta():
     pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
     cap = monthly(SAMPLE_ACCOUNT, pnl)
     assert 'Save' in cap or 'save' in cap
+
+
+def test_recovery_plan_has_failure_condition():
+    cap = recovery_plan(recovery_day=45, recovery_total=180,
+                        recovery_start_str='2026-05-25', balance=1500.0, pf=0.9)
+    assert 'Day 180' in cap or 'final result' in cap.lower()
+
+def test_recovery_plan_has_milestone_checklist():
+    # PF < 1.0 → both PF milestones unchecked
+    cap = recovery_plan(recovery_day=45, recovery_total=180, pf=0.85, balance=1400.0)
+    assert '☐' in cap
+
+def test_recovery_plan_pf_milestone_checked_when_above_1():
+    # PF >= 1.0 → first PF milestone checked
+    cap = recovery_plan(recovery_day=45, recovery_total=180, pf=1.1, balance=1500.0)
+    assert '☑' in cap
+
+def test_recovery_plan_end_date_computed_from_start():
+    cap = recovery_plan(recovery_day=1, recovery_total=180,
+                        recovery_start_str='2026-05-25', balance=1200.0)
+    # 2026-05-25 + 179 days = 2026-11-20
+    assert 'Nov 2026' in cap or '20 Nov' in cap

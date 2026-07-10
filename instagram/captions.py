@@ -392,7 +392,8 @@ The rebuild is live on Myfxbook.
 
 
 def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180,
-                  recovery_start_str: str = '', balance: float = 0.0, pf: float = 0.0) -> str:
+                  recovery_start_str: str = '', balance: float = 0.0, pf: float = 0.0,
+                  gain: float = -999.0) -> str:
     """Actuals-only rebuild report. No projections, no targets."""
     tamil = (
         "\n\n📈 Rebuild live இருக்கு. "
@@ -414,6 +415,31 @@ def recovery_plan(lang: str = 'en', recovery_day: int = 0, recovery_total: int =
     else:
         pf_str = ''
 
+    # Milestone checklist — auto-computed from live pf and gain
+    def _ms(done: bool, label: str) -> str:
+        return f"{'☑' if done else '☐'} {label}"
+
+    checklist = '\n'.join([
+        _ms(pf >= 1.0,  'Profit Factor above 1.0'),
+        _ms(pf >= 1.2,  'Profit Factor 1.2+ (target)'),
+        _ms(gain >= 0,  'Total return back to breakeven'),
+        _ms(gain > 5,   'New equity high'),
+    ])
+
+    # Failure condition line with computed end date
+    if recovery_start_str and recovery_total > 0:
+        try:
+            from datetime import timedelta as _td
+            end_dt  = datetime.strptime(recovery_start_str, '%Y-%m-%d') + _td(days=recovery_total - 1)
+            end_str = end_dt.strftime('%d %b %Y')
+            commit_line = f"\nDay 180 is {end_str}. Final result posted — recovered or not. No quiet exit."
+        except Exception:
+            commit_line = f"\nDay {recovery_total} · Final result posted — recovered or not."
+    elif recovery_total > 0:
+        commit_line = f"\nDay {recovery_total} · Final result posted — recovered or not."
+    else:
+        commit_line = ''
+
     return f"""📈 Rebuild · Vera Level FX
 
 {day_line}Every top-up and trade is live on Myfxbook. Nothing projected. Nothing hidden.
@@ -424,6 +450,12 @@ Position sizing: ATR-based, max 1% per trade.
 Monthly top-ups: documented on Myfxbook as they happen.
 Milestones: reported when reached — not before.
 {bal_str}{pf_str}
+
+MILESTONES
+{checklist}
+{commit_line}
+
+Full 180-day plan → pinned post.
 {_CTA_VERIFY}
 
 {_RISK_DISCLAIMER}
