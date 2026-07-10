@@ -269,3 +269,14 @@ def test_edu_has_separate_edu_tags():
     from edu_content import RISK_RULES
     cap = edu('risk', RISK_RULES[0])
     assert '#forexeducation' in cap or '#learnforex' in cap
+
+
+def test_trust_has_audit_steps():
+    cap = trust(SAMPLE_ACCOUNT)
+    # Must include numbered audit instructions
+    assert ('1.' in cap or '1️⃣' in cap) and ('2.' in cap or '2️⃣' in cap)
+
+def test_trust_explains_win_rate_with_rr():
+    """Win rate without RR context is a scam metric — caption must pair them."""
+    cap = trust(SAMPLE_ACCOUNT)
+    assert '1:' in cap or 'RR' in cap or 'risk' in cap.lower()

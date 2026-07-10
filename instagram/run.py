@@ -250,7 +250,7 @@ def main():
                                           recovery_total=recovery_total,
                                           recovery_start_str=recovery_start_str)
     else:
-        caption = trust(account, lang=lang, recovery_day=recovery_day)
+        caption = trust(account, lang=lang, recovery_day=recovery_day, recovery_total=recovery_total)
         if image_path is None:
             fig = make_winrate_card(data)
 

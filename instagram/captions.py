@@ -317,7 +317,7 @@ Running record: {wr_line}
 {TAGS}{_rebuild_tag(recovery_day)}"""
 
 
-def trust(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
+def trust(account: dict, lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180) -> str:
     wr     = account.get('winRate') or 0
     pf     = account.get('profitFactor') or 0
     gain   = account.get('gain') or 0
@@ -328,22 +328,26 @@ def trust(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     wr_str    = f'{wr:.0f}% win rate across {trades:,} trades.' if wr > 0 else 'Full trade history on Myfxbook.'
     gain_note = ' (deep drawdown, fully disclosed)' if gain < -50 else ''
     wr_line   = f'🎯 Win Rate: {wr:.0f}%' if wr > 0 else '🎯 Win Rate: Myfxbook #12044019'
+    win_rate  = wr
 
-    return f"""No screenshots. No cherry-picked months. One live account, one public link. Go break it.
+    days_str = f"Day {recovery_day}/{recovery_total} —" if recovery_day > 0 else ""
+    return f"""{days_str} Try to catch me lying. One live account, one public link. Go break it.
 
 ✅ Vera Level FX  ·  IC Markets  ·  Myfxbook #12044019
 
 {wr_str}
-Every trade on Myfxbook. Go check.
+{win_rate:.0f}% win rate alone is meaningless — scammers run 95% with martingale.
+Mine: 1:2.5 avg RR · max 1% risk per trade. That combination is the number that matters.
 
-Account type: Raw Spread. Broker: IC Markets. Regulation: ASIC + CySEC.
+HOW TO AUDIT — 3 steps
+1. Myfxbook.com → search "Vera Level" → confirm "Track Record Verified" + "Trading Privileges Verified" (broker-issued badges, not self-reported)
+2. Open Trades tab → updates live → cannot be edited after the fact
+3. Deposit History → every top-up visible → no hidden refills
 
 {wr_line}
 ⚡ Profit Factor: {pf:.2f}
 📈 Total Return: {sign}{gain:.1f}%{gain_note}
 💹 Pips: +{pips:,}
-
-Verify: search "Vera Level" on Myfxbook.com
 {_CTA_IB_BIO}{_CTA_VERIFY}{_tamil_line('trust', lang)}
 
 {_RISK_DISCLAIMER}
