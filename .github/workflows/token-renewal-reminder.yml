@@ -1,0 +1,49 @@
+name: META Token Renewal Reminder
+
+on:
+  schedule:
+    # Every 45 days at 09:00 SGT (01:00 UTC).
+    # GitHub Actions doesn't support "every N days" natively, so this fires
+    # on the 1st and 46th day-of-year equivalents. Adjust dates as needed after
+    # each renewal — the simplest approach is to re-trigger manually after renewing.
+    #
+    # Current schedule: fires on the 1st of Jan, Feb, Mar, Apr, May, Jun, Jul,
+    # Aug, Sep, Oct, Nov, Dec — effectively monthly as a safe approximation.
+    # For a true 45-day cadence, trigger manually after each renewal.
+    - cron: '0 1 1 * *'
+  workflow_dispatch:
+
+jobs:
+  remind:
+    name: Send Telegram reminder
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send META_ACCESS_TOKEN renewal reminder
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          MESSAGE="⚠️ <b>META_ACCESS_TOKEN Renewal Due</b>
+
+🔑 Your Instagram Meta API token expires every 60 days. Renew it NOW to keep @veralevel.fx posting automatically.
+
+<b>Steps (5 min):</b>
+1. Go to → developers.facebook.com/tools/explorer
+2. Select your app → Generate User Token → add <code>instagram_basic</code>, <code>instagram_content_publish</code>, <code>pages_read_engagement</code> permissions
+3. Exchange for a long-lived token (valid 60 days)
+4. Go to → github.com → vera-level-fx repo → Settings → Secrets → Actions
+5. Update <code>META_ACCESS_TOKEN</code> with the new value
+6. Trigger a test post: <code>gh workflow run insta-post.yml --field post_type=trust</code>
+
+⏰ <b>Do this within the next 15 days</b> to avoid any posting outage.
+
+— Vera Level FX Auto-Reminder"
+
+          curl -s -X POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"chat_id\": \"${TELEGRAM_CHAT_ID}\",
+              \"text\": $(echo "$MESSAGE" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))'),
+              \"parse_mode\": \"HTML\"
+            }"
