@@ -29,6 +29,10 @@ def stitch_videos(clip_paths: list[Path], out_path: Path) -> Path:
     finally:
         for c in clips:
             c.close()
+        try:
+            final.close()
+        except Exception:
+            pass
     return out_path
 
 
@@ -99,4 +103,8 @@ def composite_data_card(
             )
         finally:
             video.close()
+            try:
+                final.close()
+            except Exception:
+                pass
     return out_path
