@@ -1,7 +1,7 @@
 # instagram/tests/higgsfield/test_client.py
 import sys, os
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from higgsfield.client import (
@@ -11,18 +11,7 @@ from higgsfield.client import (
 
 
 def _fake_sdk_result(video_url='https://cdn.higgsfield.ai/test.mp4'):
-    m = MagicMock()
-    m.__getitem__ = lambda self, k: video_url if k == 'video' else None
     return {'video': video_url, 'images': [], 'status': 'done'}
-
-
-class FakeHFClient:
-    def subscribe(self, model, arguments):
-        return _fake_sdk_result()
-    def submit(self, model, arguments):
-        ctrl = MagicMock()
-        ctrl.poll_request_status.return_value = [_fake_sdk_result()]
-        return ctrl
 
 
 def test_generate_soul_clip_returns_url():

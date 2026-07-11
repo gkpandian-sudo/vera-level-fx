@@ -71,13 +71,19 @@ def generate_audio_track(*, script: str, voice_id: str = '') -> str:
     if voice_id:
         args['voice_id'] = voice_id
     result = _hf_subscribe('generate_audio', args)
-    return result.get('audio') or result.get('video', '')
+    url = result.get('audio') or result.get('video', '')
+    if not url:
+        raise ValueError(f'generate_audio_track: unexpected response shape: {result!r}')
+    return url
 
 # ── Virality ──────────────────────────────────────────────────────────────────
 def predict_virality(video_url: str) -> float:
     """Return virality score 0–100."""
     result = _hf_subscribe('virality_predictor', {'video_url': video_url})
-    return float(result.get('virality_score', result.get('score', 0)))
+    raw = result.get('virality_score', result.get('score'))
+    if raw is None:
+        raise ValueError(f'predict_virality: unexpected response shape: {result!r}')
+    return float(raw)
 
 # ── Tamil dubbing ─────────────────────────────────────────────────────────────
 def dub_to_tamil(video_url: str, *, voice_id: str = '') -> str:
