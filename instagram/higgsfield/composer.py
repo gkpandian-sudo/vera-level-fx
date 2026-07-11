@@ -20,11 +20,15 @@ def download_video(url: str, dest: Path) -> Path:
 
 def stitch_videos(clip_paths: list[Path], out_path: Path) -> Path:
     """Concatenate MP4 clips in order. Returns out_path."""
+    if not clip_paths:
+        raise ValueError('clip_paths must not be empty')
     clips = [VideoFileClip(str(p)) for p in clip_paths]
-    final = concatenate_videoclips(clips, method='compose')
-    final.write_videofile(str(out_path), codec='libx264', audio_codec='aac', logger=None)
-    for c in clips:
-        c.close()
+    try:
+        final = concatenate_videoclips(clips, method='compose')
+        final.write_videofile(str(out_path), codec='libx264', audio_codec='aac', logger=None)
+    finally:
+        for c in clips:
+            c.close()
     return out_path
 
 
@@ -39,8 +43,12 @@ def add_audio_to_video(video_path: Path, audio_url: str, out_path: Path) -> Path
                     f.write(chunk)
         video = VideoFileClip(str(video_path))
         audio = AudioFileClip(str(audio_dest))
-        final = video.set_audio(audio)
-        final.write_videofile(str(out_path), codec='libx264', audio_codec='aac', logger=None)
+        try:
+            final = video.set_audio(audio)
+            final.write_videofile(str(out_path), codec='libx264', audio_codec='aac', logger=None)
+        finally:
+            audio.close()
+            video.close()
     return out_path
 
 
@@ -62,30 +70,33 @@ def composite_data_card(
         download_video(video_url, raw_path)
 
         video = VideoFileClip(str(raw_path))
-        W, H  = video.w, video.h
+        try:
+            W, H  = video.w, video.h
 
-        card_img = Image.open(data_card_path).convert('RGBA')
-        target_w = int(W * 0.90)
-        ratio    = target_w / card_img.width
-        target_h = int(card_img.height * ratio)
-        card_img = card_img.resize((target_w, target_h), Image.LANCZOS)
-        card_arr = np.array(card_img)
+            card_img = Image.open(data_card_path).convert('RGBA')
+            target_w = int(W * 0.90)
+            ratio    = target_w / card_img.width
+            target_h = int(card_img.height * ratio)
+            card_img = card_img.resize((target_w, target_h), Image.LANCZOS)
+            card_arr = np.array(card_img)
 
-        card_clip = (
-            ImageClip(card_arr, ismask=False)
-            .set_opacity(card_opacity)
-            .set_start(overlay_start)
-            .set_end(min(overlay_end, video.duration))
-            .set_position(('center', H // 2 - target_h // 2))
-            .crossfadein(0.3)
-        )
+            card_clip = (
+                ImageClip(card_arr, ismask=False)
+                .set_opacity(card_opacity)
+                .set_start(overlay_start)
+                .set_end(min(overlay_end, video.duration))
+                .set_position(('center', H * 3 // 4 - target_h // 2))
+                .crossfadein(0.3)
+            )
 
-        final = CompositeVideoClip([video, card_clip])
-        final.write_videofile(
-            str(out_path),
-            codec='libx264',
-            audio_codec='aac',
-            fps=video.fps,
-            logger=None,
-        )
+            final = CompositeVideoClip([video, card_clip])
+            final.write_videofile(
+                str(out_path),
+                codec='libx264',
+                audio_codec='aac',
+                fps=video.fps,
+                logger=None,
+            )
+        finally:
+            video.close()
     return out_path
