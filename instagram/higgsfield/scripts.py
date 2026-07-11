@@ -99,7 +99,7 @@ def build_script(
                    "Step one: go to the link in my bio — opening IC Markets directly won't link us. "
                    "Step two: choose Raw Spread. Step three: verify identity, ten minutes. "
                    "Step four: DM me DONE and I'll walk you through your first trade setup.")
-        cta = ("My referral link, IB number 91936. IC Markets pays me a small commission — "
+        cta = ("Link in bio, IB number 91936. IC Markets pays me a small commission — "
                "you pay nothing extra, spreads are identical either way. Full stop.")
 
     else:

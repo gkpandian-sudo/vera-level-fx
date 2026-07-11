@@ -31,18 +31,20 @@ def test_build_script_edu_proof_contains_myfxbook():
                      edu_type='risk', edu_content=SAMPLE_EDU)
     assert '12044019' in s.proof
 
-def test_build_script_edu_cta_contains_ib():
+def test_build_script_edu_cta_contains_save_and_bio():
     s = build_script('edu', account=SAMPLE_ACCOUNT,
                      edu_type='risk', edu_content=SAMPLE_EDU)
-    assert 'bio' in s.cta.lower() or 'ic' in s.cta.lower()
+    assert 'save' in s.cta.lower() and 'bio' in s.cta.lower()
 
 def test_build_script_trust_hook_is_challenge():
     s = build_script('trust', account=SAMPLE_ACCOUNT)
     assert 'screenshot' in s.hook.lower() or 'fake' in s.hook.lower() or 'audit' in s.hook.lower()
 
 def test_build_script_weekly_hook_contains_gain():
-    s = build_script('weekly', account=SAMPLE_ACCOUNT, weekly_gain=-1.2)
-    assert '-1.2' in s.hook or '1.2' in s.hook
+    neg = build_script('weekly', account=SAMPLE_ACCOUNT, weekly_gain=-1.2)
+    assert '-1.2' in neg.hook
+    pos = build_script('weekly', account=SAMPLE_ACCOUNT, weekly_gain=2.3)
+    assert '+2.3' in pos.hook
 
 def test_build_script_broker_hook_mentions_broker():
     s = build_script('broker', account=SAMPLE_ACCOUNT)
