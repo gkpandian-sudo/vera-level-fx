@@ -9,7 +9,7 @@ from edu_content import (
 
 
 def test_rotation_sequence_length():
-    assert len(ROTATION_SEQUENCE) == 12
+    assert len(ROTATION_SEQUENCE) == 14
 
 
 def test_get_edu_content_risk():
@@ -36,13 +36,13 @@ def test_get_edu_content_setup():
 
 def test_rotation_wraps_at_12():
     type_a, content_a = get_edu_content(0)
-    type_b, content_b = get_edu_content(12)
+    type_b, content_b = get_edu_content(14)
     assert type_a == type_b
     assert content_a == content_b
 
 
 def test_all_rotation_slots_valid():
-    for i in range(12):
+    for i in range(len(ROTATION_SEQUENCE)):
         post_type, content = get_edu_content(i)
         assert post_type in ("risk", "pairs", "setup")
         assert isinstance(content, dict)
