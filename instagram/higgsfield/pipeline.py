@@ -27,7 +27,11 @@ REEL_DIR    = ROOT / 'instagram' / 'reels'
 
 VIRALITY_THRESHOLD = float(os.environ.get('VIRALITY_THRESHOLD', '65'))
 MAX_RETRIES        = 2
-ROTATION_LEN       = 14  # patched in tests; overridden at runtime from edu_content
+try:
+    from edu_content import ROTATION_SEQUENCE as _ROTATION_SEQUENCE
+    ROTATION_LEN = len(_ROTATION_SEQUENCE)
+except ImportError:
+    ROTATION_LEN = 14  # fallback for test environments without edu_content on path
 
 
 def load_snapshot() -> dict:
@@ -78,9 +82,9 @@ def dub_to_tamil_video(en_video_url: str) -> str:
 def _make_data_card(reel_type: str, snapshot: dict, out_path: Path) -> None:
     """Render a static data card PNG using existing generate_*.py functions."""
     from generate import render_weekly_card, render_trust_card
-    if reel_type in ('trust', 'weekly', 'broker'):
+    if reel_type in ('weekly', 'broker'):
         img = render_weekly_card(snapshot)
-    else:
+    else:  # trust, edu
         img = render_trust_card(snapshot)
     img.save(str(out_path), 'JPEG', quality=92)
 
@@ -158,9 +162,6 @@ def run(
     # ── Build script + caption ────────────────────────────────────────────────
     next_idx = None
     if reel_type == 'edu':
-        from edu_content import ROTATION_SEQUENCE
-        global ROTATION_LEN
-        ROTATION_LEN = len(ROTATION_SEQUENCE)
         idx              = read_counter()
         edu_type, edu_ct = get_edu_content(idx)
         script           = build_script('edu', account=account,
