@@ -70,36 +70,59 @@ def register_script_text(script: str) -> None:
 
 
 # ── Image generation → Ken Burns MP4 ─────────────────────────────────────────
+def _branded_card_bytes() -> bytes:
+    """Branded navy card — guaranteed-free fallback when all AI image APIs fail."""
+    from PIL import ImageDraw
+    img  = Image.new('RGB', (_W, _H), color=(1, 14, 31))   # NAVY #010E1F
+    draw = ImageDraw.Draw(img)
+    draw.rectangle([(0, 0),    (_W, 10)], fill=(5, 150, 105))   # EMERALD top bar
+    draw.rectangle([(0, _H-10), (_W, _H)], fill=(5, 150, 105))  # EMERALD bottom bar
+    buf = io.BytesIO()
+    img.save(buf, format='JPEG', quality=95)
+    return buf.getvalue()
+
+
 def _generate_image_bytes(prompt: str) -> bytes:
-    """Call Imagen 3 and return image bytes; fallback to Gemini Flash image output."""
+    """Try Imagen 3 → Gemini Flash image → branded PIL card (always free fallback)."""
     client = _gemini()
     full_prompt = (
         f'Cinematic professional photography, vertical 9:16 portrait frame, '
         f'dramatic lighting, no text overlays. {prompt}'
     )
+
+    # Attempt 1: Imagen 3 (highest quality; requires billing credits)
     try:
         resp = client.models.generate_images(
             model='imagen-3.0-fast-generate-001',
             prompt=full_prompt,
-            config=types.GenerateImagesConfig(
-                number_of_images=1,
-                aspect_ratio='9:16',
-            ),
+            config=types.GenerateImagesConfig(number_of_images=1, aspect_ratio='9:16'),
         )
         return resp.generated_images[0].image.image_bytes
-    except Exception as e_imagen:
-        print(f'  [client] Imagen fallback ({e_imagen}); trying Gemini Flash image')
-        resp2 = client.models.generate_content(
-            model='gemini-2.0-flash-exp',
-            contents=f'Generate a photorealistic image: {full_prompt}',
-            config=types.GenerateContentConfig(
-                response_modalities=['TEXT', 'IMAGE'],
-            ),
-        )
-        for part in resp2.candidates[0].content.parts:
-            if part.inline_data is not None:
-                return part.inline_data.data
-        raise RuntimeError('No image returned from Gemini Flash fallback') from e_imagen
+    except Exception as e:
+        print(f'  [client] Imagen 3 unavailable ({type(e).__name__})')
+
+    # Attempt 2: Gemini Flash native image generation (free tier; v1alpha model)
+    for model_id in ('gemini-2.0-flash-exp-image-generation', 'gemini-2.0-flash-exp'):
+        try:
+            # gemini-2.0-flash-exp lives in v1alpha — pass api_version explicitly
+            alpha_client = genai.Client(
+                api_key=os.environ.get('GEMINI_API_KEY', ''),
+                http_options=types.HttpOptions(api_version='v1alpha'),
+            )
+            resp = alpha_client.models.generate_content(
+                model=model_id,
+                contents=f'Generate a photorealistic image, no text: {full_prompt}',
+                config=types.GenerateContentConfig(response_modalities=['TEXT', 'IMAGE']),
+            )
+            for part in resp.candidates[0].content.parts:
+                if part.inline_data is not None:
+                    return part.inline_data.data
+        except Exception as e:
+            print(f'  [client] {model_id} unavailable ({type(e).__name__})')
+
+    # Attempt 3: branded navy card — costs nothing, always works
+    print('  [client] using branded card fallback')
+    return _branded_card_bytes()
 
 
 def _ken_burns_mp4(image_bytes: bytes, duration: float = 12.0, fps: int = 24) -> str:
