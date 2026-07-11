@@ -109,6 +109,8 @@ def generate_reel(
         print('  [avatar] Path A — cinematic B-roll')
         clip_urls = _generate_cinematic_clips(script)
 
+    if not clip_urls:
+        raise RuntimeError('[avatar] no clips were generated — check Higgsfield API response')
     hook_url = clip_urls[0]
     _assemble(clip_urls, script, out_path, voice_id)
     return hook_url, out_path
