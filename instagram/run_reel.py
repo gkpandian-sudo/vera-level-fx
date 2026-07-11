@@ -122,9 +122,10 @@ def main():
     elif post_type == 'edu':
         from edu_content import get_edu_content
         from run         import read_counter, write_and_commit_counter
+        from edu_content import ROTATION_SEQUENCE
         idx               = read_counter()
         edu_type, content = get_edu_content(idx)
-        next_idx          = (idx + 1) % 12
+        next_idx          = (idx + 1) % len(ROTATION_SEQUENCE)
         clips             = make_edu_reel(edu_type, content)
         caption           = edu_caption(edu_type, content, lang=lang)
         write_and_commit_counter(next_idx)

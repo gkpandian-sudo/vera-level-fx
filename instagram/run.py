@@ -138,8 +138,11 @@ def commit_and_push(image_path: Path) -> str:
     ]
     for cmd in cmds:
         result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
-        if result.returncode != 0 and 'nothing to commit' not in result.stdout:
+        if result.returncode != 0:
+            if 'nothing to commit' in result.stdout or 'nothing to commit' in result.stderr:
+                continue
             print(result.stderr, file=sys.stderr)
+            raise RuntimeError(f'git command failed: {cmd[1]}')
 
     raw_url = f'https://raw.githubusercontent.com/{repo}/{branch}/{rel}'
     return raw_url
@@ -183,9 +186,10 @@ def main():
         from generate_edu import make_risk_post, make_pairs_post, make_setup_post
         from captions     import edu as edu_caption
 
+        from edu_content import ROTATION_SEQUENCE
         idx               = read_counter()
         edu_type, content = get_edu_content(idx)
-        next_idx          = (idx + 1) % 12
+        next_idx          = (idx + 1) % len(ROTATION_SEQUENCE)
 
         caption    = edu_caption(edu_type, content, lang=lang)
         image_path = pop_buffer('edu', edu_type)   # use buffered image if available
@@ -264,9 +268,9 @@ def main():
     image_url = commit_and_push(image_path)
     print(f'  url:   {image_url}')
 
-    # Give GitHub CDN ~20 s to propagate
+    # Give GitHub CDN ~35 s to propagate before Meta fetches the image
     print('  waiting for CDN…')
-    time.sleep(20)
+    time.sleep(35)
 
     publish(image_url, caption)
     print(f'Done — {post_type} post published.')
