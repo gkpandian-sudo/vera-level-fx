@@ -1,0 +1,111 @@
+# .github/workflows/higgsfield-reel.yml
+name: Higgsfield Avatar Reel
+
+on:
+  schedule:
+    # UTC times. SGT = UTC+8, so 07:00 SGT = 23:00 UTC previous day.
+    - cron: '0 23 * * 1'   # Tue 07:00 SGT — edu EN      (Mon UTC)
+    - cron: '0 23 * * 2'   # Wed 07:00 SGT — edu Tamil   (Tue UTC)
+    - cron: '0 23 * * 3'   # Thu 07:00 SGT — trust EN    (Wed UTC)
+    - cron: '0 23 * * 4'   # Fri 07:00 SGT — weekly EN   (Thu UTC)
+    - cron: '0 23 * * 5'   # Sat 07:00 SGT — trust EN    (Fri UTC)
+    - cron: '0 23 * * 6'   # Sun 07:00 SGT — trust Tamil (Sat UTC)
+    - cron: '0 23 1 * *'   # 1st of month 07:00 SGT — broker reel
+  workflow_dispatch:
+    inputs:
+      reel_type:
+        description: 'edu|trust|weekly|broker'
+        required: true
+        default: 'trust'
+      post_lang:
+        description: 'en|tamil'
+        required: false
+        default: 'en'
+
+concurrency:
+  group: higgsfield-reel
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  hf-reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: instagram/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r instagram/requirements.txt
+
+      - name: Resolve reel type and language
+        id: reel
+        env:
+          INPUT_REEL_TYPE: ${{ github.event.inputs.reel_type || '' }}
+          INPUT_LANG:      ${{ github.event.inputs.post_lang || 'en' }}
+          EVENT_NAME:      ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = "schedule" ]; then
+            DOW=$(date -u +%u)
+            case "$DOW" in
+              1) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+              2) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=tamil" >> "$GITHUB_OUTPUT" ;;
+              3) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+              4) echo "type=weekly" >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+              5) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+              6) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=tamil" >> "$GITHUB_OUTPUT" ;;
+              7) echo "type=broker" >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+              *) echo "type=skip"   >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+            esac
+          else
+            case "$INPUT_REEL_TYPE" in
+              edu|trust|weekly|broker)
+                echo "type=$INPUT_REEL_TYPE" >> "$GITHUB_OUTPUT"
+                echo "lang=$INPUT_LANG"       >> "$GITHUB_OUTPUT"
+                ;;
+              *)
+                echo "ERROR: Invalid reel_type '$INPUT_REEL_TYPE'" >&2; exit 1 ;;
+            esac
+          fi
+
+      - name: Generate and post Higgsfield reel
+        if: steps.reel.outputs.type != 'skip'
+        env:
+          REEL_TYPE:                  ${{ steps.reel.outputs.type }}
+          POST_LANG:                  ${{ steps.reel.outputs.lang }}
+          IG_USER_ID:                 ${{ secrets.IG_USER_ID }}
+          META_ACCESS_TOKEN:          ${{ secrets.META_ACCESS_TOKEN }}
+          HIGGSFIELD_API_KEY:         ${{ secrets.HIGGSFIELD_API_KEY }}
+          HIGGSFIELD_API_SECRET:      ${{ secrets.HIGGSFIELD_API_SECRET }}
+          HIGGSFIELD_SOUL_ID:         ${{ secrets.HIGGSFIELD_SOUL_ID }}
+          HIGGSFIELD_VOICE_EN_ID:     ${{ secrets.HIGGSFIELD_VOICE_EN_ID }}
+          HIGGSFIELD_VOICE_TAMIL_ID:  ${{ secrets.HIGGSFIELD_VOICE_TAMIL_ID }}
+          GITHUB_TOKEN:               ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY:          ${{ github.repository }}
+          RECOVERY_START:             ${{ secrets.RECOVERY_START }}
+          BRAND_IB_URL:               ${{ secrets.BRAND_IB_URL }}
+          BRAND_TELEGRAM:             ${{ secrets.BRAND_TELEGRAM }}
+        run: python instagram/higgsfield/pipeline.py
+
+      - name: Upload reel artifact
+        if: steps.reel.outputs.type != 'skip' && success()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: hf-reel-${{ github.run_id }}
+          path: instagram/reels/
+          retention-days: 14
