@@ -621,3 +621,26 @@ def make_recovery_plan_card(data=None, recovery_day: int = 0, recovery_total: in
             transform=ax.transAxes, fontfamily='monospace')
 
     return fig
+
+
+# ── PIL wrappers for pipeline.py data-card overlay ──────────────────────────
+
+def _fig_to_pil(fig) -> 'PIL.Image.Image':
+    """Convert a matplotlib Figure to a PIL Image (RGB)."""
+    import io as _io
+    from PIL import Image as _Image
+    buf = _io.BytesIO()
+    fig.savefig(buf, dpi=100, bbox_inches='tight', facecolor='#060F24', format='png')
+    plt.close(fig)
+    buf.seek(0)
+    return _Image.open(buf).convert('RGB').copy()
+
+
+def render_weekly_card(snapshot: dict) -> 'PIL.Image.Image':
+    """Return weekly performance card as a PIL Image."""
+    return _fig_to_pil(make_weekly_card(snapshot))
+
+
+def render_trust_card(snapshot: dict) -> 'PIL.Image.Image':
+    """Return win-rate/trust card as a PIL Image."""
+    return _fig_to_pil(make_winrate_card(snapshot))
