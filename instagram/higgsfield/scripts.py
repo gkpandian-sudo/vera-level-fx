@@ -42,6 +42,8 @@ def _edu_script(edu_type: str, edu_content: dict) -> tuple[str, str]:
         direction = edu_content.get('direction', '')
         rr        = edu_content.get('rr', '1:2.5')
         steps     = edu_content.get('steps', [])
+        if len(steps) < 3:
+            raise ValueError(f"setup edu_content requires at least 3 steps, got {len(steps)}")
         steps_str = ' '.join(f"Step {i+1}: {t} — {d}." for i, (t, d) in enumerate(steps[:3]))
         hook    = f"This exact setup on {pair} is behind every entry in my Myfxbook history. Here's the full checklist."
         content = f"{direction} setup, {rr} risk reward. {steps_str} Max risk one percent, ATR-sized, no exceptions."
@@ -81,8 +83,9 @@ def build_script(
         cta = _CTA_EN
 
     elif reel_type == 'weekly':
-        sign    = '+' if (weekly_gain or gain) >= 0 else ''
-        figure  = f"{sign}{weekly_gain:.1f}" if weekly_gain is not None else f"{sign}{gain:.1f}"
+        figure_val = weekly_gain if weekly_gain is not None else gain
+        sign       = '+' if figure_val >= 0 else ''
+        figure     = f"{sign}{figure_val:.1f}"
         hook    = f"{figure} percent this week. Here are the two trades that made it — and the one I wish I hadn't taken."
         content = (f"Same rules as every week: IC Markets Raw Spread, max one percent risk per trade, "
                    f"one point two five risk reward minimum or the trade doesn't happen. "
