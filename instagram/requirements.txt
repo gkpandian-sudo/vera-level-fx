@@ -3,4 +3,5 @@ numpy==1.26.4
 requests==2.31.0
 Pillow==10.3.0
 moviepy==1.0.3
-higgsfield-client
+google-genai>=1.0.0
+edge-tts>=6.1.0

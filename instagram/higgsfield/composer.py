@@ -9,7 +9,11 @@ from moviepy.editor import VideoFileClip, ImageClip, CompositeVideoClip, concate
 
 
 def download_video(url: str, dest: Path) -> Path:
-    """Stream-download url to dest. Returns dest."""
+    """Stream-download url to dest, or copy if url is a local path. Returns dest."""
+    if not url.startswith('http'):
+        import shutil
+        shutil.copy2(url, dest)
+        return dest
     with requests.get(url, stream=True, timeout=60) as r:
         r.raise_for_status()
         with open(dest, 'wb') as f:
@@ -36,15 +40,20 @@ def stitch_videos(clip_paths: list[Path], out_path: Path) -> Path:
     return out_path
 
 
-def add_audio_to_video(video_path: Path, audio_url: str, out_path: Path) -> Path:
-    """Download audio from audio_url and set it as the video's audio track. Returns out_path."""
+def add_audio_to_video(video_path: Path, audio_source: str, out_path: Path) -> Path:
+    """Mix audio onto video. audio_source may be a local file path or http/https URL."""
     with tempfile.TemporaryDirectory() as tmp:
-        audio_dest = Path(tmp) / 'audio.mp3'
-        with requests.get(audio_url, stream=True, timeout=60) as r:
-            r.raise_for_status()
-            with open(audio_dest, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=1 << 20):
-                    f.write(chunk)
+        suffix = Path(audio_source).suffix if not audio_source.startswith('http') else '.mp3'
+        audio_dest = Path(tmp) / f'audio{suffix}'
+        if audio_source.startswith('http'):
+            with requests.get(audio_source, stream=True, timeout=60) as r:
+                r.raise_for_status()
+                with open(audio_dest, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=1 << 20):
+                        f.write(chunk)
+        else:
+            import shutil
+            shutil.copy2(audio_source, audio_dest)
         video = VideoFileClip(str(video_path))
         audio = AudioFileClip(str(audio_dest))
         try:

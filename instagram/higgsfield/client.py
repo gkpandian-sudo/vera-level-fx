@@ -1,95 +1,35 @@
 # instagram/higgsfield/client.py
-"""Thin wrapper around higgsfield-client SDK.
-Nothing outside this module imports higgsfield_client directly — keeps mocking simple."""
-import os
+"""Provider router: Gemini (free) when GEMINI_API_KEY is set, Higgsfield (paid) otherwise.
 
-# ── SDK bootstrap ─────────────────────────────────────────────────────────────
-def _init_sdk():
-    import higgsfield_client as _sdk
-    key    = os.environ.get('HIGGSFIELD_API_KEY', '')
-    secret = os.environ.get('HIGGSFIELD_API_SECRET', '')
-    if key and secret:
-        os.environ.setdefault('HF_KEY', f'{key}:{secret}')
-    return _sdk
+To use Gemini:    set GEMINI_API_KEY in GitHub secrets.
+To use Higgsfield: unset GEMINI_API_KEY, set HIGGSFIELD_API_KEY + HIGGSFIELD_API_SECRET.
+Both keys present: Gemini wins (free takes priority).
+"""
+import os as _os
 
-# ── Internal helper called by every public function ───────────────────────────
-def _hf_subscribe(model: str, arguments: dict) -> dict:
-    sdk = _init_sdk()
-    return sdk.subscribe(model, arguments=arguments)
+_BACKEND = 'gemini' if _os.environ.get('GEMINI_API_KEY') else 'higgsfield'
+print(f'  [client] backend={_BACKEND}')
 
-# ── Path B: Soul Cinema (talking head) ───────────────────────────────────────
-_MODEL_SOUL  = 'soul_cinema_studio'
+if _BACKEND == 'gemini':
+    from higgsfield._client_gemini import (  # noqa: F401
+        register_script_text,
+        generate_cinematic_clip,
+        generate_audio_track,
+        predict_virality,
+        dub_to_tamil,
+        get_soul_id,
+        generate_soul_clip,
+    )
+else:
+    from higgsfield._client_hf import (  # noqa: F401
+        generate_cinematic_clip,
+        generate_audio_track,
+        predict_virality,
+        dub_to_tamil,
+        get_soul_id,
+        generate_soul_clip,
+    )
 
-def get_soul_id() -> str:
-    soul_id = os.environ.get('HIGGSFIELD_SOUL_ID', '')
-    if not soul_id:
-        raise EnvironmentError(
-            'HIGGSFIELD_SOUL_ID not set. Run Task 10 (Soul training) first.'
-        )
-    return soul_id
-
-def generate_soul_clip(
-    *,
-    prompt: str,
-    soul_id: str,
-    duration: int = 15,
-    aspect_ratio: str = '9:16',
-) -> str:
-    """Generate one ≤15s Soul Cinema clip. Returns video URL."""
-    result = _hf_subscribe(_MODEL_SOUL, {
-        'prompt':       prompt,
-        'soul_id':      soul_id,
-        'duration':     duration,
-        'aspect_ratio': aspect_ratio,
-    })
-    return result['video']
-
-# ── Path A: Cinematic B-roll (fallback) ──────────────────────────────────────
-_MODEL_CINEMA = 'cinematic_studio_video_v2'
-
-def generate_cinematic_clip(
-    *,
-    prompt: str,
-    duration: int = 12,
-    aspect_ratio: str = '9:16',
-    genre: str = 'drama',
-) -> str:
-    """Generate one ≤12s cinematic B-roll clip. Returns video URL."""
-    result = _hf_subscribe(_MODEL_CINEMA, {
-        'prompt':       prompt,
-        'duration':     duration,
-        'aspect_ratio': aspect_ratio,
-        'genre':        genre,
-        'sound':        'off',  # voiceover added separately
-    })
-    return result['video']
-
-# ── Audio ─────────────────────────────────────────────────────────────────────
-def generate_audio_track(*, script: str, voice_id: str = '') -> str:
-    """Generate voiceover audio from script text. Returns audio URL."""
-    args = {'prompt': script}
-    if voice_id:
-        args['voice_id'] = voice_id
-    result = _hf_subscribe('generate_audio', args)
-    url = result.get('audio') or result.get('video', '')
-    if not url:
-        raise ValueError(f'generate_audio_track: unexpected response shape: {result!r}')
-    return url
-
-# ── Virality ──────────────────────────────────────────────────────────────────
-def predict_virality(video_url: str) -> float:
-    """Return virality score 0–100."""
-    result = _hf_subscribe('virality_predictor', {'video_url': video_url})
-    raw = result.get('virality_score', result.get('score'))
-    if raw is None:
-        raise ValueError(f'predict_virality: unexpected response shape: {result!r}')
-    return float(raw)
-
-# ── Tamil dubbing ─────────────────────────────────────────────────────────────
-def dub_to_tamil(video_url: str, *, voice_id: str = '') -> str:
-    """Dub video to Tamil. Returns dubbed video URL."""
-    args = {'video_url': video_url, 'target_language': 'tamil'}
-    if voice_id:
-        args['voice_id'] = voice_id
-    result = _hf_subscribe('dubbing', args)
-    return result.get('video') or result.get('video_url', '')
+    def register_script_text(script: str) -> None:  # noqa: F811
+        """No-op for Higgsfield backend — dubbing uses the API, not a local script stash."""
+        pass
