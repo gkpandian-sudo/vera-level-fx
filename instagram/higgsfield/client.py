@@ -87,22 +87,3 @@ def dub_to_tamil(video_url: str, *, voice_id: str = '') -> str:
         args['voice_id'] = voice_id
     result = _hf_subscribe('dubbing', args)
     return result.get('video') or result.get('video_url', '')
-
-# ── Class Wrapper for compatibility/mocking ───────────────────────────────────
-class HiggsfieldClient:
-    def __init__(self, api_key: str | None = None):
-        self.api_key = api_key or os.environ.get('HIGGSFIELD_API_KEY', '')
-
-    def predict_virality(self, video_url: str) -> float:
-        return predict_virality(video_url)
-
-    def dub_video(self, video_url: str, target_language: str = 'tamil', voice_id: str = '', timeout_s: int = 180) -> str:
-        return dub_to_tamil(video_url, voice_id=voice_id)
-
-    def generate_video(self, *args, **kwargs) -> str:
-        # Placeholder for mock tests that check generate_video calls
-        return "job_placeholder"
-
-    def poll_job(self, *args, **kwargs) -> dict:
-        # Placeholder for mock tests that check poll_job calls
-        return {"video_url": "https://cdn.higgsfield.ai/test.mp4", "status": "done"}
