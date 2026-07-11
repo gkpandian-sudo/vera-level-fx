@@ -61,17 +61,21 @@ jobs:
           EVENT_NAME:      ${{ github.event_name }}
         run: |
           if [ "$EVENT_NAME" = "schedule" ]; then
+            DOM=$(date -u +%d)
             DOW=$(date -u +%u)
-            case "$DOW" in
-              1) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
-              2) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=tamil" >> "$GITHUB_OUTPUT" ;;
-              3) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
-              4) echo "type=weekly" >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
-              5) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
-              6) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=tamil" >> "$GITHUB_OUTPUT" ;;
-              7) echo "type=broker" >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
-              *) echo "type=skip"   >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
-            esac
+            if [ "$DOM" = "01" ]; then
+              echo "type=broker" >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT"
+            else
+              case "$DOW" in
+                1) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+                2) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=tamil" >> "$GITHUB_OUTPUT" ;;
+                3) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+                4) echo "type=weekly" >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+                5) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+                6) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=tamil" >> "$GITHUB_OUTPUT" ;;
+                *) echo "type=skip"   >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+              esac
+            fi
           else
             case "$INPUT_REEL_TYPE" in
               edu|trust|weekly|broker)
