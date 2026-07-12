@@ -29,7 +29,10 @@ def stitch_videos(clip_paths: list[Path], out_path: Path) -> Path:
     clips = [VideoFileClip(str(p)) for p in clip_paths]
     try:
         final = concatenate_videoclips(clips, method='compose')
-        final.write_videofile(str(out_path), codec='libx264', audio_codec='aac', logger=None)
+        final.write_videofile(
+            str(out_path), codec='libx264', audio_codec='aac', logger=None,
+            ffmpeg_params=['-pix_fmt', 'yuv420p'],
+        )
     finally:
         for c in clips:
             c.close()
@@ -58,7 +61,10 @@ def add_audio_to_video(video_path: Path, audio_source: str, out_path: Path) -> P
         audio = AudioFileClip(str(audio_dest))
         try:
             final = video.set_audio(audio)
-            final.write_videofile(str(out_path), codec='libx264', audio_codec='aac', logger=None)
+            final.write_videofile(
+                str(out_path), codec='libx264', audio_codec='aac', logger=None,
+                ffmpeg_params=['-pix_fmt', 'yuv420p'],
+            )
         finally:
             audio.close()
             video.close()
@@ -71,11 +77,13 @@ def composite_data_card(
     out_path: Path,
     overlay_start: float = 3.0,
     overlay_end: float = 25.0,
-    card_opacity: float = 0.92,
+    card_opacity: float = 0.88,
 ) -> Path:
     """Download video_url, overlay data_card_path PNG from overlay_start to overlay_end.
 
-    Card is centred vertically in the lower half of the frame, fades in over 0.3s.
+    Portrait videos (H > W, i.e. Reels 9:16): card scaled to 32% width, pinned
+    bottom-right corner — leaves the full animation visible.
+    Landscape videos: card scaled to 90% width, centred in lower half (original behaviour).
     Returns out_path (MP4).
     """
     with tempfile.TemporaryDirectory() as tmp:
@@ -85,30 +93,39 @@ def composite_data_card(
         video = VideoFileClip(str(raw_path))
         try:
             W, H  = video.w, video.h
+            is_portrait = H > W
 
             card_img = Image.open(data_card_path).convert('RGBA')
-            target_w = int(W * 0.90)
+            # Portrait reels: small corner badge; landscape: large centred overlay
+            target_w = int(W * 0.32) if is_portrait else int(W * 0.90)
             ratio    = target_w / card_img.width
             target_h = int(card_img.height * ratio)
             card_img = card_img.resize((target_w, target_h), Image.LANCZOS)
             card_arr = np.array(card_img)
+
+            if is_portrait:
+                # Bottom-right corner with 20px padding so it doesn't obscure the animation
+                pos = (W - target_w - 20, H - target_h - 20)
+            else:
+                pos = ('center', H * 3 // 4 - target_h // 2)
 
             card_clip = (
                 ImageClip(card_arr, ismask=False)
                 .set_opacity(card_opacity)
                 .set_start(overlay_start)
                 .set_end(min(overlay_end, video.duration))
-                .set_position(('center', H * 3 // 4 - target_h // 2))
+                .set_position(pos)
                 .crossfadein(0.3)
             )
 
-            final = CompositeVideoClip([video, card_clip])
+            final = CompositeVideoClip([video, card_clip], size=(W, H))
             final.write_videofile(
                 str(out_path),
                 codec='libx264',
                 audio_codec='aac',
                 fps=video.fps,
                 logger=None,
+                ffmpeg_params=['-pix_fmt', 'yuv420p'],
             )
         finally:
             video.close()

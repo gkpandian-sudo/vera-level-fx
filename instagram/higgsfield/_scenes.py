@@ -93,7 +93,10 @@ def _write_to_mp4(make_frame_fn, duration: float, fps: int = 24) -> str:
     clip = VideoClip(make_frame_fn, duration=duration).set_fps(fps)
     tmp = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
     tmp.close()
-    clip.write_videofile(tmp.name, codec='libx264', audio=False, logger=None)
+    clip.write_videofile(
+        tmp.name, codec='libx264', audio=False, logger=None,
+        ffmpeg_params=['-pix_fmt', 'yuv420p'],
+    )
     clip.close()
     return tmp.name
 
