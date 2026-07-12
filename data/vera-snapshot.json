@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-07-11T22:21:21Z",
+  "fetchedAt": "2026-07-12T14:43:48Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -96.4,
     "absGain": -53.67,
-    "daily": -2.33,
+    "daily": -2.31,
     "monthly": -50.71,
     "withdrawals": 1765,
     "deposits": 6201.08,
@@ -17,7 +17,7 @@
     "equity": 1106.13,
     "equityPercent": 100,
     "demo": false,
-    "lastUpdateDate": "07/11/2026 19:05",
+    "lastUpdateDate": "07/12/2026 10:57",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
