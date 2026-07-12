@@ -81,9 +81,8 @@ def composite_data_card(
 ) -> Path:
     """Download video_url, overlay data_card_path PNG from overlay_start to overlay_end.
 
-    Portrait videos (H > W, i.e. Reels 9:16): card scaled to 32% width, pinned
-    bottom-right corner — leaves the full animation visible.
-    Landscape videos: card scaled to 90% width, centred in lower half (original behaviour).
+    Card scaled to 32% width, pinned bottom-right corner — leaves the animation visible.
+    Raises ValueError if the video is not 9:16 portrait.
     Returns out_path (MP4).
     """
     with tempfile.TemporaryDirectory() as tmp:
@@ -95,22 +94,16 @@ def composite_data_card(
             W, H  = video.w, video.h
             if abs(W / H - 9 / 16) > 0.02:
                 raise ValueError(f'Video is not 9:16 ({W}×{H}) — Instagram Reels require portrait 1080×1920')
-            is_portrait = H > W
-
             card_img = Image.open(data_card_path).convert('RGBA')
-            # Portrait reels: small corner badge; landscape: large centred overlay
-            target_w = int(W * 0.32) if is_portrait else int(W * 0.90)
+            target_w = int(W * 0.32)
             ratio    = target_w / card_img.width
             target_h = int(card_img.height * ratio)
             card_img = card_img.resize((target_w, target_h), Image.LANCZOS)
             card_arr = np.array(card_img)
 
-            if is_portrait:
-                # Bottom-right corner with 20px padding so it doesn't obscure the animation
-                pos = (W - target_w - 20, H - target_h - 20)
-            else:
-                pos = ('center', H * 3 // 4 - target_h // 2)
+            pos = (W - target_w - 20, H - target_h - 20)
 
+            overlay_start = min(overlay_start, max(0.0, video.duration - 0.1))
             card_clip = (
                 ImageClip(card_arr, ismask=False)
                 .set_opacity(card_opacity)
@@ -121,7 +114,7 @@ def composite_data_card(
             )
 
             final = CompositeVideoClip([video, card_clip], size=(W, H))
-            safe_fps = max(23, min(int(video.fps or 24), 60))
+            safe_fps = max(23, min(round(video.fps or 24), 60))
             final.write_videofile(
                 str(out_path),
                 codec='libx264',
