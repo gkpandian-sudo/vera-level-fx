@@ -99,27 +99,9 @@ def _write_to_mp4(make_frame_fn, duration: float, fps: int = 24) -> str:
 
 
 def _monthly_pnl(daily_gain: list) -> dict[str, float]:
-    """Compute month→total-gain-% from dailyGain list (MM/DD/YYYY format)."""
-    totals: dict[str, list] = {}
-    for d in daily_gain:
-        date_str = d.get('date', '')
-        try:
-            parts = date_str.split('/')
-            key = f"{parts[2]}-{parts[0].zfill(2)}"  # YYYY-MM
-        except Exception:
-            continue
-        try:
-            totals.setdefault(key, []).append(float(d.get('value', 0)))
-        except ValueError:
-            pass
-    # Use the last value per month as the month-end cumulative gain
-    monthly = {}
-    prev = 0.0
-    for k in sorted(totals):
-        last = totals[k][-1] if totals[k] else prev
-        monthly[k] = round(last - prev, 2)
-        prev = last
-    return monthly
+    """Delegate to captions.monthly_pnl_from_daily — handles list-of-lists format."""
+    from captions import monthly_pnl_from_daily
+    return monthly_pnl_from_daily(daily_gain)
 
 
 # ── Scene 0: Performance ──────────────────────────────────────────────────────
@@ -245,15 +227,13 @@ def make_equity_clip(duration: float = 12.0) -> str:
     acct  = snap.get('account', {})
     gain  = float(acct.get('gain', 0))
 
-    # Build cumulative gain series
+    # dailyGain rows are [date, cumulative_gain_%, profit_$] — d[1] is already cumulative
     cumulative = []
-    total = 0.0
     for d in daily:
         try:
-            total += float(d.get('value', 0))
-        except ValueError:
+            cumulative.append(float(d[1] if isinstance(d, list) else d.get('value', 0)))
+        except (ValueError, IndexError):
             pass
-        cumulative.append(total)
     if not cumulative:
         cumulative = [0.0, gain]
     n = len(cumulative)
