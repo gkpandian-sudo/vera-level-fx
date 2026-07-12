@@ -89,6 +89,18 @@ vera-level-fx/
 | `MUAPI_API_KEY` | Muapi.ai API key — enables Path C AI-animated card reels | Never |
 | `HUGGING_FACE_TOKEN` | HF token — improves ZeroGPU queue priority for Path D (optional) | Never |
 | `HF_I2V_SPACE` | Repository variable (not secret) — HF Space id for Path D, e.g. `Lightricks/ltx-video-distilled` | — |
+
+## Reel Clip Path Priority (ai-reel.yml)
+
+| Priority | Env var | Path | What it does |
+|----------|---------|------|--------------|
+| 1 | `MUAPI_API_KEY` | C | Muapi I2V AI-animated cards (~$0.45/reel) |
+| 2 | `HIGGSFIELD_SOUL_ID` | B | Soul talking-head avatar |
+| 3 | `HF_I2V_SPACE` | D | HuggingFace ZeroGPU I2V (free, unreliable) |
+| 4 | `MOTION_GRAPHICS=1` | **E** | **Programmatic data animation (default — free, deterministic)** |
+| 5 | _(none)_ | A | Ken Burns slow-zoom on static card |
+
+Path E is hardcoded `MOTION_GRAPHICS: '1'` in `ai-reel.yml`. Performance card bars grow sequentially, equity curve draws itself with fill, trust arc sweeps from 0 to win rate. No external service, no cost.
 | `BRAND_TELEGRAM` | t.me/pandiangk | Never |
 | `BRAND_WEBSITE` | vera-level-forex.vercel.app | Never |
 | `BRAND_IB_URL` | IC Markets IB URL | Never |

@@ -16,7 +16,10 @@ from higgsfield.client import (
 )
 from higgsfield.scripts import ReelScript
 from higgsfield.composer import download_video, stitch_videos, add_audio_to_video
-from higgsfield._scenes import make_performance_clip, make_equity_clip, make_trust_clip
+from higgsfield._scenes import (
+    make_performance_clip, make_equity_clip, make_trust_clip,
+    make_performance_clip_motion, make_equity_clip_motion, make_trust_clip_motion,
+)
 
 
 # ── Prompt builders ──────────────────────────────────────────────────────────
@@ -59,9 +62,18 @@ def _generate_soul_clips(script: ReelScript, soul_id: str) -> list[str]:
 def _generate_cinematic_clips(script: ReelScript) -> list[str]:
     """Generate 3 animated portrait clips from live account data. Returns local MP4 paths."""
     return [
-        make_performance_clip(duration=12),   # gain counter + monthly bars
-        make_equity_clip(duration=12),        # equity curve drawing itself
-        make_trust_clip(duration=12),         # win rate circle + metrics
+        make_performance_clip(duration=12),
+        make_equity_clip(duration=12),
+        make_trust_clip(duration=12),
+    ]
+
+
+def _generate_motion_clips(_script: ReelScript) -> list[str]:
+    """Path E — programmatic motion graphics. No AI service needed."""
+    return [
+        make_performance_clip_motion(duration=15),
+        make_equity_clip_motion(duration=12),
+        make_trust_clip_motion(duration=15),
     ]
 
 
@@ -173,9 +185,10 @@ def generate_reel(
     # Stash script text so dub_to_tamil() can translate it later
     register_script_text(script.full_text)
 
-    muapi_key = os.environ.get('MUAPI_API_KEY', '')
-    soul_id   = os.environ.get('HIGGSFIELD_SOUL_ID', '')
-    hf_space  = os.environ.get('HF_I2V_SPACE', '')
+    muapi_key    = os.environ.get('MUAPI_API_KEY', '')
+    soul_id      = os.environ.get('HIGGSFIELD_SOUL_ID', '')
+    hf_space     = os.environ.get('HF_I2V_SPACE', '')
+    motion_cards = os.environ.get('MOTION_GRAPHICS', '')
     if muapi_key:
         print('  [avatar] Path C — Muapi AI-animated cards')
         clip_paths = _generate_muapi_clips(script)
@@ -189,6 +202,9 @@ def generate_reel(
         except Exception as e:
             print(f'  [avatar] Path D failed ({e}), falling back to Ken Burns')
             clip_paths = _generate_cinematic_clips(script)
+    elif motion_cards:
+        print('  [avatar] Path E — programmatic motion graphics')
+        clip_paths = _generate_motion_clips(script)
     else:
         print('  [avatar] Path A — cinematic B-roll (Ken Burns)')
         clip_paths = _generate_cinematic_clips(script)

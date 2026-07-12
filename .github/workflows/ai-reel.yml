@@ -94,6 +94,7 @@ jobs:
           IG_USER_ID:        ${{ secrets.IG_USER_ID }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          MOTION_GRAPHICS:    '1'
           MUAPI_API_KEY:      ${{ secrets.MUAPI_API_KEY }}
           HF_I2V_SPACE:      ${{ vars.HF_I2V_SPACE }}
           HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
