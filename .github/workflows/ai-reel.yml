@@ -2,14 +2,8 @@ name: AI Reel Auto-Post
 
 on:
   schedule:
-    # UTC times. SGT = UTC+8, so 07:00 SGT = 23:00 UTC previous day.
-    - cron: '0 23 * * 1'   # Tue 07:00 SGT — edu EN      (Mon UTC)
-    - cron: '0 23 * * 2'   # Wed 07:00 SGT — edu EN      (Tue UTC)  [Tamil disabled — top up Gemini credits to re-enable]
-    - cron: '0 23 * * 3'   # Thu 07:00 SGT — trust EN    (Wed UTC)
-    - cron: '0 23 * * 4'   # Fri 07:00 SGT — weekly EN   (Thu UTC)
-    - cron: '0 23 * * 5'   # Sat 07:00 SGT — trust EN    (Fri UTC)
-    - cron: '0 23 * * 6'   # Sun 07:00 SGT — trust EN    (Sat UTC)  [Tamil disabled — top up Gemini credits to re-enable]
-    - cron: '0 23 1 * *'   # 1st of month 07:00 SGT — broker reel
+    # 03:30 SGT daily = 19:30 UTC previous day
+    - cron: '30 19 * * *'  # Every day 03:30 SGT — type resolved by day-of-week below
   workflow_dispatch:
     inputs:
       reel_type:
@@ -66,13 +60,14 @@ jobs:
               echo "type=broker" >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT"
             else
               case "$DOW" in
-                1) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;
-                2) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # tamil disabled — top up Gemini credits to re-enable
-                3) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;
-                4) echo "type=weekly" >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;
-                5) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;
-                6) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # tamil disabled — top up Gemini credits to re-enable
-                *) echo "type=skip"   >> "$GITHUB_OUTPUT"; echo "lang=en"    >> "$GITHUB_OUTPUT" ;;
+                1) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # Mon UTC → Tue SGT
+                2) echo "type=edu"    >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # Tue UTC → Wed SGT  [Tamil disabled]
+                3) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # Wed UTC → Thu SGT
+                4) echo "type=weekly" >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # Thu UTC → Fri SGT
+                5) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # Fri UTC → Sat SGT
+                6) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # Sat UTC → Sun SGT  [Tamil disabled]
+                7) echo "type=trust"  >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;  # Sun UTC → Mon SGT
+                *) echo "type=skip"   >> "$GITHUB_OUTPUT"; echo "lang=en" >> "$GITHUB_OUTPUT" ;;
               esac
             fi
           else
