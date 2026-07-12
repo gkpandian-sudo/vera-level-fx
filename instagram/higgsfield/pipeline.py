@@ -187,7 +187,7 @@ def run(
 
     # ── Generate + virality gate ───────────────────────────────────────────────
     print(f'  [pipeline] generating {reel_type} ({lang})')
-    hook_url, _ = _generate_with_virality_gate(script, out_path, reel_type, voice_id)
+    _generate_with_virality_gate(script, out_path, reel_type, voice_id)
 
     # ── Thumbnail for Instagram cover image ───────────────────────────────────
     _make_data_card(reel_type, snapshot, thumb_path)
