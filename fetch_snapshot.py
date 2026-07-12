@@ -72,9 +72,11 @@ def main():
     print(f"  {len(open_trades)} open positions")
 
     # ── Full trade history ────────────────────────────────────────
+    # Pass start/end to fetch full history (not just the default 40-entry cap)
     print("Fetching full trade history ...")
     history = api('get-history.json', {
-        'session': session, 'id': MYFX_ID
+        'session': session, 'id': MYFX_ID,
+        'start': START, 'end': end,
     }).get('history', [])
     print(f"  {len(history)} history entries")
 
@@ -85,16 +87,22 @@ def main():
     except Exception:
         pass
 
-    # ── Always compute trades + winRate from full history (API summary may be incomplete) ──
+    # ── Reconcile trades count and winRate ─────────────────────────
+    # get-my-accounts.json returns lifetime totals; get-history.json may be capped.
+    # Trust the account summary for trades count; only fill gaps from history.
     if history:
         closed  = [t for t in history if t.get('profit') is not None]
         winners = [t for t in closed if float(t.get('profit', 0)) > 0]
-        history_trades  = len(closed)
-        history_wr      = round(100 * len(winners) / len(closed), 1) if closed else 0
-        api_trades      = acct.get('trades') or 0
-        acct['trades']  = history_trades
-        acct['winRate'] = history_wr
-        print(f"  Trades from history: {history_trades} (API reported {api_trades}), winRate={history_wr}%")
+        history_trades = len(closed)
+        history_wr     = round(100 * len(winners) / len(closed), 1) if closed else 0
+        api_trades     = int(acct.get('trades') or 0)
+        api_wr         = float(acct.get('winRate') or 0)
+        # Use the larger of API total vs history count — API carries lifetime total
+        acct['trades']  = max(api_trades, history_trades)
+        # winRate from history is accurate only when history covers all trades
+        acct['winRate'] = api_wr if api_wr else history_wr
+        print(f"  Trades: API={api_trades}, history={history_trades} → stored={acct['trades']}")
+        print(f"  WinRate: API={api_wr}%, history={history_wr}% → stored={acct['winRate']}%")
 
     # ── Save snapshot ─────────────────────────────────────────────
     snapshot = {

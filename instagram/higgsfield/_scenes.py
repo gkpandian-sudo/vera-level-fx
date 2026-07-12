@@ -979,15 +979,17 @@ def make_trust_clip_motion(duration: float = 15.0) -> str:
     bg    = _fig_to_arr(fig)
     fonts = _pil_font()
 
-    # Arc geometry matching matplotlib ellipse: center (0.5, 0.73), radii 0.26×W, 0.22×H
-    arc_cx  = int(0.5  * _W)
-    arc_cy  = int((1 - 0.73) * _H)
-    arc_rx  = int(0.26 * _W)
-    arc_ry  = int(0.22 * _H)
-    arc_bb  = [arc_cx - arc_rx, arc_cy - arc_ry, arc_cx + arc_rx, arc_cy + arc_ry]
-    arc_lw  = 25
-    wr_val_y = int((1 - 0.748) * _H)
-    wr_lbl_y = int((1 - 0.688) * _H)
+    # Arc fits within the separator zone: y=0.886→218px from top to y=0.656→660px from top
+    # A circular arc (rx==ry) centred in that 442px window avoids spilling into the header
+    # or the metric boxes below.
+    arc_cx   = 540
+    arc_cy   = 439             # midpoint of 218–660 zone
+    arc_rx   = 190
+    arc_ry   = 190             # circle, not ellipse
+    arc_bb   = [arc_cx - arc_rx, arc_cy - arc_ry, arc_cx + arc_rx, arc_cy + arc_ry]
+    arc_lw   = 20
+    wr_val_y = arc_cy - 20    # slightly above centre
+    wr_lbl_y = arc_cy + 62    # below centre
     _NAVY_L_PIL = (10, 37, 69)
 
     # Metric value centres: box at (bx, by, 0.41, 0.106) → value at (bx+0.205, by+0.072)
