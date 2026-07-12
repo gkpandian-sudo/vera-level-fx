@@ -1,5 +1,4 @@
-# .github/workflows/higgsfield-reel.yml
-name: Higgsfield Avatar Reel
+name: AI Reel Auto-Post
 
 on:
   schedule:
@@ -23,7 +22,7 @@ on:
         default: 'en'
 
 concurrency:
-  group: higgsfield-reel
+  group: ai-reel
   cancel-in-progress: false
 
 permissions:
@@ -33,7 +32,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  hf-reel:
+  ai-reel:
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -87,33 +86,27 @@ jobs:
             esac
           fi
 
-      - name: Generate and post reel
+      - name: Generate and post AI reel
         if: steps.reel.outputs.type != 'skip'
         env:
-          REEL_TYPE:                  ${{ steps.reel.outputs.type }}
-          POST_LANG:                  ${{ steps.reel.outputs.lang }}
-          IG_USER_ID:                 ${{ secrets.IG_USER_ID }}
-          META_ACCESS_TOKEN:          ${{ secrets.META_ACCESS_TOKEN }}
-          # Gemini free stack (primary — set this secret to activate)
-          GEMINI_API_KEY:             ${{ secrets.GEMINI_API_KEY }}
-          # Higgsfield paid fallback (used when GEMINI_API_KEY is absent)
-          HIGGSFIELD_API_KEY:         ${{ secrets.HIGGSFIELD_API_KEY }}
-          HIGGSFIELD_API_SECRET:      ${{ secrets.HIGGSFIELD_API_SECRET }}
-          HIGGSFIELD_SOUL_ID:         ${{ secrets.HIGGSFIELD_SOUL_ID }}
-          # Voice IDs — Gemini voice name (e.g. Charon) or edge-tts ID (e.g. en-SG-WayneNeural)
-          HIGGSFIELD_VOICE_EN_ID:     ${{ secrets.HIGGSFIELD_VOICE_EN_ID }}
-          HIGGSFIELD_VOICE_TAMIL_ID:  ${{ secrets.HIGGSFIELD_VOICE_TAMIL_ID }}
-          GITHUB_TOKEN:               ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY:          ${{ github.repository }}
-          RECOVERY_START:             ${{ secrets.RECOVERY_START }}
-          BRAND_IB_URL:               ${{ secrets.BRAND_IB_URL }}
-          BRAND_TELEGRAM:             ${{ secrets.BRAND_TELEGRAM }}
+          REEL_TYPE:         ${{ steps.reel.outputs.type }}
+          POST_LANG:         ${{ steps.reel.outputs.lang }}
+          IG_USER_ID:        ${{ secrets.IG_USER_ID }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          VOICE_EN_ID:       ${{ secrets.VOICE_EN_ID }}
+          VOICE_TAMIL_ID:    ${{ secrets.VOICE_TAMIL_ID }}
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          RECOVERY_START:    ${{ secrets.RECOVERY_START }}
+          BRAND_IB_URL:      ${{ secrets.BRAND_IB_URL }}
+          BRAND_TELEGRAM:    ${{ secrets.BRAND_TELEGRAM }}
         run: python instagram/higgsfield/pipeline.py
 
       - name: Upload reel artifact
         if: steps.reel.outputs.type != 'skip' && success()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
         with:
-          name: hf-reel-${{ github.run_id }}
+          name: ai-reel-${{ github.run_id }}
           path: instagram/reels/
           retention-days: 14

@@ -1,10 +1,6 @@
 # instagram/higgsfield/avatar.py
-"""Provider router: Gemini (free) when GEMINI_API_KEY is set, Higgsfield (paid) otherwise."""
-import os as _os
+"""Gemini-powered reel generator — Ken Burns clips + edge-tts voiceover, no paid API.
 
-_BACKEND = 'gemini' if _os.environ.get('GEMINI_API_KEY') else 'higgsfield'
-
-if _BACKEND == 'gemini':
-    from higgsfield._avatar_gemini import generate_reel, dub_to_tamil  # noqa: F401
-else:
-    from higgsfield._avatar_hf import generate_reel, dub_to_tamil  # noqa: F401
+To switch to Higgsfield paid stack later: see _avatar_hf.py.
+"""
+from higgsfield._avatar_gemini import generate_reel, dub_to_tamil  # noqa: F401

@@ -60,7 +60,7 @@ def commit_and_push(*paths: Path) -> list[str]:
         ['git', 'config', 'user.email', 'github-actions[bot]@users.noreply.github.com'],
         ['git', 'config', 'user.name',  'github-actions[bot]'],
         ['git', 'add'] + [str(p) for p in paths],
-        ['git', 'commit', '-m', f'auto: higgsfield reel {date.today()} [skip ci]'],
+        ['git', 'commit', '-m', f'auto: ai reel {date.today()} [skip ci]'],
         ['git', 'pull',   '--rebase', 'origin', branch],
         ['git', 'push',   'origin', branch],
     ]
@@ -75,7 +75,7 @@ def commit_and_push(*paths: Path) -> list[str]:
 
 def dub_to_tamil_video(en_video_url: str) -> str:
     """Dub EN video URL to Tamil. Returns Tamil video URL."""
-    voice_id = os.environ.get('HIGGSFIELD_VOICE_TAMIL_ID', '')
+    voice_id = os.environ.get('VOICE_TAMIL_ID', '')
     return _dub(en_video_url, voice_id=voice_id)
 
 
@@ -153,7 +153,7 @@ def run(
     daily_gain = snapshot.get('dailyGain', [])
     today      = date.today()
     reel_index = int(today.strftime('%j'))
-    voice_id   = os.environ.get('HIGGSFIELD_VOICE_EN_ID', '')
+    voice_id   = os.environ.get('VOICE_EN_ID', '')
 
     REEL_DIR.mkdir(parents=True, exist_ok=True)
     out_path   = REEL_DIR / f'{today.isoformat()}-hf-{reel_type}-{lang}.mp4'
