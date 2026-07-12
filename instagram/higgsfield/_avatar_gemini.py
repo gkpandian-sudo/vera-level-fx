@@ -55,11 +55,11 @@ def _generate_soul_clips(script: ReelScript, soul_id: str) -> list[str]:
 
 
 def _generate_cinematic_clips(script: ReelScript) -> list[str]:
-    """Generate 3 Ken Burns clips from Gemini images. Returns list of local MP4 paths."""
+    """Generate 3 Ken Burns clips from trading data cards. Returns list of local MP4 paths."""
     paths = []
     for i, (prompt, dur) in enumerate(_cinematic_prompts(script)):
         print(f'  [avatar] cinematic clip {i + 1}/3 ({dur}s)…')
-        paths.append(generate_cinematic_clip(prompt=prompt, duration=dur))
+        paths.append(generate_cinematic_clip(prompt=prompt, duration=dur, scene_index=i))
     return paths
 
 

@@ -32,7 +32,7 @@ def generate_broker_reel(
     clip_paths = []
     for i, (prompt, dur) in enumerate(_BROKER_PROMPTS):
         print(f'  [cinematic] broker clip {i + 1}/3 ({dur}s)…')
-        clip_paths.append(generate_cinematic_clip(prompt=prompt, duration=dur))
+        clip_paths.append(generate_cinematic_clip(prompt=prompt, duration=dur, scene_index=i))
 
     if not clip_paths:
         raise RuntimeError('[cinematic] no clips were generated')

@@ -74,24 +74,109 @@ def register_script_text(script: str) -> None:
 
 # ── Image generation → Ken Burns MP4 ─────────────────────────────────────────
 def _branded_card_bytes() -> bytes:
-    """Branded navy card — guaranteed-free fallback when all AI image APIs fail."""
+    """Plain navy card — last-resort fallback if data card generation fails."""
     from PIL import ImageDraw
-    img  = Image.new('RGB', (_W, _H), color=(1, 14, 31))   # NAVY #010E1F
+    img  = Image.new('RGB', (_W, _H), color=(1, 14, 31))
     draw = ImageDraw.Draw(img)
-    draw.rectangle([(0, 0),    (_W, 10)], fill=(5, 150, 105))   # EMERALD top bar
-    draw.rectangle([(0, _H-10), (_W, _H)], fill=(5, 150, 105))  # EMERALD bottom bar
+    draw.rectangle([(0, 0),      (_W, 12)],      fill=(5, 150, 105))
+    draw.rectangle([(0, _H - 12), (_W, _H)],     fill=(5, 150, 105))
     buf = io.BytesIO()
     img.save(buf, format='JPEG', quality=95)
     return buf.getvalue()
 
 
-def _generate_image_bytes(prompt: str) -> bytes:
-    """Return branded PIL card — zero API cost, zero billing risk.
+def _card_to_portrait(card_img: Image.Image) -> bytes:
+    """Place a square data card centered on a 1080×1920 portrait canvas.
 
-    Imagen 3 and Gemini Flash image models are either paid or unavailable.
-    Branded card is the only reliable free path.
+    Top/bottom strips carry brand text.  Ken Burns will zoom into the card.
     """
-    print('  [client] using branded card (zero-cost)')
+    from PIL import ImageDraw
+    try:
+        import matplotlib.font_manager as _fm
+        _fm.findfont('DejaVu Sans')          # ensure fonts are loaded
+    except Exception:
+        pass
+
+    NAVY    = (1,  14, 31)
+    EMERALD = (5, 150, 105)
+    MUTED   = (184, 207, 234)
+
+    canvas  = Image.new('RGB', (_W, _H), color=NAVY)
+    card_w  = _W                                 # card fills full width
+    card_h  = int(card_img.height * card_w / card_img.width)
+    card    = card_img.resize((card_w, card_h), Image.LANCZOS)
+    card_y  = (_H - card_h) // 2                # vertically centred
+    canvas.paste(card, (0, card_y))
+
+    draw = ImageDraw.Draw(canvas)
+    # Emerald accent bars
+    draw.rectangle([(0, 0),          (_W, 14)], fill=EMERALD)
+    draw.rectangle([(0, _H - 14),    (_W, _H)], fill=EMERALD)
+    # Brand text in top strip
+    draw.text((16, 26),  '@veralevel.fx', fill=EMERALD)
+    draw.text((16, 50),  'IC Markets · ASIC Regulated · Myfxbook Verified', fill=MUTED)
+    # Disclaimer in bottom strip
+    draw.text((16, _H - 42), 'Not financial advice. Past performance ≠ future results.', fill=MUTED)
+
+    buf = io.BytesIO()
+    canvas.save(buf, format='JPEG', quality=92)
+    return buf.getvalue()
+
+
+# Card type per scene index (repeats for >3 scenes)
+_SCENE_CARDS = ['weekly', 'trust', 'transparency']
+
+
+def _make_scene_image_bytes(scene_index: int) -> bytes:
+    """Render the appropriate trading data card for a Ken Burns scene.
+
+    Loads vera-snapshot.json directly so no API calls are needed.
+    Falls back to _branded_card_bytes() on any error.
+    """
+    import sys
+    snapshot_path = ROOT / 'data' / 'vera-snapshot.json'
+    try:
+        snapshot = json.loads(snapshot_path.read_text())
+    except Exception as e:
+        print(f'  [client] snapshot load failed ({e}), using branded card')
+        return _branded_card_bytes()
+
+    card_type = _SCENE_CARDS[scene_index % len(_SCENE_CARDS)]
+    try:
+        # Ensure instagram/ is on sys.path for generate.py imports
+        insta_dir = str(ROOT / 'instagram')
+        if insta_dir not in sys.path:
+            sys.path.insert(0, insta_dir)
+
+        if card_type == 'weekly':
+            from generate import render_weekly_card
+            card_img = render_weekly_card(snapshot)
+        elif card_type == 'trust':
+            from generate import render_trust_card
+            card_img = render_trust_card(snapshot)
+        else:
+            import matplotlib
+            matplotlib.use('Agg')
+            import matplotlib.pyplot as plt
+            from generate import make_transparency_card
+            fig = make_transparency_card(snapshot)
+            buf = io.BytesIO()
+            fig.savefig(buf, dpi=100, bbox_inches='tight', facecolor='#060F24', format='png')
+            plt.close(fig)
+            buf.seek(0)
+            card_img = Image.open(buf).convert('RGB').copy()
+
+        return _card_to_portrait(card_img)
+    except Exception as e:
+        print(f'  [client] scene card ({card_type}) failed ({e}), using branded card')
+        return _branded_card_bytes()
+
+
+def _generate_image_bytes(prompt: str, scene_index: int | None = None) -> bytes:
+    """Return a trading data card or branded PIL card — zero API cost."""
+    if scene_index is not None:
+        return _make_scene_image_bytes(scene_index)
+    print('  [client] using branded card (no scene index)')
     return _branded_card_bytes()
 
 
@@ -129,19 +214,21 @@ def generate_cinematic_clip(
     duration: int = 12,
     aspect_ratio: str = '9:16',
     genre: str = 'drama',
+    scene_index: int | None = None,
 ) -> str:
-    """Generate a Ken Burns animated clip from a Gemini image. Returns local MP4 path.
+    """Generate a Ken Burns animated clip from a trading data card. Returns local MP4 path.
 
-    Results are cached per prompt+duration so virality retries skip image API calls.
+    scene_index selects which data card (weekly/trust/transparency).
+    Results are cached per prompt+duration so virality retries skip regeneration.
     """
-    img_key  = hashlib.md5(f'{prompt}:{aspect_ratio}'.encode()).hexdigest()
+    img_key  = hashlib.md5(f'{prompt}:{aspect_ratio}:{scene_index}'.encode()).hexdigest()
     clip_key = f'{img_key}:{duration}'
 
     if clip_key in _CLIP_CACHE:
         return _CLIP_CACHE[clip_key]
 
     if img_key not in _IMAGE_CACHE:
-        _IMAGE_CACHE[img_key] = _retry(lambda: _generate_image_bytes(prompt))
+        _IMAGE_CACHE[img_key] = _generate_image_bytes(prompt, scene_index=scene_index)
 
     path = _ken_burns_mp4(_IMAGE_CACHE[img_key], duration=float(duration))
     _CLIP_CACHE[clip_key] = path
