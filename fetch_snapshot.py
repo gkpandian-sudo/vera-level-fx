@@ -85,13 +85,16 @@ def main():
     except Exception:
         pass
 
-    # ── Backfill trades + winRate from history if API omits them ──
-    if not acct.get('trades') and history:
+    # ── Always compute trades + winRate from full history (API summary may be incomplete) ──
+    if history:
         closed  = [t for t in history if t.get('profit') is not None]
         winners = [t for t in closed if float(t.get('profit', 0)) > 0]
-        acct['trades']  = len(closed)
-        acct['winRate'] = round(100 * len(winners) / len(closed), 1) if closed else 0
-        print(f"  Computed trades={acct['trades']} winRate={acct['winRate']}% from history")
+        history_trades  = len(closed)
+        history_wr      = round(100 * len(winners) / len(closed), 1) if closed else 0
+        api_trades      = acct.get('trades') or 0
+        acct['trades']  = history_trades
+        acct['winRate'] = history_wr
+        print(f"  Trades from history: {history_trades} (API reported {api_trades}), winRate={history_wr}%")
 
     # ── Save snapshot ─────────────────────────────────────────────
     snapshot = {

@@ -12,73 +12,64 @@ from reels.animator import (
 
 FPS = 30
 _VERIFY_CTA  = 'Myfxbook #12044019'
-_IB_CTA      = 'https://www.icmarkets.com/global/en/?camp=91936'
-_BANNER_URL  = ('https://promo.icmarkets.com/Banners/2021/English/'
-                'EN_300x600_Cellphon_FSA.jpg')
-
-_IB_BANNER_CACHE: dict = {}
-
-
-def _get_ib_banner(width: int, height: int) -> 'np.ndarray | None':
-    """Download IC Markets IB banner once, resize to (width, height), cache as float32."""
-    key = (width, height)
-    if key in _IB_BANNER_CACHE:
-        return _IB_BANNER_CACHE[key]
-    if 'original' not in _IB_BANNER_CACHE:
-        try:
-            import requests
-            from io import BytesIO
-            r = requests.get(_BANNER_URL, timeout=10)
-            r.raise_for_status()
-            _IB_BANNER_CACHE['original'] = Image.open(BytesIO(r.content)).convert('RGB')
-        except Exception as e:
-            print(f'[broker] IB banner fetch failed: {e}')
-            _IB_BANNER_CACHE['original'] = None
-    orig = _IB_BANNER_CACHE.get('original')
-    if orig is None:
-        _IB_BANNER_CACHE[key] = None
-        return None
-    arr = np.array(orig.resize((width, height), Image.LANCZOS), dtype=np.float32)
-    _IB_BANNER_CACHE[key] = arr
-    return arr
+_IB_CTA      = 'icmarkets.com/?camp=91936'
+_IB_CTA_FULL = 'https://www.icmarkets.com/global/en/?camp=91936'
 
 
 def make_broker_card_clip() -> VideoClip:
-    """3s IC Markets broker card — full-screen dark theme + ticker tape."""
+    """4s IC Markets broker card — pure dark NAVY theme, no external banner dependency."""
     from reels.effects import ticker_tape_overlay
-    DUR = 3.0
-    banner_arr = _get_ib_banner(W, H)  # full 1080×1920
+    DUR = 4.0
 
     def frame(t):
         img = bg_frame(t)
-        img_arr = np.array(img, dtype=np.float32)
         alp = min(t / 0.5, 1.0)
-
-        if banner_arr is not None:
-            # Dark theme: banner at 30% over dark bg keeps colours readable without washing out
-            img_arr = img_arr * (1.0 - alp * 0.30) + banner_arr * (alp * 0.30)
-
-        img = Image.fromarray(img_arr.astype(np.uint8))
 
         cx, cy = W // 2, H // 2
 
-        img = draw_alpha_text(img, (cx, cy - 240),
-                               'IC MARKETS', load_font(80, bold=True), WHITE, alp)
-        img = draw_alpha_text(img, (cx, cy - 130),
-                               'Raw Spread · No requotes', load_font(40), EMERALD, alp)
-        img = draw_alpha_text(img, (cx, cy - 68),
-                               'ASIC regulated · CySEC regulated', load_font(36), EMERALD, alp)
+        # Top label
+        img = draw_alpha_text(img, (cx, cy - 400),
+                               'TRADING WITH', load_font(32), MUTED, alp * 0.8)
+
+        # Headline — WHITE on NAVY for maximum contrast
+        img = draw_alpha_text(img, (cx, cy - 310),
+                               'IC MARKETS', load_font(96, bold=True), WHITE, alp)
+
+        # Credentials — emerald on dark bg is always readable
+        img = draw_alpha_text(img, (cx, cy - 190),
+                               'Raw Spread  ·  No requotes  ·  ASIC + CySEC',
+                               load_font(34), EMERALD, alp)
 
         draw = ImageDraw.Draw(img)
-        draw.line([(80, cy), (W - 80, cy)], fill=EMERALD, width=2)
+        draw.line([(80, cy - 130), (W - 80, cy - 130)], fill=EMERALD, width=1)
 
-        img = draw_alpha_text(img, (cx, cy + 70),
-                               'Same broker I trade with every day', load_font(36), MUTED, alp)
-        img = draw_alpha_text(img, (cx, cy + 200),
-                               _IB_CTA, load_font(30, bold=True), EMERALD, alp)
-        img = draw_alpha_text(img, (cx, cy + 262),
-                               'IB #91936  ·  Referral link', load_font(26), MUTED,
-                               alp * 0.7)
+        img = draw_alpha_text(img, (cx, cy - 60),
+                               'The broker behind every number on this page.',
+                               load_font(36), WHITE, alp)
+        img = draw_alpha_text(img, (cx, cy + 20),
+                               'Same account I trade every day. No demo.',
+                               load_font(34), MUTED, alp)
+
+        draw2 = ImageDraw.Draw(img)
+        draw2.line([(80, cy + 100), (W - 80, cy + 100)], fill=EMERALD, width=1)
+
+        # URL — emerald pill background, white text = always readable on dark bg
+        url_y = cy + 200
+        pill_w, pill_h = 720, 82
+        px, py = cx - pill_w // 2, url_y - pill_h // 2
+        draw3 = ImageDraw.Draw(img)
+        if alp > 0.05:
+            draw3.rounded_rectangle(
+                [px, py, px + pill_w, py + pill_h],
+                radius=12,
+                fill=EMERALD,
+            )
+        img = draw_alpha_text(img, (cx, url_y),
+                               _IB_CTA, load_font(34, bold=True), WHITE, alp)
+
+        img = draw_alpha_text(img, (cx, cy + 310),
+                               'IB #91936  ·  This is a referral link',
+                               load_font(26), MUTED, alp * 0.65)
 
         img = ticker_tape_overlay(img, t)
         return np.array(img)

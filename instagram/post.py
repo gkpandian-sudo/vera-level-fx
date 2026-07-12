@@ -6,11 +6,25 @@ GRAPH = 'https://graph.facebook.com/v19.0'
 IG_ID = os.environ['IG_USER_ID']
 TOKEN = os.environ['META_ACCESS_TOKEN']
 
+_IB_COMMENT = 'https://www.icmarkets.com/global/en/?camp=91936'
+
 
 def _check(r: requests.Response):
     if not r.ok:
         raise RuntimeError(f"Meta API error {r.status_code}: {r.text}")
     return r.json()
+
+
+def _post_first_comment(post_id: str) -> None:
+    """Pin the IC Markets referral URL as the first comment on any published post."""
+    try:
+        _check(requests.post(
+            f'{GRAPH}/{post_id}/comments',
+            params={'message': _IB_COMMENT, 'access_token': TOKEN},
+        ))
+        print(f'  first comment: {_IB_COMMENT}')
+    except Exception as e:
+        print(f'  [warn] first comment failed: {e}')
 
 
 def publish(image_url: str, caption: str) -> str:
@@ -49,6 +63,7 @@ def publish(image_url: str, caption: str) -> str:
     ))
     post_id = result['id']
     print(f'  published: {post_id}')
+    _post_first_comment(post_id)
     return post_id
 
 
@@ -93,4 +108,5 @@ def publish_reel(video_url: str, caption: str, cover_url: str = '') -> str:
     ))
     post_id = result['id']
     print(f'  reel published: {post_id}')
+    _post_first_comment(post_id)
     return post_id
