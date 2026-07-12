@@ -86,6 +86,7 @@ vera-level-fx/
 | `MYFX_EMAIL` | Myfxbook login | Never |
 | `MYFX_PASSWORD` | Myfxbook login | Never |
 | `RECOVERY_START` | YYYY-MM-DD date rebuild started | Until rebuild ends |
+| `MUAPI_API_KEY` | Muapi.ai API key — enables Path C AI-animated card reels | Never |
 | `BRAND_TELEGRAM` | t.me/pandiangk | Never |
 | `BRAND_WEBSITE` | vera-level-forex.vercel.app | Never |
 | `BRAND_IB_URL` | IC Markets IB URL | Never |

@@ -8,6 +8,7 @@ Path B (upgrade): 3 × 15s Soul talking-head (requires HIGGSFIELD_SOUL_ID — no
 import os
 import tempfile
 from pathlib import Path
+from datetime import date
 
 from higgsfield.client import (
     get_soul_id, generate_soul_clip,
@@ -64,6 +65,47 @@ def _generate_cinematic_clips(script: ReelScript) -> list[str]:
     ]
 
 
+_MUAPI_PROMPTS = [
+    # Performance card — numbers glowing, dark financial atmosphere
+    'professional financial trading card, green glowing numbers, gold candlestick particles '
+    'drifting upward, dark navy background, cinematic light rays, subtle camera push-in',
+    # Equity curve card — chart drawing itself with motion
+    'equity curve line animating from left to right with green glow trail, financial chart '
+    'background, dark professional trading terminal, subtle grid pulse',
+    # Trust metrics card — UI elements illuminating one by one
+    'financial metrics dashboard, glowing circular progress indicator, metric boxes lighting up '
+    'sequentially, dark navy professional UI, soft emerald particle shimmer',
+]
+
+
+def _generate_muapi_clips(script: ReelScript) -> list[str]:
+    """Generate 3 AI-animated portrait clips via Muapi I2V. Returns local MP4 paths.
+
+    Requires MUAPI_API_KEY env var. Each card PNG is uploaded to Muapi and animated
+    with cinematic motion. Falls back silently if upload fails — caller handles fallback.
+    """
+    from higgsfield._scenes import make_performance_png, make_equity_png, make_trust_png
+    from higgsfield._muapi_client import animate_card
+
+    png_fns = [make_performance_png, make_equity_png, make_trust_png]
+    labels  = ['performance', 'equity', 'trust']
+    clips   = []
+
+    for make_png, label, prompt in zip(png_fns, labels, _MUAPI_PROMPTS):
+        print(f'  [avatar] Muapi I2V: {label} card…')
+        png_path = Path(make_png())
+        try:
+            mp4_tmp = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
+            mp4_tmp.close()
+            out_mp4 = Path(mp4_tmp.name)
+            animate_card(png_path, out_mp4, prompt)
+            clips.append(str(out_mp4))
+        finally:
+            png_path.unlink(missing_ok=True)
+
+    return clips
+
+
 # ── Assembly ─────────────────────────────────────────────────────────────────
 
 def _assemble(clip_paths: list[str], script: ReelScript, out_path: Path, voice_id: str) -> Path:
@@ -103,8 +145,12 @@ def generate_reel(
     # Stash script text so dub_to_tamil() can translate it later
     register_script_text(script.full_text)
 
-    soul_id = os.environ.get('HIGGSFIELD_SOUL_ID', '')
-    if soul_id:
+    muapi_key = os.environ.get('MUAPI_API_KEY', '')
+    soul_id   = os.environ.get('HIGGSFIELD_SOUL_ID', '')
+    if muapi_key:
+        print('  [avatar] Path C — Muapi AI-animated cards')
+        clip_paths = _generate_muapi_clips(script)
+    elif soul_id:
         print('  [avatar] Path B — Soul talking head')
         clip_paths = _generate_soul_clips(script, soul_id)
     else:
