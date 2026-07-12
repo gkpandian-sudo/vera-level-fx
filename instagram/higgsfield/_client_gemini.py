@@ -4,8 +4,8 @@
 Cinematic B-roll  → PIL branded navy card + moviepy Ken Burns (no API)
 Voiceover (EN)    → edge-tts en-SG-WayneNeural (Microsoft, no key, no cost)
 Voiceover (Tamil) → edge-tts ta-IN-ValluvarNeural (same)
-Tamil dub         → gemini-2.5-flash translate (free tier) + edge-tts + git commit
-Virality gate     → gemini-2.5-flash text rubric (free tier, scores script not video)
+Tamil dub         → gemini-2.5-flash translate (free tier) → deep-translator fallback + edge-tts + git commit
+Virality gate     → gemini-2.5-flash text rubric (free tier, scores script not video); defaults 70 on error
 Soul avatar       → NotImplementedError (no free CPU-viable option)
 
 gemini-2.5-flash text model is on Google's free tier (rate-limited, never billed).
@@ -246,23 +246,40 @@ def predict_virality(video_url: str) -> float:
 
 
 # ── Tamil dubbing ─────────────────────────────────────────────────────────────
+def _translate_via_deep(en_text: str) -> str:
+    """Translate EN → Tamil via deep-translator (Google Translate web API, no key, free)."""
+    from deep_translator import GoogleTranslator
+    chunks, limit = [], 4500  # Google Translate web limit per call
+    for i in range(0, len(en_text), limit):
+        chunks.append(GoogleTranslator(source='en', target='ta').translate(en_text[i:i + limit]))
+    return ' '.join(chunks)
+
+
 def _translate_to_tamil(en_text: str) -> str:
-    """Translate EN FX trading script to colloquial spoken Tamil via Gemini."""
-    client = _gemini()
-    resp = client.models.generate_content(
-        model='gemini-2.5-flash',
-        contents=(
-            'Translate this FX trading Reel script to colloquial spoken Tamil.\n'
-            'Rules:\n'
-            '- Keep in English exactly: Myfxbook, IC Markets, 91936, '
-            'XAUUSD, EURUSD, AUDCAD, IB, Instagram, Raw Spread\n'
-            '- Keep all numbers as-is\n'
-            '- Write natural spoken Tamil, not overly formal\n'
-            '- Return ONLY the Tamil translation, no explanation\n\n'
-            f'Script:\n{en_text}'
-        ),
-    )
-    return resp.text.strip()
+    """Translate EN FX trading script to colloquial spoken Tamil.
+
+    Primary: gemini-2.5-flash (free-tier, best quality for trading terminology).
+    Fallback: deep-translator Google Translate (no API key, zero cost).
+    """
+    try:
+        client = _gemini()
+        resp = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=(
+                'Translate this FX trading Reel script to colloquial spoken Tamil.\n'
+                'Rules:\n'
+                '- Keep in English exactly: Myfxbook, IC Markets, 91936, '
+                'XAUUSD, EURUSD, AUDCAD, IB, Instagram, Raw Spread\n'
+                '- Keep all numbers as-is\n'
+                '- Write natural spoken Tamil, not overly formal\n'
+                '- Return ONLY the Tamil translation, no explanation\n\n'
+                f'Script:\n{en_text}'
+            ),
+        )
+        return resp.text.strip()
+    except Exception as e:
+        print(f'  [client] Gemini translation failed ({type(e).__name__}), using deep-translator')
+        return _translate_via_deep(en_text)
 
 
 def _git_commit_file(local_path: Path) -> str:
