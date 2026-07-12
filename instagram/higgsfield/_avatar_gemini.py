@@ -65,6 +65,34 @@ def _generate_cinematic_clips(script: ReelScript) -> list[str]:
     ]
 
 
+def _generate_hf_clips(script: ReelScript) -> list[str]:
+    """Generate 3 AI-animated clips via free HuggingFace I2V Space (Path D).
+
+    Raises RuntimeError on any failure — caller falls back to Ken Burns.
+    """
+    from higgsfield._scenes import make_performance_png, make_equity_png, make_trust_png
+    from higgsfield._hf_i2v_client import animate_card
+    import tempfile
+
+    png_fns = [make_performance_png, make_equity_png, make_trust_png]
+    labels  = ['performance', 'equity', 'trust']
+    clips   = []
+
+    for make_png, label, prompt in zip(png_fns, labels, _MUAPI_PROMPTS):
+        print(f'  [avatar] HF I2V: {label} card…')
+        png_path = Path(make_png())
+        try:
+            mp4_tmp = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
+            mp4_tmp.close()
+            out_mp4 = Path(mp4_tmp.name)
+            animate_card(png_path, out_mp4, prompt)
+            clips.append(str(out_mp4))
+        finally:
+            png_path.unlink(missing_ok=True)
+
+    return clips
+
+
 _MUAPI_PROMPTS = [
     # Performance card — numbers glowing, dark financial atmosphere
     'professional financial trading card, green glowing numbers, gold candlestick particles '
@@ -147,12 +175,20 @@ def generate_reel(
 
     muapi_key = os.environ.get('MUAPI_API_KEY', '')
     soul_id   = os.environ.get('HIGGSFIELD_SOUL_ID', '')
+    hf_space  = os.environ.get('HF_I2V_SPACE', '')
     if muapi_key:
         print('  [avatar] Path C — Muapi AI-animated cards')
         clip_paths = _generate_muapi_clips(script)
     elif soul_id:
         print('  [avatar] Path B — Soul talking head')
         clip_paths = _generate_soul_clips(script, soul_id)
+    elif hf_space:
+        print(f'  [avatar] Path D — HuggingFace I2V ({hf_space})')
+        try:
+            clip_paths = _generate_hf_clips(script)
+        except Exception as e:
+            print(f'  [avatar] Path D failed ({e}), falling back to Ken Burns')
+            clip_paths = _generate_cinematic_clips(script)
     else:
         print('  [avatar] Path A — cinematic B-roll (Ken Burns)')
         clip_paths = _generate_cinematic_clips(script)
