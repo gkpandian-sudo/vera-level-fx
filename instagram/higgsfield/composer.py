@@ -93,6 +93,8 @@ def composite_data_card(
         video = VideoFileClip(str(raw_path))
         try:
             W, H  = video.w, video.h
+            if abs(W / H - 9 / 16) > 0.02:
+                raise ValueError(f'Video is not 9:16 ({W}×{H}) — Instagram Reels require portrait 1080×1920')
             is_portrait = H > W
 
             card_img = Image.open(data_card_path).convert('RGBA')
@@ -119,11 +121,12 @@ def composite_data_card(
             )
 
             final = CompositeVideoClip([video, card_clip], size=(W, H))
+            safe_fps = max(23, min(int(video.fps or 24), 60))
             final.write_videofile(
                 str(out_path),
                 codec='libx264',
                 audio_codec='aac',
-                fps=video.fps,
+                fps=safe_fps,
                 logger=None,
                 ffmpeg_params=['-pix_fmt', 'yuv420p'],
             )
