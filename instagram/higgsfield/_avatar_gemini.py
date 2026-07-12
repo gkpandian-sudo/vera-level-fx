@@ -10,11 +10,12 @@ import tempfile
 from pathlib import Path
 
 from higgsfield.client import (
-    get_soul_id, generate_soul_clip, generate_cinematic_clip,
+    get_soul_id, generate_soul_clip,
     generate_audio_track, register_script_text,
 )
 from higgsfield.scripts import ReelScript
 from higgsfield.composer import download_video, stitch_videos, add_audio_to_video
+from higgsfield._scenes import make_performance_clip, make_equity_clip, make_trust_clip
 
 
 # ── Prompt builders ──────────────────────────────────────────────────────────
@@ -55,12 +56,12 @@ def _generate_soul_clips(script: ReelScript, soul_id: str) -> list[str]:
 
 
 def _generate_cinematic_clips(script: ReelScript) -> list[str]:
-    """Generate 3 Ken Burns clips from trading data cards. Returns list of local MP4 paths."""
-    paths = []
-    for i, (prompt, dur) in enumerate(_cinematic_prompts(script)):
-        print(f'  [avatar] cinematic clip {i + 1}/3 ({dur}s)…')
-        paths.append(generate_cinematic_clip(prompt=prompt, duration=dur, scene_index=i))
-    return paths
+    """Generate 3 animated portrait clips from live account data. Returns local MP4 paths."""
+    return [
+        make_performance_clip(duration=12),   # gain counter + monthly bars
+        make_equity_clip(duration=12),        # equity curve drawing itself
+        make_trust_clip(duration=12),         # win rate circle + metrics
+    ]
 
 
 # ── Assembly ─────────────────────────────────────────────────────────────────

@@ -3,18 +3,10 @@
 import tempfile
 from pathlib import Path
 
-from higgsfield.client import generate_cinematic_clip, generate_audio_track, register_script_text
+from higgsfield.client import generate_audio_track, register_script_text
 from higgsfield.composer import download_video, stitch_videos, add_audio_to_video
 from higgsfield.scripts import ReelScript
-
-_BROKER_PROMPTS: list[tuple[str, int]] = [
-    ("Financial trading floor, Singapore skyline at golden hour, multiple monitors "
-     "with live forex charts, dark professional studio", 12),
-    ("IC Markets trading terminal close-up, XAUUSD chart with green profit line, "
-     "professional dark studio, no people", 12),
-    ("Myfxbook verified badge on screen, trade history visible, Singapore financial "
-     "district background, navy and gold palette", 12),
-]
+from higgsfield._scenes import make_performance_clip, make_equity_clip, make_trust_clip
 
 
 def generate_broker_reel(
@@ -22,17 +14,14 @@ def generate_broker_reel(
     out_path: Path,
     voice_id: str = '',
 ) -> tuple[str, Path]:
-    """Generate broker B-roll reel with Ken Burns clips. Returns (str(out_path), out_path).
-
-    Returns out_path as hook_url so composite_data_card() overlays the full reel,
-    not just the first 12s hook clip.
-    """
+    """Generate broker B-roll reel with animated data clips. Returns (str(out_path), out_path)."""
     register_script_text(script.full_text)
 
-    clip_paths = []
-    for i, (prompt, dur) in enumerate(_BROKER_PROMPTS):
-        print(f'  [cinematic] broker clip {i + 1}/3 ({dur}s)…')
-        clip_paths.append(generate_cinematic_clip(prompt=prompt, duration=dur, scene_index=i))
+    clip_paths = [
+        make_performance_clip(duration=12),
+        make_equity_clip(duration=12),
+        make_trust_clip(duration=12),
+    ]
 
     if not clip_paths:
         raise RuntimeError('[cinematic] no clips were generated')
