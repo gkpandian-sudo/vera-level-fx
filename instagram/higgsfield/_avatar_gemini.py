@@ -95,10 +95,8 @@ def generate_reel(
 ) -> tuple[str, Path]:
     """Generate full reel. Returns (hook_url, out_path).
 
-    hook_url: local path of out_path — used by pipeline.py for both virality scoring
-    (script-based, not video-based) and composite_data_card() overlay. Returning
-    out_path fixes an original quirk where only the 12s hook clip got the data card;
-    now the full assembled reel gets the overlay.
+    hook_url: str(out_path) — passed to predict_virality() for the hook score,
+    then discarded by pipeline.py. out_path is the assembled reel written by _assemble().
 
     Path B (Soul) when HIGGSFIELD_SOUL_ID is set; Path A (cinematic) otherwise.
     """
@@ -117,7 +115,7 @@ def generate_reel(
         raise RuntimeError('[avatar] no clips were generated')
 
     _assemble(clip_paths, script, out_path, voice_id)
-    # Return str(out_path) as hook_url so composite_data_card overlays the full reel
+    # Return str(out_path) as hook_url so virality scorer can evaluate the full reel
     return str(out_path), out_path
 
 

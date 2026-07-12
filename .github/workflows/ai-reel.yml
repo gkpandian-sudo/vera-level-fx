@@ -4,11 +4,11 @@ on:
   schedule:
     # UTC times. SGT = UTC+8, so 07:00 SGT = 23:00 UTC previous day.
     - cron: '0 23 * * 1'   # Tue 07:00 SGT — edu EN      (Mon UTC)
-    - cron: '0 23 * * 2'   # Wed 07:00 SGT — edu Tamil   (Tue UTC)
+    - cron: '0 23 * * 2'   # Wed 07:00 SGT — edu EN      (Tue UTC)  [Tamil disabled — top up Gemini credits to re-enable]
     - cron: '0 23 * * 3'   # Thu 07:00 SGT — trust EN    (Wed UTC)
     - cron: '0 23 * * 4'   # Fri 07:00 SGT — weekly EN   (Thu UTC)
     - cron: '0 23 * * 5'   # Sat 07:00 SGT — trust EN    (Fri UTC)
-    - cron: '0 23 * * 6'   # Sun 07:00 SGT — trust Tamil (Sat UTC)
+    - cron: '0 23 * * 6'   # Sun 07:00 SGT — trust EN    (Sat UTC)  [Tamil disabled — top up Gemini credits to re-enable]
     - cron: '0 23 1 * *'   # 1st of month 07:00 SGT — broker reel
   workflow_dispatch:
     inputs:
