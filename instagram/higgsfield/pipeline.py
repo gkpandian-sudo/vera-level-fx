@@ -13,7 +13,6 @@ from higgsfield.cinematic import generate_broker_reel
 from higgsfield.client    import predict_virality, dub_to_tamil as _dub
 from higgsfield.scripts   import build_script, ReelScript
 from higgsfield.hashtags  import get_hashtags, get_hashtags_tamil
-from higgsfield.composer  import composite_data_card
 
 
 def publish_reel(video_url: str, caption: str, cover_url: str = '') -> str:
@@ -190,13 +189,8 @@ def run(
     print(f'  [pipeline] generating {reel_type} ({lang})')
     hook_url, _ = _generate_with_virality_gate(script, out_path, reel_type, voice_id)
 
-    # ── Data card composite ───────────────────────────────────────────────────
+    # ── Thumbnail for Instagram cover image ───────────────────────────────────
     _make_data_card(reel_type, snapshot, thumb_path)
-    composite_data_card(
-        video_url=hook_url,
-        data_card_path=thumb_path,
-        out_path=out_path,
-    )
 
     # ── Commit EN reel to get public URL ─────────────────────────────────────
     en_video_url, thumb_gh_url = commit_and_push(out_path, thumb_path)
