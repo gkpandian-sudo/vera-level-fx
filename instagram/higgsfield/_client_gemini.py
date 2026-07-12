@@ -1,12 +1,15 @@
 # instagram/higgsfield/client.py
-"""Free-stack drop-in for Higgsfield API.
+"""Zero-cost drop-in for Higgsfield API. No paid API calls anywhere.
 
-Cinematic B-roll  → Gemini Imagen 3 + moviepy Ken Burns
-Voiceover (EN)    → Gemini TTS (Charon voice) with edge-tts fallback
-Voiceover (Tamil) → edge-tts ta-IN-ValluvarNeural with Gemini fallback
-Tamil dub         → Gemini translate + Tamil TTS + audio remix + git commit
-Virality gate     → Gemini 2.5 Flash text rubric (scores script, not video)
+Cinematic B-roll  → PIL branded navy card + moviepy Ken Burns (no API)
+Voiceover (EN)    → edge-tts en-SG-WayneNeural (Microsoft, no key, no cost)
+Voiceover (Tamil) → edge-tts ta-IN-ValluvarNeural (same)
+Tamil dub         → gemini-2.5-flash translate (free tier) + edge-tts + git commit
+Virality gate     → gemini-2.5-flash text rubric (free tier, scores script not video)
 Soul avatar       → NotImplementedError (no free CPU-viable option)
+
+gemini-2.5-flash text model is on Google's free tier (rate-limited, never billed).
+Imagen 3 and Gemini TTS are paid models and have been intentionally removed.
 
 Public API is identical to the original Higgsfield client: same function names,
 same signatures. Only the implementations change.
@@ -83,45 +86,12 @@ def _branded_card_bytes() -> bytes:
 
 
 def _generate_image_bytes(prompt: str) -> bytes:
-    """Try Imagen 3 → Gemini Flash image → branded PIL card (always free fallback)."""
-    client = _gemini()
-    full_prompt = (
-        f'Cinematic professional photography, vertical 9:16 portrait frame, '
-        f'dramatic lighting, no text overlays. {prompt}'
-    )
+    """Return branded PIL card — zero API cost, zero billing risk.
 
-    # Attempt 1: Imagen 3 (highest quality; requires billing credits)
-    try:
-        resp = client.models.generate_images(
-            model='imagen-3.0-fast-generate-001',
-            prompt=full_prompt,
-            config=types.GenerateImagesConfig(number_of_images=1, aspect_ratio='9:16'),
-        )
-        return resp.generated_images[0].image.image_bytes
-    except Exception as e:
-        print(f'  [client] Imagen 3 unavailable ({type(e).__name__})')
-
-    # Attempt 2: Gemini Flash native image generation (free tier; v1alpha model)
-    for model_id in ('gemini-2.0-flash-exp-image-generation', 'gemini-2.0-flash-exp'):
-        try:
-            # gemini-2.0-flash-exp lives in v1alpha — pass api_version explicitly
-            alpha_client = genai.Client(
-                api_key=os.environ.get('GEMINI_API_KEY', ''),
-                http_options=types.HttpOptions(api_version='v1alpha'),
-            )
-            resp = alpha_client.models.generate_content(
-                model=model_id,
-                contents=f'Generate a photorealistic image, no text: {full_prompt}',
-                config=types.GenerateContentConfig(response_modalities=['TEXT', 'IMAGE']),
-            )
-            for part in resp.candidates[0].content.parts:
-                if part.inline_data is not None:
-                    return part.inline_data.data
-        except Exception as e:
-            print(f'  [client] {model_id} unavailable ({type(e).__name__})')
-
-    # Attempt 3: branded navy card — costs nothing, always works
-    print('  [client] using branded card fallback')
+    Imagen 3 and Gemini Flash image models are either paid or unavailable.
+    Branded card is the only reliable free path.
+    """
+    print('  [client] using branded card (zero-cost)')
     return _branded_card_bytes()
 
 
@@ -227,28 +197,19 @@ def _tts_gemini(text: str, voice_name: str = 'Charon') -> str:
 
 
 def generate_audio_track(*, script: str, voice_id: str = '') -> str:
-    """Generate voiceover. Returns local audio file path.
+    """Generate voiceover via edge-tts only — zero API cost, zero billing risk.
 
-    EN:    Gemini TTS primary → edge-tts en-SG-WayneNeural fallback
-    Tamil: edge-tts ta-IN-ValluvarNeural primary → Gemini TTS fallback
+    Gemini TTS (gemini-2.5-flash-preview-tts) is a paid model and has been
+    removed. edge-tts uses Microsoft neural voices with no API key or charges.
+
+    EN:    en-SG-WayneNeural
+    Tamil: ta-IN-ValluvarNeural
     """
     if _is_tamil(script):
-        # Tamil: native edge-tts voice is much better than Gemini for Tamil phonetics
-        edge_voice = voice_id if (voice_id and 'Neural' in voice_id) else 'ta-IN-ValluvarNeural'
-        try:
-            return _retry(lambda: _tts_edge(script, edge_voice))
-        except Exception as e:
-            print(f'  [client] Tamil edge-tts failed ({e}), falling back to Gemini TTS')
-            return _retry(lambda: _tts_gemini(script, 'Charon'))
+        voice = voice_id if (voice_id and 'Neural' in voice_id) else 'ta-IN-ValluvarNeural'
     else:
-        # English: Gemini TTS primary (more natural), edge-tts fallback
-        gem_voice = voice_id if (voice_id and 'Neural' not in voice_id) else 'Charon'
-        try:
-            return _retry(lambda: _tts_gemini(script, gem_voice))
-        except Exception as e:
-            print(f'  [client] Gemini TTS failed ({e}), falling back to edge-tts')
-            edge_voice = voice_id if (voice_id and 'Neural' in voice_id) else 'en-SG-WayneNeural'
-            return _retry(lambda: _tts_edge(script, edge_voice))
+        voice = voice_id if (voice_id and 'Neural' in voice_id) else 'en-SG-WayneNeural'
+    return _retry(lambda: _tts_edge(script, voice))
 
 
 # ── Virality prediction ───────────────────────────────────────────────────────
