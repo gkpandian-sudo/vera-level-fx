@@ -249,7 +249,7 @@ def make_risk_post(content: dict):
     # CTA
     _hline(ax, 0.196, alpha=0.25)
     ax.text(0.06, 0.162,
-            os.environ.get('BRAND_SIGNAL_CTA', '>>  join our live signals channel'),
+            os.environ.get('BRAND_SIGNAL_CTA', '>>  comment BROKER — my IC Markets setup in your DMs'),
             fontsize=20, color=CREAM, va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=5)
 

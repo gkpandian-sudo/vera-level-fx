@@ -21,7 +21,6 @@ def _env(reel_type='trust', lang='en'):
         'HIGGSFIELD_API_KEY': 'fake_hf_key', 'HIGGSFIELD_API_SECRET': 'fake_hf_secret',
         'GITHUB_REPOSITORY': 'user/repo', 'GITHUB_TOKEN': 'fake_gh',
         'BRAND_IB_URL': 'https://icmarkets.com/?camp=91936',
-        'BRAND_TELEGRAM': 't.me/pandiangk',
     }
 
 FAKE_VIDEO_URL = 'https://cdn.higgsfield.ai/test.mp4'

@@ -82,9 +82,43 @@ def test_trust_hook_not_label():
     first_line = cap.strip().split('\n')[0]
     assert 'Live Track Record ·' not in first_line
 
-def test_daily_has_telegram_cta():
+def test_daily_has_no_telegram():
     cap = daily_status(SAMPLE_ACCOUNT, [])
-    assert 't.me/' in cap or 'telegram' in cap.lower()
+    assert 't.me/' not in cap and 'telegram' not in cap.lower()
+
+def test_no_telegram_in_any_caption():
+    from edu_content import RISK_RULES
+    caps = [
+        daily_status(SAMPLE_ACCOUNT, [], recovery_day=45),
+        weekly(SAMPLE_ACCOUNT, recovery_day=45),
+        monthly(SAMPLE_ACCOUNT, {'Jun 26': -3.2, 'Jul 26': 1.1}),
+        trust(SAMPLE_ACCOUNT, recovery_day=45),
+        transparency(SAMPLE_ACCOUNT, recovery_day=45),
+        recovery_plan(recovery_day=45, balance=1500.0, pf=0.9),
+        broker(),
+        edu('risk', RISK_RULES[0]),
+    ]
+    for cap in caps:
+        assert 't.me/' not in cap and 'telegram' not in cap.lower()
+
+def test_daily_has_comment_broker_cta():
+    cap = daily_status(SAMPLE_ACCOUNT, [])
+    assert 'Comment BROKER' in cap
+
+def test_daily_recovery_day_is_first_line():
+    cap = daily_status(SAMPLE_ACCOUNT, [], recovery_day=11, recovery_total=180)
+    first_line = cap.strip().split('\n')[0]
+    assert '11/180' in first_line
+
+def test_trust_hook_has_contradiction():
+    cap = trust(SAMPLE_ACCOUNT)
+    first_line = cap.strip().split('\n')[0]
+    assert '55% win rate' in first_line and '-62.0%' in first_line
+
+def test_monthly_has_which_month_hook():
+    pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
+    cap = monthly(SAMPLE_ACCOUNT, pnl)
+    assert 'Which month hurt most' in cap
 
 def test_weekly_has_link_in_bio():
     cap = weekly(SAMPLE_ACCOUNT)

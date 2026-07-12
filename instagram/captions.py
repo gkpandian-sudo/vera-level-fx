@@ -1,25 +1,25 @@
 import os
 from datetime import datetime
 
-# --- CTAs ---
-_TELEGRAM = os.environ.get('BRAND_TELEGRAM', 't.me/pandiangk')
+# --- CTAs (Instagram-native only: comment, follow, save, DM. IB link lives in bio.) ---
 _WEBSITE  = os.environ.get('BRAND_WEBSITE', 'vera-level-forex.vercel.app')
 _IB_URL   = os.environ.get('BRAND_IB_URL', 'https://www.icmarkets.com/global/en/?camp=91936')
 
-_CTA_TELEGRAM = f"\n📲 Every trade alert, free, as it happens → {_TELEGRAM}"
-_CTA_IB       = f"\n🏦 Trade where I trade — IC Markets Raw Spread (ASIC + CySEC regulated) → {_IB_URL}"
+_CTA_IB       = (
+    "\n💬 Comment BROKER and my 4-step IC Markets setup lands in your DMs"
+    "\n🏦 IC Markets Raw Spread (ASIC + CySEC regulated) — the exact account behind these numbers. Link in bio"
+)
 _CTA_VERIFY   = f"\n🔍 Don't take my word for it — audit me → Myfxbook #12044019"
-_CTA_ALL      = f"\n📲 {_TELEGRAM}  |  🌐 {_WEBSITE}  |  🏦 {_IB_URL}"
 
 _CTA_IB_BIO  = (
+    f"\n💬 Comment BROKER and my 4-step IC Markets setup lands in your DMs"
     f"\n🏦 IC Markets Raw Spread (ASIC + CySEC) — the account behind every number above"
     f"\n👉 Opening an account anyway? Link in bio. Same spreads, same cost — my link just means I get credited"
-    f"\n💬 Comment BROKER and my 4-step setup lands in your DMs"
 )
-_CTA_ALERTS  = f"\n📲 I post entries in Telegram before they close, not after → {_TELEGRAM}  ·  DM me anytime"
+_CTA_FOLLOW  = f"\n➕ Follow @veralevel.fx — every trade of this rebuild goes up live, wins and losses"
 _CTA_EDU_SOFT = (
     f"\n\n💾 Save this — you'll want it mid-trade, not mid-scroll. Comment RULES and I'll DM you the full library.\n"
-    f"📲 Live trades as they happen → {_TELEGRAM}  ·  DM me anytime"
+    f"💬 Comment BROKER for the IC Markets setup behind these numbers  ·  Follow @veralevel.fx for the live rebuild"
 )
 
 # Required on all posts citing live P&L (daily, weekly, trust, transparency, monthly, recovery-plan)
@@ -154,13 +154,16 @@ def weekly(account: dict, lang: str = 'en', recovery_day: int = 0,
         f"Day {recovery_day}/{recovery_total} of the rebuild. Account is live — numbers below, nothing cropped out.\n\n"
         if recovery_day > 0 else ''
     )
+    rebuild_week = (recovery_day - 1) // 7 + 1 if recovery_day > 0 else 0
     if recovery_day > 0 and weekly_gain is not None:
         wg_sign = '+' if weekly_gain >= 0 else ''
-        hook = (f"Day {recovery_day}/{recovery_total} of rebuilding a losing account in public. "
-                f"This week: {wg_sign}{weekly_gain:.1f}%.")
+        hook = (f"Day {recovery_day}/{recovery_total} — Week {rebuild_week} of rebuilding "
+                f"a {sign}{gain:.1f}% account in public. This week: {wg_sign}{weekly_gain:.1f}%. "
+                f"Most people would quit. I'm posting every trade.")
     elif recovery_day > 0:
-        hook = (f"Day {recovery_day}/{recovery_total} of rebuilding in public. "
-                f"Running total: {sign}{gain:.1f}% {gain_label}.")
+        hook = (f"Day {recovery_day}/{recovery_total} — Week {rebuild_week} of rebuilding in public. "
+                f"Running total: {sign}{gain:.1f}% {gain_label}. Most people would quit. "
+                f"I'm posting every trade.")
     elif weekly_gain is not None:
         wg_sign = '+' if weekly_gain >= 0 else ''
         hook = f"{wg_sign}{weekly_gain:.1f}% this week. You can audit every trade behind that number — most pages can't say that."
@@ -198,7 +201,7 @@ def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
     sign      = '+' if gain >= 0 else ''
     month_now = datetime.now().strftime('%B %Y')
 
-    return f"""Most traders delete their red months. Here are mine — every one of them.
+    return f"""Most traders delete their red months. Mine are all below — guess which one nearly ended the account.
 
 📅 {month_now}
 
@@ -207,6 +210,8 @@ def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
 {sign}{gain:.1f}% total return since inception — and that number includes every red row above.
 
 No cherry-picked entries. No "demo results". This is pulled from my live IC Markets account through an authenticated API. I couldn't edit it if I wanted to.
+
+Which month hurt most? Comment it below — I'll reply with exactly what went wrong in it.
 
 Save this post. On the 1st of next month, one more row goes up — green or red. Hold me to it.
 {_CTA_IB}{_CTA_VERIFY}{_tamil_line('monthly', lang)}
@@ -288,7 +293,7 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
                if win_rate > 0 else f'PF {pf:.2f} · +{pips:,} pips · Myfxbook #12044019')
 
     recovery_line = (
-        f"Day {recovery_day}/{recovery_total} of the rebuild. Every position capped at 1% account risk — no revenge sizing.\n\n"
+        f"Every position capped at 1% account risk — no revenge sizing, no doubling down.\n\n"
         if recovery_day > 0 else ''
     )
 
@@ -297,9 +302,14 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
         pair   = first.get('symbol', 'XAUUSD')
         action = first.get('action', '').upper()
         profit = float(first.get('profit') or 0)
-        hook   = f"🔴 LIVE: {pair} {action} · ${profit:+.2f} floating as you read this. Not a replay."
+        live_bit = f"🔴 LIVE: {pair} {action} · ${profit:+.2f} floating as you read this. Not a replay."
     else:
-        hook = f"🔵 Flat. No positions, no forced trades. {direction_emoji} {daily_sign}{daily_pct:.2f}% today — sitting out is a position too."
+        live_bit = f"🔵 Flat. No positions, no forced trades. {direction_emoji} {daily_sign}{daily_pct:.2f}% today — sitting out is a position too."
+
+    if recovery_day > 0:
+        hook = f"Day {recovery_day}/{recovery_total} of rebuilding a blown account in public. {live_bit}"
+    else:
+        hook = live_bit
 
     return f"""{hook}
 
@@ -313,7 +323,7 @@ On the book right now:
 {positions_block}
 
 Running record: {wr_line}
-{_CTA_IB_BIO}{_CTA_VERIFY}{_CTA_ALERTS}{_tamil_line('daily', lang)}
+{_CTA_IB_BIO}{_CTA_VERIFY}{_CTA_FOLLOW}{_tamil_line('daily', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -333,14 +343,19 @@ def trust(account: dict, lang: str = 'en', recovery_day: int = 0, recovery_total
     wr_line   = f'🎯 Win Rate: {wr:.0f}%' if wr > 0 else '🎯 Win Rate: Myfxbook #12044019'
     win_rate  = wr
 
-    days_str = f"Day {recovery_day}/{recovery_total} —" if recovery_day > 0 else ""
-    return f"""{days_str} Try to catch me lying. One live account, one public link. I'll wait.
+    days_str = f"Day {recovery_day}/{recovery_total} — " if recovery_day > 0 else ""
+    if wr > 0:
+        hook = (f"{days_str}{wr:.0f}% win rate. {sign}{gain:.1f}% total return. Same account, same trader — "
+                f"and both numbers are real. If that contradiction confuses you, read this twice.")
+    else:
+        hook = f"{days_str}Try to catch me lying. One live account, one public link. I'll wait."
+    return f"""{hook}
 
 ✅ Vera Level FX  ·  IC Markets  ·  Myfxbook #12044019
 
 {wr_str}
-But a {win_rate:.0f}% win rate on its own means nothing — scammers run 95% win rate with martingale, right up until the account explodes.
-Mine comes with 1:2.5 avg RR and max 1% risk per trade. That combination is the only number that matters.
+A high win rate didn't save this account — and that's exactly the lesson. Scammers run 95% win rates with martingale, right up until the account explodes. Win rate without risk control is a vanity metric.
+The rebuild runs on 1:2.5 avg RR and max 1% risk per trade. That combination is the only number that matters — and every trade proving it is public.
 
 DON'T TRUST ME — AUDIT ME. 3 steps:
 1. Myfxbook.com → search "Vera Level" → look for "Track Record Verified" + "Trading Privileges Verified". Those badges come from the broker, not from me.
@@ -363,7 +378,8 @@ def transparency(account: dict, lang: str = 'en', recovery_day: int = 0) -> str:
     gain = account.get('gain') or 0
     dd   = account.get('drawdown') or 0
 
-    return f"""{gain:.1f}%. That's my real account. And I'm posting it anyway.
+    day_bit = f"Day {recovery_day}/180 of fixing it, in public." if recovery_day > 0 else "And I'm posting it anyway."
+    return f"""{gain:.1f}%. Not a typo. That's my real account. {day_bit}
 
 Every other page would have deleted this account and opened a fresh one.
 Mine stays public — because you deserve to see what losing actually looks like, and what fixing it looks like.
@@ -378,6 +394,7 @@ Trade frequency cut hard.
 London and NY overlap sessions only.
 Position sizing now ATR-based — no more manual overrides.
 Hard daily drawdown limit, enforced before emotion gets a vote.
+Max 1% risk per trade · 1:2.5 RR minimum · XAUUSD, EURUSD, AUDCAD only.
 
 The rebuild is live on Myfxbook. Watch it work — or watch it fail. Either way, it's public.
 
@@ -456,7 +473,7 @@ MILESTONES — ticked by live data, not by me
 {commit_line}
 
 Full 180-day plan → pinned post. Follow to see whether this works — most pages would never let you.
-{_CTA_VERIFY}
+{_CTA_IB}{_CTA_VERIFY}
 
 {_RISK_DISCLAIMER}
 

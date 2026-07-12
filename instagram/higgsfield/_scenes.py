@@ -11,7 +11,9 @@ Approach:
 """
 import io
 import json
+import os
 import tempfile
+from datetime import date, datetime
 from pathlib import Path
 
 import matplotlib
@@ -48,6 +50,18 @@ _W, _H = 1080, 1920
 
 def _load_snapshot() -> dict:
     return json.loads((ROOT / 'data' / 'vera-snapshot.json').read_text())
+
+
+def _recovery_day() -> int:
+    """Days since RECOVERY_START (env, YYYY-MM-DD). 0 when unset/invalid."""
+    rs = os.environ.get('RECOVERY_START', '')
+    if not rs:
+        return 0
+    try:
+        start = datetime.strptime(rs, '%Y-%m-%d').date()
+        return max(1, (date.today() - start).days + 1)
+    except Exception:
+        return 0
 
 
 def _fig_to_arr(fig, w: int = _W, h: int = _H) -> np.ndarray:
@@ -154,6 +168,13 @@ def make_performance_clip(duration: float = 12.0) -> str:
     ax.text(0.06, 0.900, 'TOTAL GAIN SINCE INCEPTION',
             fontsize=19, color=MUTED, va='center', transform=ax.transAxes,
             fontfamily='monospace', zorder=11)
+
+    # Recovery day badge — the rebuild story, only while the account is under water
+    rec_day = _recovery_day()
+    if rec_day > 0 and bal < 10000:
+        ax.text(0.94, 0.900, f'REBUILD DAY {rec_day}/180',
+                fontsize=17, fontweight='bold', color=RED, ha='right', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=11)
 
     # ← Hero gain % will be drawn in PIL overlay (counted animation) ←
     # Placeholder region: y=0.72–0.88
@@ -304,6 +325,12 @@ def make_equity_clip(duration: float = 12.0) -> str:
         frac = (v - min_v) / val_range
         return int(cy1 - frac * ch)
 
+    # Lowest point of the curve — where the recovery story starts
+    min_idx = int(np.argmin(cumulative))
+    min_x   = cx0 + int(min_idx / max(n - 1, 1) * cw)
+    min_y   = max(cy0, min(cy1, _val_to_px(cumulative[min_idx])))
+    fonts   = _pil_font()
+
     def make_frame(t: float) -> np.ndarray:
         progress = min(t / (duration * 0.88), 1.0)
         n_show   = max(2, int(n * progress))
@@ -327,6 +354,14 @@ def make_equity_clip(duration: float = 12.0) -> str:
             # Leading dot
             lx, ly = pts[-1]
             draw.ellipse([(lx - 9, ly - 9), (lx + 9, ly + 9)], fill=col)
+
+        # Subtle annotation at the lowest point once the reveal reaches it
+        if n_show > min_idx and min_idx > 0:
+            label, tx, anchor = 'Recovery started →', min_x - 18, 'rm'
+            if tx < 360:   # too close to left edge — flip to the right side
+                label, tx, anchor = '← Recovery started', min_x + 18, 'lm'
+            ty = max(cy0 + 30, min_y - 28)
+            draw.text((tx, ty), label, fill=_MUTED, font=fonts['xs'], anchor=anchor)
 
         return np.array(img)
 
@@ -410,7 +445,7 @@ def make_trust_clip(duration: float = 12.0) -> str:
             fontsize=15, color='#010E1F', ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold', zorder=11)
 
-    ax.text(0.5, 0.310, 'Join Telegram for live alerts  →  t.me/pandiangk',
+    ax.text(0.5, 0.310, "Comment BROKER → I'll DM you my IC Markets setup",
             fontsize=16, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, zorder=11)
     ax.text(0.5, 0.280, 'Follow @veralevel.fx for every trade update',

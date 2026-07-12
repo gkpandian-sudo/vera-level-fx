@@ -102,10 +102,21 @@ def make_daily_card(data: dict, recovery_day: int = 0, recovery_total: int = 180
 
     d_color = GREEN if daily_pct >= 0 else RED
 
-    ax.text(0.5, 0.955,
-            'LIVE POSITION UPDATE  ·  ' + datetime.now().strftime('%d %B %Y').upper(),
-            fontsize=15, color=WHITE, ha='center', va='center',
-            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+    if recovery_day > 0:
+        # Recovery day IS the story — lead with it
+        ax.text(0.5, 0.960,
+                f'REBUILD  ·  DAY {recovery_day}/{recovery_total}',
+                fontsize=22, fontweight='bold', color=RED, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
+        ax.text(0.5, 0.928,
+                'LIVE POSITION UPDATE  ·  ' + datetime.now().strftime('%d %B %Y').upper(),
+                fontsize=13, color=WHITE, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
+    else:
+        ax.text(0.5, 0.955,
+                'LIVE POSITION UPDATE  ·  ' + datetime.now().strftime('%d %B %Y').upper(),
+                fontsize=15, color=WHITE, ha='center', va='center',
+                transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Equity / Balance / Daily metrics
     metrics = [
@@ -197,10 +208,13 @@ def make_daily_card(data: dict, recovery_day: int = 0, recovery_total: int = 180
                 fontweight='bold')
 
     # CTA
-    ax.text(0.5, 0.148, 'Verify every position  ·  Myfxbook #12044019',
+    ax.text(0.5, 0.155, 'Verify every position  ·  Myfxbook #12044019',
             fontsize=15, fontweight='bold', color=EMERALD,
             ha='center', va='center', transform=ax.transAxes,
             fontfamily='monospace', zorder=6)
+    ax.text(0.5, 0.118, 'Comment BROKER  →  my IC Markets setup in your DMs',
+            fontsize=14, color=WHITE, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # Footer
     ax.text(0.94, 0.022, '@veralevel.fx  ·  Not financial advice',

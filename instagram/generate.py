@@ -335,14 +335,18 @@ def make_winrate_card(data):
                 fontsize=13, color=MUTED, ha='center', va='center',
                 transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
-    # Profit factor
-    ax.text(0.5, 0.462,
-            f'Profit Factor {pf:.2f}  ·  1% max risk per trade',
-            fontsize=17, color=MUTED, ha='center', va='center',
+    # Contradiction hook — the honest number pairing
+    ax.text(0.5, 0.468,
+            f'{win_rate:.0f}% WIN RATE, YET {gain_sign}{gain:.1f}% TOTAL — BOTH REAL',
+            fontsize=18, fontweight='bold', color=WHITE, ha='center', va='center',
+            transform=ax.transAxes, fontfamily='monospace', zorder=6)
+    ax.text(0.5, 0.438,
+            f'Win rate means nothing without risk control  ·  PF {pf:.2f}  ·  1% max risk',
+            fontsize=15, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=6)
 
     # CTAs
-    _hline(ax, 0.420, alpha=0.2)
+    _hline(ax, 0.416, alpha=0.2)
     ax.text(0.5, 0.388,
             'Verify every trade yourself  →  Myfxbook.com',
             fontsize=17, color=CREAM, ha='center', va='center',
@@ -453,7 +457,7 @@ def make_transparency_card(data):
             fontsize=17, color=MUTED, ha='center', va='center',
             transform=ax.transAxes)
     ax.text(0.5, 0.316,
-            'Live alerts as recovery unfolds  →  t.me/pandiangk',
+            'Comment BROKER  →  my IC Markets setup lands in your DMs',
             fontsize=19, fontweight='bold', color=EMERALD,
             ha='center', va='center', transform=ax.transAxes)
 
@@ -603,7 +607,7 @@ def make_recovery_plan_card(data=None, recovery_day: int = 0, recovery_total: in
             fontsize=15, color=MUTED, ha='center', va='center',
             transform=ax.transAxes)
     ax.text(0.5, 0.292,
-            'Live alerts as rebuild unfolds  →  t.me/pandiangk',
+            'Follow @veralevel.fx  ·  Comment BROKER for my IC Markets setup',
             fontsize=17, fontweight='bold', color=EMERALD,
             ha='center', va='center', transform=ax.transAxes)
 

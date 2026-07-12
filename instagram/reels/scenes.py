@@ -143,7 +143,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     # Data (3.5s): open positions cascade + candlestick bg + ticker
     lines = []
     if recovery_day > 0:
-        lines.append(f'Recovery Day {recovery_day}')
+        lines.append(f'Day {recovery_day}/180 — the rebuild is live')
     for trade in open_trades:
         sym    = trade.get('symbol', '')
         action = trade.get('action', '').upper()
@@ -211,7 +211,7 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
     # Data (4.5s): cascade + candlestick bg
     lines = []
     if recovery_day > 0:
-        lines.append(f'Recovery Day {recovery_day}  |  Rebuild is live')
+        lines.append(f'Day {recovery_day}/180 — rebuilding in public')
     wr_line = (f'Win Rate: {wr:.0f}%  across {trades:,} trades'
                if wr > 0 else 'Win Rate: Myfxbook #12044019')
     lines += [f'Balance:  ${bal:,.0f}', wr_line,
@@ -264,12 +264,15 @@ def make_trust_reel(data: dict) -> list:
 
     # Data (4.5s): cascade + candlestick bg
     trades_str = f'{trades:,} trades' if trades > 0 else 'Myfxbook #12044019'
+    contradiction = (f'{wr:.0f}% win rate. {sign}{gain:.1f}% return. Both real.'
+                     if wr > 0 else 'Win Rate, verified')
     lines = [
-        'Win Rate, verified',
+        contradiction,
         f'{trades_str}  |  Myfxbook #12044019',
         f'Profit Factor: {pf:.2f}',
         f'Total Pips:    +{pips:,}',
         f'Total Return:  {sign}{gain:.1f}%',
+        'Win rate is nothing without risk control.',
         'No screenshots. No cherry-picked months.',
         'Raw Spread  |  IC Markets  |  ASIC + CySEC',
     ]
@@ -553,7 +556,7 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         data_clip = _clip(data_frame, 8.0)
 
     def cta_frame(t):
-        return cta_fade_frame(t, 'Open IC Markets', _IB_CTA)
+        return cta_fade_frame(t, 'Comment BROKER', 'My IC Markets setup → straight to your DMs')
 
     cta = _clip(cta_frame, 2.0)
     return [hero, data_clip, cta, make_broker_card_clip()]
