@@ -949,7 +949,7 @@ def make_trust_clip_motion(duration: float = 15.0) -> str:
     # Arc area is clear (arc drawn per-frame); separator below it is static
     ax.plot([0.06, 0.94], [0.656, 0.656], color=EMERALD, alpha=0.4, lw=1.5, transform=ax.transAxes)
 
-    for lbl, bx, by in [('PROFIT FACTOR', 0.06, 0.576), ('DRAWDOWN', 0.53, 0.576),
+    for lbl, bx, by in [('PROFIT FACTOR', 0.06, 0.576), ('MAX DD', 0.53, 0.576),
                          ('TOTAL TRADES',  0.06, 0.452), ('TOTAL PIPS', 0.53, 0.452)]:
         ax.add_patch(patches.FancyBboxPatch((bx, by), 0.41, 0.106,
             boxstyle='round,pad=0.008', fc=NAVY_S, ec=EMERALD, lw=0.8,
@@ -958,21 +958,22 @@ def make_trust_clip_motion(duration: float = 15.0) -> str:
                 ha='center', va='center', transform=ax.transAxes,
                 fontfamily='monospace', zorder=11)
 
+    # Bottom CTA zone — spread across y=0.432 to y=0.063 so content doesn't bunch at top
     ax.plot([0.06, 0.94], [0.432, 0.432], color=EMERALD, alpha=0.4, lw=1.5, transform=ax.transAxes)
-    ax.text(0.5, 0.408, f'Current Balance: ${bal:,.0f}', fontsize=22, color=WHITE,
+    ax.text(0.5, 0.381, f'Current Balance: ${bal:,.0f}', fontsize=22, color=WHITE,
             ha='center', va='center', transform=ax.transAxes, fontweight='bold', zorder=11)
-    ax.add_patch(patches.FancyBboxPatch((0.06, 0.34), 0.88, 0.054,
+    ax.add_patch(patches.FancyBboxPatch((0.06, 0.307), 0.88, 0.054,
         boxstyle='round,pad=0.008', fc=EMERALD, ec='none',
         transform=ax.transAxes, zorder=7))
-    ax.text(0.5, 0.367, 'Open a live account → icmarkets.com/?camp=91936',
+    ax.text(0.5, 0.334, 'Open a live account → icmarkets.com/?camp=91936',
             fontsize=15, color='#010E1F', ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold', zorder=11)
-    ax.text(0.5, 0.310, "Comment BROKER → I'll DM you my IC Markets setup",
+    ax.text(0.5, 0.258, "Comment BROKER → I'll DM you my IC Markets setup",
             fontsize=16, color=MUTED, ha='center', va='center', transform=ax.transAxes, zorder=11)
-    ax.text(0.5, 0.280, 'Follow @veralevel.fx for every trade update',
+    ax.text(0.5, 0.218, 'Follow @veralevel.fx for every trade update',
             fontsize=16, color=MUTED, ha='center', va='center', transform=ax.transAxes, zorder=11)
-    ax.plot([0.06, 0.94], [0.032, 0.032], color=EMERALD, alpha=0.25, lw=1.0, transform=ax.transAxes)
-    ax.text(0.5, 0.017, 'Not financial advice. Past performance does not guarantee future results.',
+    ax.plot([0.06, 0.94], [0.063, 0.063], color=EMERALD, alpha=0.25, lw=1.0, transform=ax.transAxes)
+    ax.text(0.5, 0.033, 'Not financial advice. Past performance does not guarantee future results.',
             fontsize=11, color=DIM, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=11)
 
@@ -1069,7 +1070,7 @@ def make_trust_png() -> str:
 
     box_metrics = [
         ('PROFIT FACTOR', f'{pf:.2f}',     WHITE,   0.06, 0.576),
-        ('DRAWDOWN',      f'{dd:.1f}%',    RED,     0.53, 0.576),
+        ('MAX DD',        f'{dd:.1f}%',    RED,     0.53, 0.576),
         ('TOTAL TRADES',  f'{trades:,}',   WHITE,   0.06, 0.452),
         ('TOTAL PIPS',    f'+{pips:,}',    EMERALD, 0.53, 0.452),
     ]
@@ -1082,23 +1083,24 @@ def make_trust_png() -> str:
         ax.text(bx + 0.205, by + 0.024, lbl, fontsize=13, color=MUTED,
                 ha='center', va='center', transform=ax.transAxes, fontfamily='monospace', zorder=11)
 
+    # Bottom CTA zone — spread across y=0.432 to y=0.063 so content doesn't bunch at top
     ax.plot([0.06, 0.94], [0.432, 0.432], color=EMERALD, alpha=0.4, lw=1.5, transform=ax.transAxes)
-    ax.text(0.5, 0.408, f'Current Balance: ${bal:,.0f}', fontsize=22, color=WHITE,
+    ax.text(0.5, 0.381, f'Current Balance: ${bal:,.0f}', fontsize=22, color=WHITE,
             ha='center', va='center', transform=ax.transAxes, fontweight='bold', zorder=11)
-    ax.add_patch(patches.FancyBboxPatch((0.06, 0.34), 0.88, 0.054,
+    ax.add_patch(patches.FancyBboxPatch((0.06, 0.307), 0.88, 0.054,
         boxstyle='round,pad=0.008', fc=EMERALD, ec='none',
         transform=ax.transAxes, zorder=7))
-    ax.text(0.5, 0.367, 'Open a live account → icmarkets.com/?camp=91936',
+    ax.text(0.5, 0.334, 'Open a live account → icmarkets.com/?camp=91936',
             fontsize=15, color='#010E1F', ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', fontweight='bold', zorder=11)
-    ax.text(0.5, 0.310, "Comment BROKER → I'll DM you my IC Markets setup",
+    ax.text(0.5, 0.258, "Comment BROKER → I'll DM you my IC Markets setup",
             fontsize=16, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, zorder=11)
-    ax.text(0.5, 0.280, 'Follow @veralevel.fx for every trade update',
+    ax.text(0.5, 0.218, 'Follow @veralevel.fx for every trade update',
             fontsize=16, color=MUTED, ha='center', va='center',
             transform=ax.transAxes, zorder=11)
-    ax.plot([0.06, 0.94], [0.032, 0.032], color=EMERALD, alpha=0.25, lw=1.0, transform=ax.transAxes)
-    ax.text(0.5, 0.017, 'Not financial advice. Past performance does not guarantee future results.',
+    ax.plot([0.06, 0.94], [0.063, 0.063], color=EMERALD, alpha=0.25, lw=1.0, transform=ax.transAxes)
+    ax.text(0.5, 0.033, 'Not financial advice. Past performance does not guarantee future results.',
             fontsize=11, color=DIM, ha='center', va='center',
             transform=ax.transAxes, fontfamily='monospace', zorder=11)
 
