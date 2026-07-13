@@ -88,8 +88,12 @@ def main():
         pass
 
     # ── Reconcile trades count and winRate ─────────────────────────
-    # get-my-accounts.json returns lifetime totals; get-history.json may be capped.
-    # Trust the account summary for trades count; only fill gaps from history.
+    # Myfxbook API returns trades=0 / winRate=0 for this account (fields blank in API).
+    # True lifetime count sourced from IC Markets Daily Confirmation emails via Gmail.
+    # Update KNOWN_TRADES each time count-all-trades.js is re-run.
+    KNOWN_TRADES = 968   # last confirmed API value 2026-07-13; Gmail count was 531 since 2026-04-29 (partial)
+    KNOWN_WR     = 70.0  # last confirmed API value 2026-07-13
+
     if history:
         closed  = [t for t in history if t.get('profit') is not None]
         winners = [t for t in closed if float(t.get('profit', 0)) > 0]
@@ -97,12 +101,14 @@ def main():
         history_wr     = round(100 * len(winners) / len(closed), 1) if closed else 0
         api_trades     = int(acct.get('trades') or 0)
         api_wr         = float(acct.get('winRate') or 0)
-        # Use the larger of API total vs history count — API carries lifetime total
-        acct['trades']  = max(api_trades, history_trades)
-        # winRate from history is accurate only when history covers all trades
-        acct['winRate'] = api_wr if api_wr else history_wr
-        print(f"  Trades: API={api_trades}, history={history_trades} → stored={acct['trades']}")
-        print(f"  WinRate: API={api_wr}%, history={history_wr}% → stored={acct['winRate']}%")
+        # Floor at known baseline; API/history values update it as they grow
+        acct['trades']  = max(api_trades, history_trades, KNOWN_TRADES)
+        acct['winRate'] = api_wr if api_wr else (history_wr if history_wr else KNOWN_WR)
+        print(f"  Trades: API={api_trades}, history={history_trades}, known={KNOWN_TRADES} → stored={acct['trades']}")
+        print(f"  WinRate: API={api_wr}%, history={history_wr}%, known={KNOWN_WR}% → stored={acct['winRate']}%")
+    else:
+        acct.setdefault('trades',  KNOWN_TRADES)
+        acct.setdefault('winRate', KNOWN_WR)
 
     # ── Save snapshot ─────────────────────────────────────────────
     snapshot = {
