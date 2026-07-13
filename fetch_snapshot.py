@@ -88,27 +88,43 @@ def main():
         pass
 
     # ── Reconcile trades count and winRate ─────────────────────────
-    # Myfxbook API returns trades=0 / winRate=0 for this account (fields blank in API).
-    # True lifetime count sourced from IC Markets Daily Confirmation emails via Gmail.
-    # Update KNOWN_TRADES each time count-all-trades.js is re-run.
-    KNOWN_TRADES = 968   # last confirmed API value 2026-07-13; Gmail count was 531 since 2026-04-29 (partial)
-    KNOWN_WR     = 70.0  # last confirmed API value 2026-07-13
+    # Myfxbook get-my-accounts returns trades=0 / winRate=0 intermittently.
+    # We persist the highest confirmed values in data/known-trades.json so the
+    # daily snapshot always reflects the growing trade count even when the API
+    # blanks out. The file is committed by fetch-snapshot.yml alongside the snapshot.
+    KNOWN_FILE   = Path(__file__).parent / 'data' / 'known-trades.json'
+    known        = json.loads(KNOWN_FILE.read_text()) if KNOWN_FILE.exists() else {}
+    KNOWN_TRADES = int(known.get('trades', 0))
+    KNOWN_WR     = float(known.get('winRate', 0))
+
+    api_trades = int(acct.get('trades') or 0)
+    api_wr     = float(acct.get('winRate') or 0)
 
     if history:
-        closed  = [t for t in history if t.get('profit') is not None]
-        winners = [t for t in closed if float(t.get('profit', 0)) > 0]
+        closed         = [t for t in history if t.get('profit') is not None]
+        winners        = [t for t in closed if float(t.get('profit', 0)) > 0]
         history_trades = len(closed)
         history_wr     = round(100 * len(winners) / len(closed), 1) if closed else 0
-        api_trades     = int(acct.get('trades') or 0)
-        api_wr         = float(acct.get('winRate') or 0)
-        # Floor at known baseline; API/history values update it as they grow
-        acct['trades']  = max(api_trades, history_trades, KNOWN_TRADES)
-        acct['winRate'] = api_wr if api_wr else (history_wr if history_wr else KNOWN_WR)
-        print(f"  Trades: API={api_trades}, history={history_trades}, known={KNOWN_TRADES} → stored={acct['trades']}")
-        print(f"  WinRate: API={api_wr}%, history={history_wr}%, known={KNOWN_WR}% → stored={acct['winRate']}%")
     else:
-        acct.setdefault('trades',  KNOWN_TRADES)
-        acct.setdefault('winRate', KNOWN_WR)
+        history_trades = 0
+        history_wr     = 0
+
+    best_trades = max(api_trades, history_trades, KNOWN_TRADES)
+    best_wr     = api_wr if api_wr else (history_wr if history_wr else KNOWN_WR)
+    acct['trades']  = best_trades
+    acct['winRate'] = best_wr
+
+    print(f"  Trades: API={api_trades}, history={history_trades}, known={KNOWN_TRADES} → stored={best_trades}")
+    print(f"  WinRate: API={api_wr}%, history={history_wr}%, known={KNOWN_WR}% → stored={best_wr}%")
+
+    # Persist if we learned a higher count (auto-bumps the floor for future runs)
+    if best_trades > KNOWN_TRADES or best_wr > KNOWN_WR:
+        KNOWN_FILE.write_text(json.dumps({
+            'trades':   best_trades,
+            'winRate':  best_wr,
+            'updatedAt': date.today().strftime('%Y-%m-%d'),
+        }, indent=2) + '\n')
+        print(f"  known-trades.json updated: {best_trades} trades, {best_wr}% WR")
 
     # ── Save snapshot ─────────────────────────────────────────────
     snapshot = {
