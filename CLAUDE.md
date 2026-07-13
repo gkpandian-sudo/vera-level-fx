@@ -27,7 +27,9 @@ vera-level-fx/
 └── .github/workflows/
     ├── fetch-snapshot.yml      ← Cron: daily 05:30 SGT fetch
     ├── insta-post.yml          ← Cron: daily 06:00 SGT static post
-    └── insta-reel.yml          ← Cron: 07:00 SGT rotation + 20:00 SGT daily reel
+    ├── insta-reel.yml          ← Cron: 07:00 SGT rotation + 20:00 SGT daily reel
+    ├── ai-reel.yml             ← Cron: daily 03:30 SGT AI-animated reel (Path E motion graphics)
+    └── token-renewal-reminder.yml ← Cron: 1st of month 09:00 SGT Telegram reminder
 ```
 
 ## Brand: Vera Level FX
@@ -42,19 +44,29 @@ vera-level-fx/
 
 ## Posting Schedule (SGT)
 
-| Day | Time SGT | Static post (insta-post.yml) | Reel (insta-reel.yml) |
-|-----|----------|------------------------------|----------------------|
-| Mon (SGT) = Sun UTC | 06:00 | daily | — |
-| Tue (SGT) = Mon UTC | 06:00 | weekly | 07:00 edu reel |
-| Wed (SGT) = Tue UTC | 06:00 | edu | 07:00 trust reel |
-| Thu (SGT) = Wed UTC | 06:00 | daily | 07:00 edu reel |
-| Fri (SGT) = Thu UTC | 06:00 | daily | 07:00 trust reel |
-| Sat (SGT) = Fri UTC | 06:00 | daily | 07:00 edu reel |
-| Sun (SGT) = Sat UTC | 06:00 | daily | 07:00 trust reel |
-| Every day | 20:00 | — | daily reel |
-| 1st of month | 06:00 | monthly | 07:00 broker reel |
-| 2nd of month | 06:00 | monthly | — |
-| 3rd of month | 06:00 | — | 06:00 monthly reel |
+All times SGT. The UTC offset means the cron that fires 22:00–23:00 UTC belongs
+to the *prior* UTC date — so Mon SGT static/reel use Sun UTC weekday logic, etc.
+
+| SGT Day | 03:30 AI Reel (ai-reel.yml) | 05:30 Snapshot | 06:00 Static (insta-post.yml) | 07:00 Reel (insta-reel.yml) | 20:00 Reel |
+|---------|----------------------------|----------------|-------------------------------|------------------------------|------------|
+| **Mon** | trust | fetch | daily | weekly | daily |
+| **Tue** | edu | fetch | weekly | edu | daily |
+| **Wed** | edu | fetch | edu | trust | daily |
+| **Thu** | trust | fetch | daily | edu | daily |
+| **Fri** | weekly | fetch | daily | trust | daily |
+| **Sat** | trust | fetch | daily | edu | daily |
+| **Sun** | trust | fetch | daily | trust | daily |
+
+Monthly specials (SGT date):
+
+| SGT Date | Time | Workflow | Type |
+|----------|------|----------|------|
+| 1st | 09:00 | token-renewal-reminder | Telegram: renew META token |
+| 2nd | 03:30 | ai-reel | broker |
+| 2nd | 06:00 | insta-post | monthly |
+| 2nd | 07:00 | insta-reel | broker |
+| 3rd | 06:00 | insta-post | monthly |
+| 3rd | 06:00 | insta-reel | monthly |
 
 ## Content Rotation — edu_content.py
 
