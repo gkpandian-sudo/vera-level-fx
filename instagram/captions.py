@@ -14,7 +14,7 @@ _CTA_VERIFY   = f"\n🔍 Don't take my word for it — audit me → Myfxbook #12
 _CTA_IB_BIO  = (
     f"\n💬 Comment BROKER and my 4-step IC Markets setup lands in your DMs"
     f"\n🏦 IC Markets Raw Spread (ASIC + CySEC) — the account behind every number above"
-    f"\n👉 Opening an account anyway? Link in bio. Same spreads, same cost — my link just means I get credited"
+    f"\n👉 Opening an account anyway? {_IB_URL} · Same spreads, same cost — my link just means I get credited"
 )
 _CTA_FOLLOW  = f"\n➕ Follow @veralevel.fx — every trade of this rebuild goes up live, wins and losses"
 _CTA_EDU_SOFT = (
