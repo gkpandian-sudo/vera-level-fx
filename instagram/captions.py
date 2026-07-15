@@ -379,7 +379,7 @@ The rebuild is live on Myfxbook. Watch it work — or watch it fail. Either way,
 💰 Current balance: ${bal:,.0f}
 📉 Max drawdown: {dd:.1f}%
 🔍 Full history, including this: Myfxbook #12044019
-{_CTA_IB_BIO}{_CTA_VERIFY}{_tamil_line('trust', lang)}
+{_CTA_VERIFY}{_CTA_COMPACT}{_tamil_line('trust', lang)}
 
 {_RISK_DISCLAIMER}
 
@@ -451,7 +451,7 @@ MILESTONES — ticked by live data, not by me
 {commit_line}
 
 Full 180-day plan → pinned post. Follow to see whether this works — most pages would never let you.
-{_CTA_IB}{_CTA_VERIFY}
+{_CTA_VERIFY}{_CTA_COMPACT}
 
 {_RISK_DISCLAIMER}
 
