@@ -268,8 +268,7 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
     trades    = int(account.get('trades') or 0)
     now       = datetime.now().strftime('%d %b %Y')
 
-    direction_emoji = '📈' if daily_pct >= 0 else '📉'
-    daily_sign      = '+' if daily_pct >= 0 else ''
+    daily_sign = '+' if daily_pct >= 0 else ''
 
     open_lines = []
     for t in open_trades[:5]:
@@ -283,38 +282,25 @@ def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_da
     wr_line = (f'{win_rate:.0f}% win rate · PF {pf:.2f} · +{pips:,} pips · {trades:,} trades'
                if win_rate > 0 else f'PF {pf:.2f} · +{pips:,} pips · Myfxbook #12044019')
 
-    recovery_line = (
-        f"Every position capped at 1% account risk — no revenge sizing, no doubling down.\n\n"
-        if recovery_day > 0 else ''
-    )
-
-    if open_trades:
-        first  = open_trades[0]
-        pair   = first.get('symbol', 'XAUUSD')
-        action = first.get('action', '').upper()
-        profit = float(first.get('profit') or 0)
-        live_bit = f"🔴 LIVE: {pair} {action} · ${profit:+.2f} floating as you read this. Not a replay."
-    else:
-        live_bit = f"🔵 Flat. No positions, no forced trades. {direction_emoji} {daily_sign}{daily_pct:.2f}% today — sitting out is a position too."
-
     if recovery_day > 0:
-        hook = f"Day {recovery_day}/{recovery_total} of rebuilding a blown account in public. {live_bit}"
+        hook = (f"Live Position Update — {now}\n\n"
+                f"Recovery Day {recovery_day}.\n\n"
+                f"Real trades. Real P&L. Nothing hidden.")
     else:
-        hook = live_bit
+        hook = f"Live Position Update — {now}\n\nReal trades. Real P&L. Nothing hidden."
 
     return f"""{hook}
-
-{recovery_line}This is my real account, mid-session — {now}. Open Myfxbook #12044019 in another tab and match every row.
 
 💰 Balance: ${balance:,.0f}
 ⚖️ Equity: ${equity:,.0f}
 📊 Daily: {daily_sign}{daily_pct:.2f}%
 
-On the book right now:
+Open positions right now:
 {positions_block}
 
 Running record: {wr_line}
-{_CTA_IB_BIO}{_CTA_VERIFY}{_CTA_FOLLOW}{_tamil_line('daily', lang)}
+Every trade visible on Myfxbook — zero manipulation.
+{_CTA_VERIFY}{_CTA_COMPACT}{_tamil_line('daily', lang)}
 
 {_RISK_DISCLAIMER}
 
