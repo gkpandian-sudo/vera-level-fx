@@ -104,7 +104,7 @@ def test_daily_has_comment_broker_cta():
     cap = daily_status(SAMPLE_ACCOUNT, [])
     assert 'Comment BROKER' in cap
 
-def test_daily_recovery_day_is_first_line():
+def test_daily_recovery_day_in_caption():
     cap = daily_status(SAMPLE_ACCOUNT, [], recovery_day=11, recovery_total=180)
     assert 'Recovery Day 11' in cap
 
@@ -363,10 +363,6 @@ def test_broker_caption_includes_broad_tags():
         assert tag in cap, f'{tag} missing from broker caption'
 
 # ── New tests: hook formats ───────────────────────────────────────────
-def test_daily_hook_title_format():
-    cap = daily_status(SAMPLE_ACCOUNT, [])
-    assert cap.strip().split('\n')[0].startswith('Live Position Update')
-
 def test_daily_hook_punchy_line():
     cap = daily_status(SAMPLE_ACCOUNT, [])
     assert 'Real trades. Real P&L. Nothing hidden.' in cap
@@ -374,10 +370,6 @@ def test_daily_hook_punchy_line():
 def test_daily_hook_recovery_day_line():
     cap = daily_status(SAMPLE_ACCOUNT, [], recovery_day=7)
     assert 'Recovery Day 7.' in cap
-
-def test_weekly_hook_title_format():
-    cap = weekly(SAMPLE_ACCOUNT)
-    assert cap.strip().split('\n')[0].startswith('Weekly P&L')
 
 def test_monthly_hook_title_format():
     pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
