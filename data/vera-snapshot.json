@@ -1,41 +1,60 @@
 {
-  "fetchedAt": "2026-07-14T22:30:17Z",
+  "fetchedAt": "2026-07-15T22:29:29Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
-    "gain": -96.87,
-    "absGain": -56.01,
-    "daily": -2.38,
-    "monthly": -51.15,
+    "gain": -96.86,
+    "absGain": -55.94,
+    "daily": -2.36,
+    "monthly": -50.93,
     "withdrawals": 1765,
     "deposits": 6201.08,
     "interest": -243.88,
-    "profit": -3470.99,
-    "balance": 961.24,
+    "profit": -3466.51,
+    "balance": 965.72,
     "drawdown": 98.27,
-    "equity": 961.24,
+    "equity": 965.72,
     "equityPercent": 100,
     "demo": false,
-    "lastUpdateDate": "07/14/2026 22:26",
+    "lastUpdateDate": "07/15/2026 20:47",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -354.74,
+    "commission": -354.88,
     "currency": "USD",
     "profitFactor": 0.76,
-    "pips": 25787.1,
+    "pips": 26018.1,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
-      "name": "IC Markets"
+      "name": "IC"
     },
     "trades": 968,
     "winRate": 57.5
   },
   "openTrades": [],
   "history": [
+    {
+      "openTime": "07/15/2026 19:33",
+      "closeTime": "07/15/2026 19:50",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.02"
+      },
+      "openPrice": 4035.36,
+      "closePrice": 4037.67,
+      "tp": 0,
+      "sl": 0,
+      "pips": 231,
+      "profit": 4.48,
+      "comment": "#4086755976|TOL LANGIT ETF - IV",
+      "interest": 0,
+      "commission": -0.14
+    },
     {
       "openTime": "07/14/2026 23:37",
       "closeTime": "07/15/2026 01:01",
@@ -776,25 +795,6 @@
       "comment": "TOL LANGIT ETF - IX [S01][sl 4120.79]",
       "interest": 0,
       "commission": -0.08
-    },
-    {
-      "openTime": "07/10/2026 06:57",
-      "closeTime": "07/10/2026 07:18",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4119.58,
-      "closePrice": 4120.79,
-      "tp": 0,
-      "sl": 4120.79,
-      "pips": 121,
-      "profit": 1.13,
-      "comment": "TOL LANGIT ETF - IX [S01][sl 4120.79]",
-      "interest": 0,
-      "commission": -0.08
     }
   ],
   "dailyGain": [
@@ -1257,6 +1257,11 @@
       "07/14/2026",
       -96.86,
       -89.64
+    ],
+    [
+      "07/15/2026",
+      -96.86,
+      3.97
     ]
   ]
 }
