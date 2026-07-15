@@ -28,14 +28,15 @@ _RISK_DISCLAIMER = (
     "Past performance is not indicative of future results. IB #91936."
 )
 
-# --- Hashtags (consolidated: 8 core + edu variant + campaign) ---
+# --- Hashtags ---
 _TAGS_BRAND    = "#veralevelFX #icmarkets #myfxbook"
 _TAGS_NICHE    = "#xauusd #gold #eurusd #forexsingapore #sgtrader"
+_TAGS_BROAD    = "#forex #forextrading #forextrader #priceaction #tradingstrategy #algotrading"
 _TAGS_EDU_ONLY = "#forexeducation #riskmanagement #tradingpsychology #learnforex"
 _TAGS_REBUILD  = "#180dayrebuild"
 
-TAGS      = f"{_TAGS_BRAND} {_TAGS_NICHE}"         # 8 tags: core posts
-TAGS_EDU  = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_EDU_ONLY}"  # 12 tags: edu posts
+TAGS     = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_BROAD}"                    # 14 tags
+TAGS_EDU = f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_BROAD} {_TAGS_EDU_ONLY}"  # 18 tags
 
 
 def _rebuild_tag(recovery_day: int) -> str:
