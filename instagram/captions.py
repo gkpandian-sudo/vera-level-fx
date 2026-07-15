@@ -189,9 +189,9 @@ def monthly(account: dict, monthly_pnl: dict, lang: str = 'en') -> str:
     sign      = '+' if gain >= 0 else ''
     month_now = datetime.now().strftime('%B %Y')
 
-    return f"""Most traders delete their red months. Mine are all below — guess which one nearly ended the account.
+    return f"""Monthly P&L — {month_now}
 
-📅 {month_now}
+{sign}{gain:.1f}% total return. Nothing deleted.
 
 {lines}
 
@@ -202,7 +202,7 @@ No cherry-picked entries. No "demo results". This is pulled from my live IC Mark
 Which month hurt most? Comment it below — I'll reply with exactly what went wrong in it.
 
 Save this post. On the 1st of next month, one more row goes up — green or red. Hold me to it.
-{_CTA_IB}{_CTA_VERIFY}{_tamil_line('monthly', lang)}
+{_CTA_VERIFY}{_CTA_COMPACT}{_tamil_line('monthly', lang)}
 
 {_RISK_DISCLAIMER}
 
