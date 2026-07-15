@@ -459,8 +459,8 @@ Full 180-day plan → pinned post. Follow to see whether this works — most pag
 
 
 def broker(lang: str = 'en') -> str:
-    _TAGS_BROKER = (f"{_TAGS_BRAND} {_TAGS_NICHE} "
-                    "#icmarkets #rawspread #forexbroker #asicregulated #forexsg #sgforex")
+    _TAGS_BROKER = (f"{_TAGS_BRAND} {_TAGS_NICHE} {_TAGS_BROAD} "
+                    "#rawspread #forexbroker #asicregulated #forexsg #sgforex")
 
     tamil = (
         f"\n\n📊 நான் IC Markets Raw Spread account-ல் தான் trade பண்றேன் — ஒவ்வொரு trade-um. "
