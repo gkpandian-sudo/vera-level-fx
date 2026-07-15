@@ -1,10 +1,6 @@
-import os
 from datetime import datetime
 
 # --- CTAs (Instagram-native only: comment, follow, save, DM. IB link lives in bio.) ---
-_WEBSITE  = os.environ.get('BRAND_WEBSITE', 'vera-level-forex.vercel.app')
-_IB_URL   = os.environ.get('BRAND_IB_URL', 'https://www.icmarkets.com/global/en/?camp=91936')
-
 _CTA_VERIFY   = "\n🔍 Don't take my word for it — audit me → Myfxbook #12044019"
 _CTA_COMPACT  = "\n💬 Comment BROKER → IC Markets setup straight to your DMs  ·  🔗 Link in bio"
 _CTA_EDU_SOFT = (
