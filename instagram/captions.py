@@ -5,21 +5,11 @@ from datetime import datetime
 _WEBSITE  = os.environ.get('BRAND_WEBSITE', 'vera-level-forex.vercel.app')
 _IB_URL   = os.environ.get('BRAND_IB_URL', 'https://www.icmarkets.com/global/en/?camp=91936')
 
-_CTA_IB       = (
-    "\n💬 Comment BROKER and my 4-step IC Markets setup lands in your DMs"
-    "\n🏦 IC Markets Raw Spread (ASIC + CySEC regulated) — the exact account behind these numbers. Link in bio"
-)
-_CTA_VERIFY   = f"\n🔍 Don't take my word for it — audit me → Myfxbook #12044019"
-
-_CTA_IB_BIO  = (
-    f"\n💬 Comment BROKER and my 4-step IC Markets setup lands in your DMs"
-    f"\n🏦 IC Markets Raw Spread (ASIC + CySEC) — the account behind every number above"
-    f"\n👉 Opening an account anyway? {_IB_URL} · Same spreads, same cost — my link just means I get credited"
-)
-_CTA_FOLLOW  = f"\n➕ Follow @veralevel.fx — every trade of this rebuild goes up live, wins and losses"
+_CTA_VERIFY   = "\n🔍 Don't take my word for it — audit me → Myfxbook #12044019"
+_CTA_COMPACT  = "\n💬 Comment BROKER → IC Markets setup straight to your DMs  ·  🔗 Link in bio"
 _CTA_EDU_SOFT = (
-    f"\n\n💾 Save this — you'll want it mid-trade, not mid-scroll. Comment RULES and I'll DM you the full library.\n"
-    f"💬 Comment BROKER for the IC Markets setup behind these numbers  ·  Follow @veralevel.fx for the live rebuild"
+    "\n\n💾 Save this — you'll want it mid-trade, not mid-scroll. Comment RULES for the full library.\n"
+    "💬 Comment BROKER for my IC Markets setup  ·  Follow @veralevel.fx"
 )
 
 # Required on all posts citing live P&L (daily, weekly, trust, transparency, monthly, recovery-plan)
