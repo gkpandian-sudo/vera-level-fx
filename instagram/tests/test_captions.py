@@ -69,13 +69,12 @@ def test_daily_hook_shows_live_position():
     trades = [{'symbol': 'XAUUSD', 'action': 'short', 'profit': -42.0}]
     cap = daily_status(SAMPLE_ACCOUNT, trades)
     first_line = cap.strip().split('\n')[0]
-    assert 'Live Position Update' not in first_line
-    assert 'XAUUSD' in first_line or 'LIVE' in first_line
+    assert first_line.startswith('Live Position Update')
 
 def test_daily_hook_flat_when_no_trades():
     cap = daily_status(SAMPLE_ACCOUNT, [])
     first_line = cap.strip().split('\n')[0]
-    assert 'Live Position Update' not in first_line
+    assert first_line.startswith('Live Position Update')
 
 def test_trust_hook_not_label():
     cap = trust(SAMPLE_ACCOUNT)
@@ -107,13 +106,12 @@ def test_daily_has_comment_broker_cta():
 
 def test_daily_recovery_day_is_first_line():
     cap = daily_status(SAMPLE_ACCOUNT, [], recovery_day=11, recovery_total=180)
-    first_line = cap.strip().split('\n')[0]
-    assert '11/180' in first_line
+    assert 'Recovery Day 11' in cap
 
 def test_trust_hook_has_contradiction():
     cap = trust(SAMPLE_ACCOUNT)
-    first_line = cap.strip().split('\n')[0]
-    assert '55% win rate' in first_line and '-62.0%' in first_line
+    # Both win rate and total return must appear early in the caption
+    assert '55%' in cap[:300] and '-62.0%' in cap[:300]
 
 def test_monthly_has_which_month_hook():
     pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
@@ -130,7 +128,7 @@ def test_trust_has_link_in_bio():
 
 def test_daily_ib_cta_has_attribution_warning():
     cap = daily_status(SAMPLE_ACCOUNT, [])
-    assert 'credited' in cap.lower() or 'referral' in cap.lower()
+    assert 'IB #91936' in cap  # risk disclaimer carries IB attribution
 
 def test_edu_risk_cta_is_save_not_open_broker():
     from edu_content import RISK_RULES
@@ -240,11 +238,11 @@ def test_weekly_gain_returns_none_when_only_this_week_data():
 
 def test_weekly_recovery_line_has_of_180():
     cap = weekly(SAMPLE_ACCOUNT, recovery_day=45, recovery_total=180)
-    assert '45/180' in cap
+    assert 'Recovery Day 45' in cap
 
 def test_daily_recovery_line_has_of_180():
     cap = daily_status(SAMPLE_ACCOUNT, [], recovery_day=45, recovery_total=180)
-    assert '45/180' in cap
+    assert 'Recovery Day 45' in cap
 
 def test_recovery_plan_has_of_180():
     cap = recovery_plan(recovery_day=45, recovery_total=180)
@@ -268,21 +266,19 @@ def test_weekly_hook_does_not_say_this_week_for_total_gain():
 def test_weekly_hook_recovery_leads_with_day_counter():
     cap = weekly(SAMPLE_ACCOUNT, recovery_day=45, recovery_total=180)
     first_line = cap.strip().split('\n')[0]
-    assert '45/180' in first_line
+    assert first_line.startswith('Weekly P&L')
 
 
 def test_weekly_hook_uses_weekly_gain_when_provided():
     cap = weekly(SAMPLE_ACCOUNT, weekly_gain=1.4)
-    first_line = cap.strip().split('\n')[0]
-    assert '1.4%' in first_line
-    assert 'this week' in first_line.lower()
+    assert '1.4%' in cap
+    assert 'this week' in cap.lower()
 
 
 def test_weekly_hook_recovery_with_weekly_gain():
     cap = weekly(SAMPLE_ACCOUNT, recovery_day=45, recovery_total=180, weekly_gain=-0.6)
-    first_line = cap.strip().split('\n')[0]
-    assert '45/180' in first_line
-    assert '-0.6%' in first_line
+    assert 'Recovery Day 45' in cap
+    assert '-0.6%' in cap
 
 
 def test_tags_has_campaign_hashtag_during_recovery():
@@ -297,7 +293,7 @@ def test_total_hashtag_count_weekly_no_recovery():
     cap = weekly(SAMPLE_ACCOUNT, recovery_day=0)
     tags_line = [l for l in cap.split('\n') if '#veralevelFX' in l][0]
     count = tags_line.count('#')
-    assert count <= 9, f"Expected ≤9 hashtags, got {count}: {tags_line}"
+    assert 14 <= count <= 20, f"Expected 14–20 hashtags, got {count}: {tags_line}"
 
 def test_edu_has_separate_edu_tags():
     from edu_content import RISK_RULES
@@ -345,3 +341,103 @@ def test_recovery_plan_end_date_computed_from_start():
                         recovery_start_str='2026-05-25', balance=1200.0)
     # 2026-05-25 + 179 days = 2026-11-20
     assert 'Nov 2026' in cap or '20 Nov' in cap
+
+
+# ── New tests: hashtag expansion ─────────────────────────────────────
+_BROAD_TAGS = ['#forex', '#forextrading', '#forextrader',
+               '#priceaction', '#tradingstrategy', '#algotrading']
+
+def test_tags_includes_broad_discovery():
+    from captions import TAGS
+    for tag in _BROAD_TAGS:
+        assert tag in TAGS, f'{tag} missing from TAGS'
+
+def test_tags_edu_includes_broad_discovery():
+    from captions import TAGS_EDU
+    for tag in _BROAD_TAGS:
+        assert tag in TAGS_EDU, f'{tag} missing from TAGS_EDU'
+
+def test_broker_caption_includes_broad_tags():
+    cap = broker()
+    for tag in _BROAD_TAGS:
+        assert tag in cap, f'{tag} missing from broker caption'
+
+# ── New tests: hook formats ───────────────────────────────────────────
+def test_daily_hook_title_format():
+    cap = daily_status(SAMPLE_ACCOUNT, [])
+    assert cap.strip().split('\n')[0].startswith('Live Position Update')
+
+def test_daily_hook_punchy_line():
+    cap = daily_status(SAMPLE_ACCOUNT, [])
+    assert 'Real trades. Real P&L. Nothing hidden.' in cap
+
+def test_daily_hook_recovery_day_line():
+    cap = daily_status(SAMPLE_ACCOUNT, [], recovery_day=7)
+    assert 'Recovery Day 7.' in cap
+
+def test_weekly_hook_title_format():
+    cap = weekly(SAMPLE_ACCOUNT)
+    assert cap.strip().split('\n')[0].startswith('Weekly P&L')
+
+def test_monthly_hook_title_format():
+    pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
+    cap = monthly(SAMPLE_ACCOUNT, pnl)
+    assert cap.strip().split('\n')[0].startswith('Monthly P&L')
+
+def test_trust_hook_title_format():
+    cap = trust(SAMPLE_ACCOUNT)
+    assert cap.strip().split('\n')[0].startswith('Track Record')
+
+# ── New tests: CTA trimming ───────────────────────────────────────────
+def test_no_old_ib_bio_cta_in_daily():
+    cap = daily_status(SAMPLE_ACCOUNT, [])
+    assert 'Opening an account anyway?' not in cap
+
+def test_no_old_follow_cta_in_daily():
+    cap = daily_status(SAMPLE_ACCOUNT, [])
+    assert '➕ Follow @veralevel.fx' not in cap
+
+def test_compact_cta_in_all_p_and_l_posts():
+    pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
+    posts = [
+        ('daily',        daily_status(SAMPLE_ACCOUNT, [])),
+        ('weekly',       weekly(SAMPLE_ACCOUNT)),
+        ('monthly',      monthly(SAMPLE_ACCOUNT, pnl)),
+        ('trust',        trust(SAMPLE_ACCOUNT)),
+        ('transparency', transparency(SAMPLE_ACCOUNT)),
+        ('recovery',     recovery_plan(balance=1500.0, pf=0.9)),
+    ]
+    for name, cap in posts:
+        assert 'Comment BROKER → IC Markets setup straight to your DMs' in cap, \
+               f'_CTA_COMPACT missing from {name}'
+
+def test_myfxbook_verify_cta_in_all_p_and_l_posts():
+    pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
+    posts = [
+        ('daily',        daily_status(SAMPLE_ACCOUNT, [])),
+        ('weekly',       weekly(SAMPLE_ACCOUNT)),
+        ('monthly',      monthly(SAMPLE_ACCOUNT, pnl)),
+        ('trust',        trust(SAMPLE_ACCOUNT)),
+        ('transparency', transparency(SAMPLE_ACCOUNT)),
+        ('recovery',     recovery_plan(balance=1500.0, pf=0.9)),
+    ]
+    for name, cap in posts:
+        assert 'Myfxbook #12044019' in cap, f'_CTA_VERIFY missing from {name}'
+
+def test_risk_disclaimer_in_all_p_and_l_posts():
+    pnl = {'Jun 26': -3.2, 'Jul 26': 1.1}
+    posts = [
+        ('daily',        daily_status(SAMPLE_ACCOUNT, [])),
+        ('weekly',       weekly(SAMPLE_ACCOUNT)),
+        ('monthly',      monthly(SAMPLE_ACCOUNT, pnl)),
+        ('trust',        trust(SAMPLE_ACCOUNT)),
+        ('transparency', transparency(SAMPLE_ACCOUNT)),
+    ]
+    for name, cap in posts:
+        assert 'Trading FX on margin' in cap, f'risk disclaimer missing from {name}'
+
+def test_edu_soft_cta_updated_wording():
+    from edu_content import RISK_RULES
+    cap = edu('risk', RISK_RULES[0])
+    assert "I'll DM you" not in cap
+    assert 'Comment RULES for the full library' in cap
