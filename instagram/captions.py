@@ -311,18 +311,22 @@ def trust(account: dict, lang: str = 'en', recovery_day: int = 0, recovery_total
     trades = int(account.get('trades') or 0)
     pips   = int(account.get('pips') or 0)
     sign   = '+' if gain >= 0 else ''
+    now    = datetime.now().strftime('%d %b %Y')
 
     wr_str    = f'{wr:.0f}% win rate across {trades:,} trades.' if wr > 0 else 'Full trade history on Myfxbook.'
     gain_note = ' (deep drawdown, fully disclosed)' if gain < -50 else ''
     wr_line   = f'🎯 Win Rate: {wr:.0f}%' if wr > 0 else '🎯 Win Rate: Myfxbook #12044019'
-    win_rate  = wr
 
-    days_str = f"Day {recovery_day}/{recovery_total} — " if recovery_day > 0 else ""
     if wr > 0:
-        hook = (f"{days_str}{wr:.0f}% win rate. {sign}{gain:.1f}% total return. Same account, same trader — "
-                f"and both numbers are real. If that contradiction confuses you, read this twice.")
+        metric_line = f"{wr:.0f}% win rate. {sign}{gain:.1f}% total return. Both verified."
     else:
-        hook = f"{days_str}Try to catch me lying. One live account, one public link. I'll wait."
+        metric_line = "Try to catch me lying. One live account, one public link. I'll wait."
+
+    if recovery_day > 0:
+        hook = f"Track Record — {now}\n\nRecovery Day {recovery_day}.\n\n{metric_line}"
+    else:
+        hook = f"Track Record — {now}\n\n{metric_line}"
+
     return f"""{hook}
 
 ✅ Vera Level FX  ·  IC Markets  ·  Myfxbook #12044019
@@ -340,7 +344,7 @@ DON'T TRUST ME — AUDIT ME. 3 steps:
 ⚡ Profit Factor: {pf:.2f}
 📈 Total Return: {sign}{gain:.1f}%{gain_note}
 💹 Pips: +{pips:,}
-{_CTA_IB_BIO}{_CTA_VERIFY}{_tamil_line('trust', lang)}
+{_CTA_VERIFY}{_CTA_COMPACT}{_tamil_line('trust', lang)}
 
 {_RISK_DISCLAIMER}
 
