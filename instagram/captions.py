@@ -135,37 +135,34 @@ def weekly(account: dict, lang: str = 'en', recovery_day: int = 0,
     trades = int(account.get('trades') or 0)
     now    = datetime.now().strftime('%d %b %Y')
 
-    gain_label = 'total gain' if gain >= 0 else 'total loss'
-    sign       = '+' if gain >= 0 else ''
-    wr_str     = f'{wr:.0f}% win rate' if wr > 0 else 'win rate on Myfxbook'
+    gain_label  = 'total gain' if gain >= 0 else 'total loss'
+    sign        = '+' if gain >= 0 else ''
+    wr_str      = f'{wr:.0f}% win rate' if wr > 0 else 'win rate on Myfxbook'
     trades_part = f'. {trades:,} trades' if trades > 0 else ''
     wr_line     = (f'🎯 Win Rate: {wr:.0f}% across {trades:,} trades'
                    if wr > 0 else '🎯 Win Rate: Myfxbook #12044019')
-    recovery_line = (
-        f"Day {recovery_day}/{recovery_total} of the rebuild. Account is live — numbers below, nothing cropped out.\n\n"
-        if recovery_day > 0 else ''
-    )
-    rebuild_week = (recovery_day - 1) // 7 + 1 if recovery_day > 0 else 0
+
+    wg_sign = '+' if (weekly_gain or 0) >= 0 else ''
     if recovery_day > 0 and weekly_gain is not None:
-        wg_sign = '+' if weekly_gain >= 0 else ''
-        hook = (f"Day {recovery_day}/{recovery_total} — Week {rebuild_week} of rebuilding "
-                f"a {sign}{gain:.1f}% account in public. This week: {wg_sign}{weekly_gain:.1f}%. "
-                f"Most people would quit. I'm posting every trade.")
+        hook = (f"Weekly P&L — {now}\n\n"
+                f"Recovery Day {recovery_day}.\n\n"
+                f"{wg_sign}{weekly_gain:.1f}% this week. Every trade is public.")
     elif recovery_day > 0:
-        hook = (f"Day {recovery_day}/{recovery_total} — Week {rebuild_week} of rebuilding in public. "
-                f"Running total: {sign}{gain:.1f}% {gain_label}. Most people would quit. "
-                f"I'm posting every trade.")
+        hook = (f"Weekly P&L — {now}\n\n"
+                f"Recovery Day {recovery_day}.\n\n"
+                f"{sign}{gain:.1f}% {gain_label}. Every trade is public.")
     elif weekly_gain is not None:
-        wg_sign = '+' if weekly_gain >= 0 else ''
-        hook = f"{wg_sign}{weekly_gain:.1f}% this week. You can audit every trade behind that number — most pages can't say that."
+        hook = (f"Weekly P&L — {now}\n\n"
+                f"{wg_sign}{weekly_gain:.1f}% this week. Every trade is public.")
     else:
-        hook = f"{sign}{gain:.1f}% {gain_label} after {trades:,} trades — and every single one is public."
+        hook = (f"Weekly P&L — {now}\n\n"
+                f"{sign}{gain:.1f}% {gain_label}. Every trade is public.")
 
     return f"""{hook}
 
 📊 Week ending {now}
 
-{recovery_line}{sign}{gain:.1f}% {gain_label}{trades_part}. {wr_str}.
+{sign}{gain:.1f}% {gain_label}{trades_part}. {wr_str}.
 Not a screenshot. Not a demo. Myfxbook pulls these figures straight from my broker — account #12044019. Go check.
 
 Same rules as every week: IC Markets Raw Spread, max 1% risk per trade, 1:2.5+ RR or the trade doesn't happen.
@@ -174,7 +171,7 @@ Same rules as every week: IC Markets Raw Spread, max 1% risk per trade, 1:2.5+ R
 {wr_line}
 ⚡ Profit Factor: {pf:.2f}
 💹 Total Pips: +{pips:,}
-{_CTA_IB_BIO}{_CTA_VERIFY}
+{_CTA_VERIFY}{_CTA_COMPACT}
 Green or red for you this week? Comment G or R — I pin the honest ones next Monday.{_tamil_line('weekly', lang)}
 
 {_RISK_DISCLAIMER}
