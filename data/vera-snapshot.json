@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-07-16T22:29:11Z",
+  "fetchedAt": "2026-07-17T22:21:09Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -97.27,
     "absGain": -57.96,
-    "daily": -2.44,
-    "monthly": -52.06,
+    "daily": -2.42,
+    "monthly": -52.03,
     "withdrawals": 1765,
     "deposits": 6201.08,
-    "interest": -243.88,
-    "profit": -3591.96,
-    "balance": 840.27,
+    "interest": -243.9,
+    "profit": -3591.88,
+    "balance": 840.35,
     "drawdown": 98.42,
-    "equity": 840.27,
+    "equity": 840.35,
     "equityPercent": 100,
     "demo": false,
-    "lastUpdateDate": "07/16/2026 19:54",
+    "lastUpdateDate": "07/17/2026 07:18",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -358.98,
+    "commission": -359.06,
     "currency": "USD",
     "profitFactor": 0.75,
-    "pips": 22263.1,
+    "pips": 22265.7,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -36,6 +36,25 @@
   },
   "openTrades": [],
   "history": [
+    {
+      "openTime": "07/16/2026 23:06",
+      "closeTime": "07/17/2026 01:00",
+      "symbol": "GBPAUD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 1.9265,
+      "closePrice": 1.92624,
+      "tp": 1.92624,
+      "sl": 0,
+      "pips": 2.6,
+      "profit": 0.08,
+      "comment": "TOL LANGIT ETF - XI[tp 1.92624]",
+      "interest": -0.02,
+      "commission": -0.08
+    },
     {
       "openTime": "07/16/2026 22:35",
       "closeTime": "07/16/2026 22:35",
@@ -776,25 +795,6 @@
       "comment": "TOL LANGIT ETF - VII_PendingC[sl 4017.28]",
       "interest": 0,
       "commission": -0.22
-    },
-    {
-      "openTime": "07/13/2026 17:16",
-      "closeTime": "07/13/2026 17:18",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.03"
-      },
-      "openPrice": 4018.81,
-      "closePrice": 4017.28,
-      "tp": 0,
-      "sl": 4017.28,
-      "pips": 153,
-      "profit": 4.37,
-      "comment": "TOL LANGIT ETF - VII_PendingA[sl 4017.28]",
-      "interest": 0,
-      "commission": -0.22
     }
   ],
   "dailyGain": [
@@ -1267,6 +1267,11 @@
       "07/16/2026",
       -97.27,
       -125.45
+    ],
+    [
+      "07/17/2026",
+      -97.27,
+      0.08
     ]
   ]
 }
