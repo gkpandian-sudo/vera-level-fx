@@ -8,6 +8,22 @@ TOKEN = os.environ['META_ACCESS_TOKEN']
 
 _IB_COMMENT = 'https://www.icmarkets.com/global/en/?camp=91936'
 
+_IG_CAPTION_LIMIT = 2190  # 10-char safety buffer below Instagram's 2200 hard limit
+
+
+def _safe_caption(caption: str) -> str:
+    if len(caption) <= _IG_CAPTION_LIMIT:
+        return caption
+    tag_start = caption.rfind('\n\n#')
+    if tag_start != -1:
+        tail = caption[tag_start:]
+        body = caption[:_IG_CAPTION_LIMIT - len(tail) - 3]
+        safe = body + '...' + tail
+    else:
+        safe = caption[:_IG_CAPTION_LIMIT]
+    print(f'  [warn] caption truncated: {len(caption)} → {len(safe)} chars')
+    return safe
+
 
 def _check(r: requests.Response):
     if not r.ok:
@@ -28,6 +44,7 @@ def _post_first_comment(post_id: str) -> None:
 
 
 def publish(image_url: str, caption: str) -> str:
+    caption = _safe_caption(caption)
     # Step 1 — create media container
     data = _check(requests.post(
         f'{GRAPH}/{IG_ID}/media',
@@ -74,6 +91,7 @@ def publish_reel(video_url: str, caption: str, cover_url: str = '') -> str:
     Poll timeout is 5 minutes (30 × 10s — video encoding is slower than images).
     cover_url — optional public JPEG URL used as the reel cover/thumbnail.
     """
+    caption = _safe_caption(caption)
     params = {
         'media_type':   'REELS',
         'video_url':    video_url,
