@@ -98,7 +98,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     daily_gain  = data.get('dailyGain', [])
 
     balance   = float(acct.get('balance') or 0)
-    daily_pct = float(acct.get('daily')   or 0)
+    daily_pct = float(acct.get('todayDaily') or acct.get('daily') or 0)
     win_rate  = float(acct.get('winRate') or 0)
     pips      = int(acct.get('pips')      or 0)
     pf        = float(acct.get('profitFactor') or 0)
@@ -714,7 +714,7 @@ def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.I
 
     elif post_type == 'daily':
         balance   = float(acct.get('balance') or 0)
-        daily_pct = float(acct.get('daily')   or 0)
+        daily_pct = float(acct.get('todayDaily') or acct.get('daily') or 0)
         pc        = GREEN if daily_pct >= 0 else RED
         sign      = '+' if daily_pct >= 0 else ''
         img = draw_alpha_text(img, (W // 2, H // 2 - 220),

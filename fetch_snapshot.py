@@ -64,6 +64,19 @@ def main():
             daily_gain.append(e)
     print(f"  {len(daily_gain)} daily data points")
 
+    # ── Actual today's daily gain (delta between last two dailyGain entries) ──
+    # account.daily is Myfxbook's geometric average since inception — not useful for daily display.
+    # todayDaily = change in cumulative % for the most recent trading day (same methodology as Myfxbook charts).
+    if len(daily_gain) >= 2:
+        today_daily  = round(daily_gain[-1][1] - daily_gain[-2][1], 2)
+        today_profit = daily_gain[-1][2]
+    elif len(daily_gain) == 1:
+        today_daily  = round(daily_gain[-1][1], 2)
+        today_profit = daily_gain[-1][2]
+    else:
+        today_daily  = 0
+        today_profit = 0
+
     # ── Open trades ───────────────────────────────────────────────
     print("Fetching open trades ...")
     open_trades = api('get-open-trades.json', {
@@ -110,9 +123,11 @@ def main():
         history_wr     = 0
 
     best_trades = max(api_trades, history_trades, KNOWN_TRADES)
-    best_wr     = api_wr if api_wr else (history_wr if history_wr else KNOWN_WR)
-    acct['trades']  = best_trades
-    acct['winRate'] = best_wr
+    best_wr     = max(api_wr or 0, history_wr or 0, KNOWN_WR)
+    acct['trades']     = best_trades
+    acct['winRate']    = best_wr
+    acct['todayDaily']  = today_daily
+    acct['todayProfit'] = today_profit
 
     print(f"  Trades: API={api_trades}, history={history_trades}, known={KNOWN_TRADES} → stored={best_trades}")
     print(f"  WinRate: API={api_wr}%, history={history_wr}%, known={KNOWN_WR}% → stored={best_wr}%")

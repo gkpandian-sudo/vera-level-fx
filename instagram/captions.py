@@ -254,7 +254,7 @@ def edu(edu_type: str, content: dict, lang: str = 'en') -> str:
 def daily_status(account: dict, open_trades: list, lang: str = 'en', recovery_day: int = 0, recovery_total: int = 180) -> str:
     balance   = account.get('balance') or 0
     equity    = account.get('equity') or balance
-    daily_pct = account.get('daily') or 0
+    daily_pct = account.get('todayDaily') or account.get('daily') or 0
     win_rate  = account.get('winRate') or 0
     pf        = account.get('profitFactor') or 0
     pips      = int(account.get('pips') or 0)

@@ -78,7 +78,7 @@ def make_daily_card(data: dict, recovery_day: int = 0, recovery_total: int = 180
 
     balance   = account.get('balance', 0)
     equity    = account.get('equity', balance)
-    daily_pct = account.get('daily', 0)
+    daily_pct = account.get('todayDaily', account.get('daily', 0))
     win_rate  = account.get('winRate', 0)
     pips      = int(account.get('pips', 0))
     pf        = account.get('profitFactor', 0)

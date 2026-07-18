@@ -22,7 +22,29 @@ REEL_DIR  = ROOT / 'instagram' / 'reels'
 
 def load_data() -> dict:
     with open(DATA_FILE) as f:
-        return json.load(f)
+        d = json.load(f)
+    account = d.get('account', {})
+
+    # Patch winRate/trades from known baseline when snapshot has None/0
+    known_file = ROOT / 'data' / 'known-trades.json'
+    if known_file.exists():
+        known = json.loads(known_file.read_text())
+        if not account.get('winRate'):
+            account['winRate'] = float(known.get('winRate', 0))
+        if not account.get('trades'):
+            account['trades'] = int(known.get('trades', 0))
+
+    # Compute todayDaily from dailyGain when not stored by fetch_snapshot.py
+    if 'todayDaily' not in account:
+        dg = d.get('dailyGain', [])
+        if len(dg) >= 2:
+            account['todayDaily']  = round(dg[-1][1] - dg[-2][1], 2)
+            account['todayProfit'] = dg[-1][2]
+        elif len(dg) == 1:
+            account['todayDaily']  = round(dg[-1][1], 2)
+            account['todayProfit'] = dg[-1][2]
+
+    return d
 
 
 def commit_and_push(*paths: Path) -> list:
