@@ -87,7 +87,7 @@ def main():
     from captions     import (weekly, monthly, trust, daily_status,
                               transparency, recovery_plan, edu as edu_caption,
                               broker as broker_caption, ib_signup, milestone,
-                              monthly_pnl_from_daily)
+                              monthly_pnl_from_daily, weekly_gain_from_daily)
     from post         import publish_reel
 
     data      = load_data()
@@ -111,6 +111,9 @@ def main():
     REEL_DIR.mkdir(parents=True, exist_ok=True)
     out_path = REEL_DIR / f'{today.isoformat()}-{post_type}.mp4'
 
+    weekly_gain = (weekly_gain_from_daily(data.get('dailyGain', []))
+                   if post_type == 'weekly' else None)
+
     # ── Select clips + caption ────────────────────────────────────────────────
     if post_type == 'daily':
         clips   = make_daily_reel(data, recovery_day=recovery_day)
@@ -118,8 +121,8 @@ def main():
                                lang=lang, recovery_day=recovery_day)
 
     elif post_type == 'weekly':
-        clips   = make_weekly_reel(data, recovery_day=recovery_day)
-        caption = weekly(account, lang=lang, recovery_day=recovery_day)
+        clips   = make_weekly_reel(data, recovery_day=recovery_day, weekly_gain=weekly_gain)
+        caption = weekly(account, lang=lang, recovery_day=recovery_day, weekly_gain=weekly_gain)
 
     elif post_type == 'monthly':
         clips       = make_monthly_reel(data)
@@ -180,7 +183,8 @@ def main():
 
     # ── Thumbnail ─────────────────────────────────────────────────────────────
     thumb_path = REEL_DIR / f'{today.isoformat()}-{post_type}-thumb.jpg'
-    thumb_img  = make_thumbnail(post_type, data, recovery_day=recovery_day)
+    thumb_img  = make_thumbnail(post_type, data, recovery_day=recovery_day,
+                               weekly_gain=weekly_gain)
     thumb_img.save(str(thumb_path), 'JPEG', quality=92)
     print(f'  thumbnail: {thumb_path}  ({thumb_path.stat().st_size // 1024} KB)')
 

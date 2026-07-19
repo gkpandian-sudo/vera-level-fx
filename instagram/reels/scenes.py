@@ -162,8 +162,9 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     return [hero, eq_clip, data_clip, cta, make_broker_card_clip()]
 
 
-def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
-    """Weekly reel — hero (spring gain) + equity curve + data + cta + broker."""
+def make_weekly_reel(data: dict, recovery_day: int = 0,
+                     weekly_gain: float | None = None) -> list:
+    """Weekly reel — hero (this week's gain) + equity curve + data + cta + broker."""
     from reels.effects import equity_curve_clip, candlestick_bg_overlay
     from reels.animator import ease_spring, draw_glow_text
 
@@ -176,21 +177,26 @@ def make_weekly_reel(data: dict, recovery_day: int = 0) -> list:
     trades     = int(acct.get('trades')         or 0)
     bal        = float(acct.get('balance')      or 0)
 
-    gain_color = GREEN if gain >= 0 else RED
-    sign       = '+' if gain >= 0 else ''
+    # Hero shows this week's actual gain; fall back to total gain only if unavailable
+    hero_val   = weekly_gain if weekly_gain is not None else gain
+    hero_color = GREEN if hero_val >= 0 else RED
+    hero_sign  = '+' if hero_val >= 0 else ''
+    hero_label = 'THIS WEEK' if weekly_gain is not None else 'TOTAL RETURN'
 
-    # Hero (4s): gain % with spring bounce + glow
+    # Hero (4s): weekly gain % with spring/settle animation + label
     def hero_frame(t):
-        if gain >= 0:
-            progress = ease_spring(t, 3.5)     # spring bounce for gains
+        if hero_val >= 0:
+            progress = ease_spring(t, 3.5)
         else:
-            progress = ease_out(t, 1.5)         # fast hard settle for losses — no bounce
-        value    = gain * progress
-        text     = f'{sign}{value:.1f}%'
-        img      = bg_frame(t)
-        img      = draw_glow_text(img, (W // 2, H // 2), text, 130,
-                                  gain_color, glow_radius=28,
-                                  alpha=min(t * 1.5, 1.0))
+            progress = ease_out(t, 1.5)
+        value = hero_val * progress
+        text  = f'{hero_sign}{value:.1f}%'
+        img   = bg_frame(t)
+        alp   = min(t * 1.5, 1.0)
+        img   = draw_alpha_text(img, (W // 2, H // 2 - 120),
+                                hero_label, load_font(36), MUTED, alp * 0.8)
+        img   = draw_glow_text(img, (W // 2, H // 2 + 20), text, 130,
+                               hero_color, glow_radius=28, alpha=alp)
         img = _brand_watermark(img)
         return np.array(img)
 
@@ -686,7 +692,8 @@ def make_milestone_reel(data: dict, milestone_label: str) -> list:
     return [hero, data_clip, cta, make_broker_card_clip()]
 
 
-def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.Image:
+def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0,
+                   weekly_gain: float | None = None) -> Image.Image:
     """Static 1080x1920 PIL Image thumbnail for the given post type."""
     acct = data.get('account', {})
     img  = bg_frame(0.0)
@@ -700,15 +707,18 @@ def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0) -> Image.I
                            'VERA LEVEL FX', load_font(36, bold=True), EMERALD, 1.0)
 
     if post_type == 'weekly':
-        gain  = float(acct.get('gain') or 0)
-        gc    = GREEN if gain >= 0 else RED
-        sign  = '+' if gain >= 0 else ''
-        wr    = float(acct.get('winRate') or 0)
-        pips  = int(acct.get('pips') or 0)
-        img = draw_alpha_text(img, (W // 2, H // 2 - 160),
+        disp_val  = weekly_gain if weekly_gain is not None else float(acct.get('gain') or 0)
+        disp_lbl  = 'THIS WEEK' if weekly_gain is not None else 'TOTAL RETURN'
+        gc        = GREEN if disp_val >= 0 else RED
+        sign      = '+' if disp_val >= 0 else ''
+        wr        = float(acct.get('winRate') or 0)
+        pips      = int(acct.get('pips') or 0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 200),
                                'WEEKLY P&L', load_font(52), MUTED, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 120),
+                               disp_lbl, load_font(36), MUTED, 0.7)
         img = draw_alpha_text(img, (W // 2, H // 2 + 40),
-                               f'{sign}{gain:.1f}%', load_font(160, bold=True), gc, 1.0)
+                               f'{sign}{disp_val:.1f}%', load_font(160, bold=True), gc, 1.0)
         img = draw_alpha_text(img, (W // 2, H // 2 + 230),
                                f'WR {wr:.0f}%  ·  +{pips:,} pips', load_font(40), WHITE, 1.0)
 

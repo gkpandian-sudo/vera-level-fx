@@ -49,7 +49,27 @@ _W, _H = 1080, 1920
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _load_snapshot() -> dict:
-    return json.loads((ROOT / 'data' / 'vera-snapshot.json').read_text())
+    d = json.loads((ROOT / 'data' / 'vera-snapshot.json').read_text())
+    account = d.get('account', {})
+
+    known_file = ROOT / 'data' / 'known-trades.json'
+    if known_file.exists():
+        known = json.loads(known_file.read_text())
+        if not account.get('winRate'):
+            account['winRate'] = float(known.get('winRate', 0))
+        if not account.get('trades'):
+            account['trades'] = int(known.get('trades', 0))
+
+    if 'todayDaily' not in account:
+        dg = d.get('dailyGain', [])
+        if len(dg) >= 2:
+            account['todayDaily']  = round(dg[-1][1] - dg[-2][1], 2)
+            account['todayProfit'] = dg[-1][2]
+        elif len(dg) == 1:
+            account['todayDaily']  = round(dg[-1][1], 2)
+            account['todayProfit'] = dg[-1][2]
+
+    return d
 
 
 def _recovery_day() -> int:
@@ -140,11 +160,12 @@ def make_performance_clip(duration: float = 12.0) -> str:
     gain_color = EMERALD if gain >= 0 else RED
     gain_sign  = '+' if gain >= 0 else ''
 
-    # Monthly bars
-    monthly = _monthly_pnl(daily)
-    months  = sorted(monthly)[-9:]
-    mvals   = [monthly[m] for m in months]
-    mlabels = [m[5:] for m in months]   # "MM"
+    # Monthly bars — use dict insertion order (chronological), not alphabetical sort
+    monthly     = _monthly_pnl(daily)
+    month_items = list(monthly.items())[-9:]
+    months      = [m for m, _ in month_items]
+    mvals       = [v for _, v in month_items]
+    mlabels     = [m[:3] for m in months]   # "Feb", "Mar", etc.
 
     # ── Build static matplotlib portrait ──────────────────────────────────────
     fig = plt.figure(figsize=(10.8, 19.2), dpi=100, facecolor=NAVY)
@@ -481,10 +502,11 @@ def make_performance_png() -> str:
     dd     = float(acct.get('drawdown', 0))
     trades = int(acct.get('trades', 0))
 
-    monthly = _monthly_pnl(daily)
-    months  = sorted(monthly)[-9:]
-    mvals   = [monthly[m] for m in months]
-    mlabels = [m[5:] for m in months]
+    monthly     = _monthly_pnl(daily)
+    month_items = list(monthly.items())[-9:]
+    months      = [m for m, _ in month_items]
+    mvals       = [v for _, v in month_items]
+    mlabels     = [m[:3] for m in months]   # "Feb", "Mar", etc.
 
     fig = plt.figure(figsize=(10.8, 19.2), dpi=100, facecolor=NAVY)
     ax  = fig.add_axes([0, 0, 1, 1], facecolor=NAVY)
@@ -679,10 +701,11 @@ def make_performance_clip_motion(duration: float = 15.0) -> str:
     dd     = float(acct.get('drawdown', 0))
     trades = int(acct.get('trades', 0))
 
-    monthly = _monthly_pnl(daily)
-    months  = sorted(monthly)[-9:]
-    mvals   = [monthly[m] for m in months]
-    mlabels = [m[5:] for m in months]
+    monthly     = _monthly_pnl(daily)
+    month_items = list(monthly.items())[-9:]
+    months      = [m for m, _ in month_items]
+    mvals       = [v for _, v in month_items]
+    mlabels     = [m[:3] for m in months]   # "Feb", "Mar", etc.
 
     fig = plt.figure(figsize=(10.8, 19.2), dpi=100, facecolor=NAVY)
     ax  = fig.add_axes([0, 0, 1, 1], facecolor=NAVY)
