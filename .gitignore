@@ -27,3 +27,13 @@ Thumbs.db
 
 # Internal planning docs (contain personal data, keep local only)
 docs/superpowers/
+
+# Foreign projects dropped inside the repo — not part of this codebase
+instagram/Open-Poe-AI/
+instagram/Vibe-Workflow/
+
+# Local preview/scratch image outputs — generated locally, not for CI
+instagram/posts/preview-*.png
+instagram/previews/
+instagram/reels/*.jpg
+previews/
