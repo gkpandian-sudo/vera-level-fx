@@ -96,9 +96,6 @@ All four issues are fixed and deployed. Every number you see from here reflects 
 
 I track live. I post live. When something's wrong, I say it.
 
-t.me/pandiangk
-icmarkets.com/?camp=91936
-
 ⚠️ Forex trading involves significant risk of loss. This account is real and tracked live on Myfxbook. Past performance is not indicative of future results.
 
 #veralevelFX #forextrader #fxtransparency #xauusd #eurusd #audcad #ICMarkets #forexaccountability #liveaccount"""

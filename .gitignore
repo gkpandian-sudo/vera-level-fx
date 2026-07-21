@@ -35,5 +35,4 @@ instagram/Vibe-Workflow/
 # Local preview/scratch image outputs — generated locally, not for CI
 instagram/posts/preview-*.png
 instagram/previews/
-instagram/reels/*.jpg
 previews/
