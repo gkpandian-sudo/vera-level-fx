@@ -177,8 +177,25 @@ def main():
                          f'Expected: daily|weekly|monthly|trust|edu|transparency|recovery-plan|broker|signup|milestone')
 
     # ── Render ────────────────────────────────────────────────────────────────
+    # Cinematic transitions per post type; gaps beyond the list get 'dissolve'.
+    # Post types not listed here (transparency, recovery-plan, signup, milestone)
+    # keep the original emerald flash cuts.
+    _TRANSITION_BASE = {
+        'daily':   ['zoom_punch', 'zoom_punch', 'dissolve', 'dissolve'],
+        'weekly':  ['zoom_punch', 'zoom_punch', 'dissolve', 'dissolve'],
+        'monthly': ['zoom_punch', 'zoom_punch', 'dissolve', 'dissolve'],
+        'trust':   ['glitch', 'zoom_punch', 'dissolve', 'dissolve'],
+        'edu':     ['zoom_punch', 'zoom_punch', 'dissolve', 'dissolve'],
+        'broker':  ['zoom_punch', 'dissolve'],
+    }
+    transitions = None
+    base = _TRANSITION_BASE.get(post_type)
+    if base is not None and len(clips) > 1:
+        n_gaps = len(clips) - 1
+        transitions = (base + ['dissolve'] * max(0, n_gaps - len(base)))[:n_gaps]
+
     audio_path = get_track(post_type)
-    render(clips, audio_path, str(out_path))
+    render(clips, audio_path, str(out_path), transitions=transitions)
     print(f'  rendered: {out_path}  ({out_path.stat().st_size // 1024} KB)')
 
     # ── Thumbnail ─────────────────────────────────────────────────────────────

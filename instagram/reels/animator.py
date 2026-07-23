@@ -132,17 +132,50 @@ def _particle_overlay(t: float, n: int = 8, opacity: float = 0.08,
 # ── Base frame ────────────────────────────────────────────────────────────────
 
 def animated_bg_frame(t: float) -> Image.Image:
-    """PIL RGB Image: pulsing radial bg + particles + scanlines.
+    """PIL RGB Image: drifting radial bg + particles + scanlines + grain + vignette.
 
-    Centre brightness pulses gently on a 4s sine cycle.
+    Centre brightness pulses gently on a 4s sine cycle. The gradient centre
+    wanders on a slow Lissajous path so long holds never feel static.
     """
-    bg_arr = radial_bg().astype(np.float32).copy()
+    # Cached pixel-coordinate grid (computed once)
+    if not hasattr(animated_bg_frame, '_grid'):
+        animated_bg_frame._grid = np.mgrid[0:H, 0:W].astype(np.float32)
+    ys, xs = animated_bg_frame._grid
+
+    # Gradient drift — Lissajous wander of the radial centre
+    cx = W / 2 + 80 * np.sin(2 * np.pi * t / 13.0)
+    cy = H / 2 + 120 * np.sin(2 * np.pi * t / 17.0)
+
+    dist     = np.sqrt((xs - cx) ** 2 + (ys - cy) ** 2)
+    max_dist = np.sqrt((W / 2) ** 2 + (H / 2) ** 2)
+    frac     = np.clip(dist / max_dist, 0.0, 1.0)  # 0 = centre, 1 = corner
+
+    core   = np.array(NAVY, dtype=np.float32)
+    edge   = np.array((0, 8, 20), dtype=np.float32)  # near-black edges
+    bg_arr = core * (1.0 - frac[:, :, None]) + edge * frac[:, :, None]
+
     pulse  = 1.0 + 0.08 * np.sin(2 * np.pi * t / 4.0)
     bg_arr = np.clip(bg_arr * pulse, 0, 255).astype(np.uint8)
     img    = Image.fromarray(bg_arr, 'RGB').convert('RGBA')
     img    = Image.alpha_composite(img, _particle_overlay(t))
     img    = Image.alpha_composite(img, scanline_overlay())
-    return img.convert('RGB')
+
+    arr = np.array(img.convert('RGB'), dtype=np.uint8)
+    if arr.shape == (H, W, 3):
+        # Film grain — prevents H.264 banding after IG re-encode
+        rng   = np.random.default_rng(seed=int(t * 30))
+        grain = rng.integers(-4, 5, (*arr.shape[:2], 1), dtype=np.int16)
+        arr   = np.clip(arr.astype(np.int16) + grain, 0, 255).astype(np.uint8)
+
+        # Vignette — darken edges 25%, cached as a float mask
+        if not hasattr(animated_bg_frame, '_vignette'):
+            v_dist = np.sqrt(((xs - W / 2) / (W / 2)) ** 2 +
+                             ((ys - H / 2) / (H / 2)) ** 2)
+            animated_bg_frame._vignette = \
+                (1 - 0.25 * np.clip(v_dist, 0, 1) ** 2)[..., np.newaxis]
+        arr = (arr * animated_bg_frame._vignette).clip(0, 255).astype(np.uint8)
+
+    return Image.fromarray(arr, 'RGB')
 
 
 def bg_frame(t: float) -> Image.Image:
@@ -244,10 +277,12 @@ def odometer_frame(t: float, value: float, dur: float, fmt: str,
 
     result_chars = []
     digit_idx    = 0
+    n_digits     = sum(ch.isdigit() for ch in text)
     for ch in text:
         if ch.isdigit():
             target        = int(ch)
-            digit_progress = min(progress * (1.0 + digit_idx * 0.15), 1.0)
+            # Left→right lock: big (leftmost) digits settle first
+            digit_progress = min(progress * (1.0 + (n_digits - 1 - digit_idx) * 0.15), 1.0)
             if digit_progress < 0.95:
                 rolled = int((digit_progress * 10 * (digit_idx + 1)) % 10)
             else:
@@ -309,6 +344,98 @@ def fade_in_frame(t: float, text: str, dur: float,
     alpha = ease_out(t, dur)
     img   = draw_alpha_text(img, center, text, font, color, alpha)
     return np.array(img)
+
+
+def _glow_text_layer(w: int, h: int, text: str, fontsize: int,
+                     text_rgba, glow_rgb, glow_radius: int) -> Image.Image:
+    """RGBA layer: centred text in text_rgba with a blurred glow in glow_rgb."""
+    layer = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    draw  = ImageDraw.Draw(layer)
+    font  = load_font(max(int(fontsize), 1), bold=True)
+
+    glow_layer = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    gdraw      = ImageDraw.Draw(glow_layer)
+    glow_fill  = (int(glow_rgb[0]), int(glow_rgb[1]), int(glow_rgb[2]),
+                  int(text_rgba[3]))
+
+    try:
+        gdraw.text((w // 2, h // 2), text, font=font, fill=glow_fill, anchor='mm')
+        draw.text((w // 2, h // 2), text, font=font, fill=text_rgba, anchor='mm')
+    except (TypeError, ValueError, AttributeError):
+        bbox = draw.textbbox((0, 0), text, font=font)
+        tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        pos = (w // 2 - tw // 2, h // 2 - th // 2)
+        gdraw.text(pos, text, font=font, fill=glow_fill)
+        draw.text(pos, text, font=font, fill=text_rgba)
+
+    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(radius=glow_radius))
+    return Image.alpha_composite(glow_layer, layer)
+
+
+def number_punch_frame(t: float, dur: float, text: str, fontsize: int = 140,
+                       color=WHITE, glow_color=EMERALD, final_color=None,
+                       w: int = W, h: int = H) -> Image.Image:
+    """
+    High-impact number reveal (returns transparent RGBA overlay):
+      0–40%    scale 1.5→0.96 with ease_out, alpha 0→1, ghost motion-blur layers
+      at 40%   impact frame: triple glow radius + white flash for ~2 frames
+      40–80%   shockwave ellipse expands + fades
+      60–100%  colour crossfades from `color` to final_color (if given)
+    """
+    img = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+
+    p = min(t / dur, 1.0) if dur > 0 else 1.0
+    punch_end  = 0.40
+    settle_end = 0.80
+
+    if p <= punch_end:
+        scale = 1.5 - 0.54 * ease_out(p, punch_end)
+        alpha = int(255 * min(p / 0.15, 1.0))
+        # Ghost layers for motion-blur feel
+        for ghost_scale, ghost_alpha in [(scale + 0.10, 60), (scale + 0.05, 100)]:
+            ghost = _glow_text_layer(w, h, text, int(fontsize * ghost_scale),
+                                     (*color[:3], min(ghost_alpha, alpha)),
+                                     glow_color, glow_radius=20)
+            img = Image.alpha_composite(img, ghost)
+        # Impact frames (last ~2 frames of punch phase): white flash, triple glow
+        frames_left = (punch_end - p) * dur * FPS
+        if frames_left < 2:
+            layer = _glow_text_layer(w, h, text, int(fontsize * scale),
+                                     (*WHITE[:3], alpha), WHITE, glow_radius=60)
+        else:
+            layer = _glow_text_layer(
+                w, h, text, int(fontsize * scale), (*color[:3], alpha),
+                glow_color, glow_radius=int(18 + 12 * (1 - p / punch_end)))
+        img = Image.alpha_composite(img, layer)
+    else:
+        # Shockwave ellipse expands + fades
+        shock_p = ease_out(min((p - punch_end) / (settle_end - punch_end), 1.0), 1.0)
+        shock_r = int(60 + shock_p * 300)
+        shock_a = int(180 * (1 - shock_p))
+        if shock_a > 0:
+            shock_layer = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+            sd = ImageDraw.Draw(shock_layer)
+            sd.ellipse(
+                (w // 2 - shock_r, h // 2 - shock_r,
+                 w // 2 + shock_r, h // 2 + shock_r),
+                outline=(*EMERALD, shock_a), width=3)
+            shock_layer = shock_layer.filter(ImageFilter.GaussianBlur(4))
+            img = Image.alpha_composite(img, shock_layer)
+
+        # Settled text with optional colour crossfade
+        text_color = color
+        if final_color is not None:
+            fade_p = min((p - punch_end) / 0.30, 1.0)
+            text_color = tuple(
+                int(color[i] * (1 - fade_p) + final_color[i] * fade_p)
+                for i in range(3)
+            )
+        layer = _glow_text_layer(w, h, text, int(fontsize * 0.96),
+                                 (*text_color[:3], 255), glow_color,
+                                 glow_radius=24)
+        img = Image.alpha_composite(img, layer)
+
+    return img
 
 
 def typewriter_frame(t: float, text: str, dur: float,
@@ -390,3 +517,84 @@ def cta_fade_frame(t: float, line1: str, line2: str = '') -> np.ndarray:
                                   line2, font2, MUTED, alpha2)
 
     return np.array(img)
+
+
+def cta_comment_pill_frame(t: float, dur: float, action_text: str = 'BROKER',
+                           subtitle: str | None = None,
+                           handle: str = '@veralevel.fx',
+                           w: int = W, h: int = H) -> Image.Image:
+    """
+    Instagram comment-field CTA (returns transparent RGBA overlay):
+    - Rounded pill with placeholder → typewriter of action_text → blinking cursor
+    - Emerald send-arrow pulses on the right
+    - Handle + subtitle text above
+    """
+    img  = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+
+    pill_w, pill_h = 700, 72
+    pill_x = (w - pill_w) // 2
+    pill_y = h // 2 + 60
+
+    # Pill background (rounded_rectangle needs Pillow >= 8.2 — plain rect fallback)
+    pill_box = [pill_x, pill_y, pill_x + pill_w, pill_y + pill_h]
+    try:
+        draw.rounded_rectangle(pill_box, radius=pill_h // 2,
+                               fill=(20, 30, 50, 220),
+                               outline=(*MUTED, 120), width=1)
+    except AttributeError:
+        draw.rectangle(pill_box, fill=(20, 30, 50, 220),
+                       outline=(*MUTED, 120), width=1)
+
+    # Typewriter progress
+    type_start = 0.3
+    type_dur   = 0.8
+    type_p  = (max(0.0, min((t / dur - type_start) / type_dur, 1.0))
+               if dur > 0 else 1.0)
+    n_chars = int(type_p * len(action_text))
+    typed   = action_text[:n_chars]
+
+    font_pill   = load_font(32, bold=True)
+    font_label  = load_font(28)
+    font_handle = load_font(36, bold=True)
+
+    text_x = pill_x + 32
+    text_y = pill_y + pill_h // 2
+
+    if typed:
+        draw.text((text_x, text_y), typed, font=font_pill,
+                  fill=(*WHITE, 255), anchor='lm')
+        # Blinking cursor
+        cursor_bbox = draw.textbbox((text_x, text_y - 16), typed, font=font_pill)
+        cursor_x    = cursor_bbox[2] + 3
+        if int(t * 2.5) % 2 == 0:
+            draw.rectangle([cursor_x, pill_y + 18,
+                            cursor_x + 3, pill_y + pill_h - 18],
+                           fill=(*WHITE, 255))
+    else:
+        draw.text((text_x, text_y), 'Comment below...', font=font_pill,
+                  fill=(*MUTED, 180), anchor='lm')
+
+    # Send arrow (paper-plane triangle) on the right, pulsing
+    arrow_cx = pill_x + pill_w - 36
+    arrow_cy = pill_y + pill_h // 2
+    pulse    = 0.85 + 0.15 * np.sin(2 * np.pi * t / 0.9)
+    arrow_r  = int(16 * pulse)
+    pts = [
+        (arrow_cx + arrow_r, arrow_cy),
+        (arrow_cx - arrow_r // 2, arrow_cy - arrow_r // 2),
+        (arrow_cx - arrow_r // 2, arrow_cy + arrow_r // 2),
+    ]
+    draw.polygon(pts, fill=(*EMERALD, int(200 * min(t / 0.5, 1.0))))
+
+    # Handle above
+    handle_y = pill_y - 60
+    draw.text((w // 2, handle_y), handle, font=font_handle,
+              fill=(*WHITE, 255), anchor='mm')
+
+    # Subtitle
+    if subtitle:
+        draw.text((w // 2, handle_y - 44), subtitle, font=font_label,
+                  fill=(*MUTED, 200), anchor='mm')
+
+    return img

@@ -12,7 +12,7 @@ from moviepy.editor import VideoClip
 
 from reels.animator import (
     W, H, FPS, EMERALD, WHITE, GREEN, RED, MUTED,
-    bg_frame, draw_alpha_text, draw_glow_text, load_font, ease_out,
+    bg_frame, draw_alpha_text, draw_glow_text, load_font, ease_out, ease_spring,
 )
 
 
@@ -104,7 +104,7 @@ def progress_ring_clip(win_rate: float, duration: float,
 
     def make_frame(t: float) -> np.ndarray:
         img      = bg_frame(t)
-        progress = ease_out(t, duration)
+        progress = ease_spring(t, duration)   # slight overshoot, then settles
         target   = (win_rate / 100.0) * 360.0
         current  = progress * target
 
@@ -120,14 +120,27 @@ def progress_ring_clip(win_rate: float, duration: float,
             draw.arc(bb, start=-90, end=-90 + current,
                      fill=(*EMERALD, 220), width=18)
 
+        # Tick marks every 10% around the ring
+        for pct in range(0, 101, 10):
+            angle_deg = -90 + pct / 100 * 360
+            angle_rad = np.radians(angle_deg)
+            tick_r_inner = radius - 18
+            tick_r_outer = radius - 5
+            x1 = int(cx + tick_r_inner * np.cos(angle_rad))
+            y1 = int(cy + tick_r_inner * np.sin(angle_rad))
+            x2 = int(cx + tick_r_outer * np.cos(angle_rad))
+            y2 = int(cy + tick_r_outer * np.sin(angle_rad))
+            draw.line([(x1, y1), (x2, y2)], fill=(*MUTED, 80), width=2)
+
         glow   = overlay.filter(ImageFilter.GaussianBlur(radius=8))
         base   = img.convert('RGBA')
         base   = Image.alpha_composite(base, glow)
         base   = Image.alpha_composite(base, overlay)
         result = base.convert('RGB')
 
-        alpha  = min(progress * 2, 1.0)
-        result = draw_glow_text(result, center, f'{win_rate:.0f}%',
+        alpha = min(progress * 2, 1.0)
+        shown = min(progress * win_rate, win_rate)  # counts up, synced to arc
+        result = draw_glow_text(result, center, f'{shown:.0f}%',
                                 fontsize=160, color=EMERALD,
                                 glow_radius=24, alpha=alpha)
         result = draw_alpha_text(result, (cx, cy + 190),

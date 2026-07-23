@@ -2,7 +2,7 @@ from __future__ import annotations
 import textwrap
 import numpy as np
 from PIL import Image, ImageDraw
-from moviepy.editor import VideoClip
+from moviepy.editor import VideoClip, ImageClip
 from reels.animator import (
     W, H, EMERALD, WHITE, GREEN, RED, MUTED,
     logo_fade_frame, countup_frame, cascade_text_frame,
@@ -82,6 +82,15 @@ def _clip(make_frame_fn, duration: float) -> VideoClip:
     return VideoClip(make_frame_fn, duration=duration).set_fps(FPS)
 
 
+def _with_stinger(clips: list) -> list:
+    """Loop stinger — last 0.6s mirrors the hero so IG auto-loop reads as seamless."""
+    if clips:
+        hero_frame = clips[0].get_frame(min(1.2, clips[0].duration - 0.1))
+        stinger = ImageClip(hero_frame).set_duration(0.6).set_fps(clips[0].fps or 30)
+        clips.append(stinger)
+    return clips
+
+
 def _brand_watermark(img: 'Image.Image', alpha: float = 0.5) -> 'Image.Image':
     """Stamp @veralevel.fx handle as persistent lower-third on any frame."""
     return draw_alpha_text(img, (W // 2, H - 55),
@@ -106,12 +115,14 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
     sign      = '+' if daily_pct >= 0 else ''
 
     # Hero (4s): odometer balance + pulsing live dot + glow daily %
+    # Roll settles by 1.2s so the main figure is readable early
     DUR_HERO = 4.0
+    ROLL_DUR = 1.2
     cx, cy   = W // 2, H // 2
 
     def hero_frame(t):
         img = Image.fromarray(
-            odometer_frame(t, balance, DUR_HERO, '${:,.0f}', WHITE, 110, (cx, cy - 80))
+            odometer_frame(t, balance, ROLL_DUR, '${:,.0f}', WHITE, 110, (cx, cy - 80))
         )
         img = draw_pulsing_dot(img, pos=(cx - 300, cy - 200), t=t,
                                positive=daily_pct >= 0)
@@ -159,7 +170,7 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
 
     cta = _clip(cta_frame, 2.0)
 
-    return [hero, eq_clip, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([hero, eq_clip, data_clip, cta, make_broker_card_clip()])
 
 
 def make_weekly_reel(data: dict, recovery_day: int = 0,
@@ -185,10 +196,11 @@ def make_weekly_reel(data: dict, recovery_day: int = 0,
 
     # Hero (4s): weekly gain % with spring/settle animation + label
     def hero_frame(t):
+        # Number revealed by 1.2s — readable early, not at the end of a long roll
         if hero_val >= 0:
-            progress = ease_spring(t, 3.5)
+            progress = ease_spring(t, 1.2)
         else:
-            progress = ease_out(t, 1.5)
+            progress = ease_out(t, 1.2)
         value = hero_val * progress
         text  = f'{hero_sign}{value:.1f}%'
         img   = bg_frame(t)
@@ -226,7 +238,7 @@ def make_weekly_reel(data: dict, recovery_day: int = 0,
         return cta_fade_frame(t, 'Full track record:', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [hero, eq_clip, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([hero, eq_clip, data_clip, cta, make_broker_card_clip()])
 
 
 def make_trust_reel(data: dict) -> list:
@@ -285,7 +297,7 @@ def make_trust_reel(data: dict) -> list:
         return cta_fade_frame(t, 'Search "Vera Level" on Myfxbook', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [ring_clip, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([ring_clip, data_clip, cta, make_broker_card_clip()])
 
 
 def make_monthly_reel(data: dict) -> list:
@@ -361,7 +373,7 @@ def make_monthly_reel(data: dict) -> list:
         return cta_fade_frame(t, 'Verify every month yourself:', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [hero, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([hero, data_clip, cta, make_broker_card_clip()])
 
 
 def make_transparency_reel(data: dict) -> list:
@@ -422,7 +434,7 @@ def make_transparency_reel(data: dict) -> list:
         return cta_fade_frame(t, 'The rebuild is live.', 'Follow @veralevel.fx')
 
     cta = _clip(cta_frame, 2.5)
-    return [hero, data_clip, cta]
+    return _with_stinger([hero, data_clip, cta])
 
 
 def make_recovery_plan_reel(recovery_day: int = 0, balance: float = 0.0,
@@ -473,7 +485,7 @@ def make_recovery_plan_reel(recovery_day: int = 0, balance: float = 0.0,
         return cta_fade_frame(t, 'Every trade is public.', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [hero, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([hero, data_clip, cta, make_broker_card_clip()])
 
 
 def make_edu_reel(edu_type: str, content: dict) -> list:
@@ -487,9 +499,9 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
                  else content['title'])
 
         def hero_frame(t):
-            return _typewriter_frame(t, title, 5.0, EMERALD, 56, (W // 2, H // 2))
+            return _typewriter_frame(t, title, 1.8, EMERALD, 56, (W // 2, H // 2))
 
-        hero = _clip(hero_frame, 5.0)
+        hero = _clip(hero_frame, 2.5)
 
         body       = content.get('body', '')
         body_lines = textwrap.wrap(body, width=42)
@@ -514,9 +526,9 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         title = f'Pair Spotlight - {pair}'
 
         def hero_frame(t):  # noqa: F811
-            return _typewriter_frame(t, title, 5.0, EMERALD, 60, (W // 2, H // 2))
+            return _typewriter_frame(t, title, 1.8, EMERALD, 60, (W // 2, H // 2))
 
-        hero = _clip(hero_frame, 5.0)
+        hero = _clip(hero_frame, 2.5)
 
         info_lines = [
             f"Best session: {content.get('best_session', '')}",
@@ -538,9 +550,9 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         title = f"{pair} {content.get('direction', 'LONG')} Setup"
 
         def hero_frame(t):  # noqa: F811
-            return _typewriter_frame(t, title, 5.0, EMERALD, 58, (W // 2, H // 2))
+            return _typewriter_frame(t, title, 1.8, EMERALD, 58, (W // 2, H // 2))
 
-        hero = _clip(hero_frame, 5.0)
+        hero = _clip(hero_frame, 2.5)
 
         steps = content.get('steps', [])
         step_lines = [f'{i+1}. {s[0]} - {s[1]}' for i, s in enumerate(steps)]
@@ -556,7 +568,7 @@ def make_edu_reel(edu_type: str, content: dict) -> list:
         return cta_fade_frame(t, 'Comment BROKER', 'My IC Markets setup → straight to your DMs')
 
     cta = _clip(cta_frame, 2.0)
-    return [hero, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([hero, data_clip, cta, make_broker_card_clip()])
 
 
 def make_broker_reel() -> list:
@@ -602,7 +614,7 @@ def make_broker_reel() -> list:
         return np.array(img)
 
     banner_scene = _clip(banner_frame, 3.5)
-    return [hero, data_clip, banner_scene]
+    return _with_stinger([hero, data_clip, banner_scene])
 
 
 def make_signup_reel() -> list:
@@ -644,7 +656,7 @@ def make_signup_reel() -> list:
         return cta_fade_frame(t, 'Link is in bio.', 'DM me DONE after you open.')
 
     cta = _clip(cta_frame, 2.5)
-    return [hero, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([hero, data_clip, cta, make_broker_card_clip()])
 
 
 def make_milestone_reel(data: dict, milestone_label: str) -> list:
@@ -689,7 +701,7 @@ def make_milestone_reel(data: dict, milestone_label: str) -> list:
         return cta_fade_frame(t, 'Verify this now:', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return [hero, data_clip, cta, make_broker_card_clip()]
+    return _with_stinger([hero, data_clip, cta, make_broker_card_clip()])
 
 
 def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0,
