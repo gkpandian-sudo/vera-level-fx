@@ -1,60 +1,64 @@
 {
+  "fetchedAt": "2026-07-24T22:34:22Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -97.38,
-    "absGain": -58.45,
-    "daily": -2.35,
-    "monthly": -50.83,
+    "absGain": -58.43,
+    "daily": -2.34,
+    "monthly": -50.72,
     "withdrawals": 1765,
     "deposits": 6201.08,
-    "interest": -257.91,
-    "profit": -3622.02,
-    "balance": 810.13,
+    "interest": -257.85,
+    "profit": -3620.73,
+    "balance": 811.43,
     "drawdown": 98.63,
-    "equity": 809.08,
-    "equityPercent": 99.87,
+    "equity": 791.19,
+    "equityPercent": 97.51,
     "demo": false,
-    "lastUpdateDate": "07/23/2026 22:52",
+    "lastUpdateDate": "07/24/2026 19:56",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -370.03,
+    "commission": -370.19,
     "currency": "USD",
     "profitFactor": 0.75,
-    "pips": 27432.7,
+    "pips": 27452.2,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
       "name": "IC"
     },
-    "trades": 1,
-    "winRate": 69,
-    "avgWin": 14.27,
-    "avgLoss": 41.38
+    "trades": 968,
+    "winRate": 72.5,
+    "todayDaily": 0.0,
+    "todayProfit": 1.29
   },
   "openTrades": [
     {
-      "openTime": "07/23/2026 15:25",
-      "symbol": "AUDCAD",
+      "openTime": "07/24/2026 20:56",
+      "symbol": "XAUUSD",
       "action": "Buy",
       "sizing": {
         "type": "lots",
-        "value": "0.01"
+        "value": "0.02"
       },
-      "openPrice": 0.9832,
-      "tp": 0,
-      "sl": 0,
-      "comment": "ETF - I",
-      "profit": -1.31,
-      "pips": -18.5,
-      "swap": 0.03,
-      "magic": "74638"
-    },
+      "openPrice": 4064.49,
+      "tp": 4099.49,
+      "sl": 4029.49,
+      "comment": "GW4089373024|TOL LANGIT ETF - I",
+      "profit": -20.24,
+      "pips": -1012,
+      "swap": 0,
+      "magic": "9101"
+    }
+  ],
+  "history": [
     {
       "openTime": "07/23/2026 21:05",
+      "closeTime": "07/24/2026 10:02",
       "symbol": "AUDCAD",
       "action": "Buy",
       "sizing": {
@@ -62,17 +66,34 @@
         "value": "0.01"
       },
       "openPrice": 0.98107,
+      "closePrice": 0.98311,
       "tp": 0,
       "sl": 0,
+      "pips": 20.4,
+      "profit": 1.4,
       "comment": "ETF - I",
-      "profit": 0.2,
-      "pips": 2.8,
-      "swap": 0.03,
-      "magic": "74638"
-    }
-  ],
-  "openOrders": [],
-  "history": [
+      "interest": 0.03,
+      "commission": -0.08
+    },
+    {
+      "openTime": "07/23/2026 15:25",
+      "closeTime": "07/24/2026 10:02",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.9832,
+      "closePrice": 0.98311,
+      "tp": 0,
+      "sl": 0,
+      "pips": -0.9,
+      "profit": -0.11,
+      "comment": "ETF - I",
+      "interest": 0.03,
+      "commission": -0.08
+    },
     {
       "openTime": "07/23/2026 20:42",
       "closeTime": "07/23/2026 21:31",
@@ -794,44 +815,6 @@
       "comment": "ETF-II[T1/S01]",
       "interest": 0,
       "commission": -0.08
-    },
-    {
-      "openTime": "07/21/2026 22:00",
-      "closeTime": "07/21/2026 22:03",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4083.1,
-      "closePrice": 4084.84,
-      "tp": 0,
-      "sl": 0,
-      "pips": 174,
-      "profit": 1.66,
-      "comment": "ETF-II[T1/S01]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/21/2026 21:25",
-      "closeTime": "07/21/2026 21:31",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.07"
-      },
-      "openPrice": 4085.79,
-      "closePrice": 4082.69,
-      "tp": 0,
-      "sl": 4082.77,
-      "pips": -310,
-      "profit": -22.2,
-      "comment": "TOL LANGIT ETF - V.2[sl 4082.77]",
-      "interest": 0,
-      "commission": -0.5
     }
   ],
   "dailyGain": [
@@ -1329,7 +1312,11 @@
       "07/23/2026",
       -97.38,
       11.53
+    ],
+    [
+      "07/24/2026",
+      -97.38,
+      1.29
     ]
-  ],
-  "fetchedAt": "2026-07-23T23:23:33.044Z"
+  ]
 }
