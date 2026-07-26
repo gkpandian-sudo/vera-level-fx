@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<style>
+__FONTS_CSS__
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 1080px; height: 1920px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 35%, #001835 0%, #010912 100%);
+  font-family: 'Roboto', 'DejaVu Sans', sans-serif; color: #fff;
+}
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+.lb { position: fixed; left: 0; right: 0; height: 4px; background: #059669; transform: scaleX(0); }
+#lb-t { top: 0; transform-origin: left center; }
+#lb-b { bottom: 0; transform-origin: right center; }
+#za { position: absolute; top: 0;     left: 0; right: 0; height: 249px; display: flex; align-items: center; justify-content: center; }
+#zb { position: absolute; top: 249px; left: 0; right: 0; height: 289px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+/* C+D combined: 538–1536px = 998px chart area */
+#chart-area { position: absolute; top: 538px; left: 0; right: 0; height: 998px; padding: 40px 60px; }
+#chart-canvas { display: block; }
+#ze { position: absolute; top: 1536px; left: 0; right: 0; height: 211px; display: flex; align-items: center; justify-content: space-around; padding: 0 60px; }
+#zf { position: absolute; top: 1747px; left: 0; right: 0; height: 173px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+.stat { text-align: center; }
+.stat-val { font-size: 44px; font-weight: 700; }
+.stat-lbl { font-size: 22px; color: #6B7280; margin-top: 6px; letter-spacing: 0.05em; }
+.sep { width: 1px; height: 60px; background: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+<div class="lb" id="lb-t"></div>
+<div class="lb" id="lb-b"></div>
+
+<div id="za">
+  <div id="brand-pill" style="opacity:0;background:rgba(5,150,105,0.12);border:1px solid rgba(5,150,105,0.35);border-radius:24px;padding:14px 36px;font-size:26px;font-weight:700;letter-spacing:0.08em;color:#059669;">
+    MONTHLY P&amp;L &middot; <span id="month-name-pill"></span>
+  </div>
+</div>
+
+<div id="zb">
+  <div id="handle-line" style="opacity:0;transform:translateY(16px);font-size:34px;font-weight:700;color:#fff;">@veralevel.fx</div>
+  <div id="this-month" style="opacity:0;transform:translateY(16px);font-size:36px;font-weight:700;" id="this-month"></div>
+</div>
+
+<div id="chart-area">
+  <canvas id="chart-canvas" width="960" height="918"></canvas>
+</div>
+
+<div id="ze">
+  <div class="stat" id="stat-gain" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="gain-val" style="color:#059669;"></div>
+    <div class="stat-lbl">TOTAL RETURN</div>
+  </div>
+  <div class="sep"></div>
+  <div class="stat" id="stat-wr" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="wr-val" style="color:#fff;"></div>
+    <div class="stat-lbl">WIN RATE</div>
+  </div>
+  <div class="sep"></div>
+  <div class="stat" id="stat-pf" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="pf-val"></div>
+    <div class="stat-lbl">PROFIT FACTOR</div>
+  </div>
+</div>
+
+<div id="zf">
+  <div id="verify-line" style="opacity:0;font-size:24px;color:#6B7280;">Myfxbook #12044019 &middot; Verify every month</div>
+  <div id="handle-f" style="opacity:0;font-size:24px;color:#6B7280;">@veralevel.fx</div>
+</div>
+
+<script>__ANIME_JS__</script>
+<script>
+const DATA = __DATA_JSON__;
+const DURATION_MS = __DURATION_MS__;
+
+// bar_widths[i] = current drawn width (0..700px), updated by anime.js
+const bar_widths = new Array(DATA.monthly_items.length).fill(0);
+const LABEL_ALPHA = new Array(DATA.monthly_items.length).fill(0);
+
+(function populateDOM() {
+  document.getElementById('month-name-pill').textContent = DATA.month_name;
+  const tm = DATA.this_month, tmSign = DATA.this_month_sign;
+  const tmColor = tm >= 0 ? '#059669' : '#EF4444';
+  const el = document.getElementById('this-month');
+  el.textContent = tmSign + tm.toFixed(2) + '% this month';
+  el.style.color = tmColor;
+  document.getElementById('gain-val').textContent = DATA.gain_sign + DATA.gain.toFixed(1) + '%';
+  document.getElementById('wr-val').textContent = DATA.win_rate > 0 ? DATA.win_rate.toFixed(0) + '%' : '—';
+  document.getElementById('pf-val').textContent = DATA.profit_factor.toFixed(2);
+})();
+
+function redrawChart() {
+  const canvas = document.getElementById('chart-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const items = DATA.monthly_items;
+  const n = items.length;
+  if (n === 0) return;
+
+  const barH = 60, gap = 40;
+  const totalH = n * (barH + gap);
+  const startY = (H - totalH) / 2;
+  const MAX_W = 700, LABEL_X = 170, BAR_X = LABEL_X + 10;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.font = '700 34px Roboto, sans-serif';
+
+  for (let i = 0; i < n; i++) {
+    const [month, val] = items[i];
+    const isPos = val >= 0;
+    const color = isPos ? '#059669' : '#EF4444';
+    const y = startY + i * (barH + gap);
+    const bw = bar_widths[i];
+
+    // Month label (right-aligned at LABEL_X)
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(month, LABEL_X, y + barH / 2);
+
+    // Bar
+    if (bw > 0) {
+      ctx.fillStyle = color;
+      ctx.fillRect(BAR_X, y, bw, barH);
+    }
+
+    // Value label appears after bar is 90% drawn
+    if (LABEL_ALPHA[i] > 0.01) {
+      const sign = val >= 0 ? '+' : '';
+      ctx.fillStyle = color;
+      ctx.globalAlpha = LABEL_ALPHA[i];
+      ctx.textAlign = 'left';
+      ctx.fillText(sign + val.toFixed(1) + '%', BAR_X + MAX_W + 16, y + barH / 2);
+      ctx.globalAlpha = 1;
+    }
+  }
+}
+
+let tl = null;
+
+function buildTimeline(data) {
+  tl = anime.timeline({ autoplay: false });
+
+  tl.add({ targets: '#lb-t', scaleX:[0,1], duration:400, easing:'easeOutQuart' }, 0);
+  tl.add({ targets: '#lb-b', scaleX:[0,1], duration:400, easing:'easeOutQuart' }, 0);
+  tl.add({ targets: '#brand-pill', opacity:[0,1], duration:400, easing:'easeOutCubic' }, 200);
+  tl.add({ targets: '#handle-line', opacity:[0,1], translateY:[16,0], duration:400, easing:'easeOutCubic' }, 300);
+  tl.add({ targets: '#this-month',  opacity:[0,1], translateY:[16,0], duration:400, easing:'easeOutCubic' }, 450);
+
+  // Bars grow staggered 130ms apart, 600ms each
+  const n = data.monthly_items.length;
+  for (let i = 0; i < n; i++) {
+    const barStart = 700 + i * 130;
+    const MAX_W = 700;
+    // Use closure to capture i
+    (function(idx) {
+      tl.add({
+        targets: { w: 0 }, w: MAX_W, duration: 600, easing: 'easeOutQuart',
+        update: function(anim) {
+          bar_widths[idx] = anim.animations[0].currentValue;
+          redrawChart();
+        }
+      }, barStart);
+      // Value label fades in near bar end
+      tl.add({
+        targets: { a: 0 }, a: 1, duration: 200, easing: 'easeOutCubic',
+        update: function(anim) {
+          LABEL_ALPHA[idx] = anim.animations[0].currentValue;
+          redrawChart();
+        }
+      }, barStart + 480);
+    })(i);
+  }
+
+  const allBarsEnd = 700 + (n - 1) * 130 + 600;
+  tl.add({ targets: ['#stat-gain','#stat-wr','#stat-pf'],
+           opacity:[0,1], translateY:[16,0], delay:anime.stagger(150), duration:400, easing:'easeOutCubic' }, allBarsEnd + 100);
+  tl.add({ targets: ['#verify-line','#handle-f'],
+           opacity:[0,1], delay:anime.stagger(150), duration:350, easing:'easeOutCubic' }, allBarsEnd + 500);
+}
+
+window.seekFrame = function(ms) {
+  return new Promise(function(resolve) {
+    if (tl) tl.seek(ms);
+    requestAnimationFrame(function() { requestAnimationFrame(resolve); });
+  });
+};
+
+window.addEventListener('DOMContentLoaded', function() { buildTimeline(DATA); });
+</script>
+</body>
+</html>
