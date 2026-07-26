@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<style>
+__FONTS_CSS__
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 1080px; height: 1920px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 35%, #001835 0%, #010912 100%);
+  font-family: 'Roboto', 'DejaVu Sans', sans-serif;
+  color: #fff;
+}
+/* Film grain via SVG turbulence (static — deterministic across frames) */
+body::after {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+/* Letterbox bars — animated by anime.js */
+.lb { position: fixed; left: 0; right: 0; height: 4px; background: #059669; transform: scaleX(0); }
+#lb-t { top: 0; transform-origin: left center; }
+#lb-b { bottom: 0; transform-origin: right center; }
+/* Zones */
+#za { position: absolute; top: 0;     left: 0; right: 0; height: 249px;  display: flex; align-items: center; justify-content: center; }
+#zb { position: absolute; top: 249px; left: 0; right: 0; height: 289px;  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+#zc { position: absolute; top: 538px; left: 0; right: 0; height: 806px; }
+#zd { position: absolute; top: 1344px;left: 0; right: 0; height: 192px;  padding: 0 60px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+#ze { position: absolute; top: 1536px;left: 0; right: 0; height: 211px;  display: flex; align-items: center; justify-content: space-around; padding: 0 60px; }
+#zf { position: absolute; top: 1747px;left: 0; right: 0; height: 173px;  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+/* Zone C subdivisions */
+#zc1 { position: absolute; top: 0;    left: 0; right: 0; height: 248px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#zc2 { position: absolute; top: 262px;left: 60px; right: 60px; height: 275px; }
+#zc3 { position: absolute; top: 545px;left: 0; right: 0; height: 261px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+.stat { text-align: center; }
+.stat-val { font-size: 44px; font-weight: 700; }
+.stat-lbl { font-size: 22px; color: #6B7280; margin-top: 6px; letter-spacing: 0.05em; }
+.sep { width: 1px; height: 60px; background: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+<div class="lb" id="lb-t"></div>
+<div class="lb" id="lb-b"></div>
+
+<!-- Zone A: Brand pill -->
+<div id="za">
+  <div id="brand-pill" style="opacity:0;background:rgba(5,150,105,0.12);border:1px solid rgba(5,150,105,0.35);border-radius:24px;padding:14px 36px;font-size:26px;font-weight:700;letter-spacing:0.08em;color:#059669;">
+    VERA LEVEL FX &middot; LIVE ACCOUNT
+  </div>
+</div>
+
+<!-- Zone B: Context -->
+<div id="zb">
+  <div id="broker-line" style="opacity:0;transform:translateY(16px);font-size:30px;color:#6B7280;letter-spacing:0.04em;">IC MARKETS &middot; ASIC REGULATED</div>
+  <div id="live-badge" style="opacity:0;transform:translateY(16px);font-size:36px;font-weight:700;color:#EF4444;letter-spacing:0.04em;">&#9679; LIVE POSITION UPDATE</div>
+</div>
+
+<!-- Zone C -->
+<div id="zc">
+  <!-- C1: Balance -->
+  <div id="zc1">
+    <div id="bal-lbl" style="opacity:0;font-size:26px;color:#6B7280;letter-spacing:0.08em;margin-bottom:14px;">ACCOUNT BALANCE</div>
+    <div id="bal-val" style="font-size:110px;font-weight:900;letter-spacing:-0.02em;line-height:1;">$0</div>
+  </div>
+  <!-- C2: Sparkline canvas -->
+  <div id="zc2">
+    <canvas id="sparkline" width="960" height="275" style="opacity:0;display:block;"></canvas>
+  </div>
+  <!-- C3: Daily P&L -->
+  <div id="zc3">
+    <div id="pnl-val" style="opacity:0;transform:scale(0.8);font-size:80px;font-weight:900;letter-spacing:-0.02em;"></div>
+    <div id="pnl-lbl" style="opacity:0;font-size:28px;color:#6B7280;letter-spacing:0.06em;">TODAY&rsquo;S P&amp;L</div>
+  </div>
+</div>
+
+<!-- Zone D: Divider + open pairs -->
+<div id="zd">
+  <div id="divider" style="height:1px;width:0;background:#059669;"></div>
+  <div id="pairs-line" style="opacity:0;font-size:28px;color:#6B7280;"></div>
+</div>
+
+<!-- Zone E: 3-stat row -->
+<div id="ze">
+  <div class="stat" id="stat-wr" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="wr-val" style="color:#059669;"></div>
+    <div class="stat-lbl">WIN RATE</div>
+  </div>
+  <div class="sep"></div>
+  <div class="stat" id="stat-pf" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="pf-val"></div>
+    <div class="stat-lbl">PROFIT FACTOR</div>
+  </div>
+  <div class="sep"></div>
+  <div class="stat" id="stat-pip" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="pip-val"></div>
+    <div class="stat-lbl">TOTAL PIPS</div>
+  </div>
+</div>
+
+<!-- Zone F: Verify + handle -->
+<div id="zf">
+  <div id="verify-line" style="opacity:0;font-size:24px;color:#6B7280;">Myfxbook #12044019 &middot; All trades verified</div>
+  <div id="handle" style="opacity:0;font-size:24px;color:#6B7280;">@veralevel.fx</div>
+</div>
+
+<script>__ANIME_JS__</script>
+<script>
+const DATA = __DATA_JSON__;
+const DURATION_MS = __DURATION_MS__;
+
+/* ── Sparkline drawing ─────────────────────────────────────────────── */
+function drawSparkline(progress) {
+  const canvas = document.getElementById('sparkline');
+  const ctx = canvas.getContext('2d');
+  const pts = DATA.sparkline_points;  // [[x_frac, y_frac], ...]
+  const W = canvas.width, H = canvas.height;
+  const isPos = DATA.today_daily >= 0;
+  const lineCol = isPos ? '#059669' : '#EF4444';
+  const n = Math.max(2, Math.round(progress * pts.length));
+  const vis = pts.slice(0, n).map(p => [p[0] * W, p[1] * H]);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Fill area
+  ctx.beginPath();
+  ctx.moveTo(vis[0][0], vis[0][1]);
+  for (let i = 1; i < vis.length; i++) ctx.lineTo(vis[i][0], vis[i][1]);
+  ctx.lineTo(vis[vis.length-1][0], H);
+  ctx.lineTo(vis[0][0], H);
+  ctx.closePath();
+  const r = isPos ? 5 : 239, g = isPos ? 150 : 68, b = isPos ? 105 : 68;
+  ctx.fillStyle = `rgba(${r},${g},${b},0.22)`;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(vis[0][0], vis[0][1]);
+  for (let i = 1; i < vis.length; i++) ctx.lineTo(vis[i][0], vis[i][1]);
+  ctx.strokeStyle = lineCol;
+  ctx.lineWidth = 6;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Glowing tip dot
+  const last = vis[vis.length - 1];
+  ctx.shadowColor = lineCol;
+  ctx.shadowBlur = 16;
+  ctx.beginPath();
+  ctx.arc(last[0], last[1], 8, 0, Math.PI * 2);
+  ctx.fillStyle = lineCol;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+/* ── DOM population ──────────────────────────────────────────────────── */
+(function populateDOM() {
+  const isPos = DATA.today_daily >= 0;
+  const pnlColor = isPos ? '#059669' : '#EF4444';
+  document.getElementById('pnl-val').textContent = DATA.today_daily_sign + DATA.today_daily.toFixed(2) + '%';
+  document.getElementById('pnl-val').style.color = pnlColor;
+  document.getElementById('wr-val').textContent = DATA.win_rate > 0 ? DATA.win_rate.toFixed(0) + '%' : '—';
+  document.getElementById('pf-val').textContent = DATA.profit_factor.toFixed(2);
+  document.getElementById('pip-val').textContent = '+' + DATA.pips.toLocaleString();
+  document.getElementById('pairs-line').textContent = 'Open: ' + DATA.open_pairs_str;
+})();
+
+/* ── Timeline ────────────────────────────────────────────────────────── */
+let tl = null;
+
+function buildTimeline(data) {
+  tl = anime.timeline({ autoplay: false });
+
+  // Letterbox bars sweep in simultaneously (0–400ms)
+  tl.add({ targets: '#lb-t', scaleX: [0, 1], duration: 400, easing: 'easeOutQuart' }, 0);
+  tl.add({ targets: '#lb-b', scaleX: [0, 1], duration: 400, easing: 'easeOutQuart' }, 0);
+
+  // Zone A: brand pill (200–600ms)
+  tl.add({ targets: '#brand-pill', opacity: [0, 1], duration: 400, easing: 'easeOutCubic' }, 200);
+
+  // Zone B: broker + live badge (300–750ms)
+  tl.add({ targets: '#broker-line', opacity: [0, 1], translateY: [16, 0], duration: 400, easing: 'easeOutCubic' }, 300);
+  tl.add({ targets: '#live-badge',  opacity: [0, 1], translateY: [16, 0], duration: 350, easing: 'easeOutCubic' }, 500);
+
+  // Zone C1: balance label (400ms) then odometer (500–1700ms)
+  tl.add({ targets: '#bal-lbl', opacity: [0, 1], duration: 300, easing: 'easeOutCubic' }, 400);
+  tl.add({
+    targets: { value: 0 },
+    value: data.balance,
+    duration: 1200,
+    easing: 'spring(1, 80, 10, 0)',
+    update: function(anim) {
+      document.getElementById('bal-val').textContent =
+        '$' + Math.round(anim.animations[0].currentValue).toLocaleString();
+    }
+  }, 500);
+
+  // Zone C2: sparkline draws L→R (800–1600ms)
+  tl.add({
+    targets: { progress: 0 },
+    progress: 1,
+    duration: 800,
+    easing: 'easeInOutQuad',
+    begin: function() { document.getElementById('sparkline').style.opacity = '1'; },
+    update: function(anim) { drawSparkline(anim.animations[0].currentValue); }
+  }, 800);
+
+  // Zone C3: P&L snaps in with overshoot (1600–2050ms)
+  tl.add({ targets: '#pnl-val', opacity: [0, 1], scale: [0.8, 1], duration: 450, easing: 'easeOutBack(1.8)' }, 1600);
+  tl.add({ targets: '#pnl-lbl', opacity: [0, 1], duration: 300, easing: 'easeOutCubic' }, 1850);
+
+  // Zone D: divider sweep (2000ms) + pairs text (2250ms)
+  tl.add({ targets: '#divider', width: [0, 960], duration: 400, easing: 'easeOutQuart' }, 2000);
+  tl.add({ targets: '#pairs-line', opacity: [0, 1], duration: 300, easing: 'easeOutCubic' }, 2250);
+
+  // Zone E: 3 stats stagger in (2500–3000ms)
+  tl.add({ targets: ['#stat-wr', '#stat-pf', '#stat-pip'],
+           opacity: [0, 1], translateY: [16, 0],
+           delay: anime.stagger(150), duration: 400, easing: 'easeOutCubic' }, 2500);
+
+  // Zone F: verify + handle (3000–3600ms)
+  tl.add({ targets: ['#verify-line', '#handle'],
+           opacity: [0, 1], delay: anime.stagger(150), duration: 350, easing: 'easeOutCubic' }, 3000);
+}
+
+/* ── seekFrame (called by Playwright for each frame) ─────────────────── */
+window.seekFrame = function(ms) {
+  return new Promise(function(resolve) {
+    if (tl) tl.seek(ms);
+    requestAnimationFrame(function() { requestAnimationFrame(resolve); });
+  });
+};
+
+window.addEventListener('DOMContentLoaded', function() { buildTimeline(DATA); });
+</script>
+</body>
+</html>
