@@ -70,11 +70,25 @@ def equity_curve_clip(daily_gain: list, duration: float,
         if len(visible) >= 2:
             poly = list(visible) + [(visible[-1][0], y1), (visible[0][0], y1)]
             r, g, b = line_color
-            draw.polygon(poly, fill=(r, g, b, 28))
-            draw.line(visible, fill=(*line_color, 220), width=3)
+            draw.polygon(poly, fill=(r, g, b, 56))
+            draw.line(visible, fill=(*line_color, 220), width=6)
             tx, ty = visible[-1]
-            draw.ellipse([tx - 6, ty - 6, tx + 6, ty + 6],
+            # Glowing tip dot: glow layer + sharp dot
+            glow_overlay = Image.new('RGBA', overlay.size, (0, 0, 0, 0))
+            gd = ImageDraw.Draw(glow_overlay)
+            gd.ellipse([tx - 18, ty - 18, tx + 18, ty + 18],
+                       fill=(*line_color, 80))
+            glow_overlay = glow_overlay.filter(ImageFilter.GaussianBlur(radius=10))
+            overlay = Image.alpha_composite(overlay, glow_overlay)
+            draw = ImageDraw.Draw(overlay)  # rebind after composite
+            draw.ellipse([tx - 8, ty - 8, tx + 8, ty + 8],
                          fill=(*line_color, 255))
+
+        # 4px emerald letterbox bars (sweep in over first 30% of progress)
+        bar_alpha = int(220 * min(progress * 3.0, 1.0))
+        if bar_alpha > 0:
+            draw.rectangle([0, 0, x1, 4], fill=(*EMERALD, bar_alpha))
+            draw.rectangle([x0, H - 4, W, H], fill=(*EMERALD, bar_alpha))
 
         glow   = overlay.filter(ImageFilter.GaussianBlur(radius=4))
         base   = img.convert('RGBA')

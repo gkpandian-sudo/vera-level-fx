@@ -385,3 +385,20 @@ def test_make_milestone_reel_returns_clips():
     assert len(clips) >= 3
     total = sum(c.duration for c in clips)
     assert 9.0 < total < 18.0
+
+
+def test_equity_curve_clip_direction_c_line_weight():
+    """Direction C upgrade: line should have visible emerald pixels."""
+    from reels.effects import equity_curve_clip
+    import numpy as np
+    daily_gain = [
+        ['01/01/2026', 0.0, 0], ['02/01/2026', 2.1, 210],
+        ['03/01/2026', -1.5, -150], ['04/01/2026', 3.2, 320],
+        ['05/01/2026', -0.8, -80], ['06/01/2026', 1.9, 190],
+    ]
+    clip = equity_curve_clip(daily_gain, duration=3.0)
+    frame = clip.get_frame(2.0)
+    assert frame.shape == (1920, 1080, 3)
+    # Emerald pixels: high G channel, low R, low B
+    emerald_mask = (frame[:,:,1] > 100) & (frame[:,:,0] < 80) & (frame[:,:,2] < 80)
+    assert emerald_mask.sum() > 10, "Expected visible emerald line pixels in equity curve"
