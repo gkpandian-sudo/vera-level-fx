@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<style>
+__FONTS_CSS__
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 1080px; height: 1920px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 35%, #001835 0%, #010912 100%);
+  font-family: 'Roboto', 'DejaVu Sans', sans-serif; color: #fff;
+}
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+.lb { position: fixed; left: 0; right: 0; height: 4px; background: #059669; transform: scaleX(0); }
+#lb-t { top: 0; transform-origin: left center; }
+#lb-b { bottom: 0; transform-origin: right center; }
+#za { position: absolute; top: 0;     left: 0; right: 0; height: 249px;  display: flex; align-items: center; justify-content: center; }
+#zb { position: absolute; top: 249px; left: 0; right: 0; height: 289px;  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+#zc { position: absolute; top: 538px; left: 0; right: 0; height: 806px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+#zd { position: absolute; top: 1344px;left: 0; right: 0; height: 192px;  padding: 0 60px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+#ze { position: absolute; top: 1536px;left: 0; right: 0; height: 211px;  display: flex; align-items: center; justify-content: space-around; padding: 0 60px; }
+#zf { position: absolute; top: 1747px;left: 0; right: 0; height: 173px;  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+.stat { text-align: center; }
+.stat-val { font-size: 44px; font-weight: 700; }
+.stat-lbl { font-size: 22px; color: #6B7280; margin-top: 6px; letter-spacing: 0.05em; }
+.sep { width: 1px; height: 60px; background: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+<div class="lb" id="lb-t"></div>
+<div class="lb" id="lb-b"></div>
+
+<div id="za">
+  <div id="brand-pill" style="opacity:0;background:rgba(5,150,105,0.12);border:1px solid rgba(5,150,105,0.35);border-radius:24px;padding:14px 36px;font-size:26px;font-weight:700;letter-spacing:0.08em;color:#059669;">
+    WEEKLY PERFORMANCE
+  </div>
+</div>
+
+<div id="zb">
+  <div id="handle-line" style="opacity:0;transform:translateY(16px);font-size:34px;font-weight:700;color:#fff;">@veralevel.fx</div>
+  <div id="date-line" style="opacity:0;transform:translateY(16px);font-size:28px;color:#6B7280;" id="date-line"></div>
+</div>
+
+<div id="zc">
+  <div id="week-lbl" style="opacity:0;font-size:28px;color:#6B7280;letter-spacing:0.1em;margin-bottom:24px;">THIS WEEK</div>
+  <div id="week-val" style="opacity:0;transform:scale(0.85);font-size:200px;font-weight:900;letter-spacing:-0.04em;line-height:0.9;"></div>
+  <div id="total-line" style="opacity:0;font-size:36px;color:#6B7280;margin-top:40px;">Total return: <span id="total-val" style="color:#fff;font-weight:700;"></span></div>
+</div>
+
+<div id="zd">
+  <div id="divider" style="height:1px;width:0;background:#059669;"></div>
+  <div id="trades-line" style="opacity:0;font-size:28px;color:#6B7280;"></div>
+</div>
+
+<div id="ze">
+  <div class="stat" id="stat-wr" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="wr-val" style="color:#059669;"></div>
+    <div class="stat-lbl">WIN RATE</div>
+  </div>
+  <div class="sep"></div>
+  <div class="stat" id="stat-pf" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="pf-val"></div>
+    <div class="stat-lbl">PROFIT FACTOR</div>
+  </div>
+  <div class="sep"></div>
+  <div class="stat" id="stat-pip" style="opacity:0;transform:translateY(16px);">
+    <div class="stat-val" id="pip-val"></div>
+    <div class="stat-lbl">TOTAL PIPS</div>
+  </div>
+</div>
+
+<div id="zf">
+  <div id="verify-line" style="opacity:0;font-size:24px;color:#6B7280;">Full track record: Myfxbook #12044019</div>
+  <div id="handle-f" style="opacity:0;font-size:24px;color:#6B7280;">@veralevel.fx</div>
+</div>
+
+<script>__ANIME_JS__</script>
+<script>
+const DATA = __DATA_JSON__;
+const DURATION_MS = __DURATION_MS__;
+
+(function populateDOM() {
+  const wg = DATA.weekly_gain;
+  const wgColor = wg >= 0 ? '#059669' : '#EF4444';
+  document.getElementById('week-val').textContent = DATA.weekly_gain_sign + wg.toFixed(2) + '%';
+  document.getElementById('week-val').style.color = wgColor;
+  document.getElementById('wr-val').textContent = DATA.win_rate > 0 ? DATA.win_rate.toFixed(0) + '%' : '—';
+  document.getElementById('pf-val').textContent = DATA.profit_factor.toFixed(2);
+  document.getElementById('pip-val').textContent = '+' + DATA.pips.toLocaleString();
+  document.getElementById('trades-line').textContent =
+    DATA.trades.toLocaleString() + ' trades · All verified on Myfxbook';
+  document.getElementById('total-val').textContent =
+    DATA.gain_sign + DATA.gain.toFixed(2) + '%';
+})();
+
+let tl = null;
+
+function buildTimeline(data) {
+  tl = anime.timeline({ autoplay: false });
+
+  tl.add({ targets: '#lb-t', scaleX: [0,1], duration: 400, easing: 'easeOutQuart' }, 0);
+  tl.add({ targets: '#lb-b', scaleX: [0,1], duration: 400, easing: 'easeOutQuart' }, 0);
+  tl.add({ targets: '#brand-pill', opacity: [0,1], duration: 400, easing: 'easeOutCubic' }, 200);
+  tl.add({ targets: '#handle-line', opacity:[0,1], translateY:[16,0], duration:400, easing:'easeOutCubic' }, 300);
+  tl.add({ targets: '#date-line',   opacity:[0,1], translateY:[16,0], duration:400, easing:'easeOutCubic' }, 450);
+  tl.add({ targets: '#week-lbl', opacity:[0,1], duration:300, easing:'easeOutCubic' }, 600);
+
+  // Giant weekly % snaps in with pronounced overshoot (easeOutBack 2.5)
+  tl.add({ targets: '#week-val', opacity:[0,1], scale:[0.85,1], duration:700, easing:'easeOutBack(2.5)' }, 750);
+
+  // Total return count-up
+  tl.add({
+    targets: { value: 0 }, value: data.gain, duration: 800, easing: 'easeOutQuart',
+    update: function(anim) {
+      const v = anim.animations[0].currentValue;
+      const sign = v >= 0 ? '+' : '';
+      document.getElementById('total-val').textContent = sign + v.toFixed(2) + '%';
+    }
+  }, 1600);
+  tl.add({ targets: '#total-line', opacity:[0,1], duration:400, easing:'easeOutCubic' }, 1600);
+
+  tl.add({ targets: '#divider', width:[0,960], duration:400, easing:'easeOutQuart' }, 2200);
+  tl.add({ targets: '#trades-line', opacity:[0,1], duration:300, easing:'easeOutCubic' }, 2450);
+  tl.add({ targets: ['#stat-wr','#stat-pf','#stat-pip'],
+           opacity:[0,1], translateY:[16,0], delay:anime.stagger(150), duration:400, easing:'easeOutCubic' }, 2700);
+  tl.add({ targets: ['#verify-line','#handle-f'],
+           opacity:[0,1], delay:anime.stagger(150), duration:350, easing:'easeOutCubic' }, 3200);
+}
+
+window.seekFrame = function(ms) {
+  return new Promise(function(resolve) {
+    if (tl) tl.seek(ms);
+    requestAnimationFrame(function() { requestAnimationFrame(resolve); });
+  });
+};
+
+window.addEventListener('DOMContentLoaded', function() { buildTimeline(DATA); });
+</script>
+</body>
+</html>
