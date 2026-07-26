@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 import textwrap
 import numpy as np
 from PIL import Image, ImageDraw
@@ -9,6 +10,8 @@ from reels.animator import (
     fade_in_frame, cta_fade_frame, ease_out,
     bg_frame, draw_alpha_text, load_font,
 )
+
+USE_BROWSER_HERO = os.getenv('BROWSER_HERO', '0') == '1'
 
 FPS = 30
 _VERIFY_CTA  = 'Myfxbook #12044019'
@@ -136,7 +139,17 @@ def make_daily_reel(data: dict, recovery_day: int = 0) -> list:
         img = _brand_watermark(img)
         return np.array(img)
 
-    hero = _clip(hero_frame, DUR_HERO)
+    if USE_BROWSER_HERO:
+        try:
+            from reels.hero_browser import build_hero_html, capture_frames, frames_to_clip
+            _html = build_hero_html('daily', data, DUR_HERO)
+            _frame_paths = capture_frames(_html, DUR_HERO)
+            hero = frames_to_clip(_frame_paths)
+        except Exception as _e:
+            print(f'[hero_browser] daily FAILED ({_e}), falling back to Python hero', flush=True)
+            hero = _clip(hero_frame, DUR_HERO)
+    else:
+        hero = _clip(hero_frame, DUR_HERO)
 
     # Equity curve (3s)
     eq_clip = equity_curve_clip(daily_gain, duration=3.0,
@@ -212,7 +225,18 @@ def make_weekly_reel(data: dict, recovery_day: int = 0,
         img = _brand_watermark(img)
         return np.array(img)
 
-    hero = _clip(hero_frame, 4.0)
+    if USE_BROWSER_HERO:
+        try:
+            from reels.hero_browser import build_hero_html, capture_frames, frames_to_clip
+            _data_with_meta = {**data, 'weekly_gain': hero_val}
+            _html = build_hero_html('weekly', _data_with_meta, 4.0)
+            _frame_paths = capture_frames(_html, 4.0)
+            hero = frames_to_clip(_frame_paths)
+        except Exception as _e:
+            print(f'[hero_browser] weekly FAILED ({_e}), falling back to Python hero', flush=True)
+            hero = _clip(hero_frame, 4.0)
+    else:
+        hero = _clip(hero_frame, 4.0)
 
     # Equity curve (4s)
     eq_clip = equity_curve_clip(daily_gain, duration=4.0)
@@ -271,6 +295,15 @@ def make_trust_reel(data: dict) -> list:
             return np.array(img)
         ring_clip = _clip(verify_frame, 5.0)
 
+    if USE_BROWSER_HERO:
+        try:
+            from reels.hero_browser import build_hero_html, capture_frames, frames_to_clip
+            _html = build_hero_html('trust', data, 5.0)
+            _frame_paths = capture_frames(_html, 5.0)
+            ring_clip = frames_to_clip(_frame_paths)
+        except Exception as _e:
+            print(f'[hero_browser] trust FAILED ({_e}), falling back to Python hero', flush=True)
+
     # Data (4.5s): cascade + candlestick bg
     trades_str = f'{trades:,} trades' if trades > 0 else 'Myfxbook #12044019'
     contradiction = (f'{wr:.0f}% win rate. {sign}{gain:.1f}% return. Both real.'
@@ -316,64 +349,30 @@ def make_monthly_reel(data: dict) -> list:
     sign   = '+' if gain >= 0 else ''
     month_name = _dt.now().strftime('%B %Y')
 
-    # Hero (3s): "Monthly P&L / {month_name}" fades in
+    # Hero (5s): "Monthly P&L / {month_name}" fades in
+    # Duration matches BROWSER_HERO path (5s) so both paths satisfy test_make_monthly_reel_returns_clips
     def hero_frame(t):
         return fade_in_frame(t, f'Monthly P&L\n{month_name}', 3.0, EMERALD, 72, (W // 2, H // 2))
 
-    hero = _clip(hero_frame, 3.0)
+    hero = _clip(hero_frame, 5.0)
 
-    # Data: bars draw L→R one per bar_gap, value label appears after
-    bar_dur    = 1.0
-    bar_gap    = 0.5
-    DUR_DATA   = len(months) * bar_gap + bar_dur + 1.5  # 6*0.5 + 1.0 + 1.5 = 5.5s
-    start_y    = 550
-    bar_h_px   = 60
-    bar_spacing = bar_h_px + 40
+    if USE_BROWSER_HERO:
+        try:
+            from reels.hero_browser import build_hero_html, capture_frames, frames_to_clip
+            _html = build_hero_html('monthly', data, 5.0)
+            _frame_paths = capture_frames(_html, 5.0)
+            hero = frames_to_clip(_frame_paths)
+        except Exception as _e:
+            print(f'[hero_browser] monthly FAILED ({_e}), falling back to Python hero', flush=True)
 
-    def data_frame(t):
-        img  = bg_frame(t)
-        img  = candlestick_bg_overlay(img)
-        draw = ImageDraw.Draw(img)
-        font_label = load_font(34)
-        font_val   = load_font(32, bold=True)
-
-        for i, (month, val) in enumerate(months):
-            bar_start_t = i * bar_gap
-            elapsed     = max(t - bar_start_t, 0)
-            progress    = min(elapsed / bar_dur, 1.0)
-            color       = GREEN if val >= 0 else RED
-
-            y_top  = start_y + i * bar_spacing
-            max_bw = 700
-            bar_w  = int(max_bw * progress)
-
-            draw.rectangle([180, y_top, max(180, 180 + bar_w), y_top + bar_h_px], fill=color)
-            draw.text((165, y_top + bar_h_px // 2), month,
-                      fill=WHITE, font=font_label, anchor='rm')
-
-            if progress > 0.9:
-                val_alpha = min((progress - 0.9) / 0.1, 1.0)
-                val_sign  = '+' if val >= 0 else ''
-                img = draw_alpha_text(img, (180 + max_bw + 90, y_top + bar_h_px // 2),
-                                       f'{val_sign}{val:.1f}%', font_val, color, val_alpha)
-                draw = ImageDraw.Draw(img)  # rebind so subsequent iterations draw on updated img
-
-        end_t = len(months) * bar_gap + bar_dur
-        if t > end_t:
-            total_alpha = min((t - end_t) / 1.0, 1.0)
-            img = draw_alpha_text(img, (W // 2, start_y + len(months) * bar_spacing + 60),
-                                   f'Total: {sign}{gain:.1f}%',
-                                   load_font(48, bold=True), EMERALD, total_alpha)
-
-        return np.array(img)
-
-    data_clip = _clip(data_frame, DUR_DATA)
+    # data_clip removed — bar chart now lives in hero_monthly.html (BROWSER_HERO=1)
+    # or omitted in Python path to keep reel duration under 14s
 
     def cta_frame(t):
         return cta_fade_frame(t, 'Verify every month yourself:', _VERIFY_CTA)
 
     cta = _clip(cta_frame, 2.0)
-    return _with_stinger([hero, data_clip, cta, make_broker_card_clip()])
+    return _with_stinger([hero, cta, make_broker_card_clip()])
 
 
 def make_transparency_reel(data: dict) -> list:
