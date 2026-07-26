@@ -104,6 +104,13 @@ def ease_spring(t: float, dur: float, stiffness: float = 2.5,
     return 1.0 - (1.0 - x / 10.0) ** 3 * np.cos(stiffness * x) * np.exp(-damping * x)
 
 
+def ease_out_back(x: float, c1: float = 1.5) -> float:
+    """Ease-out with overshoot. c1 controls overshoot amount (1.5 = mild)."""
+    x = min(max(x, 0.0), 1.0)
+    c3 = c1 + 1
+    return 1 + c3 * (x - 1) ** 3 + c1 * (x - 1) ** 2
+
+
 # ── Particle overlay ──────────────────────────────────────────────────────────
 
 def _particle_overlay(t: float, n: int = 8, opacity: float = 0.08,
@@ -314,24 +321,38 @@ def countup_frame(t: float, start: float, end: float, dur: float,
 def cascade_text_frame(t: float, lines, dur: float, stagger: float,
                        color, fontsize: int, top_y: int) -> np.ndarray:
     """
-    Lines slide up 20 px + fade in sequentially.
+    Lines slide up 20px + fade in sequentially with Direction C aesthetic.
 
-    Line i starts animating at t = i * stagger.
-    Line height = fontsize + 20. All lines centred at W//2.
+    Line 0 is the headline: bold, slightly larger, no accent bar.
+    Lines 1+ get a 3px emerald left-edge accent bar before text.
+    Easing: ease_out_back(1.5) — mild overshoot.
     """
     img = bg_frame(t)
     font = load_font(fontsize)
-    line_height = fontsize + 20
+    font_headline = load_font(fontsize + 10, bold=True)
+    line_height = fontsize + 24
 
     for i, line in enumerate(lines):
         line_t = t - i * stagger
         if line_t <= 0:
             continue
-        progress = ease_out(line_t, dur)
-        alpha    = progress
-        y_offset = int(20 * (1.0 - progress))   # 20 px below → final position
+        x = min(line_t / dur, 1.0)
+        progress = ease_out_back(x, c1=1.5)
+        alpha = min(max(progress, 0.0), 1.0)
+        y_offset = int(20 * (1.0 - min(progress, 1.0)))
         y = top_y + i * line_height + y_offset
-        img = draw_alpha_text(img, (W // 2, y), line, font, color, alpha)
+
+        if i == 0:
+            img = draw_alpha_text(img, (W // 2, y), line, font_headline, color, alpha)
+        else:
+            if alpha > 0.05:
+                draw = ImageDraw.Draw(img)
+                bar_x = 80
+                bar_y = y - fontsize // 2
+                bar_alpha_int = int(alpha * 220)
+                draw.rectangle([bar_x, bar_y, bar_x + 3, bar_y + fontsize],
+                               fill=(*EMERALD, bar_alpha_int))
+            img = draw_alpha_text(img, (W // 2, y), line, font, color, alpha)
 
     return np.array(img)
 
@@ -495,26 +516,41 @@ def logo_fade_frame(t: float, brand: str = 'VERA LEVEL FX') -> np.ndarray:
 
 def cta_fade_frame(t: float, line1: str, line2: str = '') -> np.ndarray:
     """
-    Two-line call-to-action fade-in.
+    Two-line call-to-action with Direction C aesthetic.
 
-    line1 — starts at t=0, 36 pt bold EMERALD,  centred at H//2-40
-    line2 — starts at t=0.4, 30 pt MUTED, centred at H//2+40
-    Both ease-out over 1.0 s.
+    Letterbox bars sweep in (0–400ms).
+    line1: 48pt bold EMERALD, centred at H//2 - 60. Animated underline grows L→R.
+    line2: 30pt MUTED, centred at H//2 + 60.
     """
     img = bg_frame(t)
 
-    # line1
-    alpha1 = ease_out(t, 1.0)
-    font1  = load_font(36, bold=True)
-    img    = draw_alpha_text(img, (W // 2, H // 2 - 40),
-                              line1, font1, EMERALD, alpha1)
+    # Letterbox bars sweep in from 0 → full width over 400ms
+    bar_progress = ease_out(t, 0.4)
+    bar_w = int(W * bar_progress)
+    if bar_w > 0:
+        draw0 = ImageDraw.Draw(img)
+        draw0.rectangle([0, 0, bar_w, 4], fill=EMERALD)
+        draw0.rectangle([W - bar_w, H - 4, W, H], fill=EMERALD)
 
-    # line2
+    # line1: 48pt bold EMERALD
+    alpha1 = ease_out(t, 1.0)
+    font1 = load_font(48, bold=True)
+    img = draw_alpha_text(img, (W // 2, H // 2 - 60), line1, font1, EMERALD, alpha1)
+
+    # Animated underline: emerald rect grows L→R under line1 starting at t=0.3
+    if t > 0.3:
+        ul_progress = ease_out(t - 0.3, 0.4)
+        ul_w = int(600 * ul_progress)
+        ul_x = W // 2 - 300
+        ul_y = H // 2 - 20
+        draw1 = ImageDraw.Draw(img)
+        draw1.rectangle([ul_x, ul_y, ul_x + ul_w, ul_y + 3], fill=EMERALD)
+
+    # line2: 30pt MUTED
     if line2 and t > 0.4:
         alpha2 = ease_out(t - 0.4, 1.0)
-        font2  = load_font(30)
-        img    = draw_alpha_text(img, (W // 2, H // 2 + 40),
-                                  line2, font2, MUTED, alpha2)
+        font2 = load_font(30)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 60), line2, font2, MUTED, alpha2)
 
     return np.array(img)
 

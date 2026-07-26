@@ -402,3 +402,35 @@ def test_equity_curve_clip_direction_c_line_weight():
     # Emerald pixels: high G channel, low R, low B
     emerald_mask = (frame[:,:,1] > 100) & (frame[:,:,0] < 80) & (frame[:,:,2] < 80)
     assert emerald_mask.sum() > 10, "Expected visible emerald line pixels in equity curve"
+
+
+def test_ease_out_back_overshoots():
+    """ease_out_back(c1=1.5) must overshoot 1.0 before settling."""
+    from reels.animator import ease_out_back
+    values = [ease_out_back(i * 0.05) for i in range(1, 20)]
+    assert max(values) > 1.0, "ease_out_back must overshoot"
+
+
+def test_ease_out_back_settles_at_one():
+    """ease_out_back at x=1.0 must equal exactly 1.0."""
+    from reels.animator import ease_out_back
+    assert ease_out_back(1.0) == 1.0
+
+
+def test_cascade_text_frame_direction_c_shape():
+    """cascade_text_frame still returns (1920, 1080, 3) after Direction C changes."""
+    from reels.animator import cascade_text_frame
+    import numpy as np
+    frame = cascade_text_frame(t=1.0, lines=['Headline', 'Detail line'],
+                               dur=3.0, stagger=0.3,
+                               color=(255, 255, 255), fontsize=38, top_y=700)
+    assert frame.shape == (1920, 1080, 3)
+
+
+def test_cta_fade_frame_direction_c_shape():
+    """cta_fade_frame still returns (1920, 1080, 3) after Direction C changes."""
+    from reels.animator import cta_fade_frame
+    import numpy as np
+    frame = cta_fade_frame(t=1.0, line1='Verify my live account',
+                           line2='Myfxbook #12044019')
+    assert frame.shape == (1920, 1080, 3)
