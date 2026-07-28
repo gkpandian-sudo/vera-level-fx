@@ -346,12 +346,15 @@ def cascade_text_frame(t: float, lines, dur: float, stagger: float,
             img = draw_alpha_text(img, (W // 2, y), line, font_headline, color, alpha)
         else:
             if alpha > 0.05:
-                draw = ImageDraw.Draw(img)
                 bar_x = 80
                 bar_y = y - fontsize // 2
                 bar_alpha_int = int(alpha * 220)
-                draw.rectangle([bar_x, bar_y, bar_x + 3, bar_y + fontsize],
-                               fill=(*EMERALD, bar_alpha_int))
+                bar_rgba = img.convert('RGBA')
+                bar_layer = Image.new('RGBA', bar_rgba.size, (0, 0, 0, 0))
+                bar_draw = ImageDraw.Draw(bar_layer)
+                bar_draw.rectangle([bar_x, bar_y, bar_x + 3, bar_y + fontsize],
+                                   fill=(*EMERALD, bar_alpha_int))
+                img = Image.alpha_composite(bar_rgba, bar_layer).convert('RGB')
             img = draw_alpha_text(img, (W // 2, y), line, font, color, alpha)
 
     return np.array(img)
