@@ -54,6 +54,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r instagram/requirements.txt
 
+      - name: Install Playwright
+        run: pip install playwright
+
       # FIX: post_type input is passed via env var, NOT interpolated directly into shell,
       # preventing shell injection from workflow_dispatch inputs.
       - name: Resolve post type
@@ -104,6 +107,7 @@ jobs:
           POST_LANG:         ${{ github.event.inputs.post_lang || 'en' }}
           RECOVERY_START:    ${{ secrets.RECOVERY_START }}
           BRAND_IB_URL:      ${{ secrets.BRAND_IB_URL }}
+          BROWSER_HERO:      '1'
         run: python instagram/run_reel.py
 
       - name: Upload reel artifact
