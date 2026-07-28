@@ -62,14 +62,43 @@ vera-level-fx/
 │   │
 │   ├── posts/                  # All generated post images (committed, used as CDN)
 │   ├── previews/               # Local preview renders for review
+│   │
+│   ├── reels/                  # Reel video generation pipeline
+│   │   ├── __init__.py
+│   │   ├── animator.py         # PIL frame primitives — ease_out_back, cascade, cta, countup
+│   │   ├── audio.py            # CC0 track mapping + AudioFileClip builder
+│   │   ├── effects.py          # equity_curve_clip (Direction C: 6px line, glow dot, letterbox)
+│   │   ├── hero_browser.py     # Playwright frame-capture bridge (build_hero_html, capture_frames)
+│   │   ├── render.py           # MoviePy concatenation + ffmpeg MP4 export
+│   │   ├── scenes.py           # 4+ scene composers (daily/weekly/trust/monthly/edu/broker/…)
+│   │   ├── templates/          # anime.js HTML hero card templates
+│   │   │   ├── hero_daily.html     # 4s — balance odometer + sparkline
+│   │   │   ├── hero_weekly.html    # 4s — giant % easeOutBack(2.5)
+│   │   │   ├── hero_trust.html     # 5s — SVG arc ring easeOutCubic
+│   │   │   ├── hero_monthly.html   # 5s — canvas bar chart easeOutQuart
+│   │   │   └── vendor/
+│   │   │       ├── anime.min.js        # v3.2.2 IIFE (inlined at build time)
+│   │   │       ├── Roboto-Black.woff2  # weight 900 (base64-embedded into HTML)
+│   │   │       ├── Roboto-Bold.woff2   # weight 700
+│   │   │       └── Roboto-Regular.woff2
+│   │   └── {YYYY-MM-DD}-*-thumb.jpg  # Reel cover thumbnails (committed as CDN)
+│   │
 │   └── tests/                  # pytest test suite
+│       ├── conftest.py         # moviepy v1/v2 compatibility shims
+│       ├── test_hero_browser.py
+│       ├── test_reels.py
 │       ├── test_composer.py
 │       ├── test_edu.py
 │       └── test_redesign.py
 │
 ├── fetch_snapshot.py           # Myfxbook data fetcher (called by GitHub Actions)
 └── docs/
-    └── SYSTEM_MASTER.md        # this document
+    ├── SYSTEM_MASTER.md            # this document
+    ├── system-update-2026-07-05.md # Reels pipeline initial build
+    ├── system-update-2026-07-28.md # anime.js Cinematic Hero Reels upgrade
+    └── superpowers/
+        ├── plans/              # Implementation plans
+        └── specs/              # Design specs
 ```
 
 ---
@@ -118,7 +147,54 @@ Instagram feed             ← live post at @veralevel.fx
 
 ---
 
-## 5. File-by-File Reference
+## 5. anime.js Cinematic Hero Reels (2026-07-28)
+
+Hero cards at the start of each reel are rendered by anime.js running in a headless Playwright browser, replacing the original Python-drawn hero. Enabled by `BROWSER_HERO=1` in `insta-reel.yml`.
+
+### How the browser capture works
+
+```
+build_hero_html(post_type, data, duration)
+  → Loads templates/hero_{post_type}.html
+  → Inlines anime.min.js + WOFF2 fonts as base64 (fully self-contained file:// HTML)
+  → Coerces all data fields, injects as JSON via __DATA_JSON__ marker
+
+capture_frames(html_path, duration, fps=30)
+  → Playwright channel='chrome' (pre-installed on ubuntu-latest, zero download)
+  → viewport 1080×1920, device_scale_factor=1
+  → per frame: page.evaluate("seekFrame(ms)") → page.screenshot()
+  → returns list[Path] — PNGs on disk
+
+frames_to_clip(frame_paths, fps=30)
+  → ImageSequenceClip → drop-in VideoClip for scenes.py
+```
+
+`seekFrame(ms)` resolves after 2× `requestAnimationFrame` paint cycles — deterministic, bit-identical output on every run.
+
+### Fallback chain
+
+Every `scenes.py` reel function wraps the browser path in `try/except`. Any failure falls back to the original Python hero. Set `BROWSER_HERO=0` in `insta-reel.yml` to revert instantly.
+
+### Template summary
+
+| Template | Duration | Hero metric | Key animation |
+|----------|----------|-------------|---------------|
+| `hero_daily.html` | 4s / 120f | Account balance | Odometer spring `spring(1,80,10,0)` |
+| `hero_weekly.html` | 4s / 120f | Weekly % | `easeOutBack(2.5)` overshoot |
+| `hero_trust.html` | 5s / 150f | Win-rate ring | SVG arc `easeOutCubic` |
+| `hero_monthly.html` | 5s / 150f | 6-month bar chart | `easeOutQuart` 130ms stagger |
+
+### Direction C aesthetic (Python scenes)
+
+`effects.py`, `animator.py` also upgraded to match the HTML templates visually:
+- Equity curve: 6px line, 22% fill opacity, glowing tip dot, 4px emerald letterbox bars
+- `cascade_text_frame`: headline bold+larger, accent bar per line via RGBA composite, `ease_out_back` easing
+- `cta_fade_frame`: letterbox bars, 48pt bold line1, animated underline L→R
+- New `ease_out_back(x, c1=1.5)` easing function in `animator.py`
+
+---
+
+## 6. File-by-File Reference
 
 ### `fetch_snapshot.py`
 Authenticates with Myfxbook, fetches account stats, daily gain curve, open trades, and full history. Saves everything to `data/vera-snapshot.json`.
@@ -278,7 +354,7 @@ Two-step Meta Graph API publisher.
 
 ---
 
-## 6. GitHub Actions Workflows
+## 7. GitHub Actions Workflows
 
 ### `fetch-snapshot.yml` — Runs daily at 00:01 UTC
 ```
@@ -309,7 +385,7 @@ Permissions: `contents: write` (to commit generated images).
 
 ---
 
-## 7. Brand Design System
+## 8. Brand Design System
 
 ### Canvas
 - **Size:** 1080×1080 px (Instagram square)
@@ -349,7 +425,7 @@ Permissions: `contents: write` (to commit generated images).
 
 ---
 
-## 8. Buffer System
+## 9. Buffer System
 
 Drop pre-made `.png` files into the buffer folders to bypass live generation:
 
@@ -369,7 +445,7 @@ Files are consumed (moved to `instagram/posts/`) on use. Only `.png` files are p
 
 ---
 
-## 9. Running Locally
+## 10. Running Locally
 
 ### Prerequisites
 ```
@@ -410,7 +486,7 @@ On GitHub → Actions → "Instagram Auto-Post" → Run workflow → choose post
 
 ---
 
-## 10. Maintenance
+## 11. Maintenance
 
 ### Meta Access Token refresh (every 60 days)
 1. Go to [developers.facebook.com/tools/explorer](https://developers.facebook.com/tools/explorer)
@@ -431,7 +507,7 @@ Edit `data/edu-counter.json` to `{"index": 0}` and commit.
 
 ---
 
-## 11. Key Dependencies
+## 12. Key Dependencies
 
 | Package | Version | Purpose |
 |---------|---------|---------|
