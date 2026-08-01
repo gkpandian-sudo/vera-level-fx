@@ -4,7 +4,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from captions import (weekly, monthly, daily_status, trust, edu,
-                      transparency, recovery_plan, broker,
+                      transparency, recovery_plan, broker, trades,
                       monthly_pnl_from_daily)
 
 SAMPLE_ACCOUNT = {
@@ -433,3 +433,48 @@ def test_edu_soft_cta_updated_wording():
     cap = edu('risk', RISK_RULES[0])
     assert "I'll DM you" not in cap
     assert 'Comment RULES for the full library' in cap
+
+
+# ── trades caption ─────────────────────────────────────────────────────────────
+
+SAMPLE_TRADES = [
+    {'symbol': 'XAUUSD', 'action': 'Buy',  'pips': 15,  'profit': 16.50, 'commission': -0.80},
+    {'symbol': 'XAUUSD', 'action': 'Buy',  'pips': 2,   'profit':  1.80, 'commission': -0.76},
+    {'symbol': 'XAUUSD', 'action': 'Sell', 'pips': -8,  'profit': -7.20, 'commission': -0.80},
+    {'symbol': 'EURUSD', 'action': 'Buy',  'pips': 22,  'profit': 22.00, 'commission': -3.50},
+    {'symbol': 'XAUUSD', 'action': 'Buy',  'pips': 19,  'profit': 20.50, 'commission': -0.80},
+]
+
+def test_trades_caption_contains_last_5_heading():
+    cap = trades(SAMPLE_ACCOUNT, SAMPLE_TRADES)
+    assert 'Last 5 Closed Trades' in cap
+
+def test_trades_caption_shows_symbol_and_direction():
+    cap = trades(SAMPLE_ACCOUNT, SAMPLE_TRADES)
+    assert 'XAUUSD' in cap
+    assert 'BUY' in cap
+
+def test_trades_caption_shows_net_line():
+    cap = trades(SAMPLE_ACCOUNT, SAMPLE_TRADES)
+    assert 'Net:' in cap
+
+def test_trades_caption_shows_win_loss_count():
+    cap = trades(SAMPLE_ACCOUNT, SAMPLE_TRADES)
+    assert 'W' in cap and 'L' in cap
+
+def test_trades_caption_has_risk_disclaimer():
+    cap = trades(SAMPLE_ACCOUNT, SAMPLE_TRADES)
+    assert 'Trading FX on margin' in cap
+
+def test_trades_caption_has_myfxbook_verify():
+    cap = trades(SAMPLE_ACCOUNT, SAMPLE_TRADES)
+    assert 'Myfxbook' in cap
+
+def test_trades_caption_empty_history_is_graceful():
+    cap = trades(SAMPLE_ACCOUNT, [])
+    assert 'Last 5 Closed Trades' in cap
+    assert 'No closed trades' in cap
+
+def test_trades_caption_ib_link_uses_camp_param():
+    cap = trades(SAMPLE_ACCOUNT, SAMPLE_TRADES)
+    assert 'camp=91936' in cap

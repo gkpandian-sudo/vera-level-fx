@@ -542,3 +542,46 @@ Follow so you see it live, not in someone's recap.
 {_RISK_DISCLAIMER}
 
 {TAGS}"""
+
+
+def trades(account: dict, history: list, lang: str = 'en') -> str:
+    """Last-5-trades reel caption. Requires risk disclaimer (cites live P&L)."""
+    if not history:
+        return (
+            f"📋 Last 5 Closed Trades — Vera Level FX\n\n"
+            f"No closed trades yet — check back soon.\n"
+            f"{_CTA_VERIFY}{_CTA_COMPACT}\n"
+            f"🔗 icmarkets.com/?camp=91936\n\n"
+            f"{_RISK_DISCLAIMER}\n\n{TAGS}"
+        )
+
+    rows      = []
+    wins      = losses = 0
+    net_total = 0.0
+
+    for tr in history:
+        net    = float(tr.get('profit', 0)) + float(tr.get('commission', 0))
+        pips   = int(tr.get('pips', 0))
+        sym    = tr.get('symbol', '?')
+        action = tr.get('action', 'Buy').upper()
+        result = '✅' if net > 0 else '❌'
+        sign   = '+' if net >= 0 else ''
+        pip_s  = '+' if pips >= 0 else ''
+        rows.append(f"{sym} {action}  {pip_s}{pips}p  {sign}${abs(net):.2f}  {result}")
+        net_total += net
+        if net > 0:
+            wins += 1
+        else:
+            losses += 1
+
+    net_sign = '+' if net_total >= 0 else '-'
+    net_line = f"Net: {net_sign}${abs(net_total):.2f}  |  {wins}W / {losses}L"
+
+    return (
+        f"📋 Last 5 Closed Trades — Vera Level FX\n\n"
+        f"{chr(10).join(rows)}\n\n"
+        f"{net_line}\n"
+        f"{_CTA_VERIFY}{_CTA_COMPACT}\n"
+        f"🔗 icmarkets.com/?camp=91936\n\n"
+        f"{_RISK_DISCLAIMER}\n\n{TAGS}"
+    )
