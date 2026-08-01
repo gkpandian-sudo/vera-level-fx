@@ -15,6 +15,14 @@ _VERIFY_CTA  = 'Myfxbook #12044019'
 _IB_CTA      = 'icmarkets.com/?camp=91936'
 _IB_CTA_FULL = 'https://www.icmarkets.com/global/en/?camp=91936'
 
+# Precomputed radial vignette mask — shape (H, W, 1) float32.
+# Values: 0.0 at centre → 1.0 at corners. Computed once per process.
+_Y_grid, _X_grid = np.ogrid[:H, :W]
+_VIGN_BASE = np.clip(
+    np.sqrt(((_X_grid - W / 2) / W) ** 2 + ((_Y_grid - H / 2) / H) ** 2) / 0.5,
+    0.0, 1.0,
+).astype(np.float32)[:, :, np.newaxis]
+
 
 def make_broker_card_clip() -> VideoClip:
     """4s IC Markets broker card — pure dark NAVY theme, no external banner dependency."""
@@ -704,6 +712,73 @@ def make_milestone_reel(data: dict, milestone_label: str) -> list:
     return _with_stinger([hero, data_clip, cta, make_broker_card_clip()])
 
 
+def make_trades_reel(data: dict) -> list:
+    """Cinematic last-5-trades reel — 10s chart clip + 4s IC Markets broker CTA."""
+    from reels.effects import ticker_tape_overlay
+    from reels.chart   import get_ohlc, draw_chart_frame
+
+    history = data.get('history', [])
+    trades  = list(history[-5:]) if history else []
+    ohlc_df = get_ohlc(trades)
+
+    CHART_DUR  = 7.5
+    CHART_RECT = (40, 200, W - 40, 1500)
+    cx, cy     = W // 2, H // 2
+
+    def cinematic_frame(t: float):
+        img = bg_frame(t)
+
+        # Header fades in over t=0–0.5s
+        h_alp = min(t / 0.5, 1.0)
+        img = draw_alpha_text(img, (cx, 120),
+                               'LAST 5 TRADES', load_font(36, bold=True), MUTED, h_alp)
+        img = draw_alpha_text(img, (cx, 168),
+                               'Myfxbook #12044019', load_font(26), EMERALD, h_alp * 0.9)
+
+        # Chart draws L→R starting at t=0.5
+        if t >= 0.5:
+            img = draw_chart_frame(img, ohlc_df, trades,
+                                    t - 0.5, CHART_DUR, CHART_RECT)
+
+        # Radial vignette ramps in t=7.0–8.0
+        if t >= 7.0:
+            vign_strength = ease_out(t - 7.0, 1.0) * 0.72
+            arr = np.array(img, dtype=np.float32)
+            arr *= (1.0 - _VIGN_BASE * vign_strength)
+            img = Image.fromarray(arr.clip(0, 255).astype(np.uint8))
+
+        # NET P&L counts up t=7.5–10.0
+        if t >= 7.5 and trades:
+            net_total = sum(
+                float(tr.get('profit', 0)) + float(tr.get('commission', 0))
+                for tr in trades
+            )
+            wins     = sum(1 for tr in trades
+                           if float(tr.get('profit', 0)) + float(tr.get('commission', 0)) > 0)
+            losses   = len(trades) - wins
+            progress = ease_out(t - 7.5, 1.5)
+            net_disp = abs(net_total) * progress
+            net_sign = '+' if net_total >= 0 else '-'
+            nc       = EMERALD if net_total >= 0 else RED
+            net_alp  = min((t - 7.5) / 0.4, 1.0)
+
+            img = draw_alpha_text(img, (cx, cy - 60),
+                                   f'{net_sign}${net_disp:.2f}',
+                                   load_font(120, bold=True), nc, net_alp)
+            img = draw_alpha_text(img, (cx, cy + 90),
+                                   f'{wins}W / {losses}L  ·  {len(trades)} trades',
+                                   load_font(38), WHITE, net_alp)
+            img = draw_alpha_text(img, (cx, cy + 160),
+                                   _IB_CTA, load_font(26), MUTED, net_alp * 0.8)
+
+        img = _brand_watermark(img)
+        img = ticker_tape_overlay(img, t)
+        return np.array(img)
+
+    chart_clip = _clip(cinematic_frame, 10.0)
+    return _with_stinger([chart_clip, make_broker_card_clip()])
+
+
 def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0,
                    weekly_gain: float | None = None) -> Image.Image:
     """Static 1080x1920 PIL Image thumbnail for the given post type."""
@@ -812,6 +887,35 @@ def make_thumbnail(post_type: str, data: dict, recovery_day: int = 0,
                                'Raw Spread  ·  ASIC + CySEC', load_font(44), EMERALD, 1.0)
         img = draw_alpha_text(img, (W // 2, H // 2 + 60),
                                _IB_CTA, load_font(34, bold=True), EMERALD, 1.0)
+
+    elif post_type == 'trades':
+        history  = data.get('history', [])
+        trades_5 = list(history[-5:]) if history else []
+        net_total = sum(
+            float(tr.get('profit', 0)) + float(tr.get('commission', 0))
+            for tr in trades_5
+        )
+        wins   = sum(1 for tr in trades_5
+                     if float(tr.get('profit', 0)) + float(tr.get('commission', 0)) > 0)
+        losses = len(trades_5) - wins
+
+        arr = np.array(img, dtype=np.float32)
+        arr *= (1.0 - _VIGN_BASE * 0.72)
+        img = Image.fromarray(arr.clip(0, 255).astype(np.uint8))
+
+        net_sign = '+' if net_total >= 0 else '-'
+        nc       = GREEN if net_total >= 0 else RED
+
+        img = draw_alpha_text(img, (W // 2, H // 2 - 200),
+                               'LAST 5 TRADES', load_font(44, bold=True), MUTED, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 - 60),
+                               f'{net_sign}${abs(net_total):.2f}',
+                               load_font(160, bold=True), nc, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 180),
+                               f'{wins}W / {losses}L  ·  {len(trades_5)} trades',
+                               load_font(44), WHITE, 1.0)
+        img = draw_alpha_text(img, (W // 2, H // 2 + 280),
+                               'Myfxbook #12044019', load_font(32), EMERALD, 0.9)
 
     # Footer handle (skip for broker where IB URL is at bottom)
     if post_type != 'broker':

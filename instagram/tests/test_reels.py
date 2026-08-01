@@ -385,3 +385,54 @@ def test_make_milestone_reel_returns_clips():
     assert len(clips) >= 3
     total = sum(c.duration for c in clips)
     assert 9.0 < total < 18.0
+
+
+# ── make_trades_reel ──────────────────────────────────────────────────────────
+
+SAMPLE_HISTORY = [
+    {
+        'symbol': 'XAUUSD', 'action': 'Buy',
+        'openTime':  '07/20/2026 02:00', 'closeTime':  '07/20/2026 04:00',
+        'openPrice': 2300.50, 'closePrice': 2315.00,
+        'profit': 14.50, 'commission': -0.80, 'pips': 15,
+    },
+    {
+        'symbol': 'XAUUSD', 'action': 'Buy',
+        'openTime':  '07/20/2026 06:00', 'closeTime':  '07/20/2026 07:30',
+        'openPrice': 2310.00, 'closePrice': 2312.00,
+        'profit': 2.00, 'commission': -0.76, 'pips': 2,
+    },
+]
+
+SAMPLE_DATA = {
+    'account': {
+        'balance': 1500.0, 'gain': 2.5, 'winRate': 60.0,
+        'trades': 12, 'pips': 500, 'profitFactor': 1.3,
+    },
+    'history': SAMPLE_HISTORY,
+}
+
+
+def test_make_trades_reel_returns_list_of_clips():
+    from reels.scenes import make_trades_reel
+    from moviepy.editor import VideoClip
+    clips = make_trades_reel(SAMPLE_DATA)
+    assert isinstance(clips, list)
+    assert len(clips) >= 1
+    assert all(isinstance(c, VideoClip) for c in clips)
+
+
+def test_make_trades_reel_empty_history_returns_clips():
+    from reels.scenes import make_trades_reel
+    data = dict(SAMPLE_DATA, history=[])
+    clips = make_trades_reel(data)
+    assert isinstance(clips, list)
+    assert len(clips) >= 1
+
+
+def test_make_thumbnail_trades_returns_pil_image():
+    from reels.scenes import make_thumbnail
+    from PIL import Image
+    img = make_thumbnail('trades', SAMPLE_DATA)
+    assert isinstance(img, Image.Image)
+    assert img.size == (1080, 1920)
