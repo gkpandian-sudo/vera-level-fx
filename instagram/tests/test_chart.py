@@ -43,8 +43,8 @@ def test_auto_interval_intraday_recent():
 def test_auto_interval_multiday_recent():
     from reels.chart import auto_interval
     now = datetime.datetime.utcnow()
-    open_dt  = now - datetime.timedelta(days=2)
-    close_dt = now - datetime.timedelta(days=1)
+    open_dt  = now - datetime.timedelta(hours=50)   # 36h trade → '1h'
+    close_dt = now - datetime.timedelta(hours=14)
     assert auto_interval(open_dt, close_dt) == '1h'
 
 

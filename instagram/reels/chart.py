@@ -40,9 +40,9 @@ def auto_interval(open_dt: datetime, close_dt: datetime) -> str:
     age_days   = (datetime.utcnow() - close_dt).days
     duration_h = (close_dt - open_dt).total_seconds() / 3600
 
-    if age_days > 55:    return '1h'   # 5m/15m unavailable beyond ~60 days in yf
-    if duration_h < 4:   return '5m'
-    if duration_h < 24:  return '15m'
+    if age_days > 55:     return '1h'   # 5m/15m unavailable beyond ~60 days in yf
+    if duration_h <= 4:   return '5m'
+    if duration_h <= 24:  return '15m'
     return '1h'
 
 
