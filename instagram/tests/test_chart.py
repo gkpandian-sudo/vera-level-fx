@@ -176,3 +176,70 @@ def test_fetch_ohlc_empty_response_returns_empty():
             '5m',
         )
     assert result.empty
+
+
+# ── draw_chart_frame ──────────────────────────────────────────────────────────
+
+from PIL import Image as _PILImage
+
+
+CHART_RECT = (40, 200, 1040, 1500)
+
+
+def _make_ohlc_df(n=40):
+    """Helper: monotonically rising OHLC, n candles."""
+    base = 2000.0
+    return pd.DataFrame({
+        'Open':  [base + i * 0.5         for i in range(n)],
+        'High':  [base + i * 0.5 + 1.0   for i in range(n)],
+        'Low':   [base + i * 0.5 - 1.0   for i in range(n)],
+        'Close': [base + i * 0.5 + 0.3   for i in range(n)],
+    }, index=pd.date_range('2026-07-20 08:00', periods=n, freq='5min'))
+
+
+def test_draw_chart_frame_returns_pil_image():
+    from reels.chart import draw_chart_frame
+    img = _PILImage.new('RGB', (1080, 1920), (1, 14, 31))
+    result = draw_chart_frame(img, _make_ohlc_df(), [], t=5.0, duration=7.5, rect=CHART_RECT)
+    assert isinstance(result, _PILImage.Image)
+    assert result.size == (1080, 1920)
+
+
+def test_draw_chart_frame_t0_returns_unchanged_image():
+    from reels.chart import draw_chart_frame
+    import numpy as np
+    img = _PILImage.new('RGB', (1080, 1920), (1, 14, 31))
+    before = np.array(img).copy()
+    result = draw_chart_frame(img, _make_ohlc_df(), [], t=0.0, duration=7.5, rect=CHART_RECT)
+    assert np.array_equal(before, np.array(result))
+
+
+def test_draw_chart_frame_full_duration_modifies_image():
+    from reels.chart import draw_chart_frame
+    import numpy as np
+    bg = _PILImage.new('RGB', (1080, 1920), (1, 14, 31))
+    bg_arr = np.array(bg).copy()
+    result = draw_chart_frame(bg, _make_ohlc_df(), [], t=7.5, duration=7.5, rect=CHART_RECT)
+    assert not np.array_equal(bg_arr, np.array(result))
+
+
+def test_draw_chart_frame_empty_df_returns_image_unchanged():
+    from reels.chart import draw_chart_frame
+    import numpy as np
+    img = _PILImage.new('RGB', (1080, 1920), (1, 14, 31))
+    before = np.array(img).copy()
+    result = draw_chart_frame(img, pd.DataFrame(), [], t=5.0, duration=7.5, rect=CHART_RECT)
+    assert isinstance(result, _PILImage.Image)
+    assert np.array_equal(before, np.array(result))
+
+
+def test_draw_chart_frame_does_not_draw_outside_rect():
+    from reels.chart import draw_chart_frame
+    import numpy as np
+    img = _PILImage.new('RGB', (1080, 1920), (1, 14, 31))
+    result = draw_chart_frame(img, _make_ohlc_df(), [], t=7.5, duration=7.5, rect=CHART_RECT)
+    arr = np.array(result)
+    # Pixels above rect y0=200 should be near-unchanged (navy background)
+    # Allow a small tolerance for any grid label text drawn near the border
+    top_strip = arr[:180, :, :]
+    assert top_strip.max() <= 50

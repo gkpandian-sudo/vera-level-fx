@@ -165,7 +165,127 @@ def fetch_ohlc(symbol: str, start_dt: datetime, end_dt: datetime, interval: str)
         return pd.DataFrame()
 
 
-def draw_chart_frame(img: Image.Image, ohlc_df: pd.DataFrame, trades: list,
-                     t: float, duration: float, rect: tuple) -> Image.Image:
-    """Stub — implemented in Task 3."""
+def _draw_up_arrow(draw: ImageDraw.Draw, cx: int, tip_y: int, size: int = 14) -> None:
+    """Filled upward triangle — EMERALD entry marker."""
+    half = size // 2
+    draw.polygon([(cx, tip_y), (cx - half, tip_y + size), (cx + half, tip_y + size)],
+                 fill=EMERALD)
+
+
+def _draw_x_marker(draw: ImageDraw.Draw, cx: int, cy: int, size: int = 10) -> None:
+    """Amber × cross — exit marker."""
+    h = size // 2
+    draw.line([(cx - h, cy - h), (cx + h, cy + h)], fill=AMBER, width=2)
+    draw.line([(cx + h, cy - h), (cx - h, cy + h)], fill=AMBER, width=2)
+
+
+def draw_chart_frame(
+    img: Image.Image,
+    ohlc_df: pd.DataFrame,
+    trades: list,
+    t: float,
+    duration: float,
+    rect: tuple,
+) -> Image.Image:
+    """
+    Draw an animated candlestick chart onto img at time t.
+
+    Candles reveal left→right over 0..duration using ease_out.
+    Entry arrows (EMERALD ▲) and exit markers (AMBER ×) appear when
+    the animation reaches each trade's bar.
+    Returns the modified PIL Image (never raises).
+    """
+    if ohlc_df.empty:
+        return img
+
+    x0, y0, x1, y1 = rect
+    chart_w = x1 - x0
+    chart_h = y1 - y0
+
+    n_total   = len(ohlc_df)
+    progress  = _ease_out(t, duration)
+    n_visible = int(n_total * progress)
+
+    if n_visible == 0:
+        return img
+
+    visible_df = ohlc_df.iloc[:n_visible]
+    p_min = float(visible_df['Low'].min())
+    p_max = float(visible_df['High'].max())
+    p_range = p_max - p_min
+    if p_range == 0.0:
+        p_range = max(p_min * 0.01, 0.001)
+    pad     = p_range * 0.05
+    p_min  -= pad
+    p_max  += pad
+    p_range = p_max - p_min
+
+    def price_to_y(price: float) -> int:
+        return int(y1 - (price - p_min) / p_range * chart_h)
+
+    spacing  = chart_w / n_total
+    candle_w = max(2, int(spacing * 0.7))
+
+    draw = ImageDraw.Draw(img)
+    font = _load_font(18)
+
+    # Y-axis grid — 4 dashed horizontal lines with price labels
+    grid_color = (60, 80, 100)
+    for i in range(1, 5):
+        gy    = int(y0 + chart_h * i / 5)
+        gp    = p_max - p_range * i / 5
+        label = f'{gp:.0f}' if gp >= 100 else f'{gp:.4f}'
+        for gx in range(x0, x1, 14):
+            draw.line([(gx, gy), (min(gx + 7, x1), gy)], fill=grid_color, width=1)
+        draw.text((x0 + 4, gy - 20), label, fill=grid_color, font=font)
+
+    # Candle bodies and wicks
+    for i in range(n_visible):
+        row  = ohlc_df.iloc[i]
+        cx   = int(x0 + i * spacing + spacing / 2)
+        op_y = price_to_y(float(row['Open']))
+        cl_y = price_to_y(float(row['Close']))
+        hi_y = price_to_y(float(row['High']))
+        lo_y = price_to_y(float(row['Low']))
+
+        is_bull    = float(row['Close']) >= float(row['Open'])
+        body_color = EMERALD if is_bull else RED
+        wick_color = (80, 100, 120)
+
+        draw.line([(cx, hi_y), (cx, lo_y)], fill=wick_color, width=1)
+
+        body_top = min(op_y, cl_y)
+        body_bot = max(op_y, cl_y)
+        if body_bot - body_top < 1:
+            body_bot = body_top + 1
+        draw.rectangle(
+            [cx - candle_w // 2, body_top, cx + candle_w // 2, body_bot],
+            fill=body_color,
+        )
+
+    # Entry/exit arrows for each trade
+    timestamps = ohlc_df.index.tolist()
+
+    for tr in trades:
+        entry_dt = _parse_time(tr.get('openTime',  ''))
+        exit_dt  = _parse_time(tr.get('closeTime', ''))
+
+        entry_ts = pd.Timestamp(entry_dt)
+        exit_ts  = pd.Timestamp(exit_dt)
+
+        dists_entry = [abs((ts - entry_ts).total_seconds()) for ts in timestamps]
+        dists_exit  = [abs((ts - exit_ts).total_seconds())  for ts in timestamps]
+        entry_idx   = int(np.argmin(dists_entry))
+        exit_idx    = int(np.argmin(dists_exit))
+
+        if entry_idx < n_visible:
+            ex = int(x0 + entry_idx * spacing + spacing / 2)
+            ey = price_to_y(float(ohlc_df.iloc[entry_idx]['Low'])) + 16
+            _draw_up_arrow(draw, ex, ey)
+
+        if exit_idx < n_visible:
+            ex2 = int(x0 + exit_idx * spacing + spacing / 2)
+            ey2 = price_to_y(float(ohlc_df.iloc[exit_idx]['High'])) - 22
+            _draw_x_marker(draw, ex2, ey2)
+
     return img
