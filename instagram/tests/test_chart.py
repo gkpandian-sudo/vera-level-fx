@@ -105,3 +105,74 @@ def test_get_ohlc_returns_dataframe_type():
     from reels.chart import get_ohlc
     df = get_ohlc([])
     assert isinstance(df, pd.DataFrame)
+
+
+# ── fetch_ohlc ────────────────────────────────────────────────────────────────
+
+from unittest.mock import patch, MagicMock
+
+
+def _make_mock_df(n=20):
+    return pd.DataFrame({
+        'Open':   [2000.0 + i for i in range(n)],
+        'High':   [2001.5 + i for i in range(n)],
+        'Low':    [1999.0 + i for i in range(n)],
+        'Close':  [2000.8 + i for i in range(n)],
+        'Volume': [1000] * n,
+    }, index=pd.date_range('2026-07-20', periods=n, freq='5min'))
+
+
+def test_fetch_ohlc_success_returns_four_column_df():
+    from reels.chart import fetch_ohlc
+    mock_ticker = MagicMock()
+    mock_ticker.history.return_value = _make_mock_df(20)
+    with patch('yfinance.Ticker', return_value=mock_ticker):
+        result = fetch_ohlc(
+            'XAUUSD',
+            datetime.datetime(2026, 7, 20, 0, 0),
+            datetime.datetime(2026, 7, 20, 2, 0),
+            '5m',
+        )
+    assert not result.empty
+    assert set(['Open', 'High', 'Low', 'Close']).issubset(result.columns)
+    assert 'Volume' not in result.columns
+
+
+def test_fetch_ohlc_network_error_returns_empty_df():
+    from reels.chart import fetch_ohlc
+    with patch('yfinance.Ticker', side_effect=Exception('network error')):
+        result = fetch_ohlc(
+            'XAUUSD',
+            datetime.datetime(2026, 7, 20, 0, 0),
+            datetime.datetime(2026, 7, 20, 2, 0),
+            '5m',
+        )
+    assert result.empty
+
+
+def test_fetch_ohlc_insufficient_candles_returns_empty():
+    from reels.chart import fetch_ohlc
+    mock_ticker = MagicMock()
+    mock_ticker.history.return_value = _make_mock_df(5)   # < 10 rows → reject
+    with patch('yfinance.Ticker', return_value=mock_ticker):
+        result = fetch_ohlc(
+            'XAUUSD',
+            datetime.datetime(2026, 7, 20, 0, 0),
+            datetime.datetime(2026, 7, 20, 2, 0),
+            '5m',
+        )
+    assert result.empty
+
+
+def test_fetch_ohlc_empty_response_returns_empty():
+    from reels.chart import fetch_ohlc
+    mock_ticker = MagicMock()
+    mock_ticker.history.return_value = pd.DataFrame()
+    with patch('yfinance.Ticker', return_value=mock_ticker):
+        result = fetch_ohlc(
+            'XAUUSD',
+            datetime.datetime(2026, 7, 20, 0, 0),
+            datetime.datetime(2026, 7, 20, 2, 0),
+            '5m',
+        )
+    assert result.empty

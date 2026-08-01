@@ -130,8 +130,39 @@ def get_ohlc(trades: list) -> pd.DataFrame:
 
 
 def fetch_ohlc(symbol: str, start_dt: datetime, end_dt: datetime, interval: str) -> pd.DataFrame:
-    """Stub — implemented in Task 2."""
-    return pd.DataFrame()
+    """
+    Fetch OHLC via yfinance. Returns DataFrame[Open, High, Low, Close] on success,
+    empty DataFrame on any failure or if fewer than 10 candles returned.
+    """
+    try:
+        import yfinance as yf
+        ticker = yf.Ticker(yf_ticker(symbol))
+        df = ticker.history(
+            start=start_dt.strftime('%Y-%m-%d'),
+            end=(end_dt + timedelta(days=1)).strftime('%Y-%m-%d'),
+            interval=interval,
+            auto_adjust=True,
+        )
+        if df.empty or len(df) < 10:
+            return pd.DataFrame()
+
+        # Normalise index to timezone-naive UTC
+        df.index = pd.to_datetime(df.index)
+        if hasattr(df.index, 'tz') and df.index.tz is not None:
+            df.index = df.index.tz_convert('UTC').tz_localize(None)
+
+        # Trim to requested window
+        df = df[
+            (df.index >= pd.Timestamp(start_dt)) &
+            (df.index <= pd.Timestamp(end_dt))
+        ]
+        if len(df) < 10:
+            return pd.DataFrame()
+
+        return df[['Open', 'High', 'Low', 'Close']]
+    except Exception as exc:
+        logger.debug('fetch_ohlc failed for %s: %s', symbol, exc)
+        return pd.DataFrame()
 
 
 def draw_chart_frame(img: Image.Image, ohlc_df: pd.DataFrame, trades: list,
