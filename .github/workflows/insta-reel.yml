@@ -10,10 +10,12 @@ on:
     - cron: '0 22 2 * *'
     # Daily reel every day 20:00 SGT = 12:00 UTC
     - cron: '0 12 * * *'
+    # Trades reel: fires 11:00 SGT every day = 03:00 UTC
+    - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       post_type:
-        description: 'weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker|signup|milestone'
+        description: 'weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker|signup|milestone|trades'
         required: false
         default: 'weekly'
       post_lang:
@@ -70,6 +72,8 @@ jobs:
               echo "type=monthly" >> "$GITHUB_OUTPUT"
             elif [ "$EVENT_SCHEDULE" = "0 12 * * *" ]; then
               echo "type=daily" >> "$GITHUB_OUTPUT"
+            elif [ "$EVENT_SCHEDULE" = "0 3 * * *" ]; then
+              echo "type=trades" >> "$GITHUB_OUTPUT"
             else
               case "$(date -u +%u)" in
                 7) echo "type=weekly"  >> "$GITHUB_OUTPUT" ;;  # Sun UTC -> Mon SGT
@@ -84,7 +88,7 @@ jobs:
             fi
           else
             case "$INPUT_POST_TYPE" in
-              weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker|signup|milestone)
+              weekly|monthly|daily|trust|edu|transparency|recovery-plan|broker|signup|milestone|trades)
                 echo "type=$INPUT_POST_TYPE" >> "$GITHUB_OUTPUT"
                 ;;
               *)

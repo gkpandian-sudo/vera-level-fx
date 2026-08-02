@@ -80,13 +80,15 @@ def main():
         make_daily_reel, make_weekly_reel, make_trust_reel,
         make_monthly_reel, make_transparency_reel,
         make_recovery_plan_reel, make_edu_reel, make_broker_reel,
-        make_signup_reel, make_milestone_reel, make_thumbnail,
+        make_signup_reel, make_milestone_reel, make_trades_reel,
+        make_thumbnail,
     )
     from reels.audio  import get_track
     from reels.render import render
     from captions     import (weekly, monthly, trust, daily_status,
                               transparency, recovery_plan, edu as edu_caption,
                               broker as broker_caption, ib_signup, milestone,
+                              trades as trades_caption,
                               monthly_pnl_from_daily, weekly_gain_from_daily)
     from post         import publish_reel
 
@@ -172,9 +174,15 @@ def main():
         clips   = make_broker_reel()
         caption = broker_caption(lang=lang)
 
+    elif post_type == 'trades':
+        history = data.get('history', [])[-5:]
+        clips   = make_trades_reel(data)
+        caption = trades_caption(account, history, lang=lang)
+
     else:
         raise ValueError(f'Unknown POST_TYPE: {post_type!r}. '
-                         f'Expected: daily|weekly|monthly|trust|edu|transparency|recovery-plan|broker|signup|milestone')
+                         f'Expected: daily|weekly|monthly|trust|edu|transparency|'
+                         f'recovery-plan|broker|signup|milestone|trades')
 
     # ── Render ────────────────────────────────────────────────────────────────
     # Cinematic transitions per post type; gaps beyond the list get 'dissolve'.
@@ -187,6 +195,7 @@ def main():
         'trust':   ['glitch', 'zoom_punch', 'dissolve', 'dissolve'],
         'edu':     ['zoom_punch', 'zoom_punch', 'dissolve', 'dissolve'],
         'broker':  ['zoom_punch', 'dissolve'],
+        'trades':  ['dissolve'],
     }
     transitions = None
     base = _TRANSITION_BASE.get(post_type)
