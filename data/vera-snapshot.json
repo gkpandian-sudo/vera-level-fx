@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-08-03T22:33:13Z",
+  "fetchedAt": "2026-08-04T22:35:46Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
-    "gain": -97.27,
-    "absGain": -57.92,
-    "daily": -2.17,
-    "monthly": -48.78,
+    "gain": -99.18,
+    "absGain": -58.08,
+    "daily": -2.87,
+    "monthly": -58.2,
     "withdrawals": 1765,
     "deposits": 6201.08,
-    "interest": -280.4,
-    "profit": -3589.15,
-    "balance": 842.89,
-    "drawdown": 98.63,
-    "equity": 839.27,
-    "equityPercent": 99.57,
+    "interest": -281.78,
+    "profit": -3601.26,
+    "balance": 834.7,
+    "drawdown": 99.59,
+    "equity": 828.02,
+    "equityPercent": 99.2,
     "demo": false,
-    "lastUpdateDate": "08/03/2026 08:29",
+    "lastUpdateDate": "08/04/2026 17:14",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -378.33,
+    "commission": -380.83,
     "currency": "USD",
-    "profitFactor": 0.76,
-    "pips": 32894.2,
+    "profitFactor": 0.75,
+    "pips": 34044.9,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -33,29 +33,408 @@
     },
     "trades": 968,
     "winRate": 75.0,
-    "todayDaily": -0.22,
-    "todayProfit": -68
+    "todayDaily": 0.01,
+    "todayProfit": 2.5
   },
   "openTrades": [
     {
-      "openTime": "07/30/2026 12:25",
+      "openTime": "08/04/2026 05:35",
       "symbol": "AUDCAD",
       "action": "Sell",
       "sizing": {
         "type": "lots",
         "value": "0.01"
       },
-      "openPrice": 0.97932,
+      "openPrice": 0.98541,
       "tp": 0,
       "sl": 0,
       "comment": "ETF - I",
-      "profit": -3.86,
-      "pips": -54.2,
-      "swap": -0.12,
+      "profit": -3.81,
+      "pips": -53.6,
+      "swap": 0,
       "magic": "74638"
     },
     {
+      "openTime": "08/04/2026 13:50",
+      "symbol": "AUDCAD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.98743,
+      "tp": 0,
+      "sl": 0,
+      "comment": "ETF - I",
+      "profit": -2.37,
+      "pips": -33.4,
+      "swap": 0,
+      "magic": "74638"
+    },
+    {
+      "openTime": "08/04/2026 18:40",
+      "symbol": "AUDCAD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.99007,
+      "tp": 0,
+      "sl": 0,
+      "comment": "ETF - I",
+      "profit": -0.5,
+      "pips": -7,
+      "swap": 0,
+      "magic": "74638"
+    }
+  ],
+  "history": [
+    {
+      "openTime": "08/03/2026 16:15",
+      "closeTime": "08/04/2026 04:36",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.98202,
+      "closePrice": 0.9841,
+      "tp": 0,
+      "sl": 0,
+      "pips": 20.8,
+      "profit": 1.43,
+      "comment": "ETF - I",
+      "interest": 0.03,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 11:55",
+      "closeTime": "08/04/2026 04:36",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.98424,
+      "closePrice": 0.9841,
+      "tp": 0,
+      "sl": 0,
+      "pips": -1.4,
+      "profit": -0.15,
+      "comment": "ETF - I",
+      "interest": 0.03,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/04/2026 01:07",
+      "closeTime": "08/04/2026 02:07",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4049.52,
+      "closePrice": 4054.13,
+      "tp": 0,
+      "sl": 0,
+      "pips": 461,
+      "profit": 4.53,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/04/2026 01:04",
+      "closeTime": "08/04/2026 02:07",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4051.11,
+      "closePrice": 4053.65,
+      "tp": 0,
+      "sl": 0,
+      "pips": 254,
+      "profit": 2.46,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/04/2026 01:02",
+      "closeTime": "08/04/2026 02:07",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4052.68,
+      "closePrice": 4053.65,
+      "tp": 0,
+      "sl": 0,
+      "pips": 97,
+      "profit": 0.89,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 23:53",
+      "closeTime": "08/04/2026 02:07",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4055.48,
+      "closePrice": 4054.13,
+      "tp": 0,
+      "sl": 0,
+      "pips": -135,
+      "profit": -1.97,
+      "comment": "ETF-II[T1/S01]",
+      "interest": -0.54,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 23:42",
+      "closeTime": "08/04/2026 02:07",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4057.74,
+      "closePrice": 4053.67,
+      "tp": 0,
+      "sl": 0,
+      "pips": -407,
+      "profit": -4.69,
+      "comment": "ETF-II[T1/S01]",
+      "interest": -0.54,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 23:36",
+      "closeTime": "08/03/2026 23:38",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4057.22,
+      "closePrice": 4057.76,
+      "tp": 0,
+      "sl": 0,
+      "pips": 54,
+      "profit": 0.46,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 23:30",
+      "closeTime": "08/03/2026 23:32",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4054.63,
+      "closePrice": 4056.52,
+      "tp": 0,
+      "sl": 0,
+      "pips": 189,
+      "profit": 1.81,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 23:01",
+      "closeTime": "08/03/2026 23:25",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4050.72,
+      "closePrice": 4054.35,
+      "tp": 0,
+      "sl": 0,
+      "pips": 363,
+      "profit": 3.55,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 22:56",
+      "closeTime": "08/03/2026 23:25",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4052.82,
+      "closePrice": 4054.35,
+      "tp": 0,
+      "sl": 0,
+      "pips": 153,
+      "profit": 1.45,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 22:54",
+      "closeTime": "08/03/2026 23:25",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4054.68,
+      "closePrice": 4054.1,
+      "tp": 0,
+      "sl": 0,
+      "pips": -58,
+      "profit": -0.66,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 22:42",
+      "closeTime": "08/03/2026 22:48",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4054.27,
+      "closePrice": 4055.13,
+      "tp": 0,
+      "sl": 0,
+      "pips": 86,
+      "profit": 0.78,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 22:30",
+      "closeTime": "08/03/2026 22:36",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4053.21,
+      "closePrice": 4054.36,
+      "tp": 0,
+      "sl": 0,
+      "pips": 115,
+      "profit": 1.07,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 22:24",
+      "closeTime": "08/03/2026 22:26",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4052.68,
+      "closePrice": 4054.05,
+      "tp": 0,
+      "sl": 0,
+      "pips": 137,
+      "profit": 1.29,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 22:18",
+      "closeTime": "08/03/2026 22:21",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4048.35,
+      "closePrice": 4049.34,
+      "tp": 0,
+      "sl": 0,
+      "pips": 99,
+      "profit": 0.91,
+      "comment": "ETF-II[T1/S01]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "08/03/2026 16:38",
+      "closeTime": "08/03/2026 16:38",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.08"
+      },
+      "openPrice": 4019.68,
+      "closePrice": 4022.57,
+      "tp": 0,
+      "sl": 4022.7,
+      "pips": -289,
+      "profit": -23.68,
+      "comment": "TOL LANGIT ETF - V.2[sl 4022.70]",
+      "interest": 0,
+      "commission": -0.56
+    },
+    {
+      "openTime": "08/03/2026 16:38",
+      "closeTime": "08/03/2026 16:38",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.04"
+      },
+      "openPrice": 4019.77,
+      "closePrice": 4019.75,
+      "tp": 0,
+      "sl": 4019.67,
+      "pips": 2,
+      "profit": -0.2,
+      "comment": "TOL LANGIT ETF - V.1[sl 4019.67]",
+      "interest": 0,
+      "commission": -0.28
+    },
+    {
       "openTime": "07/30/2026 16:40",
+      "closeTime": "08/03/2026 16:17",
       "symbol": "AUDCAD",
       "action": "Sell",
       "sizing": {
@@ -63,16 +442,18 @@
         "value": "0.01"
       },
       "openPrice": 0.98155,
+      "closePrice": 0.98181,
       "tp": 0,
       "sl": 0,
+      "pips": -2.6,
+      "profit": -0.39,
       "comment": "ETF - I",
-      "profit": -2.27,
-      "pips": -31.9,
-      "swap": -0.12,
-      "magic": "74638"
+      "interest": -0.12,
+      "commission": -0.08
     },
     {
       "openTime": "07/30/2026 19:30",
+      "closeTime": "08/03/2026 16:17",
       "symbol": "AUDCAD",
       "action": "Sell",
       "sizing": {
@@ -80,16 +461,37 @@
         "value": "0.01"
       },
       "openPrice": 0.98396,
+      "closePrice": 0.98176,
       "tp": 0,
       "sl": 0,
+      "pips": 22,
+      "profit": 1.37,
       "comment": "ETF - I",
-      "profit": -0.56,
-      "pips": -7.8,
-      "swap": -0.12,
-      "magic": "74638"
+      "interest": -0.12,
+      "commission": -0.08
+    },
+    {
+      "openTime": "07/30/2026 12:25",
+      "closeTime": "08/03/2026 12:40",
+      "symbol": "AUDCAD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.97932,
+      "closePrice": 0.98369,
+      "tp": 0,
+      "sl": 0,
+      "pips": -43.7,
+      "profit": -3.31,
+      "comment": "ETF - I",
+      "interest": -0.12,
+      "commission": -0.08
     },
     {
       "openTime": "08/03/2026 01:05",
+      "closeTime": "08/03/2026 12:40",
       "symbol": "AUDCAD",
       "action": "Sell",
       "sizing": {
@@ -97,16 +499,15 @@
         "value": "0.02"
       },
       "openPrice": 0.98715,
+      "closePrice": 0.98369,
       "tp": 0,
       "sl": 0,
+      "pips": 34.6,
+      "profit": 4.79,
       "comment": "ETF - I",
-      "profit": 3.43,
-      "pips": 24.1,
-      "swap": 0,
-      "magic": "74638"
-    }
-  ],
-  "history": [
+      "interest": 0,
+      "commission": -0.14
+    },
     {
       "openTime": "07/31/2026 04:17",
       "closeTime": "07/31/2026 11:34",
@@ -448,424 +849,6 @@
       "comment": "ETF-II[T1/S01]",
       "interest": -1.69,
       "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:22",
-      "closeTime": "07/30/2026 01:13",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4086.96,
-      "closePrice": 4075.41,
-      "tp": 0,
-      "sl": 0,
-      "pips": -1155,
-      "profit": -13.32,
-      "comment": "ETF-II[T1/S01]",
-      "interest": -1.69,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:21",
-      "closeTime": "07/30/2026 01:13",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4090.94,
-      "closePrice": 4075.41,
-      "tp": 0,
-      "sl": 0,
-      "pips": -1553,
-      "profit": -17.3,
-      "comment": "ETF-II[T1/S01]",
-      "interest": -1.69,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:18",
-      "closeTime": "07/30/2026 01:13",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4100.53,
-      "closePrice": 4075.41,
-      "tp": 0,
-      "sl": 0,
-      "pips": -2512,
-      "profit": -26.89,
-      "comment": "ETF-II[T1/S01]",
-      "interest": -1.69,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 23:00",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4046.21,
-      "closePrice": 4066.97,
-      "tp": 0,
-      "sl": 0,
-      "pips": 2076,
-      "profit": 20.68,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:57",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4053.6,
-      "closePrice": 4066.97,
-      "tp": 0,
-      "sl": 0,
-      "pips": 1337,
-      "profit": 13.29,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:56",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4058.32,
-      "closePrice": 4066.97,
-      "tp": 0,
-      "sl": 0,
-      "pips": 865,
-      "profit": 8.57,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:54",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4065.26,
-      "closePrice": 4067.07,
-      "tp": 0,
-      "sl": 0,
-      "pips": 181,
-      "profit": 1.73,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:39",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4067.31,
-      "closePrice": 4067.07,
-      "tp": 0,
-      "sl": 0,
-      "pips": -24,
-      "profit": -0.32,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:35",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4073.37,
-      "closePrice": 4067.1,
-      "tp": 0,
-      "sl": 0,
-      "pips": -627,
-      "profit": -6.35,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:33",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4080.92,
-      "closePrice": 4067.1,
-      "tp": 0,
-      "sl": 0,
-      "pips": -1382,
-      "profit": -13.9,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:30",
-      "closeTime": "07/29/2026 23:44",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4084.95,
-      "closePrice": 4067.1,
-      "tp": 0,
-      "sl": 0,
-      "pips": -1785,
-      "profit": -17.93,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:15",
-      "closeTime": "07/29/2026 22:16",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4100.3,
-      "closePrice": 4103.26,
-      "tp": 0,
-      "sl": 0,
-      "pips": 296,
-      "profit": 2.88,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:06",
-      "closeTime": "07/29/2026 22:07",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4100.31,
-      "closePrice": 4100.87,
-      "tp": 0,
-      "sl": 0,
-      "pips": 56,
-      "profit": 0.48,
-      "comment": "ETF-II[T1/S01]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 21:50",
-      "closeTime": "07/29/2026 22:05",
-      "symbol": "AUDCAD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.98099,
-      "closePrice": 0.97999,
-      "tp": 0,
-      "sl": 0,
-      "pips": 10,
-      "profit": 0.63,
-      "comment": "ETF - I",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:00",
-      "closeTime": "07/29/2026 22:03",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4108.29,
-      "closePrice": 4110.93,
-      "tp": 0,
-      "sl": 0,
-      "pips": 264,
-      "profit": 2.56,
-      "comment": "ETF-II[T2/S03]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 22:00",
-      "closeTime": "07/29/2026 22:02",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4107.29,
-      "closePrice": 4116.03,
-      "tp": 0,
-      "sl": 0,
-      "pips": 874,
-      "profit": 8.66,
-      "comment": "ETF-II[T1/S01]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/28/2026 07:10",
-      "closeTime": "07/29/2026 21:00",
-      "symbol": "AUDCAD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.98441,
-      "closePrice": 0.97885,
-      "tp": 0,
-      "sl": 0,
-      "pips": -55.6,
-      "profit": -4,
-      "comment": "ETF - I",
-      "interest": 0.03,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/29/2026 21:00",
-      "closeTime": "07/29/2026 21:00",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.08"
-      },
-      "openPrice": 4058.81,
-      "closePrice": 4073.15,
-      "tp": 0,
-      "sl": 4075.91,
-      "pips": 1434,
-      "profit": 114.16,
-      "comment": "TOL LANGIT ETF - V.2[sl 4075.91]",
-      "interest": 0,
-      "commission": -0.56
-    },
-    {
-      "openTime": "07/29/2026 17:55",
-      "closeTime": "07/29/2026 21:00",
-      "symbol": "AUDCAD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.03"
-      },
-      "openPrice": 0.97654,
-      "closePrice": 0.97839,
-      "tp": 0,
-      "sl": 0,
-      "pips": 18.5,
-      "profit": 3.72,
-      "comment": "ETF - I",
-      "interest": 0,
-      "commission": -0.22
-    },
-    {
-      "openTime": "07/29/2026 15:30",
-      "closeTime": "07/29/2026 15:30",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.08"
-      },
-      "openPrice": 4009.67,
-      "closePrice": 4012.61,
-      "tp": 0,
-      "sl": 4012.69,
-      "pips": -294,
-      "profit": -24.08,
-      "comment": "TOL LANGIT ETF - V.2[sl 4012.69]",
-      "interest": 0,
-      "commission": -0.56
-    },
-    {
-      "openTime": "07/29/2026 15:30",
-      "closeTime": "07/29/2026 15:30",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.04"
-      },
-      "openPrice": 4010.1,
-      "closePrice": 4009.97,
-      "tp": 0,
-      "sl": 4010.13,
-      "pips": 13,
-      "profit": 0.24,
-      "comment": "TOL LANGIT ETF - V.1[sl 4010.13]",
-      "interest": 0,
-      "commission": -0.28
-    },
-    {
-      "openTime": "07/29/2026 04:04",
-      "closeTime": "07/29/2026 04:20",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.05"
-      },
-      "openPrice": 4009.56,
-      "closePrice": 4017.73,
-      "tp": 0,
-      "sl": 4018.06,
-      "pips": -817,
-      "profit": -41.21,
-      "comment": "TOL LANGIT ETF - V.1[sl 4018.06]",
-      "interest": 0,
-      "commission": -0.36
     }
   ],
   "dailyGain": [
@@ -881,47 +864,47 @@
     ],
     [
       "02/24/2026",
-      2.83,
+      2.8,
       27.96
     ],
     [
       "03/03/2026",
-      4.21,
+      4.17,
       13.72
     ],
     [
       "03/04/2026",
-      6.57,
+      6.5,
       22.4
     ],
     [
       "03/10/2026",
-      8.57,
+      8.49,
       37.78
     ],
     [
       "03/12/2026",
-      10.91,
+      10.82,
       44.34
     ],
     [
       "03/13/2026",
-      -4.36,
+      -4.37,
       -288.64
     ],
     [
       "03/16/2026",
-      -3.95,
+      -3.96,
       7.71
     ],
     [
       "03/17/2026",
-      -2.66,
+      -2.67,
       24.54
     ],
     [
       "03/18/2026",
-      -2.16,
+      -2.18,
       9.27
     ],
     [
@@ -931,468 +914,478 @@
     ],
     [
       "03/20/2026",
-      -10.61,
+      -10.58,
       -96.82
     ],
     [
       "03/24/2026",
-      -25.74,
+      -25.62,
       -285.84
     ],
     [
       "03/25/2026",
-      -27.48,
+      -27.35,
       -32.96
     ],
     [
       "03/26/2026",
-      -22.72,
+      -22.61,
       90
     ],
     [
       "03/27/2026",
-      -21.9,
+      -21.8,
       15.47
     ],
     [
       "03/30/2026",
-      -14.66,
+      -14.61,
       136.72
     ],
     [
       "03/31/2026",
-      -13.01,
+      -12.97,
       31.18
     ],
     [
       "04/01/2026",
-      -1.36,
+      -1.38,
       221.58
     ],
     [
       "04/02/2026",
-      1.3,
+      1.26,
       77.12
     ],
     [
       "04/03/2026",
-      1.34,
+      1.3,
       1.16
     ],
     [
       "04/06/2026",
-      2.56,
+      2.52,
       35.58
     ],
     [
       "04/07/2026",
-      5.41,
+      5.36,
       82.64
     ],
     [
       "04/08/2026",
-      9.04,
+      8.98,
       99.77
     ],
     [
       "04/09/2026",
-      8.62,
+      8.56,
       -12.12
     ],
     [
       "04/13/2026",
-      8.94,
+      8.88,
       9.27
     ],
     [
       "04/14/2026",
-      6.65,
+      6.59,
       -66.62
     ],
     [
       "04/15/2026",
-      7.89,
+      7.83,
       36.09
     ],
     [
       "04/16/2026",
-      -4.32,
+      -4.34,
       -354.14
     ],
     [
       "04/17/2026",
-      5.79,
+      5.73,
       293.16
     ],
     [
       "04/20/2026",
-      5.98,
+      5.92,
       5.55
     ],
     [
       "04/21/2026",
-      10.79,
+      10.71,
       139.42
     ],
     [
       "04/23/2026",
-      15.7,
+      15.6,
       149.48
     ],
     [
       "04/24/2026",
-      14.02,
+      13.94,
       -55.76
     ],
     [
       "04/27/2026",
-      15.19,
+      15.1,
       39.03
     ],
     [
       "04/28/2026",
-      25.85,
+      25.72,
       355.5
     ],
     [
       "04/29/2026",
-      27.67,
+      27.54,
       60.97
     ],
     [
       "04/30/2026",
-      41.76,
+      41.58,
       470.2
     ],
     [
       "05/01/2026",
-      45.23,
+      45.03,
       73.66
     ],
     [
       "05/04/2026",
-      50.46,
+      50.23,
       110.89
     ],
     [
       "05/05/2026",
-      47.54,
+      47.33,
       -61.92
     ],
     [
       "05/06/2026",
-      49.21,
+      48.99,
       35.33
     ],
     [
       "05/07/2026",
-      52.36,
+      52.13,
       66.92
     ],
     [
       "05/08/2026",
-      52.49,
+      52.25,
       2.69
     ],
     [
       "05/11/2026",
-      47.4,
+      47.19,
       -108
     ],
     [
       "05/12/2026",
-      51.41,
+      51.18,
       85.18
     ],
     [
       "05/13/2026",
-      51.37,
+      51.14,
       -0.97
     ],
     [
       "05/14/2026",
-      44.86,
+      44.66,
       -138.09
     ],
     [
       "05/15/2026",
-      58.1,
-      288.71
+      58.56,
+      296.34
     ],
     [
       "05/18/2026",
-      54.67,
+      55.13,
       -73
     ],
     [
       "05/19/2026",
-      60.24,
+      60.7,
       118.64
     ],
     [
       "05/20/2026",
-      66.9,
+      67.34,
       141.56
     ],
     [
       "05/21/2026",
-      63.12,
+      63.57,
       -79.61
     ],
     [
       "05/22/2026",
-      52.08,
+      52.54,
       -349.82
     ],
     [
       "05/25/2026",
-      52.65,
+      53.11,
       18.14
     ],
     [
       "05/26/2026",
-      38.22,
+      38.68,
       -457.45
     ],
     [
       "05/27/2026",
-      40.2,
+      40.67,
       62.94
     ],
     [
       "05/28/2026",
-      32.51,
+      32.98,
       -243.81
     ],
     [
       "05/29/2026",
-      39.98,
+      40.44,
       236.64
     ],
     [
       "06/01/2026",
-      41.83,
+      42.29,
       58.67
     ],
     [
       "06/02/2026",
-      43.95,
+      44.41,
       67.14
     ],
     [
       "06/03/2026",
-      48.76,
+      49.22,
       152.58
     ],
     [
       "06/04/2026",
-      49.19,
+      49.64,
       13.46
     ],
     [
       "06/05/2026",
-      49.69,
+      50.15,
       16.12
     ],
     [
       "06/08/2026",
-      50.32,
+      50.78,
       19.89
     ],
     [
       "06/09/2026",
-      -3.53,
+      -3.03,
       -1706.61
     ],
     [
       "06/10/2026",
-      -3.33,
+      -2.83,
       6.25
     ],
     [
       "06/11/2026",
-      -6.95,
+      -6.45,
       -114.8
     ],
     [
       "06/12/2026",
-      -6.59,
+      -6.09,
       11.52
     ],
     [
       "06/15/2026",
-      0.47,
+      0.97,
       223.89
     ],
     [
       "06/16/2026",
-      1.53,
+      2.02,
       33.31
     ],
     [
       "06/17/2026",
-      3.02,
+      3.51,
       47.25
     ],
     [
       "06/18/2026",
-      7.18,
+      7.67,
       131.86
     ],
     [
       "06/19/2026",
-      8.63,
+      9.12,
       46
     ],
     [
       "06/22/2026",
-      8.84,
+      9.33,
       6.63
     ],
     [
       "06/23/2026",
-      2.4,
+      2.89,
       -204.09
     ],
     [
       "06/24/2026",
-      11.1,
+      11.59,
       275.92
     ],
     [
       "06/25/2026",
-      11.77,
+      12.26,
       21.09
     ],
     [
       "06/26/2026",
-      23.63,
+      24.11,
       375.94
     ],
     [
       "06/29/2026",
-      25.35,
+      25.83,
       54.39
     ],
     [
       "06/30/2026",
-      39.1,
+      39.57,
       435.91
     ],
     [
       "07/01/2026",
-      -96.56,
-      -4299.54
+      -98.51,
+      -4412.54
     ],
     [
       "07/02/2026",
-      -96.77,
+      -99.03,
       -25.82
     ],
     [
       "07/03/2026",
-      -96.6,
+      -98.98,
       53.74
     ],
     [
       "07/06/2026",
-      -96.63,
+      -98.99,
       -9.6
     ],
     [
       "07/07/2026",
-      -96.47,
+      -98.94,
       51.3
     ],
     [
       "07/08/2026",
-      -96.35,
+      -98.9,
       38.77
     ],
     [
       "07/09/2026",
-      -96.42,
+      -98.93,
       -23.85
     ],
     [
       "07/10/2026",
-      -96.4,
+      -98.92,
       7.43
     ],
     [
       "07/13/2026",
-      -96.58,
+      -98.97,
       -54.74
     ],
     [
       "07/14/2026",
-      -96.86,
+      -99.06,
       -89.64
     ],
     [
       "07/15/2026",
-      -96.86,
+      -99.06,
       3.97
     ],
     [
       "07/16/2026",
-      -97.27,
+      -99.18,
       -125.45
     ],
     [
       "07/17/2026",
-      -97.44,
+      -99.23,
       -51.34
     ],
     [
       "07/20/2026",
-      -97.45,
+      -99.23,
       -3.22
     ],
     [
       "07/21/2026",
-      -97.64,
+      -99.29,
       -56.83
     ],
     [
       "07/22/2026",
-      -97.42,
+      -99.22,
       69.8
     ],
     [
       "07/23/2026",
-      -97.38,
+      -99.21,
       11.53
     ],
     [
       "07/24/2026",
-      -97.38,
+      -99.21,
       1.29
     ],
     [
       "07/27/2026",
-      -97.18,
+      -99.15,
       62.89
     ],
     [
       "07/28/2026",
-      -97.12,
+      -99.13,
       17.14
     ],
     [
       "07/29/2026",
-      -96.99,
+      -99.09,
       38.29
     ],
     [
       "07/30/2026",
-      -97.05,
+      -99.11,
       -18.74
     ],
     [
       "07/31/2026",
-      -97.27,
+      -99.18,
       -68
+    ],
+    [
+      "08/03/2026",
+      -99.19,
+      -10.76
+    ],
+    [
+      "08/04/2026",
+      -99.18,
+      2.5
     ]
   ]
 }
