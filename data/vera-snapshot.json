@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-08-07T22:06:01Z",
+  "fetchedAt": "2026-08-08T21:55:38Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -99.19,
-    "absGain": -58.12,
-    "daily": -2.83,
-    "monthly": -57.58,
+    "absGain": -58.08,
+    "daily": -2.81,
+    "monthly": -57.48,
     "withdrawals": 1765,
     "deposits": 6201.08,
-    "interest": -282.47,
-    "profit": -3604.01,
-    "balance": 831.96,
+    "interest": -282.36,
+    "profit": -3601.58,
+    "balance": 834.43,
     "drawdown": 99.59,
-    "equity": 831.34,
-    "equityPercent": 99.93,
+    "equity": 832.74,
+    "equityPercent": 99.8,
     "demo": false,
-    "lastUpdateDate": "08/07/2026 10:50",
+    "lastUpdateDate": "08/08/2026 20:13",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -383.69,
+    "commission": -383.99,
     "currency": "USD",
     "profitFactor": 0.76,
-    "pips": 35236.7,
+    "pips": 35230.8,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -34,26 +34,9 @@
     "trades": 968,
     "winRate": 75.0,
     "todayDaily": 0.01,
-    "todayProfit": 11.12
+    "todayProfit": 13.55
   },
   "openTrades": [
-    {
-      "openTime": "08/05/2026 18:55",
-      "symbol": "AUDCAD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.98845,
-      "tp": 0,
-      "sl": 0,
-      "comment": "ETF - I",
-      "profit": -1.31,
-      "pips": -18.3,
-      "swap": 0.11,
-      "magic": "74638"
-    },
     {
       "openTime": "08/06/2026 10:40",
       "symbol": "AUDCAD",
@@ -66,13 +49,51 @@
       "tp": 0,
       "sl": 0,
       "comment": "ETF - I",
-      "profit": 0.53,
-      "pips": 3.7,
-      "swap": 0.05,
+      "profit": -1.79,
+      "pips": -12.5,
+      "swap": 0.1,
       "magic": "74638"
     }
   ],
   "history": [
+    {
+      "openTime": "08/07/2026 18:55",
+      "closeTime": "08/07/2026 22:17",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.03"
+      },
+      "openPrice": 0.98362,
+      "closePrice": 0.98574,
+      "tp": 0,
+      "sl": 0,
+      "pips": 21.2,
+      "profit": 4.34,
+      "comment": "ETF - I",
+      "interest": 0,
+      "commission": -0.22
+    },
+    {
+      "openTime": "08/05/2026 18:55",
+      "closeTime": "08/07/2026 22:17",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.98845,
+      "closePrice": 0.98574,
+      "tp": 0,
+      "sl": 0,
+      "pips": -27.1,
+      "profit": -1.91,
+      "comment": "ETF - I",
+      "interest": 0.11,
+      "commission": -0.08
+    },
     {
       "openTime": "08/07/2026 11:33",
       "closeTime": "08/07/2026 11:34",
@@ -794,44 +815,6 @@
       "comment": "GW4090957293|TOL LANGIT ETF - I[sl 4054.44]",
       "interest": 0,
       "commission": -0.14
-    },
-    {
-      "openTime": "07/31/2026 04:24",
-      "closeTime": "07/31/2026 04:27",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4091.79,
-      "closePrice": 4094.09,
-      "tp": 0,
-      "sl": 4094.09,
-      "pips": 230,
-      "profit": 2.22,
-      "comment": "TOL LANGIT ETF - IX [S01][sl 4094.09]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "07/31/2026 04:20",
-      "closeTime": "07/31/2026 04:27",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4093.99,
-      "closePrice": 4094.09,
-      "tp": 0,
-      "sl": 4094.09,
-      "pips": 10,
-      "profit": 0.02,
-      "comment": "TOL LANGIT ETF - IX [S01][sl 4094.09]",
-      "interest": 0,
-      "commission": -0.08
     }
   ],
   "dailyGain": [
@@ -1383,7 +1366,7 @@
     [
       "08/07/2026",
       -99.19,
-      11.12
+      13.55
     ]
   ]
 }
