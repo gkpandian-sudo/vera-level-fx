@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-08-21T21:49:46Z",
+  "fetchedAt": "2026-08-22T21:46:27Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -99.66,
     "absGain": -65.77,
-    "daily": -3.07,
+    "daily": -3.06,
     "monthly": -60.76,
     "withdrawals": 1765,
     "deposits": 6201.08,
