@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-09-14T23:57:14Z",
+  "fetchedAt": "2026-09-15T23:35:52Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -99.62,
-    "absGain": -65.44,
-    "daily": -2.67,
-    "monthly": -55.43,
+    "absGain": -65.43,
+    "daily": -2.66,
+    "monthly": -55.41,
     "withdrawals": 1765,
     "deposits": 6201.08,
-    "interest": -295.92,
-    "profit": -4056.13,
-    "balance": 377.5,
+    "interest": -295.98,
+    "profit": -4055.54,
+    "balance": 378.13,
     "drawdown": 99.84,
-    "equity": 377.8,
-    "equityPercent": 100.08,
+    "equity": 378.13,
+    "equityPercent": 100,
     "demo": false,
-    "lastUpdateDate": "09/14/2026 21:01",
+    "lastUpdateDate": "09/15/2026 02:52",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -413.36,
+    "commission": -413.44,
     "currency": "USD",
     "profitFactor": 0.74,
-    "pips": 2894.6,
+    "pips": 2904.7,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -33,12 +33,14 @@
     },
     "trades": 968,
     "winRate": 75.0,
-    "todayDaily": -0.01,
-    "todayProfit": -11.64
+    "todayDaily": 0.0,
+    "todayProfit": 0.59
   },
-  "openTrades": [
+  "openTrades": [],
+  "history": [
     {
       "openTime": "09/14/2026 18:35",
+      "closeTime": "09/15/2026 00:33",
       "symbol": "AUDCAD",
       "action": "Sell",
       "sizing": {
@@ -46,16 +48,15 @@
         "value": "0.01"
       },
       "openPrice": 0.99322,
+      "closePrice": 0.99221,
       "tp": 0,
       "sl": 0,
+      "pips": 10.1,
+      "profit": 0.59,
       "comment": "ETF - I",
-      "profit": 0.36,
-      "pips": 0,
-      "swap": -0.06,
-      "magic": "74638"
-    }
-  ],
-  "history": [
+      "interest": -0.06,
+      "commission": -0.08
+    },
     {
       "openTime": "09/14/2026 20:54",
       "closeTime": "09/14/2026 21:05",
@@ -796,25 +797,6 @@
       "comment": "ETF-II[T1/S01]",
       "interest": -1.73,
       "commission": -0.08
-    },
-    {
-      "openTime": "09/02/2026 23:48",
-      "closeTime": "09/02/2026 23:51",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4389.34,
-      "closePrice": 4389.84,
-      "tp": 0,
-      "sl": 0,
-      "pips": 50,
-      "profit": 0.42,
-      "comment": "ETF-II[T1/S01]",
-      "interest": 0,
-      "commission": -0.08
     }
   ],
   "dailyGain": [
@@ -1497,6 +1479,11 @@
       "09/14/2026",
       -99.62,
       -11.64
+    ],
+    [
+      "09/15/2026",
+      -99.62,
+      0.59
     ]
   ]
 }
