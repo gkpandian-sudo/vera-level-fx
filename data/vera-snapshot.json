@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-09-29T01:09:32Z",
+  "fetchedAt": "2026-09-30T00:40:23Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -99.71,
-    "absGain": -67.15,
-    "daily": -2.61,
-    "monthly": -54.79,
+    "absGain": -67.14,
+    "daily": -2.6,
+    "monthly": -54.64,
     "withdrawals": 1765,
     "deposits": 6201.08,
-    "interest": -295.78,
-    "profit": -4162.18,
-    "balance": 271.45,
+    "interest": -295.63,
+    "profit": -4161.58,
+    "balance": 272.05,
     "drawdown": 99.84,
-    "equity": 270.67,
-    "equityPercent": 99.71,
+    "equity": 272.22,
+    "equityPercent": 100.06,
     "demo": false,
-    "lastUpdateDate": "09/29/2026 00:35",
+    "lastUpdateDate": "09/29/2026 19:26",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -419.02,
+    "commission": -419.72,
     "currency": "USD",
     "profitFactor": 0.74,
-    "pips": -5831.6,
+    "pips": -5571.8,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -33,12 +33,165 @@
     },
     "trades": 968,
     "winRate": 85.0,
-    "todayDaily": -0.13,
-    "todayProfit": -119.08
+    "todayDaily": 0.0,
+    "todayProfit": 0.6
   },
   "openTrades": [
     {
+      "openTime": "09/29/2026 18:10",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.99054,
+      "tp": 0,
+      "sl": 0,
+      "comment": "ETF - I",
+      "profit": 0.17,
+      "pips": 0,
+      "swap": 0,
+      "magic": "74638"
+    }
+  ],
+  "history": [
+    {
+      "openTime": "09/29/2026 17:19",
+      "closeTime": "09/29/2026 17:20",
+      "symbol": "XAUUSD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.02"
+      },
+      "openPrice": 4171.71,
+      "closePrice": 4168.4,
+      "tp": 0,
+      "sl": 4168.69,
+      "pips": -331,
+      "profit": -6.76,
+      "comment": "TOL LANGIT ETF - V.2[sl 4168.69]",
+      "interest": 0,
+      "commission": -0.14
+    },
+    {
+      "openTime": "09/29/2026 16:20",
+      "closeTime": "09/29/2026 16:45",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.99086,
+      "closePrice": 0.99186,
+      "tp": 0,
+      "sl": 0,
+      "pips": 10,
+      "profit": 0.62,
+      "comment": "ETF - I",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "09/29/2026 08:45",
+      "closeTime": "09/29/2026 13:51",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.99213,
+      "closePrice": 0.99316,
+      "tp": 0,
+      "sl": 0,
+      "pips": 10.3,
+      "profit": 0.65,
+      "comment": "ETF - I",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "09/29/2026 12:47",
+      "closeTime": "09/29/2026 12:53",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4147.75,
+      "closePrice": 4142.61,
+      "tp": 0,
+      "sl": 4142.63,
+      "pips": 514,
+      "profit": 5.06,
+      "comment": "TOL LANGIT ETF - IX [S05][sl 4142.63]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "09/29/2026 12:43",
+      "closeTime": "09/29/2026 12:53",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4144.07,
+      "closePrice": 4142.61,
+      "tp": 0,
+      "sl": 4142.63,
+      "pips": 146,
+      "profit": 1.38,
+      "comment": "TOL LANGIT ETF - IX [S05][sl 4142.63]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "09/29/2026 12:30",
+      "closeTime": "09/29/2026 12:53",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4140.43,
+      "closePrice": 4142.62,
+      "tp": 0,
+      "sl": 4142.63,
+      "pips": -219,
+      "profit": -2.27,
+      "comment": "TOL LANGIT ETF - IX [S05][sl 4142.63]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "09/29/2026 09:40",
+      "closeTime": "09/29/2026 09:48",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4143.5,
+      "closePrice": 4142.31,
+      "tp": 0,
+      "sl": 4142.3,
+      "pips": 119,
+      "profit": 1.11,
+      "comment": "TOL LANGIT ETF - IX [S05][sl 4142.30]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
       "openTime": "09/23/2026 14:35",
+      "closeTime": "09/29/2026 07:31",
       "symbol": "AUDCAD",
       "action": "Buy",
       "sizing": {
@@ -46,16 +199,15 @@
         "value": "0.01"
       },
       "openPrice": 0.99575,
+      "closePrice": 0.9968,
       "tp": 0,
       "sl": 0,
+      "pips": 10.5,
+      "profit": 0.81,
       "comment": "ETF - I",
-      "profit": -0.93,
-      "pips": -13.2,
-      "swap": 0.15,
-      "magic": "74638"
-    }
-  ],
-  "history": [
+      "interest": 0.15,
+      "commission": -0.08
+    },
     {
       "openTime": "09/28/2026 19:30",
       "closeTime": "09/28/2026 19:43",
@@ -661,158 +813,6 @@
       "pips": 119,
       "profit": 1.11,
       "comment": "GW313463319|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/18/2026 16:38",
-      "closeTime": "09/18/2026 16:38",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4357.99,
-      "closePrice": 4360.29,
-      "tp": 0,
-      "sl": 0,
-      "pips": 230,
-      "profit": 2.22,
-      "comment": "GW313450438|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/18/2026 09:29",
-      "closeTime": "09/18/2026 09:54",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4392.08,
-      "closePrice": 4390.87,
-      "tp": 0,
-      "sl": 0,
-      "pips": 121,
-      "profit": 1.13,
-      "comment": "GW313301764|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/18/2026 09:00",
-      "closeTime": "09/18/2026 09:00",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.03"
-      },
-      "openPrice": 4381.89,
-      "closePrice": 4382.76,
-      "tp": 0,
-      "sl": 4383.03,
-      "pips": 87,
-      "profit": 2.39,
-      "comment": "TOL LANGIT ETF - V.2[sl 4383.03]",
-      "interest": 0,
-      "commission": -0.22
-    },
-    {
-      "openTime": "09/18/2026 09:00",
-      "closeTime": "09/18/2026 09:00",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.02"
-      },
-      "openPrice": 4381.89,
-      "closePrice": 4382.76,
-      "tp": 0,
-      "sl": 4383.19,
-      "pips": 87,
-      "profit": 1.6,
-      "comment": "TOL LANGIT ETF - V.1[sl 4383.19]",
-      "interest": 0,
-      "commission": -0.14
-    },
-    {
-      "openTime": "09/18/2026 07:00",
-      "closeTime": "09/18/2026 07:04",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4359.32,
-      "closePrice": 4360.91,
-      "tp": 0,
-      "sl": 4361.07,
-      "pips": 159,
-      "profit": 1.51,
-      "comment": "TOL LANGIT ETF - IX [S06][sl 4361.07]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/18/2026 06:31",
-      "closeTime": "09/18/2026 06:32",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4342.25,
-      "closePrice": 4343.71,
-      "tp": 0,
-      "sl": 4343.7,
-      "pips": 146,
-      "profit": 1.38,
-      "comment": "TOL LANGIT ETF - IX [S01][sl 4343.70]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/18/2026 05:43",
-      "closeTime": "09/18/2026 05:46",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4350.78,
-      "closePrice": 4354.46,
-      "tp": 0,
-      "sl": 4354.52,
-      "pips": 368,
-      "profit": 3.6,
-      "comment": "TOL LANGIT ETF - IX [S01][sl 4354.52]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/18/2026 05:42",
-      "closeTime": "09/18/2026 05:46",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4352.96,
-      "closePrice": 4354.46,
-      "tp": 0,
-      "sl": 4354.52,
-      "pips": 150,
-      "profit": 1.42,
-      "comment": "TOL LANGIT ETF - IX [S01][sl 4354.52]",
       "interest": 0,
       "commission": -0.08
     }
@@ -1547,6 +1547,11 @@
       "09/28/2026",
       -99.71,
       -119.08
+    ],
+    [
+      "09/29/2026",
+      -99.71,
+      0.6
     ]
   ]
 }
