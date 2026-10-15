@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-10-14T00:28:46Z",
+  "fetchedAt": "2026-10-15T00:00:41Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -99.81,
-    "absGain": -68.08,
-    "daily": -2.62,
-    "monthly": -54.97,
+    "absGain": -68.04,
+    "daily": -2.61,
+    "monthly": -54.81,
     "withdrawals": 1765,
     "deposits": 6201.08,
     "interest": -295.72,
-    "profit": -4219.98,
-    "balance": 213.69,
+    "profit": -4217.71,
+    "balance": 215.96,
     "drawdown": 99.89,
-    "equity": 213.69,
+    "equity": 215.96,
     "equityPercent": 100,
     "demo": false,
-    "lastUpdateDate": "10/13/2026 18:46",
+    "lastUpdateDate": "10/14/2026 14:04",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -423.38,
+    "commission": -423.54,
     "currency": "USD",
     "profitFactor": 0.74,
-    "pips": -8548.6,
+    "pips": -8365.6,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -33,11 +33,49 @@
     },
     "trades": 968,
     "winRate": 85.0,
-    "todayDaily": -0.01,
-    "todayProfit": -2.42
+    "todayDaily": 0.0,
+    "todayProfit": 2.27
   },
   "openTrades": [],
   "history": [
+    {
+      "openTime": "10/14/2026 10:25",
+      "closeTime": "10/14/2026 15:36",
+      "symbol": "AUDCAD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.99541,
+      "closePrice": 0.99441,
+      "tp": 0,
+      "sl": 0,
+      "pips": 10,
+      "profit": 0.62,
+      "comment": "ETF - I",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "10/14/2026 09:15",
+      "closeTime": "10/14/2026 09:17",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4160.85,
+      "closePrice": 4159.12,
+      "tp": 0,
+      "sl": 0,
+      "pips": 173,
+      "profit": 1.65,
+      "comment": "GW320692281|TOL LANGIT ETF - IV",
+      "interest": 0,
+      "commission": -0.08
+    },
     {
       "openTime": "10/13/2026 13:42",
       "closeTime": "10/13/2026 14:04",
@@ -757,44 +795,6 @@
       "pips": 10,
       "profit": 0.62,
       "comment": "ETF - I",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/29/2026 08:45",
-      "closeTime": "09/29/2026 13:51",
-      "symbol": "AUDCAD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.99213,
-      "closePrice": 0.99316,
-      "tp": 0,
-      "sl": 0,
-      "pips": 10.3,
-      "profit": 0.65,
-      "comment": "ETF - I",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "09/29/2026 12:47",
-      "closeTime": "09/29/2026 12:53",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4147.75,
-      "closePrice": 4142.61,
-      "tp": 0,
-      "sl": 4142.63,
-      "pips": 514,
-      "profit": 5.06,
-      "comment": "TOL LANGIT ETF - IX [S05][sl 4142.63]",
       "interest": 0,
       "commission": -0.08
     }
@@ -1584,6 +1584,11 @@
       "10/13/2026",
       -99.81,
       -2.42
+    ],
+    [
+      "10/14/2026",
+      -99.81,
+      2.27
     ]
   ]
 }
