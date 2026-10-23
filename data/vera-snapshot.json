@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-10-22T00:06:18Z",
+  "fetchedAt": "2026-10-23T00:04:40Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
-    "gain": -99.8,
-    "absGain": -67.68,
-    "daily": -2.51,
-    "monthly": -53.43,
+    "gain": -99.79,
+    "absGain": -67.6,
+    "daily": -2.49,
+    "monthly": -53.06,
     "withdrawals": 1765,
     "deposits": 6201.08,
     "interest": -295.15,
-    "profit": -4195.5,
-    "balance": 238.17,
+    "profit": -4190.16,
+    "balance": 243.43,
     "drawdown": 99.89,
-    "equity": 238.17,
-    "equityPercent": 100,
+    "equity": 243.3,
+    "equityPercent": 99.95,
     "demo": false,
-    "lastUpdateDate": "10/21/2026 22:56",
+    "lastUpdateDate": "10/22/2026 13:08",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -426.84,
+    "commission": -427.28,
     "currency": "USD",
     "profitFactor": 0.74,
-    "pips": -6498.2,
+    "pips": -5966.2,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -33,11 +33,122 @@
     },
     "trades": 968,
     "winRate": 85.0,
-    "todayDaily": 0.0,
-    "todayProfit": 1.28
+    "todayDaily": 0.01,
+    "todayProfit": 5.34
   },
-  "openTrades": [],
+  "openTrades": [
+    {
+      "openTime": "10/22/2026 05:55",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.98478,
+      "tp": 0,
+      "sl": 0,
+      "comment": "ETF - I",
+      "profit": -0.86,
+      "pips": -12.1,
+      "swap": 0,
+      "magic": "74638"
+    },
+    {
+      "openTime": "10/22/2026 10:15",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.98254,
+      "tp": 0,
+      "sl": 0,
+      "comment": "ETF - I",
+      "profit": 0.73,
+      "pips": 10.3,
+      "swap": 0,
+      "magic": "74638"
+    }
+  ],
   "history": [
+    {
+      "openTime": "10/22/2026 14:21",
+      "closeTime": "10/22/2026 14:23",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4064.7,
+      "closePrice": 4063.32,
+      "tp": 0,
+      "sl": 4063.41,
+      "pips": 138,
+      "profit": 1.3,
+      "comment": "TOL LANGIT ETF - V.1[sl 4063.41]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "10/22/2026 14:21",
+      "closeTime": "10/22/2026 14:21",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.02"
+      },
+      "openPrice": 4064.72,
+      "closePrice": 4067.78,
+      "tp": 0,
+      "sl": 4067.74,
+      "pips": -306,
+      "profit": -6.26,
+      "comment": "TOL LANGIT ETF - V.2[sl 4067.74]",
+      "interest": 0,
+      "commission": -0.14
+    },
+    {
+      "openTime": "10/22/2026 06:15",
+      "closeTime": "10/22/2026 06:16",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 4104.84,
+      "closePrice": 4101.36,
+      "tp": 0,
+      "sl": 4101.25,
+      "pips": 348,
+      "profit": 3.4,
+      "comment": "TOL LANGIT ETF - V.1[sl 4101.25]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "10/22/2026 06:15",
+      "closeTime": "10/22/2026 06:16",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.02"
+      },
+      "openPrice": 4104.86,
+      "closePrice": 4101.34,
+      "tp": 0,
+      "sl": 4101.26,
+      "pips": 352,
+      "profit": 6.9,
+      "comment": "TOL LANGIT ETF - V.2[sl 4101.26]",
+      "interest": 0,
+      "commission": -0.14
+    },
     {
       "openTime": "10/21/2026 21:55",
       "closeTime": "10/21/2026 22:30",
@@ -721,82 +832,6 @@
       "comment": "TOL LANGIT ETF - V.2[sl 4173.03]",
       "interest": 0,
       "commission": -0.14
-    },
-    {
-      "openTime": "10/14/2026 10:25",
-      "closeTime": "10/14/2026 15:36",
-      "symbol": "AUDCAD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.99541,
-      "closePrice": 0.99441,
-      "tp": 0,
-      "sl": 0,
-      "pips": 10,
-      "profit": 0.62,
-      "comment": "ETF - I",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "10/14/2026 09:15",
-      "closeTime": "10/14/2026 09:17",
-      "symbol": "XAUUSD",
-      "action": "Sell",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4160.85,
-      "closePrice": 4159.12,
-      "tp": 0,
-      "sl": 0,
-      "pips": 173,
-      "profit": 1.65,
-      "comment": "GW320692281|TOL LANGIT ETF - IV",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "10/13/2026 13:42",
-      "closeTime": "10/13/2026 14:04",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4180.59,
-      "closePrice": 4183.77,
-      "tp": 0,
-      "sl": 4183.78,
-      "pips": 318,
-      "profit": 3.1,
-      "comment": "TOL LANGIT ETF - IX [S05][sl 4183.78]",
-      "interest": 0,
-      "commission": -0.08
-    },
-    {
-      "openTime": "10/13/2026 13:30",
-      "closeTime": "10/13/2026 14:04",
-      "symbol": "XAUUSD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 4182.87,
-      "closePrice": 4183.77,
-      "tp": 0,
-      "sl": 4183.78,
-      "pips": 90,
-      "profit": 0.82,
-      "comment": "TOL LANGIT ETF - IX [S05][sl 4183.78]",
-      "interest": 0,
-      "commission": -0.08
     }
   ],
   "dailyGain": [
@@ -1614,6 +1649,11 @@
       "10/21/2026",
       -99.8,
       1.28
+    ],
+    [
+      "10/22/2026",
+      -99.79,
+      5.34
     ]
   ]
 }
