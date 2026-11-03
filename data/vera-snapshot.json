@@ -1,31 +1,31 @@
 {
-  "fetchedAt": "2026-11-02T00:58:33Z",
+  "fetchedAt": "2026-11-03T03:00:29Z",
   "account": {
     "id": 12044019,
     "name": "Vera Level",
     "accountId": 7916030,
     "gain": -99.79,
-    "absGain": -67.27,
-    "daily": -2.39,
-    "monthly": -51.93,
+    "absGain": -67.19,
+    "daily": -2.38,
+    "monthly": -51.5,
     "withdrawals": 1765,
     "deposits": 6201.08,
     "interest": -295.27,
-    "profit": -4169.85,
-    "balance": 263.82,
+    "profit": -4164.67,
+    "balance": 269,
     "drawdown": 99.89,
-    "equity": 263.82,
+    "equity": 269,
     "equityPercent": 100,
     "demo": false,
-    "lastUpdateDate": "11/02/2026 00:30",
+    "lastUpdateDate": "11/02/2026 23:01",
     "creationDate": "05/16/2026 13:58",
     "firstTradeDate": "02/20/2026 00:00",
     "tracking": 0,
     "views": 0,
-    "commission": -429.74,
+    "commission": -429.98,
     "currency": "USD",
     "profitFactor": 0.74,
-    "pips": -4288.1,
+    "pips": -3808.1,
     "portfolio": "",
     "invitationUrl": "",
     "server": {
@@ -34,10 +34,67 @@
     "trades": 968,
     "winRate": 85.0,
     "todayDaily": 0.0,
-    "todayProfit": 5.39
+    "todayProfit": 5.18
   },
   "openTrades": [],
   "history": [
+    {
+      "openTime": "11/02/2026 13:45",
+      "closeTime": "11/02/2026 15:38",
+      "symbol": "AUDCAD",
+      "action": "Buy",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 0.97916,
+      "closePrice": 0.98016,
+      "tp": 0,
+      "sl": 0,
+      "pips": 10,
+      "profit": 0.64,
+      "comment": "ETF - I",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "11/02/2026 08:15",
+      "closeTime": "11/02/2026 08:18",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 3913.88,
+      "closePrice": 3911.53,
+      "tp": 0,
+      "sl": 3911.53,
+      "pips": 235,
+      "profit": 2.27,
+      "comment": "TOL LANGIT ETF - IX [S05][sl 3911.53]",
+      "interest": 0,
+      "commission": -0.08
+    },
+    {
+      "openTime": "11/02/2026 08:15",
+      "closeTime": "11/02/2026 08:18",
+      "symbol": "XAUUSD",
+      "action": "Sell",
+      "sizing": {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 3913.87,
+      "closePrice": 3911.52,
+      "tp": 0,
+      "sl": 3911.52,
+      "pips": 235,
+      "profit": 2.27,
+      "comment": "TOL LANGIT ETF - IX [S04][sl 3911.52]",
+      "interest": 0,
+      "commission": -0.08
+    },
     {
       "openTime": "10/30/2026 10:50",
       "closeTime": "10/30/2026 11:55",
@@ -739,63 +796,6 @@
       "profit": 1.93,
       "comment": "ETF - I",
       "interest": 0.12,
-      "commission": -0.08
-    },
-    {
-      "openTime": "10/15/2026 03:35",
-      "closeTime": "10/21/2026 15:21",
-      "symbol": "AUDCAD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.98836,
-      "closePrice": 0.98821,
-      "tp": 0,
-      "sl": 0,
-      "pips": -1.5,
-      "profit": -0.07,
-      "comment": "ETF - I",
-      "interest": 0.12,
-      "commission": -0.08
-    },
-    {
-      "openTime": "10/15/2026 12:55",
-      "closeTime": "10/21/2026 15:21",
-      "symbol": "AUDCAD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.98261,
-      "closePrice": 0.98822,
-      "tp": 0,
-      "sl": 0,
-      "pips": 56.1,
-      "profit": 4.03,
-      "comment": "ETF - I",
-      "interest": 0.12,
-      "commission": -0.08
-    },
-    {
-      "openTime": "10/14/2026 19:25",
-      "closeTime": "10/21/2026 15:21",
-      "symbol": "AUDCAD",
-      "action": "Buy",
-      "sizing": {
-        "type": "lots",
-        "value": "0.01"
-      },
-      "openPrice": 0.99229,
-      "closePrice": 0.98822,
-      "tp": 0,
-      "sl": 0,
-      "pips": -40.7,
-      "profit": -2.77,
-      "comment": "ETF - I",
-      "interest": 0.21,
       "commission": -0.08
     }
   ],
@@ -1649,6 +1649,11 @@
       "10/30/2026",
       -99.79,
       5.39
+    ],
+    [
+      "11/02/2026",
+      -99.79,
+      5.18
     ]
   ]
 }
